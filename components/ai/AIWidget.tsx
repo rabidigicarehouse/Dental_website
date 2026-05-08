@@ -113,28 +113,35 @@ export default function AIWidget() {
   useEffect(() => {
     const updateVoices = () => {
       const voices = window.speechSynthesis.getVoices();
-      const voice = voices.find(v => 
-        (v.name.toLowerCase().includes("female") || 
-         v.name.toLowerCase().includes("google us english") || 
-         v.name.toLowerCase().includes("google uk english female") || 
-         v.name.toLowerCase().includes("samantha") || 
-         v.name.toLowerCase().includes("zira") || 
-         v.name.toLowerCase().includes("aria") || 
-         v.name.toLowerCase().includes("jenny") || 
-         v.name.toLowerCase().includes("sonia") || 
-         v.name.toLowerCase().includes("victoria") ||
-         v.name.toLowerCase().includes("salli") ||
-         v.name.toLowerCase().includes("joanna") ||
-         v.name.toLowerCase().includes("kendra") ||
-         v.name.toLowerCase().includes("kimberly") ||
-         v.name.toLowerCase().includes("monica")) && 
-        v.lang.startsWith("en")
-      );
-      if (voice) setFemaleVoice(voice);
+      
+      // Prioritized search for female voices
+      // 1. Specifically look for Microsoft Zira (best on Windows)
+      // 2. Look for Google Female voices
+      // 3. Look for any voice with "female" in the name
+      // 4. Fallback to common female names
+      const voice = voices.find(v => v.name.includes("Microsoft Zira")) || 
+                    voices.find(v => v.name.toLowerCase().includes("google") && v.name.toLowerCase().includes("female")) ||
+                    voices.find(v => v.name.toLowerCase().includes("female")) ||
+                    voices.find(v => 
+                      (v.name.toLowerCase().includes("samantha") || 
+                       v.name.toLowerCase().includes("zira") || 
+                       v.name.toLowerCase().includes("aria") || 
+                       v.name.toLowerCase().includes("jenny") || 
+                       v.name.toLowerCase().includes("salli") ||
+                       v.name.toLowerCase().includes("joanna") ||
+                       v.name.toLowerCase().includes("kendra")) && 
+                      v.lang.startsWith("en")
+                    );
+
+      if (voice) {
+        setFemaleVoice(voice);
+      }
     };
 
     updateVoices();
-    window.speechSynthesis.onvoiceschanged = updateVoices;
+    if (window.speechSynthesis.onvoiceschanged !== undefined) {
+      window.speechSynthesis.onvoiceschanged = updateVoices;
+    }
   }, []);
 
   const speak = useCallback((text: string) => {
@@ -147,8 +154,8 @@ export default function AIWidget() {
       utterance.voice = femaleVoice;
     }
 
-    // High pitch fallback to ensure female tone even if specific voice isn't found
-    utterance.pitch = 1.4; 
+    // Ultra-high pitch fallback to FORCE a female tone even if the voice is technically male
+    utterance.pitch = 1.6; 
     utterance.rate = 1.0;
 
     utterance.onstart = () => {
