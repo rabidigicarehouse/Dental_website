@@ -108,39 +108,47 @@ export default function AIWidget() {
 
   const talkingVideoRef = useRef<HTMLVideoElement>(null);
 
+  const [femaleVoice, setFemaleVoice] = useState<SpeechSynthesisVoice | null>(null);
+
+  useEffect(() => {
+    const updateVoices = () => {
+      const voices = window.speechSynthesis.getVoices();
+      const voice = voices.find(v => 
+        (v.name.toLowerCase().includes("female") || 
+         v.name.toLowerCase().includes("google us english") || 
+         v.name.toLowerCase().includes("google uk english female") || 
+         v.name.toLowerCase().includes("samantha") || 
+         v.name.toLowerCase().includes("zira") || 
+         v.name.toLowerCase().includes("aria") || 
+         v.name.toLowerCase().includes("jenny") || 
+         v.name.toLowerCase().includes("sonia") || 
+         v.name.toLowerCase().includes("victoria") ||
+         v.name.toLowerCase().includes("salli") ||
+         v.name.toLowerCase().includes("joanna") ||
+         v.name.toLowerCase().includes("kendra") ||
+         v.name.toLowerCase().includes("kimberly") ||
+         v.name.toLowerCase().includes("monica")) && 
+        v.lang.startsWith("en")
+      );
+      if (voice) setFemaleVoice(voice);
+    };
+
+    updateVoices();
+    window.speechSynthesis.onvoiceschanged = updateVoices;
+  }, []);
+
   const speak = useCallback((text: string) => {
     if (!window.speechSynthesis) return;
     window.speechSynthesis.cancel();
     
     const utterance = new SpeechSynthesisUtterance(text);
     
-    // Find a female voice
-    const voices = window.speechSynthesis.getVoices();
-    // Comprehensive search for female-sounding voices across OS/Browsers
-    const femaleVoice = voices.find(v => 
-      (v.name.toLowerCase().includes("female") || 
-       v.name.toLowerCase().includes("google us english") || 
-       v.name.toLowerCase().includes("google uk english female") || 
-       v.name.toLowerCase().includes("samantha") || 
-       v.name.toLowerCase().includes("zira") || 
-       v.name.toLowerCase().includes("aria") || 
-       v.name.toLowerCase().includes("jenny") || 
-       v.name.toLowerCase().includes("sonia") || 
-       v.name.toLowerCase().includes("victoria") ||
-       v.name.toLowerCase().includes("salli") ||
-       v.name.toLowerCase().includes("joanna") ||
-       v.name.toLowerCase().includes("kendra") ||
-       v.name.toLowerCase().includes("kimberly") ||
-       v.name.toLowerCase().includes("monica")) && 
-      v.lang.startsWith("en")
-    );
-
     if (femaleVoice) {
       utterance.voice = femaleVoice;
     }
 
     // High pitch fallback to ensure female tone even if specific voice isn't found
-    utterance.pitch = 1.3; 
+    utterance.pitch = 1.4; 
     utterance.rate = 1.0;
 
     utterance.onstart = () => {
