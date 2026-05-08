@@ -1,0 +1,187 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+html {
+  overflow-x: hidden;
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: Arial, Helvetica, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+  /* Removed fixed height to allow natural scrolling */
+}
+
+/* Flex layout for sticky footer */
+#wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+#content {
+  flex: 1 0 auto; /* Grow to fill space, don't shrink */
+  width: 100%;
+}
+
+footer {
+  flex-shrink: 0;
+}
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+@media (prefers-color-scheme: dark) {
+  html {
+    color-scheme: dark;
+  }
+}
+
+/* Fix for side menu scroll */
+#extra-content {
+    overflow-y: auto !important;
+    right: 0 !important;
+    width: 100% !important;
+    padding-right: 0 !important;
+}
+
+/* Hide body scroll when menu is open */
+body.no-scroll {
+    overflow: hidden !important;
+}
+
+/* Custom scrollbar for side menu */
+#extra-content::-webkit-scrollbar {
+  width: 6px;
+}
+#extra-content::-webkit-scrollbar-thumb {
+  background-color: rgba(255,255,255,0.2);
+  border-radius: 3px;
+}
+
+/* AI Widget Layout Adjustment */
+#wrapper {
+  width: 100%;
+  position: relative;
+}
+
+body.ai-widget-open #wrapper {
+  width: calc(100% - 300px);
+  margin-right: 300px;
+}
+
+/* Slightly reduce website font size on standard laptops to make it fit better */
+@media (max-width: 1440px) {
+  body.ai-widget-open {
+    font-size: 0.9rem;
+    padding-top: 0 !important; /* Prevent header spacers */
+  }
+  
+  body.ai-widget-open #wrapper {
+    padding-top: 0 !important;
+    margin-top: 0 !important;
+  }
+
+  body.ai-widget-open #wrapper section:first-of-type {
+    padding-top: 0 !important;
+    margin-top: 0 !important;
+  }
+  
+  body.ai-widget-open #wrapper section {
+    padding: 60px 0 !important; /* Smaller section padding */
+  }
+
+  body.ai-widget-open footer {
+    font-size: 0.85rem !important;
+    padding: 40px 0 !important;
+  }
+
+  body.ai-widget-open .container {
+    max-width: 100% !important;
+    padding-left: 30px !important;
+    padding-right: 30px !important;
+  }
+}
+
+/* Ensure the website remains interactive during the shift */
+#wrapper {
+  z-index: 1;
+  position: relative;
+}
+
+/* On very large screens, we can afford a bit more space */
+@media (min-width: 1600px) {
+  body.ai-widget-open #wrapper {
+    width: calc(100% - 420px);
+    margin-right: 420px;
+  }
+}
+
+/* Ensure fixed/sticky header also shrinks and shifts ONLY when scrolled */
+body.ai-widget-open header.smaller {
+  width: calc(100% - 300px) !important;
+  margin-right: 300px !important;
+  left: 0 !important;
+  right: auto !important;
+}
+
+@media (min-width: 1600px) {
+  body.ai-widget-open header.smaller {
+    width: calc(100% - 420px) !important;
+    margin-right: 420px !important;
+  }
+}
+
+/* Before scroll, the header is inside #wrapper and doesn't need extra shifting */
+body.ai-widget-open header:not(.smaller) {
+  width: 100% !important;
+  margin-right: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  top: 0 !important;
+  position: absolute !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  border: none !important;
+  z-index: 1001 !important;
+}
+
+body.ai-widget-open header:not(.smaller)::before,
+body.ai-widget-open header:not(.smaller)::after {
+  display: none !important;
+}
+
+/* Maintain full width on screens <= 1024px (Tablets/Mobile) and treat as overlay */
+@media (max-width: 1024px) {
+  body.ai-widget-open #wrapper,
+  body.ai-widget-open header {
+    width: 100% !important;
+    margin-right: 0 !important;
+  }
+}
