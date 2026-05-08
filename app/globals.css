@@ -87,11 +87,24 @@ body.no-scroll {
 #wrapper {
   width: 100%;
   position: relative;
+  transition: all 0.5s ease-in-out; /* Smooth transition for content shifting */
 }
 
 body.ai-widget-open #wrapper {
   width: calc(100% - 300px);
   margin-right: 300px;
+}
+
+/* Ensure hero section and background respond to the layout shift */
+body.ai-widget-open #section-intro,
+body.ai-widget-open #section-intro .mh-800 {
+  width: 100% !important;
+  transition: all 0.5s ease-in-out !important;
+}
+
+body.ai-widget-open #section-intro .swiper-inner {
+  background-position: 80% center !important; /* Move the image focal point left */
+  transition: background-position 0.5s ease-in-out !important;
 }
 
 /* Slightly reduce website font size on standard laptops to make it fit better */

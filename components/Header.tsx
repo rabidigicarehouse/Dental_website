@@ -21,8 +21,8 @@ export default function Header({
                 <div id="logo">
                   <Link href="/">
                     <img className="logo-main logo" src="/main logo.png" alt="Dentia Logo" />
-                    <img className="logo-scroll logo-2" src="/main logo.png" alt="Dentia Logo" />
-                    <img className="logo-mobile" src="/main logo.png" alt="Dentia Logo" />
+                    <img className="logo-scroll logo-2" src="/main logo dark.png" alt="Dentia Logo" />
+                    <img className="logo-mobile" src="/main logo dark.png" alt="Dentia Logo" />
                   </Link>
                 </div>
                 {/* logo end */}

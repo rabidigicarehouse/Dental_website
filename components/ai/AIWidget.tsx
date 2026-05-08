@@ -116,17 +116,22 @@ export default function AIWidget() {
     
     // Find a female voice
     const voices = window.speechSynthesis.getVoices();
-    // Broad search for female-sounding voices
+    // Comprehensive search for female-sounding voices across OS/Browsers
     const femaleVoice = voices.find(v => 
-      (v.name.includes("Female") || 
-       v.name.includes("Google US English") || 
-       v.name.includes("Google UK English Female") || 
-       v.name.includes("Samantha") || 
-       v.name.includes("Zira") || 
-       v.name.includes("Aria") || 
-       v.name.includes("Jenny") || 
-       v.name.includes("Sonia") || 
-       v.name.includes("Victoria")) && 
+      (v.name.toLowerCase().includes("female") || 
+       v.name.toLowerCase().includes("google us english") || 
+       v.name.toLowerCase().includes("google uk english female") || 
+       v.name.toLowerCase().includes("samantha") || 
+       v.name.toLowerCase().includes("zira") || 
+       v.name.toLowerCase().includes("aria") || 
+       v.name.toLowerCase().includes("jenny") || 
+       v.name.toLowerCase().includes("sonia") || 
+       v.name.toLowerCase().includes("victoria") ||
+       v.name.toLowerCase().includes("salli") ||
+       v.name.toLowerCase().includes("joanna") ||
+       v.name.toLowerCase().includes("kendra") ||
+       v.name.toLowerCase().includes("kimberly") ||
+       v.name.toLowerCase().includes("monica")) && 
       v.lang.startsWith("en")
     );
 
@@ -134,15 +139,15 @@ export default function AIWidget() {
       utterance.voice = femaleVoice;
     }
 
-    // Adjust for a clear, high-quality female tone
-    utterance.pitch = 1.2; 
+    // High pitch fallback to ensure female tone even if specific voice isn't found
+    utterance.pitch = 1.3; 
     utterance.rate = 1.0;
 
     utterance.onstart = () => {
       setIsSpeaking(true);
       if (talkingVideoRef.current) {
-        // Set to 2x speed as requested
-        talkingVideoRef.current.playbackRate = 2.0;
+        // Set to 1.5x speed as requested
+        talkingVideoRef.current.playbackRate = 1.5;
         talkingVideoRef.current.play().catch(() => {});
       }
     };

@@ -1,6 +1,19 @@
+'use client';
+
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 
 export default function Home() {
+  const bgImages = ['/images/background/5.png', '/images/background/6.png'];
+  const [currentBg, setCurrentBg] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentBg((prev) => (prev + 1) % bgImages.length);
+    }, 5000);
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <>
       <section id="section-intro" className="text-light no-top no-bottom relative overflow-hidden">
@@ -33,23 +46,28 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="mh-800">
-            <div className="swiper wow scaleIn">
-              <div className="swiper-wrapper">
-                <div className="swiper-slide">
-                  <div className="swiper-inner" style={{ backgroundImage: 'url(/images/slider/1.jpg)', backgroundPosition: 'center', backgroundSize: 'cover', backgroundRepeat: 'no-repeat' }}>
-                    <div className="sw-overlay op-5"></div>
-                    <div className="gradient-edge-left z-2"></div>
-                  </div>
-                </div>
-                <div className="swiper-slide">
-                  <div className="swiper-inner" style={{ backgroundImage: 'url(/images/slider/2.jpg)', backgroundPosition: 'center', backgroundSize: 'cover', backgroundRepeat: 'no-repeat' }}>
-                    <div className="sw-overlay op-5"></div>
-                    <div className="gradient-edge-left z-2"></div>
-                  </div>
-                </div>
+          <div className="mh-800 relative">
+            {bgImages.map((img, index) => (
+              <div
+                key={index}
+                className="abs w-100 h-100 swiper-inner"
+                style={{
+                  backgroundImage: `url(${img})`,
+                  backgroundPosition: 'center',
+                  backgroundSize: 'cover',
+                  backgroundRepeat: 'no-repeat',
+                  opacity: currentBg === index ? 1 : 0,
+                  transition: 'opacity 1.5s ease-in-out',
+                  zIndex: currentBg === index ? 1 : 0,
+                  position: 'absolute',
+                  top: 0,
+                  left: 0
+                }}
+              >
+                <div className="sw-overlay op-5"></div>
+                <div className="gradient-edge-left z-2"></div>
               </div>
-            </div>
+            ))}
           </div>
         </div>
       </section>
