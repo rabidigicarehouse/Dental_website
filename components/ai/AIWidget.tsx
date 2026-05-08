@@ -39,7 +39,6 @@ export default function AIWidget() {
     } else {
       document.body.classList.remove("ai-widget-open");
     }
-    // Trigger window resize to help legacy JS (counters, sticky nav, etc.) recalculate
     window.dispatchEvent(new Event('resize'));
   }, [isOpen, mounted]);
 
@@ -93,92 +92,90 @@ export default function AIWidget() {
     }
   }, []);
 
-  const toggleVoice = () => {
-    if (!recognitionRef.current) {
-      alert("Speech recognition is not supported in this browser.");
-      return;
-    }
-    if (isListening) {
-      recognitionRef.current.stop();
-    } else {
-      recognitionRef.current.start();
-      setIsListening(true);
-    }
-  };
-
   const talkingVideoRef = useRef<HTMLVideoElement>(null);
 
+  // ✅ FIXED: Use voiceschanged event instead of polling interval
   const [femaleVoice, setFemaleVoice] = useState<SpeechSynthesisVoice | null>(null);
 
   useEffect(() => {
-    const updateVoices = () => {
+    const pickFemaleVoice = () => {
       const voices = window.speechSynthesis.getVoices();
-      
-      // Prioritized search for female voices
-      // 1. Specifically look for Microsoft Zira (best on Windows)
-      // 2. Look for Google Female voices
-      // 3. Look for any voice with "female" in the name
-      // 4. Fallback to common female names
-      const voice = voices.find(v => v.name.includes("Microsoft Zira")) || 
-                    voices.find(v => v.name.toLowerCase().includes("google") && v.name.toLowerCase().includes("female")) ||
-                    voices.find(v => v.name.toLowerCase().includes("female")) ||
-                    voices.find(v => 
-                      (v.name.toLowerCase().includes("samantha") || 
-                       v.name.toLowerCase().includes("zira") || 
-                       v.name.toLowerCase().includes("aria") || 
-                       v.name.toLowerCase().includes("jenny") || 
-                       v.name.toLowerCase().includes("salli") ||
-                       v.name.toLowerCase().includes("joanna") ||
-                       v.name.toLowerCase().includes("kendra")) && 
-                      v.lang.startsWith("en")
-                    );
+      if (!voices.length) return;
 
-      if (voice) {
-        setFemaleVoice(voice);
-      }
+      // Ordered list of preferred female voice names
+      const preferredNames = [
+        "Microsoft Zira",
+        "Samantha",
+        "Google UK English Female",
+        "Karen",
+        "Moira",
+        "Tessa",
+        "Fiona",
+        "Microsoft Aria",
+        "Microsoft Jenny",
+        "Microsoft Salli",
+        "Joanna",
+        "Kendra",
+      ];
+
+      // Try exact preferred name matches first
+      const voice =
+        preferredNames.reduce<SpeechSynthesisVoice | null>((found, name) => {
+          return found ?? (voices.find(v => v.name.includes(name)) ?? null);
+        }, null) ??
+        // Fallback: any English voice with a female-sounding name
+        voices.find(v =>
+          v.lang.startsWith("en") &&
+          /female|woman|girl|zira|aria|jenny|salli|joanna|kendra|samantha/i.test(v.name)
+        ) ??
+        null;
+
+      if (voice) setFemaleVoice(voice);
     };
 
-    updateVoices();
-    if (window.speechSynthesis.onvoiceschanged !== undefined) {
-      window.speechSynthesis.onvoiceschanged = updateVoices;
-    }
+    // Try immediately in case voices are already cached (common in Chrome on reload)
+    pickFemaleVoice();
+
+    // voiceschanged fires reliably when browser finishes loading voices
+    window.speechSynthesis.addEventListener("voiceschanged", pickFemaleVoice);
+    return () => {
+      window.speechSynthesis.removeEventListener("voiceschanged", pickFemaleVoice);
+    };
   }, []);
 
   const speak = useCallback((text: string) => {
     if (!window.speechSynthesis) return;
     window.speechSynthesis.cancel();
-    
+
     const utterance = new SpeechSynthesisUtterance(text);
-    
+
     if (femaleVoice) {
       utterance.voice = femaleVoice;
     }
 
-    // Ultra-high pitch fallback to FORCE a female tone even if the voice is technically male
-    utterance.pitch = 1.6; 
+    utterance.pitch = 1.8;
     utterance.rate = 1.0;
 
     utterance.onstart = () => {
       setIsSpeaking(true);
       if (talkingVideoRef.current) {
-        // Set to 1.5x speed as requested
         talkingVideoRef.current.playbackRate = 1.5;
         talkingVideoRef.current.play().catch(() => {});
       }
     };
-    
+
     utterance.onend = () => setIsSpeaking(false);
     utterance.onerror = () => setIsSpeaking(false);
-    
+
     window.speechSynthesis.speak(utterance);
-  }, []);
+  }, [femaleVoice]); // ✅ FIXED: femaleVoice added as dependency so speak() always uses latest voice
 
   const handleSendMessage = useCallback((text: string) => {
     if (!text.trim()) return;
     const userMsg: Message = { id: Date.now().toString(), text, sender: "user" };
     setMessages(prev => [...prev, userMsg]);
     setIsTyping(true);
-    
+
     setTimeout(() => {
       let responseText = "I'm here to help! Please try asking about our dental services or booking.";
       const lowerText = text.toLowerCase();
@@ -194,6 +191,19 @@ export default function AIWidget() {
       speak(responseText);
     }, 1000);
   }, [speak]);
+
+  const toggleVoice = () => {
+    if (!recognitionRef.current) {
+      alert("Speech recognition is not supported in this browser.");
+      return;
+    }
+    if (isListening) {
+      recognitionRef.current.stop();
+    } else {
+      recognitionRef.current.start();
+      setIsListening(true);
+    }
+  };
 
   if (!mounted) return null;
 
@@ -212,10 +222,10 @@ export default function AIWidget() {
             className="relative w-16 h-16 lg:w-24 lg:h-24 rounded-full bg-white border-2 border-primary shadow-2xl flex items-center justify-center overflow-hidden group"
           >
             <div className="relative w-full h-full p-1.5 lg:p-2">
-              <Image 
-                src="/ai avatar.png" 
-                alt="AI Chatbot" 
-                fill 
+              <Image
+                src="/ai avatar.png"
+                alt="AI Chatbot"
+                fill
                 className="object-cover rounded-full transition-transform duration-300 group-hover:scale-110"
               />
             </div>
@@ -227,7 +237,7 @@ export default function AIWidget() {
         </motion.div>
       )}
 
-      {/* Side-Panel Assistant (Does not block background scroll) */}
+      {/* Side-Panel Assistant */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
@@ -244,18 +254,18 @@ export default function AIWidget() {
                 <div className="w-1 h-1 rounded-full bg-primary" />
                 <span className="text-[8px] 2xl:text-[10px] font-black text-gray-400 uppercase tracking-widest">Business Advisor</span>
               </div>
-              <button 
-                onClick={() => setIsOpen(false)} 
+              <button
+                onClick={() => setIsOpen(false)}
                 className="p-1 2xl:p-2 text-gray-400 hover:text-gray-900 hover:bg-gray-100 rounded-full transition-all"
               >
                 <X size={16} />
               </button>
             </div>
 
-            {/* Avatar Section with Compact Locked Aspect Ratio */}
+            {/* Avatar Section */}
             <div className="p-3 2xl:p-6 pb-1">
               <div className="relative aspect-[16/10] rounded-xl 2xl:rounded-3xl overflow-hidden shadow-lg group border-[3px] 2xl:border-[6px] border-gray-50/50 bg-black">
-                {/* Listening Video (Default/Idle) */}
+                {/* Listening Video (Idle) */}
                 <video
                   src="/listening.mp4"
                   autoPlay
@@ -266,7 +276,7 @@ export default function AIWidget() {
                   className={`absolute inset-0 w-full h-full object-cover bg-black transition-opacity duration-300 ${isSpeaking ? 'opacity-0' : 'opacity-100'}`}
                   style={{ backgroundColor: 'black' }}
                 />
-                
+
                 {/* Talking Video (Speaking State) */}
                 <video
                   ref={talkingVideoRef}
@@ -281,37 +291,37 @@ export default function AIWidget() {
                 />
 
                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent flex flex-col items-center justify-end pb-3 2xl:pb-6">
-                   <motion.button 
+                  <motion.button
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                     onClick={toggleVoice}
                     className={`px-4 2xl:px-8 py-2 2xl:py-3.5 rounded-full text-[9px] 2xl:text-[12px] font-black flex items-center gap-1.5 2xl:gap-2 shadow-2xl border transition-all z-10 ${
-                      isListening 
-                      ? "bg-red-500 text-white border-red-400 animate-pulse" 
+                      isListening
+                      ? "bg-red-500 text-white border-red-400 animate-pulse"
                       : "bg-white text-primary border-white/50"
                     }`}
-                   >
-                     <Mic size={12} className={isListening ? "text-white" : "text-red-500"} />
-                     {isListening ? "Listening..." : "Speak with Dentia"}
-                   </motion.button>
+                  >
+                    <Mic size={12} className={isListening ? "text-white" : "text-red-500"} />
+                    {isListening ? "Listening..." : "Speak with Dentia"}
+                  </motion.button>
                 </div>
               </div>
             </div>
 
-            {/* Expanded Chat Messages Area */}
+            {/* Chat Messages Area */}
             <div className="flex-1 overflow-hidden px-3 2xl:px-6 py-2 2xl:py-4">
-               <ChatBox 
-                messages={messages} 
-                onSendMessage={handleSendMessage} 
-                isTyping={isTyping} 
-                isThryvStyle={true} 
+              <ChatBox
+                messages={messages}
+                onSendMessage={handleSendMessage}
+                isTyping={isTyping}
+                isThryvStyle={true}
               />
             </div>
 
-            {/* Clean Minimalist Footer */}
+            {/* Footer */}
             <div className="p-3 2xl:p-6 bg-white border-t border-gray-100 space-y-2 2xl:space-y-4">
               <div className="relative">
-                <input 
+                <input
                   ref={inputRef}
                   type="text"
                   placeholder="Ask Dentia"
@@ -331,7 +341,7 @@ export default function AIWidget() {
                   </button>
                 </div>
               </div>
-              
+
               <div className="text-[7px] 2xl:text-[9px] text-gray-300 text-center font-bold uppercase tracking-[0.15em] 2xl:tracking-[0.3em]">
                 Secure interaction encrypted by Dentia AI
               </div>
