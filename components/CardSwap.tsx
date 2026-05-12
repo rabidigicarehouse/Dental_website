@@ -191,19 +191,21 @@ const CardSwap: React.FC<CardSwapProps> = ({
     };
   }, [cardDistance, verticalDistance, delay, pauseOnHover, skewAmount, easing, refs, config]);
 
-  const rendered = childArr.map((child, i) =>
-    isValidElement(child)
-      ? cloneElement(child as React.ReactElement<any>, {
-          key: i,
-          ref: refs[i],
-          style: { width, height, ...(child.props.style ?? {}) },
-          onClick: (e: React.MouseEvent) => {
-            child.props.onClick?.(e);
-            onCardClick?.(i);
-          }
-        })
-      : child
-  );
+  const rendered = childArr.map((child, i) => {
+    if (isValidElement(child)) {
+      const element = child as React.ReactElement<{ style?: React.CSSProperties; onClick?: (e: React.MouseEvent) => void }>;
+      return cloneElement(element as any, {
+        key: i,
+        ref: refs[i],
+        style: { width, height, ...(element.props.style ?? {}) },
+        onClick: (e: React.MouseEvent) => {
+          element.props.onClick?.(e);
+          onCardClick?.(i);
+        }
+      });
+    }
+    return child;
+  });
 
   return (
     <div ref={container} className="card-swap-container" style={{ width, height }}>
