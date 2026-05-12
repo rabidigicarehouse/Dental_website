@@ -35,6 +35,7 @@ export default function Home() {
 
   return (
     <>
+      {/* Hero Section */}
       <section id="section-intro" className="text-light no-top no-bottom relative overflow-hidden">
         <div className="relative">
           <div className="abs abs-centered w-100 z-2">
@@ -75,7 +76,6 @@ export default function Home() {
               </div>
             ))}
             
-            {/* Pagination Dots - Perfectly Centered */}
             <div className="abs z-3" style={{ bottom: '40px', left: '50%', transform: 'translateX(-50%)' }}>
               <div className="d-flex justify-content-center gap-3">
                 {bgImages.map((_, index) => (
@@ -99,6 +99,7 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Info Boxes */}
       <section className="bg-dark text-light pt-50 pb-30">
         <div className="container relative">
           <div className="row g-4 justify-content-center">
@@ -141,6 +142,7 @@ export default function Home() {
         </div>
       </section>
 
+      {/* About Section */}
       <section className="bg-light">
         <div className="container">
           <div className="row g-5 align-items-center">
@@ -159,7 +161,7 @@ export default function Home() {
                 <h2 className="about-title">Dental Innovations</h2>
                 <div className="about-mission">Our Mission at Upper East Dental Innovations</div>
                 <p className="about-text">
-                  Upper East Dental Innovations is a state-of-the-art New York-based oral healthcare practice where artistry, beauty, craftsmanship and technology are the cornerstones of our truly innovative dental practice. Upper East Dental Innovations utilizes cutting edge technologies that deliver aesthetic, superior outcomes, as well as more accurate and faster diagnosis of oral and overall health conditions. Our technology is so advanced that we can offer our patients a permanent crown over their lunch hour, hence "The Lunchtime Crown."
+                  Upper East Dental Innovations is a state-of-the-art New York-based oral healthcare practice where artistry, beauty, craftsmanship and technology are the cornerstones of our truly innovative dental practice.
                 </p>
 
                 <div className="d-flex align-items-center gap-4">
@@ -177,242 +179,49 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Services Section */}
       <section className="bg-color-op-1">
         <div className="container">
-          <div className="row g-4 justify-content-center">
-            <div className="col-lg-8 text-center">
+          <div className="row g-4 justify-content-center text-center">
+            <div className="col-lg-8">
               <div className="subtitle wow fadeInUp mb-3">Our Services</div>
               <h2 className="wow fadeInUp" data-wow-delay=".2s">Complete Care for Every Smile</h2>
-              <p className="col-lg-8 offset-lg-2 mb-0 wow fadeInUp">From routine cleanings to advanced restorations, we provide personalized dental solutions for patients of all ages.</p>
-              <div className="spacer-single"></div>
-              <div className="spacer-half"></div>
-            </div>
-          </div>
-
-          <div className="row g-4">
-            <div className="col-lg-3 col-sm-6">
-              <div className="hover">
-                <div className="bg-white h-100 p-40 rounded-1">
-                  <img src="images/icons/tooth-1.png" className="w-70px mb-3 wow scaleIn" alt="" />
-                  <div className="relative mt-4 wow fadeInUp">
-                    <h4>General Dentistry</h4>
-                    <p>Complete oral care for every smile with cleanings, exams, and more.</p>
-                    <Link className="btn-plus" href="/services/general-dentistry">
-                      <i className="fa fa-plus"></i>
-                      <span>Read more</span>
-                    </Link>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="col-lg-3 col-sm-6">
-              <div className="hover">
-                <div className="bg-white h-100 p-40 rounded-1">
-                  <img src="images/icons/tooth-2.png" className="w-70px mb-3 wow scaleIn" alt="" />
-                  <div className="relative mt-4 wow fadeInUp">
-                    <h4>Cosmetic Dentistry</h4>
-                    <p>Enhance your smile’s beauty with whitening, veneers, and more.</p>
-                    <Link className="btn-plus" href="/services/cosmetic-dentistry">
-                      <i className="fa fa-plus"></i>
-                      <span>Read more</span>
-                    </Link>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="col-lg-3 col-sm-6">
-              <div className="hover">
-                <div className="bg-white h-100 p-40 rounded-1">
-                  <img src="images/icons/tooth-3.png" className="w-70px mb-3 wow scaleIn" alt="" />
-                  <div className="relative mt-4 wow fadeInUp">
-                    <h4>Pediatric Dentistry</h4>
-                    <p>Gentle and fun dental care for kids to grow healthy, happy smiles.</p>
-                    <Link className="btn-plus" href="/services/pediatric-dentistry">
-                      <i className="fa fa-plus"></i>
-                      <span>Read more</span>
-                    </Link>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="col-lg-3 col-sm-6">
-              <div className="hover">
-                <div className="bg-white h-100 p-40 rounded-1">
-                  <img src="images/icons/tooth-4.png" className="w-70px mb-3 wow scaleIn" alt="" />
-                  <div className="relative mt-4 wow fadeInUp">
-                    <h4>Restorative Dentistry</h4>
-                    <p>Repair and restore your teeth for lasting comfort and function.</p>
-                    <Link className="btn-plus" href="/services/restorative-dentistry">
-                      <i className="fa fa-plus"></i>
-                      <span>Read more</span>
-                    </Link>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="col-lg-12 mt-5 text-center">
-              <Link className="btn-main fx-slide" href="/services"><span>View All Services</span></Link>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section className="bg-dark text-light pt-60 pb-60">
-        <div className="container">
-          <div className="row g-4">
-            <div className="col-md-3 col-sm-6 text-center">
-              <div className="de_count wow fadeInRight" data-wow-delay=".0s">
-                <h3 className="fs-40 mb-0"><span className="timer" data-to="10000" data-speed="3000">0</span>+</h3>
-                Happy Patients
-              </div>
-            </div>
-            <div className="col-md-3 col-sm-6 text-center">
-              <div className="de_count wow fadeInRight" data-wow-delay=".2s">
-                <h3 className="fs-40 mb-0"><span className="timer" data-to="2500" data-speed="3500">0</span>+</h3>
-                Teeth Whitened
-              </div>
-            </div>
-            <div className="col-md-3 col-sm-6 text-center">
-              <div className="de_count wow fadeInRight" data-wow-delay=".4s">
-                <h3 className="fs-40 mb-0"><span className="timer" data-to="800" data-speed="3000">0</span>+</h3>
-                Dental Implants
-              </div>
-            </div>
-            <div className="col-md-3 col-sm-6 text-center">
-              <div className="de_count wow fadeInRight" data-wow-delay=".6s">
-                <h3 className="fs-40 mb-0"><span className="timer" data-to="15" data-speed="3000">0</span>+</h3>
-                Years of Experience
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section>
-        <div className="container">
-          <div className="row gy-4 gx-5 align-items-center">
-            <div className="col-lg-6">
-              <div className="subtitle id-color wow fadeInUp" data-wow-delay=".0s">Why Choose Our Dental Care</div>
-              <h2 className="wow fadeInUp" data-wow-delay=".2s">Exceptional Service With a Personal Touch</h2>
-              <p className="wow fadeInUp" data-wow-delay=".4s">Choosing the right dental provider matters. We combine expert care, advanced technology, and a warm atmosphere to ensure every visit is comfortable, efficient, and tailored to your unique needs.</p>
-              <div className="border-bottom mb-4"></div>
-              <div className="row g-4">
-                <div className="col-sm-6">
-                  <div className="relative wow fadeInUp">
-                    <h5>Experienced Dental</h5>
-                    <p className="mb-0">Skilled care backed by years of trusted dental experience.</p>
-                  </div>
-                </div>
-                <div className="col-sm-6">
-                  <div className="relative wow fadeInUp">
-                    <h5>Advanced Technology</h5>
-                    <p className="mb-0">Modern tools ensure accurate and efficient treatments.</p>
-                  </div>
-                </div>
-                <div className="col-sm-6">
-                  <div className="relative wow fadeInUp">
-                    <h5>Personalized Treatment</h5>
-                    <p className="mb-0">Custom care plans made to fit your smile and lifestyle.</p>
-                  </div>
-                </div>
-                <div className="col-sm-6">
-                  <div className="relative wow fadeInUp">
-                    <h5>Family-Friendly</h5>
-                    <p className="mb-0">Welcoming space for kids, teens, adults, and seniors.</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="col-lg-6">
-              <div className="row g-4 align-items-center">
-                <div className="col-6 text-end">
-                  <div className="w-80 rounded-1 overflow-hidden mb-25 wow zoomIn d-inline-block">
-                    <img src="images/misc/s2.webp" className="w-100 wow scaleIn" alt="" />
-                  </div>
-                  <div className="w-100 rounded-1 overflow-hidden mb-25 wow zoomIn d-inline-block">
-                    <img src="images/misc/s3.webp" className="w-100 wow scaleIn" alt="" />
-                  </div>
-                </div>
-                <div className="col-6">
-                  <div className="w-100 rounded-1 overflow-hidden mb-25 wow zoomIn d-inline-block">
-                    <img src="images/misc/p3.webp" className="w-100 wow scaleIn" alt="" />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section className="bg-color-op-1">
-        <div className="container">
-          <div className="row">
-            <div className="col-lg-6 offset-lg-3 text-center">
-              <div className="subtitle wow fadeInUp mb-3">Meet Our Dental Team</div>
-              <h2 className="wow fadeInUp" data-wow-delay=".2s">Committed to Your Smile</h2>
-              <p className="wow fadeInUp">Our experienced dental team is here to make every visit positive and personalized.</p>
+              <p className="mb-0 wow fadeInUp">Personalized dental solutions for patients of all ages.</p>
               <div className="spacer-single"></div>
             </div>
           </div>
+
           <div className="row g-4">
             {[
-              { name: "Dr. Sarah Bennett", role: "Lead Dentist", img: "1.webp" },
-              { name: "Dr. Maya Lin", role: "Cosmetic Dentist", img: "2.webp" },
-              { name: "Dr. Michael Reyes", role: "Pediatric Specialist", img: "3.webp" },
-              { name: "Dr. James Carter", role: "Dental Hygienist", img: "4.webp" }
-            ].map((member, idx) => (
-              <div className="col-lg-3 col-md-6" key={idx}>
-                <div className="relative rounded-1 overflow-hidden">
-                  <div className="rounded-1 overflow-hidden wow fadeIn zoomIn">
-                    <img src={`images/team/${member.img}`} className="w-100 wow scaleIn" alt={member.name} />
-                  </div>
-                  <div className="abs w-100 start-0 bottom-0 z-3">
-                    <div className="p-2 rounded-10 m-3 text-center bg-white wow fadeInDown">
-                      <h4 className="mb-0">{member.name}</h4>
-                      <p className="mb-2">{member.role}</p>
+              { title: "General Dentistry", icon: "tooth-1.png", desc: "Complete oral care for every smile." },
+              { title: "Cosmetic Dentistry", icon: "tooth-2.png", desc: "Enhance your smile’s beauty." },
+              { title: "Pediatric Dentistry", icon: "tooth-3.png", desc: "Gentle care for kids." },
+              { title: "Restorative Dentistry", icon: "tooth-4.png", desc: "Repair and restore your teeth." }
+            ].map((service, idx) => (
+              <div className="col-lg-3 col-sm-6" key={idx}>
+                <div className="hover">
+                  <div className="bg-white h-100 p-40 rounded-1">
+                    <img src={`images/icons/${service.icon}`} className="w-70px mb-3 wow scaleIn" alt="" />
+                    <div className="relative mt-4 wow fadeInUp">
+                      <h4>{service.title}</h4>
+                      <p>{service.desc}</p>
+                      <Link className="btn-plus" href={`/services/${service.title.toLowerCase().replace(' ', '-')}`}>
+                        <i className="fa fa-plus"></i>
+                        <span>Read more</span>
+                      </Link>
                     </div>
                   </div>
                 </div>
               </div>
             ))}
           </div>
-        </div>
-      </section>
-
-      <section>
-        <div className="container">
-          <div className="row g-4">
-            <div className="col-lg-5">
-              <div className="subtitle id-color wow fadeInUp">Everything You Need to Know</div>
-              <h2 className="wow fadeInUp" data-wow-delay=".2s">Frequently Asked Questions</h2>
-            </div>
-            <div className="col-lg-7">
-              <div className="accordion s2 wow fadeInUp">
-                <div className="accordion-section">
-                  {[
-                    { q: "How often should I visit the dentist?", a: "It’s recommended to see your dentist every 6 months." },
-                    { q: "What should I do in a dental emergency?", a: "Call our office immediately for same-day emergency care." },
-                    { q: "Do you offer services for kids?", a: "Absolutely! We provide friendly pediatric dental care." },
-                    { q: "What are my options for replacing missing teeth?", a: "We offer dental implants, bridges, and dentures." },
-                    { q: "Is teeth whitening safe?", a: "Yes, when performed by a dental professional, it is safe." }
-                  ].map((item, idx) => (
-                    <div key={idx}>
-                      <div className="accordion-section-title" data-tab={`#accordion-a${idx}`}>{item.q}</div>
-                      <div className="accordion-section-content" id={`accordion-a${idx}`}>{item.a}</div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
+          <div className="col-lg-12 mt-5 text-center">
+            <Link className="btn-main fx-slide" href="/services"><span>View All Services</span></Link>
           </div>
         </div>
       </section>
 
+      {/* Portfolio Section */}
       <section className="portfolio-section">
         <div className="container">
           <div className="row align-items-center">
@@ -420,7 +229,7 @@ export default function Home() {
               <div className="portfolio-subtitle wow fadeInUp">Our Portfolio</div>
               <h2 className="portfolio-title text-start wow fadeInUp" data-wow-delay=".2s">Real People, Real Results</h2>
               <p className="text-white op-7 mb-4 wow fadeInUp" data-wow-delay=".3s">
-                Experience the life-changing impact of our dental expertise.
+                Experience the life-changing impact of our dental expertise. Our portfolio showcases the dedication and precision we bring to every smile transformation.
               </p>
               <div className="wow fadeInUp" data-wow-delay=".4s">
                 <Link href="/portfolio" className="btn-main"><span>View All Portfolio</span></Link>
@@ -441,6 +250,7 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Video Testimonials Section */}
       <section className="bg-dark pt-100 pb-100 overflow-hidden">
         <div className="container">
           <div className="row align-items-center flex-row-reverse">
@@ -448,7 +258,7 @@ export default function Home() {
               <div className="portfolio-subtitle wow fadeInUp">Patient Stories</div>
               <h2 className="portfolio-title text-start wow fadeInUp" data-wow-delay=".2s">Video Testimonials</h2>
               <p className="text-white op-7 mb-4 wow fadeInUp" data-wow-delay=".3s">
-                Listen to our patients share their personal journeys.
+                Listen to our patients share their personal journeys and experiences. Discover why UEDI is the trusted choice for premium dental care.
               </p>
               <div className="wow fadeInUp" data-wow-delay=".4s">
                 <Link href="/testimonials" className="btn-main"><span>Watch More Stories</span></Link>
@@ -475,17 +285,32 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Testimonials */}
       <section className="bg-color-op-1">
-        <div className="container text-center">
-          <div className="subtitle wow fadeInUp mb-3">Testimonials</div>
-          <h2 className="wow fadeInUp" data-wow-delay=".2s">Our Happy Customers</h2>
-          <div className="spacer-single"></div>
+        <div className="container">
           <div className="row">
-            {[1, 2, 3, 4].map(i => (
-              <div className="col-lg-3 col-md-6" key={i}>
-                <div className="gradient-white-top p-40 py-4 rounded-1">
+            <div className="col-lg-6 offset-lg-3 text-center">
+              <div className="subtitle wow fadeInUp mb-3">Testimonials</div>
+              <h2 className="wow fadeInUp" data-wow-delay=".2s">Our Happy Customers</h2>
+              <p className="wow fadeInUp">Join thousands of happy patients who trust us for gentle, expert care.</p>
+              <div className="spacer-single"></div>
+            </div>
+          </div>
+          <div className="row g-4">
+            {[
+              { name: "Michael S.", text: "I’ve always been nervous about dental visits, but the staff made me feel completely comfortable." },
+              { name: "Robert L.", text: "My family and I have been coming here for years. The service is exceptional." },
+              { name: "Jake M.", text: "I came in for a whitening treatment and left with a brand new level of confidence." },
+              { name: "Alex P.", text: "They’re professional, friendly, and genuinely care about your dental health." }
+            ].map((testi, idx) => (
+              <div className="col-lg-3 col-md-6" key={idx}>
+                <div className="gradient-white-top p-40 py-4 rounded-1 h-100">
                   <blockquote>
-                    <p className="mt-4 mb-0 text-dark op-6">"Excellent service and care."</p>
+                    <i className="fs-32 icofont-quote-left id-color mb-2 d-block"></i>
+                    <p className="text-dark op-6">"{testi.text}"</p>
+                    <div className="de_testi_by">
+                      <div>{testi.name}<span>Customer</span></div>
+                    </div>
                   </blockquote>
                 </div>
               </div>
@@ -494,6 +319,7 @@ export default function Home() {
         </div>
       </section>
 
+      {/* CTA Section */}
       <section className="bg-color text-light pt-40 pb-40">
         <div className="container">
           <div className="row g-4 align-items-center">
