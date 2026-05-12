@@ -31,22 +31,22 @@ export default function Contact() {
               <div className="row g-4 gx-5">
                 <div className="col-lg-6">
                   <div className="fw-bold text-dark"><i className="icofont-clock-time me-2 id-color-2"></i>We&apos;re Open</div>
-                  Monday - Friday 08.00 - 18.00
+                  MON - Fri (09 am - 06 pm)
                 </div>
 
                 <div className="col-lg-6">
                   <div className="fw-bold text-dark"><i className="icofont-location-pin me-2 id-color-2"></i>Clinic Location</div>
-                  100 S Main St, New York, NY
+                  121 East 60th Street, Suite 1B New York, NY 10022
                 </div>
 
                 <div className="col-lg-6">
                   <div className="fw-bold text-dark"><i className="icofont-phone me-2 id-color-2"></i>Call Us Directly</div>
-                  +1 123 456 789
+                  <Link href="tel:+12126971701">212.697.1701</Link>
                 </div>
 
                 <div className="col-lg-6">
                   <div className="fw-bold text-dark"><i className="icofont-envelope me-2 id-color-2"></i>Send a Message</div>
-                  contact@dentiacare.com
+                  contact@uppereastdentalnyc.com
                 </div>
               </div>
 

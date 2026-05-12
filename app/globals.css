@@ -25,7 +25,6 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
-  /* Removed fixed height to allow natural scrolling */
 }
 
 /* Flex layout for sticky footer */
@@ -36,7 +35,7 @@ body {
 }
 
 #content {
-  flex: 1 0 auto; /* Grow to fill space, don't shrink */
+  flex: 1 0 auto;
   width: 100%;
 }
 
@@ -63,15 +62,15 @@ a {
 
 /* Fix for side menu scroll */
 #extra-content {
-    overflow-y: auto !important;
-    right: 0 !important;
-    width: 100% !important;
-    padding-right: 0 !important;
+  overflow-y: auto !important;
+  right: 0 !important;
+  width: 100% !important;
+  padding-right: 0 !important;
 }
 
 /* Hide body scroll when menu is open */
 body.no-scroll {
-    overflow: hidden !important;
+  overflow: hidden !important;
 }
 
 /* Custom scrollbar for side menu */
@@ -83,11 +82,14 @@ body.no-scroll {
   border-radius: 3px;
 }
 
-/* AI Widget Layout Adjustment */
+/* ========================================== */
+/* AI Widget Layout Adjustment                */
+/* ========================================== */
 #wrapper {
   width: 100%;
   position: relative;
-  transition: all 0.5s ease-in-out; /* Smooth transition for content shifting */
+  z-index: 1;
+  transition: all 0.5s ease-in-out;
 }
 
 body.ai-widget-open #wrapper {
@@ -95,58 +97,6 @@ body.ai-widget-open #wrapper {
   margin-right: 300px;
 }
 
-/* Ensure hero section and background respond to the layout shift */
-body.ai-widget-open #section-intro,
-body.ai-widget-open #section-intro .mh-800 {
-  width: 100% !important;
-  transition: all 0.5s ease-in-out !important;
-}
-
-body.ai-widget-open #section-intro .swiper-inner {
-  background-position: 80% center !important; /* Move the image focal point left */
-  transition: background-position 0.5s ease-in-out !important;
-}
-
-/* Slightly reduce website font size on standard laptops to make it fit better */
-@media (max-width: 1440px) {
-  body.ai-widget-open {
-    font-size: 0.9rem;
-    padding-top: 0 !important; /* Prevent header spacers */
-  }
-  
-  body.ai-widget-open #wrapper {
-    padding-top: 0 !important;
-    margin-top: 0 !important;
-  }
-
-  body.ai-widget-open #wrapper section:first-of-type {
-    padding-top: 0 !important;
-    margin-top: 0 !important;
-  }
-  
-  body.ai-widget-open #wrapper section {
-    padding: 60px 0 !important; /* Smaller section padding */
-  }
-
-  body.ai-widget-open footer {
-    font-size: 0.85rem !important;
-    padding: 40px 0 !important;
-  }
-
-  body.ai-widget-open .container {
-    max-width: 100% !important;
-    padding-left: 30px !important;
-    padding-right: 30px !important;
-  }
-}
-
-/* Ensure the website remains interactive during the shift */
-#wrapper {
-  z-index: 1;
-  position: relative;
-}
-
-/* On very large screens, we can afford a bit more space */
 @media (min-width: 1600px) {
   body.ai-widget-open #wrapper {
     width: calc(100% - 420px);
@@ -154,7 +104,17 @@ body.ai-widget-open #section-intro .swiper-inner {
   }
 }
 
-/* Ensure fixed/sticky header also shrinks and shifts ONLY when scrolled */
+/* Hero section responds to layout shift and scaling */
+body.ai-widget-open #section-intro .swiper-inner {
+  background-size: contain !important;
+  background-repeat: no-repeat !important;
+  background-position: left center !important;
+  transition: all 0.5s ease-in-out !important;
+}
+
+/* ========================================== */
+/* Header / Sticky shifts when AI open        */
+/* ========================================== */
 body.ai-widget-open header.smaller {
   width: calc(100% - 300px) !important;
   margin-right: 300px !important;
@@ -169,7 +129,7 @@ body.ai-widget-open header.smaller {
   }
 }
 
-/* Before scroll, the header is inside #wrapper and doesn't need extra shifting */
+/* Non-scrolled header is INSIDE #wrapper which already shifts — don't double-shift */
 body.ai-widget-open header:not(.smaller) {
   width: 100% !important;
   margin-right: 0 !important;
@@ -178,23 +138,569 @@ body.ai-widget-open header:not(.smaller) {
   top: 0 !important;
   position: absolute !important;
   background: transparent !important;
-  background-color: transparent !important;
-  background-image: none !important;
-  box-shadow: none !important;
-  border: none !important;
   z-index: 1001 !important;
 }
 
-body.ai-widget-open header:not(.smaller)::before,
-body.ai-widget-open header:not(.smaller)::after {
-  display: none !important;
+/* Side panel (#extra-wrap) — keep HIDDEN by default, only shift when .open */
+body.ai-widget-open #extra-wrap {
+  transition: right 0.5s ease-in-out;
 }
 
-/* Maintain full width on screens <= 1024px (Tablets/Mobile) and treat as overlay */
+body.ai-widget-open #extra-wrap.open {
+  right: 300px !important;
+  width: 500px !important;
+  z-index: 2000 !important;
+}
+
+@media (min-width: 1600px) {
+  body.ai-widget-open #extra-wrap.open {
+    right: 420px !important;
+  }
+}
+
+/* Close button inside side panel must stay visible */
+body.ai-widget-open #btn-close {
+  right: 30px !important;
+}
+
+/* ========================================== */
+/* Navbar Responsiveness                      */
+/* ========================================== */
+
+/* Push header down from top edge with background coverage */
+header {
+  padding-top: 25px !important;
+  margin-top: 0 !important;
+  background-clip: padding-box;
+}
+
+header.smaller {
+  padding-top: 0 !important;
+  background: #ffffff !important;
+}
+
+/* Flex row for menu items - single line */
+#mainmenu {
+  display: flex !important;
+  align-items: center;
+  white-space: nowrap;
+  flex-wrap: nowrap !important;
+  justify-content: center;
+}
+
+#mainmenu > li {
+  margin-right: 25px !important; /* Slightly increased spacing */
+  flex-shrink: 0 !important; /* Prevent shrinking to maintain size */
+}
+
+#mainmenu > li:last-child {
+  margin-right: 0 !important;
+}
+
+#mainmenu > li > a {
+  font-size: 13.5px !important; /* Increased font size */
+  font-weight: 600 !important;
+  padding: 20px 0 !important;
+}
+
+#mainmenu > li.has-child:after {
+  margin-left: 6px !important;
+}
+
+/* Remove dropdown arrow from items without children */
+#mainmenu > li:has(> a[href="/testimonials"]):after,
+#mainmenu > li:has(> a[href="/pay-by-crypto"]):after,
+#mainmenu > li:has(> a[href="/smile-gallery"]):after,
+#mainmenu > li:has(> a[href="/technology"]):after,
+#mainmenu > li:has(> a[href="/contact"]):after,
+#mainmenu > li:has(> a[href="/membership"]):after {
+  display: none !important;
+  content: none !important;
+}
+
+/* Logo sizing */
+#logo img {
+  max-width: 200px; /* Slightly larger logo */
+  height: auto;
+}
+
+/* btn-extra (two-line hamburger) aligned center with navbar */
+#btn-extra {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  margin-left: 20px;
+  cursor: pointer;
+}
+
+/* Ensure all header flex columns align */
+header .de-flex-col {
+  display: flex;
+  align-items: center;
+}
+
+header .de-flex-col.header-col-mid {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  padding: 0 40px; /* Balanced spacing between logo and button */
+}
+
+/* ========================================== */
+/* Dropdown overflow fix                      */
+/* ========================================== */
+#mainmenu li ul:not(.mega) {
+  max-height: 400px;
+  overflow-y: auto;
+  border-radius: 8px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+/* ========================================== */
+/* Mega Menu Styling (centered in screen)       */
+/* ========================================== */
+
+#mainmenu li ul.mega {
+  position: fixed !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+  width: 95vw !important;
+  max-width: 1200px !important;
+  padding: 40px !important;
+  border-radius: 12px !important;
+  box-shadow: 0 30px 60px rgba(0,0,0,0.25) !important;
+  background: #ffffff !important;
+  top: 90px !important; /* Slightly closer to close the gap */
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  display: block !important;
+  z-index: 1000 !important;
+  border: none !important;
+}
+
+/* Hover bridge to prevent closing when moving cursor from tab to menu */
+#mainmenu li ul.mega::before {
+  content: "" !important;
+  position: absolute !important;
+  top: -40px !important; /* Reach up to the navbar */
+  left: 0 !important;
+  width: 100% !important;
+  height: 40px !important;
+  background: transparent !important;
+  display: block !important;
+}
+
+#mainmenu li:hover > ul.mega {
+  visibility: visible !important;
+  opacity: 1 !important;
+  pointer-events: auto !important;
+  top: 95px !important; /* Smooth entrance */
+}
+
+/* Ensure sticky header mega menu is also centered */
+header.smaller #mainmenu li ul.mega {
+  top: 70px !important;
+}
+
+header.smaller #mainmenu li:hover > ul.mega {
+  top: 80px !important;
+}
+
+/* AI Widget Open - Center Mega Menu in available space */
+body.ai-widget-open #mainmenu li ul.mega {
+  width: calc(95vw - 320px) !important;
+  left: calc((100vw - 300px) / 2) !important;
+  transform: translateX(-50%) scale(0.85) !important;
+  transform-origin: center top !important; /* Scale from top to keep bridge connected */
+}
+
+/* Large Screens (1600px+) */
+@media (min-width: 1600px) {
+  body.ai-widget-open #mainmenu li ul.mega {
+    width: calc(95vw - 440px) !important;
+    left: calc((100vw - 420px) / 2) !important;
+    transform: translateX(-50%) scale(0.9) !important;
+  }
+}
+
+/* Laptop / Mid-size screens (1025px - 1440px) */
+@media (max-width: 1440px) {
+  body.ai-widget-open #mainmenu li ul.mega {
+    width: calc(98vw - 320px) !important;
+    transform: translateX(-50%) scale(0.8) !important;
+  }
+}
+
+#mainmenu li ul.mega li {
+  white-space: normal !important;
+}
+
+/* Category headings - unified look */
+#mainmenu li ul.mega li.title {
+  font-weight: 700 !important;
+  font-size: 16px !important;
+  color: #3a7abd !important;
+  padding: 10px 0 8px 0 !important;
+  margin-bottom: 5px !important;
+  background: none !important;
+  cursor: default !important;
+  position: relative;
+  padding-left: 22px !important;
+  display: block !important;
+  box-shadow: none !important;
+  border: none !important;
+}
+
+#mainmenu li ul.mega li.title::before {
+  content: '' !important;
+  display: inline-block !important;
+  width: 10px !important;
+  height: 10px !important;
+  background-color: #3a7abd !important;
+  position: absolute !important;
+  left: 0 !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  border-radius: 2px;
+}
+
+/* Clickable items with arrow bullet */
+#mainmenu li ul.mega ul {
+  padding: 0 !important;
+  margin: 0 0 15px 0 !important;
+  width: 100% !important;
+  display: block !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+#mainmenu li ul.mega ul li:not(.title) a {
+  font-size: 14px !important;
+  color: #444 !important;
+  padding: 5px 0 5px 22px !important;
+  display: block;
+  position: relative;
+  transition: all 0.2s ease;
+  line-height: 1.4 !important;
+}
+
+#mainmenu li ul.mega ul li:not(.title) a::before {
+  content: '→' !important;
+  position: absolute !important;
+  left: 0 !important;
+  color: #3a7abd !important;
+  font-size: 16px !important;
+  line-height: 1 !important;
+}
+
+#mainmenu li ul.mega ul li:not(.title) a:hover {
+  color: #3a7abd !important;
+  padding-left: 28px !important;
+}
+
+/* Adjust Book Appointment button */
+.menu_side_area {
+  flex-shrink: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  width: auto !important;
+  min-width: fit-content !important;
+}
+
+.btn-main, 
+.btn-main span {
+  white-space: nowrap !important;
+  display: inline-block !important;
+}
+
+.btn-main {
+  font-size: 12px !important; /* Smaller font to prevent wrap */
+  padding: 10px 18px !important; /* Reduced padding */
+  font-weight: 700 !important;
+  line-height: 1 !important;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+@media (max-width: 1200px) {
+  .menu_side_area .btn-main {
+    padding: 8px 15px !important;
+    font-size: 11px !important;
+  }
+}
+
+#mainmenu li ul.mega .container {
+  width: 100% !important;
+  max-width: 100% !important;
+  padding: 0 !important;
+}
+
+#mainmenu li ul.mega .row {
+  margin: 0 !important;
+}
+
+/* Allow word-wrap and fix horizontal scroll in dropdowns */
+#mainmenu li ul:not(.mega) {
+  white-space: normal !important;
+  overflow-x: hidden !important; /* Prevent horizontal scroll */
+  width: auto !important;
+  min-width: 250px !important;
+}
+
+#mainmenu li ul li a {
+  white-space: normal !important;
+  line-height: 1.4 !important;
+  padding: 12px 20px !important;
+  display: block !important;
+}
+
+/* ========================================== */
+/* Floating Hero Info Boxes (Scaled Down)     */
+/* ========================================== */
+
+.info-box-floating {
+  background: #ffffff !important; /* Solid white background */
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  padding: 18px 20px;
+  border-radius: 12px;
+  transition: all 0.3s ease;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: auto;
+  width: 100%;
+  cursor: pointer;
+  text-decoration: none !important;
+  color: #333 !important;
+}
+
+.info-box-floating h4 {
+  font-size: 15px !important;
+  margin-bottom: 2px !important;
+  color: #4A7CD2 !important; /* Main heading color */
+}
+
+.info-box-floating p {
+  font-size: 12px !important;
+  color: #777 !important; /* Grey subtext */
+}
+
+.info-box-floating i.fs-60 {
+  font-size: 40px !important;
+  color: #4A7CD2 !important; /* Icon color matches heading */
+}
+
+.info-box-floating:hover {
+  transform: translateY(-5px);
+  background: #f8f9fa !important;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+  border-color: #4A7CD2;
+}
+
+.info-box-floating:hover i,
+.info-box-floating:hover h4 {
+  color: #3a7abd !important; /* Slightly darker on hover */
+}
+
+/* Pay my bill dropdown - NO GAP for smooth hover */
+.dropdown-info-box {
+  position: relative;
+  width: 100%;
+}
+
+.dropdown-info-box .dropdown-content {
+  display: none;
+  position: absolute;
+  top: 100%; /* Exactly below the button */
+  left: 0;
+  width: 100%;
+  background: #1a1a1a;
+  border-radius: 12px;
+  margin-top: 0 !important; /* Remove gap */
+  padding-top: 10px; /* Internal gap for visual breathing */
+  overflow: hidden;
+  box-shadow: 0 15px 50px rgba(0,0,0,0.5);
+  z-index: 1000;
+  border: 1px solid rgba(255,255,255,0.1);
+}
+
+.dropdown-info-box:hover .dropdown-content {
+  display: block;
+  animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+  from { transform: translateY(-10px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.dropdown-content a {
+  display: block;
+  padding: 12px 20px;
+  color: #cccccc;
+  text-decoration: none;
+  font-size: 14px;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  transition: all 0.2s ease;
+  text-align: left;
+}
+
+.dropdown-content a:hover {
+  background: #3a7abd;
+  color: #ffffff;
+}
+
+.dropdown-content a:last-child {
+  border-bottom: none;
+}
+
+/* ========================================== */
+/* AI Widget Open - Navbar Constraints        */
+/* ========================================== */
+body.ai-widget-open #mainmenu > li {
+  margin-right: 18px !important;
+}
+
+body.ai-widget-open #mainmenu > li > a {
+  font-size: 12px !important;
+}
+
+/* ========================================== */
+/* Responsive Breakpoints                     */
+/* ========================================== */
+
+/* Laptops (1024px to 1440px) */
+@media (max-width: 1440px) {
+  #mainmenu > li {
+    margin-right: 15px !important;
+  }
+  #mainmenu > li > a {
+    font-size: 11px !important;
+  }
+  #logo img {
+    max-width: 160px;
+  }
+}
+
+/* Mobile / Tablet */
 @media (max-width: 1024px) {
+  header {
+    padding-top: 10px !important;
+  }
+  #mainmenu {
+    display: block !important;
+    white-space: normal;
+  }
+  #mainmenu > li {
+    margin-right: 0 !important;
+  }
+  #mainmenu > li > a {
+    font-size: 15px !important;
+  }
   body.ai-widget-open #wrapper,
   body.ai-widget-open header {
     width: 100% !important;
     margin-right: 0 !important;
   }
+  body.ai-widget-open #extra-wrap {
+    right: 0 !important;
+  }
+}
+
+/* ========================================== */
+/* About Us Section Styles                    */
+/* ========================================== */
+
+.about-img-container {
+  position: relative;
+  padding: 0 30px 40px 0;
+}
+
+.about-img-main {
+  width: 100%;
+  border-radius: 30px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+  display: block;
+}
+
+.about-img-small-wrap {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 45%;
+  background: #ffffff;
+  padding: 10px;
+  border-radius: 25px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+.about-img-small {
+  width: 100%;
+  border-radius: 20px;
+  display: block;
+}
+
+.btn-watch-video {
+  display: inline-flex;
+  align-items: center;
+  gap: 15px;
+  text-decoration: none !important;
+  color: #333 !important;
+  font-weight: 700;
+  transition: all 0.3s ease;
+}
+
+.btn-watch-video .play-icon {
+  width: 50px;
+  height: 50px;
+  border: 2px solid #3a7abd;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #3a7abd;
+  font-size: 20px;
+  transition: all 0.3s ease;
+}
+
+.btn-watch-video:hover .play-icon {
+  background: #3a7abd;
+  color: #ffffff;
+  transform: scale(1.1);
+}
+
+.btn-watch-video:hover {
+  color: #3a7abd !important;
+}
+
+.about-subtitle {
+  color: #3a7abd;
+  font-weight: 600;
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.about-title {
+  font-size: 48px;
+  font-weight: 800;
+  color: #1a3352;
+  margin-bottom: 25px;
+  line-height: 1.2;
+}
+
+.about-mission {
+  font-weight: 700;
+  color: #1a3352;
+  font-size: 16px;
+  margin-bottom: 20px;
+}
+
+.about-text {
+  color: #666;
+  line-height: 1.8;
+  margin-bottom: 35px;
+  font-size: 15px;
 }

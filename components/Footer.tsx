@@ -11,11 +11,11 @@ export default function Footer() {
             <p>At Dentia, we’re dedicated to providing high-quality, personalized dental care for patients of all ages. Our skilled team uses the latest technology to ensure comfortable, efficient treatments and beautiful, healthy smiles for life.</p>
 
             <div className="social-icons mb-sm-30">
-              <Link href="#"><i className="fa-brands fa-facebook-f"></i></Link>
-              <Link href="#"><i className="fa-brands fa-x-twitter"></i></Link>
-              <Link href="#"><i className="fa-brands fa-whatsapp"></i></Link>
-              <Link href="#"><i className="fa-brands fa-instagram"></i></Link>
-              <Link href="#"><i className="fa-brands fa-youtube"></i></Link>
+              <Link href="https://www.facebook.com/UpperEastDental/" target="_blank"><i className="fa-brands fa-facebook-f"></i></Link>
+              <Link href="https://x.com/uppereastdental" target="_blank"><i className="fa-brands fa-x-twitter"></i></Link>
+              <Link href="https://www.linkedin.com/in/shardeharvey/?_l=en_US" target="_blank"><i className="fa-brands fa-linkedin-in"></i></Link>
+              <Link href="https://www.instagram.com/uppereastdentalnyc/?hl=en" target="_blank"><i className="fa-brands fa-instagram"></i></Link>
+              <Link href="https://www.youtube.com/@askadentistaskdr.harvey7701" target="_blank"><i className="fa-brands fa-youtube"></i></Link>
             </div>
           </div>
           <div className="col-lg-4 col-sm-12 order-lg-1 order-sm-2">
@@ -24,11 +24,11 @@ export default function Footer() {
                 <div className="widget">
                   <h5>Company</h5>
                   <ul>
-                    <li><Link href="/">Home</Link></li>
+                    <li><Link href="/about">About</Link></li>
                     <li><Link href="/services">Our Services</Link></li>
-                    <li><Link href="/gallery">Gallery</Link></li>
-                    <li><Link href="/about">About Us</Link></li>
-                    <li><Link href="/blog">Blog</Link></li>
+                    <li><Link href="/smile-gallery">Smile Gallery</Link></li>
+                    <li><Link href="/pay-by-crypto">Pay by Crypto</Link></li>
+                    <li><Link href="/testimonials">Testimonials</Link></li>
                     <li><Link href="/contact">Contact</Link></li>
                   </ul>
                 </div>
@@ -37,12 +37,12 @@ export default function Footer() {
                 <div className="widget">
                   <h5>Our Services</h5>
                   <ul>
-                    <li><Link href="/services/general-dentistry">General Dentistry</Link></li>
                     <li><Link href="/services/cosmetic-dentistry">Cosmetic Dentistry</Link></li>
-                    <li><Link href="/services/pediatric-dentistry">Pediatric Dentistry</Link></li>
                     <li><Link href="/services/restorative-dentistry">Restorative Dentistry</Link></li>
-                    <li><Link href="/services/preventive-dentistry">Preventive Dentistry</Link></li>
-                    <li><Link href="/services/orthodontics">Orthodontics</Link></li>
+                    <li><Link href="/services/pediatric-dentistry">Pediatric Dentistry</Link></li>
+                    <li><Link href="/services/dental-implants">Dental Implants</Link></li>
+                    <li><Link href="/services/endodontics">Endodontics</Link></li>
+                    <li><Link href="/services/tele-dentistry">Virtual Dentistry</Link></li>
                   </ul>
                 </div>
               </div>
@@ -52,17 +52,17 @@ export default function Footer() {
             <div className="widget">
               <h5>Contact Us</h5>
               <div className="fw-bold text-white"><i className="icofont-location-pin me-2 id-color"></i>Clinic Location</div>
-              100 S Main St, New York, NY
+              121 East 60th Street, Suite 1B New York, NY 10022
 
               <div className="spacer-20"></div>
 
               <div className="fw-bold text-white"><i className="icofont-phone me-2 id-color"></i>Call Us</div>
-              +1 123 456 789
+              <Link href="tel:+12126971701" className="text-white">212.697.1701</Link>
 
               <div className="spacer-20"></div>
 
-              <div className="fw-bold text-white"><i className="icofont-envelope me-2 id-color"></i>Send a Message</div>
-              contact@dentiacare.com
+              <div className="fw-bold text-white"><i className="icofont-clock-time me-2 id-color"></i>Opening Hours</div>
+              MON - Fri (09 am - 06 pm)
             </div>
           </div>
         </div>

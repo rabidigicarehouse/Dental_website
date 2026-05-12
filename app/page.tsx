@@ -5,14 +5,24 @@ import Link from 'next/link';
 
 export default function Home() {
   const bgImages = ['/images/background/5.png', '/images/background/6.png'];
+  const heroContent = [
+    {
+      subtitle: "Leading Midtown Dentist",
+      title: "UEDI is the leading dental office in Midtown for Invisalign and veneers"
+    },
+    {
+      subtitle: "New York City Dental",
+      title: "Elevated dental experience in the heart of NYC"
+    }
+  ];
   const [currentBg, setCurrentBg] = useState(0);
 
   useEffect(() => {
-    const interval = setInterval(() => {
+    const timer = setTimeout(() => {
       setCurrentBg((prev) => (prev + 1) % bgImages.length);
-    }, 5000);
-    return () => clearInterval(interval);
-  }, []);
+    }, 10000);
+    return () => clearTimeout(timer);
+  }, [currentBg]);
 
   return (
     <>
@@ -20,27 +30,14 @@ export default function Home() {
         <div className="relative">
           <div className="abs abs-centered w-100 z-2">
             <div className="container">
-              <div className="row g-4 align-items-center justify-content-between">
-                <div className="col-lg-6">
+              <div className="row g-4 align-items-center">
+                <div className="col-lg-8">
                   <div className="spacer-single sm-hide"></div>
-                  <div className="subtitle">Family Dental Care</div>
-                  <h1>Elevating Smiles with Expert Care and a Gentle Touch</h1>
+                  <div className="subtitle wow fadeInUp" key={`sub-${currentBg}`}>{heroContent[currentBg].subtitle}</div>
+                  <h1 className="wow fadeInUp mb-4" key={`title-${currentBg}`} style={{ maxWidth: '800px' }}>
+                    {heroContent[currentBg].title}
+                  </h1>
                   <Link className="btn-main btn-line fx-slide" href="/booking"><span>Book Appointment</span></Link>
-                </div>
-
-                <div className="d-lg-flex align-items-center">
-                  <div className="me-3">Google Rating</div>
-                  <div className="de-flex justify-content-start align-items-center">
-                    <div className="me-3">5.0</div>
-                    <div className="d-flex fs-14 d-rating me-3">
-                      <i className="fa fa-solid fa-star m-1"></i>
-                      <i className="fa fa-solid fa-star m-1"></i>
-                      <i className="fa fa-solid fa-star m-1"></i>
-                      <i className="fa fa-solid fa-star m-1"></i>
-                      <i className="fa fa-solid fa-star m-1"></i>
-                    </div>
-                  </div>
-                  <div className="me-3">Based on 23k Reviews</div>
                 </div>
               </div>
             </div>
@@ -68,86 +65,108 @@ export default function Home() {
                 <div className="gradient-edge-left z-2"></div>
               </div>
             ))}
+            
+            {/* Pagination Dots - Perfectly Centered */}
+            <div className="abs z-3" style={{ bottom: '40px', left: '50%', transform: 'translateX(-50%)' }}>
+              <div className="d-flex justify-content-center gap-3">
+                {bgImages.map((_, index) => (
+                  <div
+                    key={index}
+                    onClick={() => setCurrentBg(index)}
+                    className="cursor-pointer"
+                    style={{
+                      width: currentBg === index ? '45px' : '14px',
+                      height: '14px',
+                      borderRadius: '7px',
+                      backgroundColor: currentBg === index ? '#4A7CD2' : 'rgba(255,255,255,0.6)',
+                      transition: 'all 0.4s ease',
+                      boxShadow: '0 4px 15px rgba(0,0,0,0.3)'
+                    }}
+                  />
+                ))}
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
       <section className="bg-dark text-light pt-50 pb-30">
         <div className="container relative">
-          <div className="row g-4 grid-divider">
-            <div className="col-lg-4 col-md-6 mb-sm-30">
-              <div className="d-flex justify-content-center">
+          <div className="row g-4 justify-content-center">
+            {/* Box 1: Need Dental Services */}
+            <div className="col-lg-4 col-md-6">
+              <Link href="tel:+12126971701" className="info-box-floating">
                 <i className="fs-60 id-color icon_phone"></i>
                 <div className="ms-3">
                   <h4 className="mb-0">Need Dental Services?</h4>
-                  <p>Call: +1 123 456 789</p>
+                  <p className="mb-0">Call: 212.697.1701</p>
                 </div>
-              </div>
+              </Link>
             </div>
 
-            <div className="col-lg-4 col-md-6 mb-sm-30">
-              <div className="d-flex justify-content-center">
-                <i className="fs-60 id-color icon_clock"></i>
+            {/* Box 2: BOOK A TELE-CONSULT */}
+            <div className="col-lg-4 col-md-6">
+              <Link href="/booking" className="info-box-floating">
+                <i className="fs-60 id-color icon_calendar"></i>
                 <div className="ms-3">
-                  <h4 className="mb-0">Opening Hours</h4>
-                  <p>Mon to Sat 08:00 - 20:00</p>
+                  <h4 className="mb-0">BOOK A TELE-CONSULT</h4>
+                  <p className="mb-0">Virtual Consultation</p>
                 </div>
-              </div>
+              </Link>
             </div>
 
-            <div className="col-lg-4 col-md-6 mb-sm-30">
-              <div className="d-flex justify-content-center">
-                <i className="fs-60 id-color icon_mail"></i>
+            {/* Box 3: Pay my bill with Dropdown */}
+            <div className="col-lg-4 col-md-6 dropdown-info-box">
+              <div className="info-box-floating">
+                <i className="fs-60 id-color icon_wallet"></i>
                 <div className="ms-3">
-                  <h4 className="mb-0">Email Us</h4>
-                  <p>contact@dentiaclinic.com</p>
+                  <h4 className="mb-0">Pay my bill <i className="arrow_carrot-down fs-14 ms-1"></i></h4>
+                  <p className="mb-0">Choose payment method</p>
                 </div>
+              </div>
+              <div className="dropdown-content">
+                <Link href="/payment/credit-card">Credit Card (3% fee applies)</Link>
+                <Link href="/payment/zelle">Pay by Zelle (no fee)</Link>
+                <Link href="/payment/cherry">Cherry Financing</Link>
+                <Link href="/payment/care-credit">Care Credit</Link>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      <section>
+      <section className="bg-light">
         <div className="container">
-          <div className="row g-4 gx-5 align-items-center">
-            <div className="col-lg-6">
-              <div className="row g-4">
-                <div className="col-6">
-                  <div className="row g-4">
-                    <div className="col-lg-12">
-                      <div className=" rounded-1 overflow-hidden wow zoomIn">
-                        <img src="images/misc/p1.webp" className="w-100 wow scaleIn" alt="" />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="col-6">
-                  <div className="row g-4">
-                    <div className="spacer-single sm-hide"></div>
-                    <div className="col-lg-12">
-                      <div className=" rounded-1 overflow-hidden wow zoomIn" data-wow-delay=".3s">
-                        <img src="images/misc/p2.webp" className="w-100 wow scaleIn" alt="" data-wow-delay=".3s" />
-                      </div>
-                    </div>
-                  </div>
+          <div className="row g-5 align-items-center">
+            {/* Left Column: Images */}
+            <div className="col-lg-6 wow fadeInLeft" data-wow-delay=".2s">
+              <div className="about-img-container">
+                <img src="/about us section main.jpg" className="about-img-main" alt="About Main" />
+                <div className="about-img-small-wrap">
+                  <img src="/about us section small.webp" className="about-img-small" alt="About Small" />
                 </div>
               </div>
             </div>
 
-            <div className="col-lg-6">
-              <div className="me-lg-3">
-                <div className="subtitle s2 mb-3 wow fadeInUp" data-wow-delay=".0s">About Us</div>
-                <h2 className="wow fadeInUp" data-wow-delay=".2s">Professionals and Personalized Dental Excellence</h2>
-                <p className="wow fadeInUp" data-wow-delay=".4s">We offer high-quality dental care tailored for the whole family. From routine checkups to advanced treatments, our compassionate team ensures your smile stays healthy and confident.</p>
-                <ul className="ul-check text-dark cols-2 fw-600 mb-4 wow fadeInUp" data-wow-delay=".6s">
-                  <li>Personalized Treatment Plans</li>
-                  <li>Gentle Care for Kids and Adults</li>
-                  <li>State-of-the-Art Technology</li>
-                  <li>Flexible Appointment Scheduling</li>
-                </ul>
+            {/* Right Column: Text Content */}
+            <div className="col-lg-6 wow fadeInRight" data-wow-delay=".4s">
+              <div className="ps-lg-4">
+                <div className="about-subtitle">Our Story</div>
+                <h2 className="about-title">Dental Innovations</h2>
+                <div className="about-mission">Our Mission at Upper East Dental Innovations</div>
+                <p className="about-text">
+                  Upper East Dental Innovations is a state-of-the-art New York-based oral healthcare practice where artistry, beauty, craftsmanship and technology are the cornerstones of our truly innovative dental practice. Upper East Dental Innovations utilizes cutting edge technologies that deliver aesthetic, superior outcomes, as well as more accurate and faster diagnosis of oral and overall health conditions. Our technology is so advanced that we can offer our patients a permanent crown over their lunch hour, hence "The Lunchtime Crown."
+                </p>
 
-                <Link className="btn-main fx-slide wow fadeInUp" data-wow-delay=".8s" href="/contact"><span>Book Appointment</span></Link>
+                <div className="d-flex align-items-center gap-4">
+                  <Link href="/about" className="btn-main"><span>Read More</span></Link>
+                  <Link href="/video" className="btn-watch-video">
+                    <div className="play-icon">
+                      <i className="arrow_triangle-right"></i>
+                    </div>
+                    <span>Watch Video</span>
+                  </Link>
+                </div>
               </div>
             </div>
           </div>
