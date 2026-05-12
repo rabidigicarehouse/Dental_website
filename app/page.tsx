@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import CardSwap, { Card } from '@/components/CardSwap';
 
 export default function Home() {
   const bgImages = ['/images/background/5.png', '/images/background/6.png'];
@@ -15,6 +16,14 @@ export default function Home() {
       title: "Elevated dental experience in the heart of NYC"
     }
   ];
+  
+  const portfolioImages = [
+    '/before and after/01-259x300.webp',
+    '/before and after/02-259x300.webp',
+    '/before and after/03-259x300.webp',
+    '/before and after/01-259x300 (1).webp'
+  ];
+
   const [currentBg, setCurrentBg] = useState(0);
 
   useEffect(() => {
@@ -470,6 +479,70 @@ export default function Home() {
                     Yes, when performed by a dental professional, teeth whitening is safe and effective with long-lasting results.
                   </div>
                 </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="portfolio-section">
+        <div className="container">
+          <div className="row align-items-center">
+            <div className="col-lg-5">
+              <div className="portfolio-subtitle wow fadeInUp">Our Portfolio</div>
+              <h2 className="portfolio-title text-start wow fadeInUp" data-wow-delay=".2s">Real People, Real Results</h2>
+              <p className="text-white op-7 mb-4 wow fadeInUp" data-wow-delay=".3s">
+                Experience the life-changing impact of our dental expertise. Our portfolio showcases the dedication and precision we bring to every smile transformation.
+              </p>
+              <div className="wow fadeInUp" data-wow-delay=".4s">
+                <Link href="/portfolio" className="btn-main"><span>View All Portfolio</span></Link>
+              </div>
+            </div>
+            <div className="col-lg-7">
+              <div className="d-flex justify-content-center wow fadeInRight" data-wow-delay=".5s">
+                <CardSwap width={450} height={550} cardDistance={40} verticalDistance={50}>
+                  {portfolioImages.map((img, i) => (
+                    <Card key={i}>
+                      <img src={img} alt={`Transformation ${i + 1}`} />
+                    </Card>
+                  ))}
+                </CardSwap>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Video Testimonials Section */}
+      <section className="bg-dark pt-100 pb-100 overflow-hidden">
+        <div className="container">
+          <div className="row align-items-center flex-row-reverse">
+            <div className="col-lg-5">
+              <div className="portfolio-subtitle wow fadeInUp">Patient Stories</div>
+              <h2 className="portfolio-title text-start wow fadeInUp" data-wow-delay=".2s">Video Testimonials</h2>
+              <p className="text-white op-7 mb-4 wow fadeInUp" data-wow-delay=".3s">
+                Listen to our patients share their personal journeys and experiences. Discover why UEDI is the trusted choice for premium dental care in NYC.
+              </p>
+              <div className="wow fadeInUp" data-wow-delay=".4s">
+                <Link href="/testimonials" className="btn-main"><span>Watch More Stories</span></Link>
+              </div>
+            </div>
+            <div className="col-lg-7">
+              <div className="d-flex justify-content-center wow fadeInLeft" data-wow-delay=".5s">
+                <CardSwap width={500} height={350} cardDistance={50} verticalDistance={60} easing="power">
+                  {/* Placeholder cards for videos */}
+                  {[1, 2, 3].map((v) => (
+                    <Card key={v}>
+                      <div className="w-100 h-100 d-flex align-items-center justify-content-center bg-color-2 text-white p-4 text-center">
+                        <div>
+                          <i className="fs-60 icon_play mb-3"></i>
+                          <h4>Patient Experience {v}</h4>
+                          <p className="op-7">Video testimonial coming soon...</p>
+                        </div>
+                      </div>
+                    </Card>
+                  ))}
+                </CardSwap>
               </div>
             </div>
           </div>

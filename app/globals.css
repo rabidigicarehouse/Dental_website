@@ -461,48 +461,130 @@ body.ai-widget-open #mainmenu li ul.mega {
 /* ========================================== */
 
 .info-box-floating {
-  background: #ffffff !important; /* Solid white background */
-  border: 1px solid rgba(0, 0, 0, 0.05);
-  padding: 18px 20px;
-  border-radius: 12px;
-  transition: all 0.3s ease;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  background: rgba(255, 255, 255, 0.04) !important; /* Premium glass background */
+  backdrop-filter: blur(12px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  padding: 22px 25px; /* Slightly more breathing room */
+  border-radius: 16px;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start; /* Left-aligned content for better flow */
   height: auto;
   width: 100%;
   cursor: pointer;
   text-decoration: none !important;
-  color: #333 !important;
+  color: #ffffff !important;
+  position: relative;
+  overflow: hidden;
 }
 
 .info-box-floating h4 {
   font-size: 15px !important;
   margin-bottom: 2px !important;
-  color: #4A7CD2 !important; /* Main heading color */
+  color: #ffffff !important; /* Clean white heading */
+  font-weight: 700 !important;
 }
 
 .info-box-floating p {
-  font-size: 12px !important;
-  color: #777 !important; /* Grey subtext */
+  font-size: 12.5px !important;
+  color: #cccccc !important; /* Soft grey subtext */
+  margin-bottom: 0 !important;
 }
 
 .info-box-floating i.fs-60 {
-  font-size: 40px !important;
-  color: #4A7CD2 !important; /* Icon color matches heading */
+  font-size: 44px !important;
+  color: #ffffff !important; /* Changed to white */
+  opacity: 1;
+}
+
+/* ========================================== */
+/* Before & After Portfolio Section           */
+/* ========================================== */
+
+.portfolio-section {
+  background: #1a3352; /* Deep navy theme */
+  padding: 100px 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.portfolio-subtitle {
+  color: #4A7CD2;
+  font-weight: 600;
+  font-size: 18px;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.portfolio-title {
+  font-size: 48px;
+  font-weight: 800;
+  color: #ffffff;
+  text-align: center;
+  margin-bottom: 60px;
+  line-height: 1.2;
+}
+
+.portfolio-card {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  overflow: hidden;
+  transition: all 0.4s ease;
+  padding: 10px;
+}
+
+.portfolio-card img {
+  width: 100%;
+  height: auto;
+  border-radius: 15px;
+  transition: all 0.5s ease;
+}
+
+.portfolio-card:hover {
+  transform: translateY(-10px);
+  background: rgba(255, 255, 255, 0.1);
+  border-color: #4A7CD2;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+}
+
+.portfolio-card:hover img {
+  transform: scale(1.03);
+}
+
+.btn-portfolio-wrap {
+  text-align: center;
+  margin-top: 50px;
+}
+
+.info-box-floating::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent);
+  transition: 0.5s;
 }
 
 .info-box-floating:hover {
-  transform: translateY(-5px);
-  background: #f8f9fa !important;
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
-  border-color: #4A7CD2;
+  transform: translateY(-8px);
+  background: rgba(255, 255, 255, 0.08) !important;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+  border-color: rgba(74, 124, 210, 0.5) !important;
 }
 
-.info-box-floating:hover i,
-.info-box-floating:hover h4 {
-  color: #3a7abd !important; /* Slightly darker on hover */
+.info-box-floating:hover::after {
+  left: 100%;
+}
+
+.info-box-floating:hover i {
+  color: #ffffff !important;
+  transform: scale(1.1);
 }
 
 /* Pay my bill dropdown - NO GAP for smooth hover */
@@ -611,12 +693,54 @@ body.ai-widget-open #mainmenu > li > a {
 }
 
 /* ========================================== */
-/* About Us Section Styles                    */
+/* CardSwap Animation Styles                  */
 /* ========================================== */
 
-.about-img-container {
-  position: relative;
-  padding: 0 30px 40px 0;
+.card-swap-container {
+  position: relative; /* Changed from absolute to allow section flow */
+  margin: 100px auto;
+  perspective: 1200px;
+  overflow: visible;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.card-swap-item {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: #1a3352;
+  box-shadow: 0 30px 60px rgba(0,0,0,0.4);
+  transform-style: preserve-3d;
+  will-change: transform;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  overflow: hidden;
+}
+
+.card-swap-item img, 
+.card-swap-item iframe {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+@media (max-width: 1024px) {
+  .card-swap-container {
+    transform: scale(0.8);
+    margin: 50px auto;
+  }
+}
+
+@media (max-width: 768px) {
+  .card-swap-container {
+    transform: scale(0.65);
+    margin: 30px auto;
+  }
 }
 
 .about-img-main {
