@@ -7,14 +7,15 @@ import Preloader from "@/components/Preloader";
 import Footer from "@/components/Footer";
 import ScriptHandler from "@/components/ScriptHandler";
 import AIWidget from "@/components/ai/AIWidget";
+import Image from "next/image";
 
 export const metadata: Metadata = {
   title: "Dentia — Dentist & Dental Clinic Website Template",
   description: "Dentia — Dentist & Dental Clinic Website Template",
   icons: {
-    icon: "/favicon.png?v=3",
-    shortcut: "/favicon.png?v=3",
-    apple: "/favicon.png?v=3",
+    icon: "/favicon.png?v=4",
+    shortcut: "/favicon.png?v=4",
+    apple: "/favicon.png?v=4",
   },
 };
 
@@ -26,9 +27,9 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        <link rel="icon" type="image/png" href="/favicon.png?v=3" />
-        <link rel="shortcut icon" href="/favicon.png?v=3" />
-        <link rel="apple-touch-icon" href="/favicon.png?v=3" />
+        <link rel="icon" type="image/png" href="/favicon.png?v=4" />
+        <link rel="shortcut icon" href="/favicon.png?v=4" />
+        <link rel="apple-touch-icon" href="/favicon.png?v=4" />
         <link href="/css/bootstrap.min.css" rel="stylesheet" type="text/css" id="bootstrap" />
         <link href="/css/plugins.css" rel="stylesheet" type="text/css" />
         <link href="/css/swiper.css" rel="stylesheet" type="text/css" />
@@ -53,7 +54,6 @@ export default function RootLayout({
           </div>
           {/* content end */}
 
-          <Footer />
         </div>
         
         {/* overlay content begin */}
@@ -91,11 +91,19 @@ export default function RootLayout({
                 <p>At Dentia, we’re dedicated to providing high-quality, personalized dental care for patients of all ages. Our skilled team uses the latest technology to ensure comfortable, efficient treatments and beautiful, healthy smiles for life.</p>
 
                 <div className="social-icons">
-                    <Link href="#"><i className="fa-brands fa-facebook-f"></i></Link>
-                    <Link href="#"><i className="fa-brands fa-x-twitter"></i></Link>
-                    <Link href="#"><i className="fa-brands fa-instagram"></i></Link>
-                    <Link href="#"><i className="fa-brands fa-youtube"></i></Link>
-                    <Link href="#"><i className="fa-brands fa-whatsapp"></i></Link>
+                    <Link href="https://www.facebook.com/UpperEastDental/" target="_blank">
+                        <Image src="/social icons/facebook.png" alt="Facebook" width={18} height={18} className="object-contain" />
+                    </Link>
+                    <Link href="https://x.com/uppereastdental" target="_blank">
+                        <Image src="/social icons/twitter.png" alt="X (Twitter)" width={18} height={18} className="object-contain" />
+                    </Link>
+                    <Link href="https://www.instagram.com/uppereastdentalnyc/?hl=en" target="_blank">
+                        <Image src="/social icons/instagram.png" alt="Instagram" width={18} height={18} className="object-contain" />
+                    </Link>
+                    <Link href="https://www.youtube.com/@askadentistaskdr.harvey7701" target="_blank">
+                        <Image src="/social icons/youtube.png" alt="YouTube" width={18} height={18} className="object-contain" />
+                    </Link>
+                    <Link href="https://wa.me/12126971701" target="_blank"><i className="fa-brands fa-whatsapp"></i></Link>
                 </div>
             </div>
         </div>

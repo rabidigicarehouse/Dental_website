@@ -1,4 +1,6 @@
 import Link from 'next/link';
+import MapContactSection from '@/components/MapContactSection';
+import Footer from '@/components/Footer';
 
 export default function About() {
   return (
@@ -214,6 +216,8 @@ export default function About() {
 
         </div>
       </section>
+      <MapContactSection />
+      <Footer />
     </>
   );
 }

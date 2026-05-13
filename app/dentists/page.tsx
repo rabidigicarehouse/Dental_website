@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 
 export default function Dentists() {
   return (
@@ -50,9 +51,9 @@ export default function Dentists() {
                       </ul>
 
                       <div className="sc-icons mt-4">
-                        <Link href="#"><i className="fa-brands fa-facebook-f"></i></Link>
-                        <Link href="#"><i className="fa-brands fa-x-twitter"></i></Link>
-                        <Link href="#"><i className="fa-brands fa-youtube"></i></Link>
+                        <Link href="#"><Image src="/social icons/facebook.png" alt="Facebook" width={18} height={18} className="object-contain" /></Link>
+                        <Link href="#"><Image src="/social icons/twitter.png" alt="X (Twitter)" width={18} height={18} className="object-contain" /></Link>
+                        <Link href="#"><Image src="/social icons/youtube.png" alt="YouTube" width={18} height={18} className="object-contain" /></Link>
                       </div>
 
                     </div>
@@ -90,9 +91,9 @@ export default function Dentists() {
                       </ul>
 
                       <div className="sc-icons mt-4">
-                        <Link href="#"><i className="fa-brands fa-facebook-f"></i></Link>
-                        <Link href="#"><i className="fa-brands fa-x-twitter"></i></Link>
-                        <Link href="#"><i className="fa-brands fa-youtube"></i></Link>
+                        <Link href="#"><Image src="/social icons/facebook.png" alt="Facebook" width={18} height={18} className="object-contain" /></Link>
+                        <Link href="#"><Image src="/social icons/twitter.png" alt="X (Twitter)" width={18} height={18} className="object-contain" /></Link>
+                        <Link href="#"><Image src="/social icons/youtube.png" alt="YouTube" width={18} height={18} className="object-contain" /></Link>
                       </div>
 
                     </div>
@@ -130,9 +131,9 @@ export default function Dentists() {
                       </ul>
 
                       <div className="sc-icons mt-4">
-                        <Link href="#"><i className="fa-brands fa-facebook-f"></i></Link>
-                        <Link href="#"><i className="fa-brands fa-x-twitter"></i></Link>
-                        <Link href="#"><i className="fa-brands fa-youtube"></i></Link>
+                        <Link href="#"><Image src="/social icons/facebook.png" alt="Facebook" width={18} height={18} className="object-contain" /></Link>
+                        <Link href="#"><Image src="/social icons/twitter.png" alt="X (Twitter)" width={18} height={18} className="object-contain" /></Link>
+                        <Link href="#"><Image src="/social icons/youtube.png" alt="YouTube" width={18} height={18} className="object-contain" /></Link>
                       </div>
 
                     </div>
@@ -170,9 +171,9 @@ export default function Dentists() {
                       </ul>
 
                       <div className="sc-icons mt-4">
-                        <Link href="#"><i className="fa-brands fa-facebook-f"></i></Link>
-                        <Link href="#"><i className="fa-brands fa-x-twitter"></i></Link>
-                        <Link href="#"><i className="fa-brands fa-youtube"></i></Link>
+                        <Link href="#"><Image src="/social icons/facebook.png" alt="Facebook" width={18} height={18} className="object-contain" /></Link>
+                        <Link href="#"><Image src="/social icons/twitter.png" alt="X (Twitter)" width={18} height={18} className="object-contain" /></Link>
+                        <Link href="#"><Image src="/social icons/youtube.png" alt="YouTube" width={18} height={18} className="object-contain" /></Link>
                       </div>
 
                     </div>

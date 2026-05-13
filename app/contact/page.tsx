@@ -1,5 +1,7 @@
 import Link from 'next/link';
 import ContactForm from '@/components/ContactForm';
+import MapContactSection from '@/components/MapContactSection';
+import Footer from '@/components/Footer';
 
 export default function Contact() {
   return (
@@ -59,6 +61,8 @@ export default function Contact() {
           </div>
         </div>
       </section>
+      <MapContactSection />
+      <Footer />
     </>
   );
 }

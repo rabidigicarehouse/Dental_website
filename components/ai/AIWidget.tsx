@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback, useRef } from "react";
 import { motion, AnimatePresence, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { X, Mic, Send, Sparkles } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 import ChatBox from "./ChatBox";
 
 interface Message {
@@ -20,7 +21,7 @@ const INTENTS = [
 
 export default function AIWidget() {
   const [mounted, setMounted] = useState(false);
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [isListening, setIsListening] = useState(false);
   const [isTyping, setIsTyping] = useState(false);
@@ -30,6 +31,10 @@ export default function AIWidget() {
 
   useEffect(() => {
     setMounted(true);
+    // Auto-open on desktop (≥1024px), stay closed on mobile
+    if (window.innerWidth >= 1024) {
+      setIsOpen(true);
+    }
   }, []);
 
   useEffect(() => {
@@ -160,7 +165,7 @@ export default function AIWidget() {
       setIsSpeaking(true);
       if (talkingVideoRef.current) {
         talkingVideoRef.current.playbackRate = 1.5;
-        talkingVideoRef.current.play().catch(() => {});
+        talkingVideoRef.current.play().catch(() => { });
       }
     };
 
@@ -209,33 +214,47 @@ export default function AIWidget() {
 
   return (
     <>
-      {/* Animated Floating Widget Button */}
-      {!isOpen && (
-        <motion.div
-          initial={{ scale: 0, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          className="fixed bottom-6 right-6 lg:bottom-10 lg:right-10 z-[9999]"
-        >
-          <motion.button
-            style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
-            onClick={() => setIsOpen(true)}
-            className="relative w-16 h-16 lg:w-24 lg:h-24 rounded-full bg-white border-2 border-primary shadow-2xl flex items-center justify-center overflow-hidden group"
-          >
-            <div className="relative w-full h-full p-1.5 lg:p-2">
+      {/* Integrated Social Hub - Persistent */}
+      <div
+        className={`fixed z-[9999] ai-widget-floating-container flex flex-col items-center gap-3 transition-all duration-500 ease-in-out ${isOpen ? 'ai-panel-open' : ''}`}
+      >
+        {/* Social Icons Stack */}
+        <div className="sticky-social-bar-integrated items-center justify-center">
+          <Link href="https://www.facebook.com/UpperEastDental/" target="_blank" className="social-icon-btn">
+            <Image src="/social icons/facebook.png" alt="Facebook" width={20} height={20} className="w-4 h-4 lg:w-5 lg:h-5 object-contain" />
+          </Link>
+          <Link href="https://www.instagram.com/uppereastdentalnyc/?hl=en" target="_blank" className="social-icon-btn">
+            <Image src="/social icons/instagram.png" alt="Instagram" width={20} height={20} className="w-4 h-4 lg:w-5 lg:h-5 object-contain" />
+          </Link>
+          <Link href="https://twitter.com/uppereastdental" target="_blank" className="social-icon-btn">
+            <Image src="/social icons/twitter.png" alt="X (Twitter)" width={20} height={20} className="w-4 h-4 lg:w-5 lg:h-5 object-contain" />
+          </Link>
+          <Link href="https://www.linkedin.com/in/shardeharvey/?_l=en_US" target="_blank" className="social-icon-btn">
+            <Image src="/social icons/linkedin.png" alt="LinkedIn" width={20} height={20} className="w-4 h-4 lg:w-5 lg:h-5 object-contain" />
+          </Link>
+          <Link href="https://www.youtube.com/@askadentistaskdr.harvey7701" target="_blank" className="social-icon-btn">
+            <Image src="/social icons/youtube.png" alt="YouTube" width={20} height={20} className="w-4 h-4 lg:w-5 lg:h-5 object-contain" />
+          </Link>
+
+          {/* AI Toggle Button - Premium Emblem Trigger */}
+          {!isOpen && (
+            <motion.button
+              whileHover={{ scale: 1.15, translateY: -3 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={() => setIsOpen(true)}
+              className="relative w-8 h-8 lg:w-10 lg:h-10 rounded-full bg-white shadow-lg flex items-center justify-center overflow-hidden border border-gray-100 group"
+            >
               <Image
                 src="/ai avatar.png"
-                alt="AI Chatbot"
+                alt="AI Assistant"
                 fill
-                className="object-cover rounded-full transition-transform duration-300 group-hover:scale-110"
+                priority
+                className="object-cover transition-transform duration-300 group-hover:scale-110"
               />
-            </div>
-            <div className="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity" />
-          </motion.button>
-          <div className="absolute -top-2 -right-2 w-7 h-7 bg-primary rounded-full flex items-center justify-center animate-bounce shadow-lg border-2 border-white">
-            <Sparkles size={14} className="text-white" />
-          </div>
-        </motion.div>
-      )}
+            </motion.button>
+          )}
+        </div>
+      </div>
 
       {/* Side-Panel Assistant */}
       <AnimatePresence>
@@ -245,7 +264,7 @@ export default function AIWidget() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
-            className="fixed bottom-0 right-0 lg:top-0 z-[9999] w-[92%] lg:max-w-[300px] 2xl:max-w-[420px] h-[85vh] lg:h-full bg-white border border-gray-100 lg:border-none lg:border-l rounded-t-[32px] lg:rounded-none flex flex-col overflow-hidden pointer-events-auto shadow-[0_-20px_50px_rgba(0,0,0,0.15)] lg:shadow-none"
+            className="fixed bottom-0 right-0 lg:top-0 z-[9999] w-full lg:w-[300px] 2xl:w-[420px] h-[85vh] lg:h-full bg-white border border-gray-100 lg:border-none lg:border-l rounded-t-[32px] lg:rounded-none flex flex-col overflow-hidden pointer-events-auto shadow-[0_-20px_50px_rgba(0,0,0,0.15)] lg:shadow-none"
           >
             {/* Header */}
             <div className="p-3 2xl:p-6 border-b border-gray-100 flex items-center justify-between bg-white">
@@ -295,11 +314,10 @@ export default function AIWidget() {
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                     onClick={toggleVoice}
-                    className={`px-4 2xl:px-8 py-2 2xl:py-3.5 rounded-full text-[9px] 2xl:text-[12px] font-black flex items-center gap-1.5 2xl:gap-2 shadow-2xl border transition-all z-10 ${
-                      isListening
+                    className={`px-4 2xl:px-8 py-2 2xl:py-3.5 rounded-full text-[9px] 2xl:text-[12px] font-black flex items-center gap-1.5 2xl:gap-2 shadow-2xl border transition-all z-10 ${isListening
                       ? "bg-red-500 text-white border-red-400 animate-pulse"
                       : "bg-white text-primary border-white/50"
-                    }`}
+                      }`}
                   >
                     <Mic size={12} className={isListening ? "text-white" : "text-red-500"} />
                     {isListening ? "Listening..." : "Speak with Dentia"}
