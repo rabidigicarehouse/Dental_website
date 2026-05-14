@@ -27,7 +27,7 @@ export default function Footer() {
                     <li><Link href="/about">About</Link></li>
                     <li><Link href="/services">Our Services</Link></li>
                     <li><Link href="/smile-gallery">Smile Gallery</Link></li>
-                    <li><Link href="/pay-by-crypto">Pay by Crypto</Link></li>
+                    <li><Link href="/payments">Payments</Link></li>
                     <li><Link href="/testimonials">Testimonials</Link></li>
                     <li><Link href="/contact">Contact</Link></li>
                   </ul>

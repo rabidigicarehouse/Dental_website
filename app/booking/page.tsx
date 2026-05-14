@@ -1,5 +1,7 @@
 import Link from 'next/link';
 import BookingForm from '@/components/BookingForm';
+import MapContactSection from '@/components/MapContactSection';
+import Footer from '@/components/Footer';
 
 export default function Booking() {
   return (
@@ -44,6 +46,8 @@ export default function Booking() {
           </div>
         </div>
       </section>
+      <MapContactSection />
+      <Footer />
     </>
   );
 }

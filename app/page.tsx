@@ -98,11 +98,13 @@ export default function Home() {
               <div className="row g-4 align-items-center">
                 <div className="col-lg-8">
                   <div className="spacer-single sm-hide"></div>
-                  <div className="subtitle wow fadeInUp" key={`sub-${currentBg}`}>{heroContent[currentBg].subtitle}</div>
-                  <h1 className="wow fadeInUp mb-4" key={`title-${currentBg}`} style={{ maxWidth: '800px' }}>
-                    {heroContent[currentBg].title}
-                  </h1>
-                  <Link className="btn-main btn-line fx-slide" href="/booking"><span>Book Appointment</span></Link>
+                  <div className="hero-glass-container">
+                    <div className="subtitle wow fadeInUp" key={`sub-${currentBg}`}>{heroContent[currentBg].subtitle}</div>
+                    <h1 className="wow fadeInUp mb-4" key={`title-${currentBg}`} style={{ maxWidth: '800px' }}>
+                      {heroContent[currentBg].title}
+                    </h1>
+                    <Link className="btn-main fx-slide" href="/booking" data-hover="Book Appointment"><span>Book Appointment</span></Link>
+                  </div>
                 </div>
               </div>
             </div>
@@ -126,8 +128,7 @@ export default function Home() {
                   left: 0
                 }}
               >
-                <div className="sw-overlay op-5"></div>
-                <div className="gradient-edge-left z-2"></div>
+
               </div>
             ))}
 
@@ -222,7 +223,7 @@ export default function Home() {
                 <hr style={{ borderColor: 'rgba(0,0,0,0.12)', margin: '24px 0' }} />
 
                 <div className="d-flex align-items-center justify-content-between">
-                  <Link href="/about" className="btn-main"><span>Read More</span></Link>
+                  <Link href="/about" className="btn-main fx-slide" data-hover="Read More"><span>Read More</span></Link>
                   <Link href="/video" className="btn-watch-video">
                     <div className="play-icon">
                       <i className="arrow_triangle-right"></i>
@@ -310,7 +311,7 @@ export default function Home() {
           </div>
 
           <div className="col-lg-12 mt-5 text-center">
-            <Link className="btn-main fx-slide" href="/services"><span>To learn more about our service</span></Link>
+            <Link className="btn-main fx-slide" href="/services" data-hover="Learn More"><span>To learn more about our service</span></Link>
           </div>
         </div>
       </section>
@@ -522,7 +523,7 @@ export default function Home() {
                 Experience the life-changing impact of our dental expertise. Our portfolio showcases the dedication and precision we bring to every smile transformation.
               </p>
               <div className="wow fadeInUp" data-wow-delay=".4s">
-                <Link href="/portfolio" className="btn-main fx-slide portfolio-btn-custom"><span>View All Portfolio</span></Link>
+                <Link href="/portfolio" className="btn-main fx-slide portfolio-btn-custom" data-hover="View All Portfolio"><span>View All Portfolio</span></Link>
               </div>
             </div>
             <div className="col-lg-7 order-1 order-lg-2">
@@ -655,7 +656,7 @@ export default function Home() {
               <h3 className="mb-0 fs-32 text-white">Ready to book your dental care session?</h3>
             </div>
             <div className="col-lg-3 text-lg-end">
-              <Link className="btn-main btn-line fx-slide" href="/booking"><span>Book Appointment</span></Link>
+              <Link className="btn-main btn-line fx-slide" href="/booking" data-hover="Book Appointment"><span>Book Appointment</span></Link>
             </div>
           </div>
         </div>
@@ -710,7 +711,7 @@ export default function Home() {
                 Listen to our patients share their personal journeys and experiences. Discover why UEDI is the trusted choice for premium dental care.
               </p>
               <div className="wow fadeInUp" data-wow-delay=".4s">
-                <Link href="/testimonials" className="btn-main fx-slide"><span>Watch More Stories</span></Link>
+                <Link href="/testimonials" className="btn-main fx-slide" data-hover="Watch More Stories"><span>Watch More Stories</span></Link>
               </div>
             </div>
             <div className="col-lg-7 order-1 order-lg-1">

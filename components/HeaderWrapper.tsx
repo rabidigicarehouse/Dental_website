@@ -42,6 +42,20 @@ export default function HeaderWrapper() {
     return () => window.removeEventListener('scroll', onScroll);
   }, [pathname]);
 
+  /* Tag the body with `is-homepage` / `is-subpage` so CSS can style
+     the header differently on subpages (dark on mobile, content pushed
+     below the navbar instead of overlaying a hero). */
+  useEffect(() => {
+    const body = document.body;
+    if (isHomepage) {
+      body.classList.add('is-homepage');
+      body.classList.remove('is-subpage');
+    } else {
+      body.classList.add('is-subpage');
+      body.classList.remove('is-homepage');
+    }
+  }, [pathname, isHomepage]);
+
   /* Mobile menu: tap a top-level item with a submenu to expand it inline.
      Uses event delegation so it works regardless of when the menu is
      mounted by on3step.js. */

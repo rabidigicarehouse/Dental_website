@@ -1,4 +1,6 @@
 import Link from 'next/link';
+import MapContactSection from '@/components/MapContactSection';
+import Footer from '@/components/Footer';
 
 export default function BlogSingle() {
   return (
@@ -235,6 +237,8 @@ export default function BlogSingle() {
           </div>
         </div>
       </section>
+      <MapContactSection />
+      <Footer />
     </>
   );
 }

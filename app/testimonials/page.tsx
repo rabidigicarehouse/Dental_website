@@ -1,4 +1,6 @@
 import Link from 'next/link';
+import MapContactSection from '@/components/MapContactSection';
+import Footer from '@/components/Footer';
 
 export default function Testimonials() {
   return (
@@ -200,6 +202,8 @@ export default function Testimonials() {
           </div>
         </div>
       </section>
+      <MapContactSection />
+      <Footer />
     </>
   );
 }

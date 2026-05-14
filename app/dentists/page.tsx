@@ -1,5 +1,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
+import MapContactSection from '@/components/MapContactSection';
+import Footer from '@/components/Footer';
 
 export default function Dentists() {
   return (
@@ -185,6 +187,8 @@ export default function Dentists() {
           </div>
         </div>
       </section>
+      <MapContactSection />
+      <Footer />
     </>
   );
 }

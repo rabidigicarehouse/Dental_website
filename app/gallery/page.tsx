@@ -2,6 +2,8 @@
 
 import Link from 'next/link';
 import { useState } from 'react';
+import MapContactSection from '@/components/MapContactSection';
+import Footer from '@/components/Footer';
 
 export default function Gallery() {
   const [filter, setFilter] = useState('*');
@@ -72,7 +74,9 @@ export default function Gallery() {
             ))}
           </div>
         </div>
-      </section>    
+      </section>
+      <MapContactSection />
+      <Footer />
     </>
   );
 }

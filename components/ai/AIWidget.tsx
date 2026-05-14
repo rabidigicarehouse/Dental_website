@@ -25,6 +25,7 @@ export default function AIWidget() {
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [isListening, setIsListening] = useState(false);
   const [isTyping, setIsTyping] = useState(false);
+  const [stickyHidden, setStickyHidden] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
     { id: "1", text: "Hi, I'm Dentia! How do you currently manage your dental health and follow-ups?", sender: "ai" }
   ]);
@@ -46,6 +47,37 @@ export default function AIWidget() {
     }
     window.dispatchEvent(new Event('resize'));
   }, [isOpen, mounted]);
+
+  // Hide the sticky social bar when extra-wrap (side panel) is open
+  // OR when scrolled near the footer. Re-show otherwise.
+  useEffect(() => {
+    if (!mounted) return;
+    const checkVisibility = () => {
+      const extraWrap = document.getElementById('extra-wrap');
+      const extraOpen = extraWrap?.classList.contains('open') ?? false;
+      const footer = document.querySelector('footer');
+      let nearFooter = false;
+      if (footer) {
+        const rect = footer.getBoundingClientRect();
+        nearFooter = rect.top < window.innerHeight - 80;
+      }
+      setStickyHidden(extraOpen || nearFooter);
+    };
+    checkVisibility();
+    window.addEventListener('scroll', checkVisibility, { passive: true });
+    window.addEventListener('resize', checkVisibility);
+    const extraWrap = document.getElementById('extra-wrap');
+    let observer: MutationObserver | null = null;
+    if (extraWrap) {
+      observer = new MutationObserver(checkVisibility);
+      observer.observe(extraWrap, { attributes: true, attributeFilter: ['class'] });
+    }
+    return () => {
+      window.removeEventListener('scroll', checkVisibility);
+      window.removeEventListener('resize', checkVisibility);
+      observer?.disconnect();
+    };
+  }, [mounted]);
 
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -216,7 +248,7 @@ export default function AIWidget() {
     <>
       {/* Integrated Social Hub - Persistent */}
       <div
-        className={`fixed z-[9999] ai-widget-floating-container flex flex-col items-center gap-3 transition-all duration-500 ease-in-out ${isOpen ? 'ai-panel-open' : ''}`}
+        className={`fixed z-[9999] ai-widget-floating-container flex flex-col items-center gap-3 transition-all duration-500 ease-in-out ${isOpen ? 'ai-panel-open' : ''} ${stickyHidden ? 'sticky-hidden' : ''}`}
       >
         {/* Social Icons Stack */}
         <div className="sticky-social-bar-integrated items-center justify-center">

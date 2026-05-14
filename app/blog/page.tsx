@@ -1,4 +1,6 @@
 import Link from 'next/link';
+import MapContactSection from '@/components/MapContactSection';
+import Footer from '@/components/Footer';
 
 export default function Blog() {
   return (
@@ -162,6 +164,8 @@ export default function Blog() {
           </div>
         </div>
       </section>
+      <MapContactSection />
+      <Footer />
     </>
   );
 }
