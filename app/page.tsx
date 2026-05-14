@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { AnimatePresence, motion } from 'framer-motion';
 import CardSwap, { Card } from '@/components/CardSwap';
+import StackedSectionSlider from '@/components/StackedSectionSlider';
 import MapContactSection from '@/components/MapContactSection';
 import Footer from '@/components/Footer';
 
@@ -156,8 +157,10 @@ export default function Home() {
       </section>
 
       {/* Info Boxes */}
-      <section className="bg-dark text-light pt-50 pb-30">
-        <div className="container relative">
+      <section className="cta-glass-section text-light pt-50 pb-50">
+        <div className="cta-glass-bg" />
+        <div className="cta-glass-overlay" />
+        <div className="container relative" style={{ zIndex: 2 }}>
           <div className="row g-4 justify-content-center">
             <div className="col-lg-4 col-md-6">
               <Link href="tel:+12126971701" className="info-box-floating">
@@ -198,42 +201,99 @@ export default function Home() {
         </div>
       </section>
 
-      {/* About Section */}
+      {/* About — Stacked Slider (Our Story + About The Doctor) */}
       <section className="bg-light">
         <div className="container">
-          <div className="row g-5 align-items-center">
-            <div className="col-lg-6 wow fadeInLeft" data-wow-delay=".2s">
-              <div className="about-img-container">
-                <img src="/about us section main.jpg" className="about-img-main" alt="About Main" />
-                <div className="about-img-small-wrap">
-                  <img src="/about us section small.webp" className="about-img-small" alt="About Small" />
-                </div>
-              </div>
-            </div>
-
-            <div className="col-lg-6 wow fadeInRight" data-wow-delay=".4s">
-              <div className="ps-lg-4">
-                <div className="about-subtitle">Our Story</div>
-                <h2 className="about-title">Dental Innovations</h2>
-                <div className="about-mission">Our Mission at Upper East Dental Innovations</div>
-                <p className="about-text">
-                  Upper East Dental Innovations is a state-of-the-art New York-based oral healthcare practice where artistry, beauty, craftsmanship and technology are the cornerstones of our truly innovative dental practice. Upper East Dental Innovations utilizes cutting edge technologies that deliver aesthetic, superior outcomes, as well as more accurate and faster diagnosis of oral and overall health conditions. Our technology is so advanced that we can offer our patients a permanent crown over their lunch hour, hence "The Lunchtime Crown."
-                </p>
-
-                <hr style={{ borderColor: 'rgba(0,0,0,0.12)', margin: '24px 0' }} />
-
-                <div className="d-flex align-items-center justify-content-between">
-                  <Link href="/about" className="btn-main fx-slide" data-hover="Read More"><span>Read More</span></Link>
-                  <Link href="/video" className="btn-watch-video">
-                    <div className="play-icon">
-                      <i className="arrow_triangle-right"></i>
-                    </div>
-                    <span>Watch Video</span>
-                  </Link>
-                </div>
-              </div>
-            </div>
+          <div className="text-center mb-2">
+            <div className="subtitle id-color wow fadeInUp">Get to Know Us</div>
+            <h2 className="wow fadeInUp" data-wow-delay=".2s">Two Sides of the Same Smile</h2>
           </div>
+
+          <StackedSectionSlider labels={['Our Story', 'About The Doctor']}>
+            {/* ── Card 1 — Our Story ─────────────────────────────────────── */}
+            <div className="row g-5 align-items-center w-100 m-0">
+              <div className="col-lg-6">
+                <div className="about-img-container">
+                  <img src="/about us section main.jpg" className="about-img-main" alt="About Main" />
+                  <div className="about-img-small-wrap">
+                    <img src="/about us section small.webp" className="about-img-small" alt="About Small" />
+                  </div>
+                </div>
+              </div>
+
+              <div className="col-lg-6">
+                <div className="ps-lg-4">
+                  <div className="about-subtitle">Our Story</div>
+                  <h2 className="about-title">Dental Innovations</h2>
+                  <div className="about-mission">Our Mission at Upper East Dental Innovations</div>
+                  <p className="about-text">
+                    Upper East Dental Innovations is a state-of-the-art New York-based oral healthcare practice where artistry, beauty, craftsmanship and technology are the cornerstones of our truly innovative dental practice. We utilize cutting-edge technologies that deliver aesthetic, superior outcomes — including our signature &quot;Lunchtime Crown,&quot; a permanent crown delivered over your lunch hour.
+                  </p>
+
+                  <hr style={{ borderColor: 'rgba(0,0,0,0.12)', margin: '20px 0' }} />
+
+                  <div className="d-flex align-items-center justify-content-between flex-wrap gap-3">
+                    <Link href="/about" className="btn-main fx-slide" data-hover="Read More"><span>Read More</span></Link>
+                    <Link href="/video" className="btn-watch-video">
+                      <div className="play-icon">
+                        <i className="arrow_triangle-right"></i>
+                      </div>
+                      <span>Watch Video</span>
+                    </Link>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* ── Card 2 — About The Doctor ──────────────────────────────── */}
+            <div className="row g-5 align-items-center w-100 m-0">
+              <div className="col-lg-5">
+                <div className="doctor-photo-wrap" style={{ padding: 0, maxWidth: 380, margin: '0 auto' }}>
+                  <div className="doctor-photo-decor doctor-photo-decor-1" />
+                  <div className="doctor-photo-decor doctor-photo-decor-2" />
+                  <div className="doctor-photo-frame">
+                    <img src="/Dr harvey.webp" alt="Dr. Sharde Harvey" />
+                    <div className="doctor-photo-glow" />
+                  </div>
+                </div>
+              </div>
+
+              <div className="col-lg-7">
+                <div className="about-subtitle">About The Doctor</div>
+                <h3 className="doctor-name mb-1">Dr. Sharde Harvey, D.D.S M.S F.I.C.O.I</h3>
+                <p className="doctor-role mb-3"><em>is a skilled New York City General Dentist</em></p>
+
+                <div className="doctor-bio">
+                  <p>
+                    Dr. Harvey is currently in the Department of Otolaryngology Head and Neck Surgery at Lenox Hill Hospital and is a clinical instructor at NYU College of Dentistry. She is certified in Invisalign® and Botox administration for TMJ and headache treatment.
+                  </p>
+                </div>
+
+                <div className="row g-3 mt-1">
+                  <div className="col-md-6">
+                    <h5 className="doctor-credentials-title">Memberships</h5>
+                    <ul className="doctor-list">
+                      <li>American Dental Association</li>
+                      <li>NY State Dental Association</li>
+                      <li>Holistic Dental Association</li>
+                    </ul>
+                  </div>
+                  <div className="col-md-6">
+                    <h5 className="doctor-credentials-title">Languages</h5>
+                    <div className="doctor-lang-chips">
+                      <span>English</span>
+                      <span>French</span>
+                      <span>Spanish</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="mt-3 text-center">
+                  <Link href="/dentists" className="btn-main fx-slide"><span>Read more</span></Link>
+                </div>
+              </div>
+            </div>
+          </StackedSectionSlider>
         </div>
       </section>
 
@@ -312,112 +372,6 @@ export default function Home() {
 
           <div className="col-lg-12 mt-5 text-center">
             <Link className="btn-main fx-slide" href="/services" data-hover="Learn More"><span>To learn more about our service</span></Link>
-          </div>
-        </div>
-      </section>
-
-      {/* ── About The Doctor Section ─────────────────────────────────── */}
-      <section className="doctor-section">
-        <div className="container">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: '-100px' }}
-            transition={{ duration: 0.7, ease: 'easeOut' }}
-            className="text-center mb-5"
-          >
-            <h2 className="doctor-heading">About The Doctor</h2>
-          </motion.div>
-
-          <div className="row g-5 align-items-center">
-            {/* Left — Photo */}
-            <motion.div
-              initial={{ opacity: 0, x: -50, rotateY: -8 }}
-              whileInView={{ opacity: 1, x: 0, rotateY: 0 }}
-              viewport={{ once: true, margin: '-50px' }}
-              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-              className="col-lg-5"
-            >
-              <div className="doctor-photo-wrap">
-                <div className="doctor-photo-decor doctor-photo-decor-1" />
-                <div className="doctor-photo-decor doctor-photo-decor-2" />
-                <div className="doctor-photo-frame">
-                  <img src="/Dr harvey.webp" alt="Dr. Sharde Harvey, D.D.S M.S F.I.C.O.I" />
-                  <div className="doctor-photo-glow" />
-                </div>
-              </div>
-            </motion.div>
-
-            {/* Right — Bio */}
-            <motion.div
-              initial={{ opacity: 0, x: 50 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true, margin: '-50px' }}
-              transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-              className="col-lg-7"
-            >
-              <h3 className="doctor-name">Dr. Sharde Harvey, D.D.S M.S F.I.C.O.I</h3>
-              <p className="doctor-role"><em>is a skilled New York City General Dentist</em></p>
-
-              <div className="doctor-bio">
-                <p>
-                  Dr. Harvey is currently in the Department of Otolaryngology Head and Neck Surgery, Lenox Hill Hospital and is a clinical instructor on faculty in the Department of Cariology and Comprehensive Care at New York University College of Dentistry.
-                </p>
-                <p>
-                  She is a graduate of New York University College of Dentistry, and spent her last year at NYU in the Honors Esthetics program doing full mouth veneers, similar to those seen on television programs such as Extreme Makeover. After dental school, she attended a rigorous one year residency program at Long Island College Hospital. After residency, Dr. Harvey finished a two-year post-graduate program in implant surgery and prosthetics at NYU. She is also certified in Invisalign® as well as Botox administration, useful in treatment of TMJ (Temporomandibular Joint Disorder) and headaches.
-                </p>
-              </div>
-
-              <div className="row g-4 mt-3 doctor-credentials">
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.6, delay: 0.4 }}
-                  className="col-md-6"
-                >
-                  <h5 className="doctor-credentials-title">Professional Memberships</h5>
-                  <ul className="doctor-list">
-                    <li>The American Dental Association</li>
-                    <li>The New York State Dental Association</li>
-                    <li>The New York County Dental Association</li>
-                    <li>Holistic Dental Association</li>
-                    <li>American Academy of Dental Sleep Medicine</li>
-                  </ul>
-                </motion.div>
-
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.6, delay: 0.5 }}
-                  className="col-md-6"
-                >
-                  <h5 className="doctor-credentials-title">Awards &amp; Publications</h5>
-                  <ul className="doctor-list">
-                    <li>Certificate of Achievement in Aesthetic Dentistry</li>
-                    <li>Certified in Botox for Treatment of TMJ and Headaches</li>
-                  </ul>
-
-                  <h5 className="doctor-credentials-title mt-4">Languages Spoken</h5>
-                  <div className="doctor-lang-chips">
-                    <span>English</span>
-                    <span>French</span>
-                    <span>Spanish</span>
-                  </div>
-                </motion.div>
-              </div>
-
-              <motion.p
-                initial={{ opacity: 0 }}
-                whileInView={{ opacity: 1 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: 0.7 }}
-                className="doctor-hobby"
-              >
-                In her spare time, Dr. Harvey practices Bikram Yoga and enjoys oil painting.
-              </motion.p>
-            </motion.div>
           </div>
         </div>
       </section>

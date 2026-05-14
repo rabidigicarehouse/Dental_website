@@ -7,6 +7,7 @@ import Preloader from "@/components/Preloader";
 import Footer from "@/components/Footer";
 import ScriptHandler from "@/components/ScriptHandler";
 import AIWidget from "@/components/ai/AIWidget";
+import TopBanner from "@/components/TopBanner";
 import Image from "next/image";
 
 export const metadata: Metadata = {
@@ -45,6 +46,7 @@ export default function RootLayout({
           <Preloader />
           {/* preloader end */}
 
+          <TopBanner />
           <HeaderWrapper />
 
           {/* content begin */}
@@ -94,16 +96,18 @@ export default function RootLayout({
               <Link href="https://www.facebook.com/UpperEastDental/" target="_blank">
                 <Image src="/social icons/facebook.png" alt="Facebook" width={18} height={18} className="object-contain" />
               </Link>
-              <Link href="https://x.com/uppereastdental" target="_blank">
-                <Image src="/social icons/twitter.png" alt="X (Twitter)" width={18} height={18} className="object-contain" />
-              </Link>
               <Link href="https://www.instagram.com/uppereastdentalnyc/?hl=en" target="_blank">
                 <Image src="/social icons/instagram.png" alt="Instagram" width={18} height={18} className="object-contain" />
+              </Link>
+              <Link href="https://www.linkedin.com/in/shardeharvey/?_l=en_US" target="_blank">
+                <Image src="/social icons/linkedin.png" alt="LinkedIn" width={18} height={18} className="object-contain" />
+              </Link>
+              <Link href="https://x.com/uppereastdental" target="_blank">
+                <Image src="/social icons/twitter.png" alt="X (Twitter)" width={18} height={18} className="object-contain" />
               </Link>
               <Link href="https://www.youtube.com/@askadentistaskdr.harvey7701" target="_blank">
                 <Image src="/social icons/youtube.png" alt="YouTube" width={18} height={18} className="object-contain" />
               </Link>
-              <Link href="https://wa.me/12126971701" target="_blank"><i className="fa-brands fa-whatsapp"></i></Link>
             </div>
           </div>
         </div>
