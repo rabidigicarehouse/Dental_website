@@ -10,8 +10,8 @@ import AIWidget from "@/components/ai/AIWidget";
 import Image from "next/image";
 
 export const metadata: Metadata = {
-  title: "Upper East Dental — Dentist & Dental Clinic Website Template",
-  description: "Upper East Dental — Dentist & Dental Clinic Website Template",
+  title: "Upper East Dental — Dentist & Dental Clinic",
+  description: "Upper East Dental — Dentist & Dental Clinic",
   icons: {
     icon: "/favicon.png?v=4",
     shortcut: "/favicon.png?v=4",
