@@ -24,7 +24,7 @@ export default function Membership() {
         id="subheader"
         className="page-subheader text-center"
         style={{
-          backgroundImage: 'url(/office tour/1.png)',
+          backgroundImage: 'url("/heading_background/membership.jpg")',
           backgroundSize: 'cover',
           backgroundPosition: 'center',
         }}

@@ -23,7 +23,7 @@ export default function OfficeTour() {
         id="subheader"
         className="page-subheader text-center"
         style={{
-          backgroundImage: 'url(/office tour/4.png)',
+          backgroundImage: 'url("/heading_background/office tour.jpg")',
           backgroundSize: 'cover',
           backgroundPosition: 'center',
         }}

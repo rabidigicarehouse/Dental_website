@@ -76,7 +76,7 @@ export default function Payments() {
         id="subheader"
         className="page-subheader text-center"
         style={{
-          backgroundImage: 'url(/office tour/9.png)',
+          backgroundImage: 'url("/heading_background/payments.jpg")',
           backgroundSize: 'cover',
           backgroundPosition: 'center',
         }}

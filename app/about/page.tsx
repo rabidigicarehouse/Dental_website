@@ -10,7 +10,7 @@ export default function About() {
         id="subheader"
         className="page-subheader text-center"
         style={{
-          backgroundImage: 'url(/office tour/1.png)',
+          backgroundImage: 'url("/heading_background/about.jpg")',
           backgroundSize: 'cover',
           backgroundPosition: 'center',
         }}

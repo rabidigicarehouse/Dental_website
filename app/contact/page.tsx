@@ -10,7 +10,7 @@ export default function Contact() {
         id="subheader"
         className="page-subheader text-center"
         style={{
-          backgroundImage: 'url(/office tour/8.jpeg)',
+          backgroundImage: 'url("/heading_background/contact us.jpg")',
           backgroundSize: 'cover',
           backgroundPosition: 'center',
         }}

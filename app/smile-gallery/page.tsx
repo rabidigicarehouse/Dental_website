@@ -23,7 +23,7 @@ export default function SmileGallery() {
         id="subheader"
         className="page-subheader text-center"
         style={{
-          backgroundImage: 'url(/dental services/Cosmetic Dentistry.webp)',
+          backgroundImage: 'url("/heading_background/smile_gallery.jpg")',
           backgroundSize: 'cover',
           backgroundPosition: 'center',
         }}

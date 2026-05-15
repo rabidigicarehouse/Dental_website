@@ -67,7 +67,7 @@ export default function Testimonials() {
         id="subheader"
         className="page-subheader text-center"
         style={{
-          backgroundImage: 'url(/office tour/2.png)',
+          backgroundImage: 'url("/heading_background/testimonial.jpg")',
           backgroundSize: 'cover',
           backgroundPosition: 'center',
         }}
