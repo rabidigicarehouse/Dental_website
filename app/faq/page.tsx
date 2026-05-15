@@ -5,18 +5,22 @@ import Footer from '@/components/Footer';
 export default function FAQ() {
   return (
     <>
-      <section id="subheader" className="bg-color-op-1 text-center">
+      <section
+        id="subheader"
+        className="page-subheader text-center"
+        style={{
+          backgroundImage: 'url(/office tour/10.jpeg)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+        }}
+      >
         <div className="container relative z-2">
-          <div className="row align-items-center">
-            <div className="col-lg-12">
-              <h1 className="wow fadeInUp">FAQ</h1>
-              <div className="border-bottom my-3"></div>
-              <ul className="crumb wow fadeInDown">
-                <li><Link href="/">Home</Link></li>
-                <li className="active">FAQ</li>
-              </ul>
-            </div>
-          </div>
+          <div className="page-subheader-eyebrow" style={{ color: 'rgba(255,255,255,0.85)' }}>Need Answers?</div>
+          <h1 className="page-subheader-title" style={{ color: '#fff' }}>FAQ</h1>
+          <ul className="crumb">
+            <li><Link href="/" style={{ color: 'rgba(255,255,255,0.8)' }}>Home</Link></li>
+            <li className="active" style={{ color: '#fff' }}>FAQ</li>
+          </ul>
         </div>
       </section>
 

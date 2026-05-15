@@ -20,10 +20,10 @@ export default function Header({
                 {/* logo begin */}
                 <div id="logo">
                   <Link href="/">
-                    <img className="logo-main logo" src="/main logo.png" alt="Dentia Logo" />
-                    <img className="logo-scroll logo-2" src="/main logo dark.png" alt="Dentia Logo" />
-                    <img className="logo-mobile" src="/main logo.png" alt="Dentia Logo" />
-                    <img className="logo-mobile-dark" src="/main logo dark.png" alt="Dentia Logo" />
+                    <img className="logo-main logo" src="/main logo.png" alt="UpperEast Logo" />
+                    <img className="logo-scroll logo-2" src="/main logo dark.png" alt="UpperEast Logo" />
+                    <img className="logo-mobile" src="/main logo.png" alt="UpperEast Logo" />
+                    <img className="logo-mobile-dark" src="/main logo dark.png" alt="UpperEast Logo" />
                   </Link>
                 </div>
                 {/* logo end */}
@@ -34,7 +34,7 @@ export default function Header({
                   <li>
                     <Link className="menu-item" href="/about">About</Link>
                     <ul>
-                      <li><Link href="/doctors">Our Doctors, Dental implants, Cosmetics Dentist, NYC</Link></li>
+                      <li><Link href="/about">Our Doctors, Dental implants, Cosmetics Dentist, NYC</Link></li>
                       <li><Link href="/office-tour">Office tour</Link></li>
                     </ul>
                   </li>

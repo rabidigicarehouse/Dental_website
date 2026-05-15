@@ -14,7 +14,7 @@ interface Message {
 }
 
 const INTENTS = [
-  { keywords: ["hello", "hi", "hey"], response: "Hi, I'm Dentia AI! How can I help you manage your dental appointments today?" },
+  { keywords: ["hello", "hi", "hey"], response: "Hi, I'm your dental care AI advisor! How can I help you manage your dental appointments today?" },
   { keywords: ["booking", "reserve", "appointment"], response: "You can schedule an appointment directly using our online booking system. Would you like me to show you the way?" },
   { keywords: ["price", "cost"], response: "Our pricing is transparent and depends on the treatment. Most cleanings start from $99." },
 ];
@@ -27,7 +27,7 @@ export default function AIWidget() {
   const [isTyping, setIsTyping] = useState(false);
   const [stickyHidden, setStickyHidden] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
-    { id: "1", text: "Hi, I'm Dentia! How do you currently manage your dental health and follow-ups?", sender: "ai" }
+    { id: "1", text: "Hi, I'm your dental care AI advisor! How do you currently manage your dental health and follow-ups?", sender: "ai" }
   ]);
 
   useEffect(() => {
@@ -301,9 +301,9 @@ export default function AIWidget() {
             {/* Header */}
             <div className="p-3 2xl:p-6 border-b border-gray-100 flex items-center justify-between bg-white">
               <div className="flex items-center gap-2 2xl:gap-3">
-                <span className="font-bold text-gray-900 tracking-tight text-sm 2xl:text-lg">Dentia</span>
+                <span className="font-bold text-gray-900 tracking-tight text-sm 2xl:text-lg">UpperEast</span>
                 <div className="w-1 h-1 rounded-full bg-primary" />
-                <span className="text-[8px] 2xl:text-[10px] font-black text-gray-400 uppercase tracking-widest">Business Advisor</span>
+                <span className="text-[8px] 2xl:text-[10px] font-black text-gray-400 uppercase tracking-widest">AI Advisor</span>
               </div>
               <button
                 onClick={() => setIsOpen(false)}
@@ -352,7 +352,7 @@ export default function AIWidget() {
                       }`}
                   >
                     <Mic size={12} className={isListening ? "text-white" : "text-red-500"} />
-                    {isListening ? "Listening..." : "Speak with Dentia"}
+                    {isListening ? "Listening..." : "Speak with UpperEast"}
                   </motion.button>
                 </div>
               </div>
@@ -374,7 +374,7 @@ export default function AIWidget() {
                 <input
                   ref={inputRef}
                   type="text"
-                  placeholder="Ask Dentia"
+                  placeholder="Ask UpperEast"
                   className="w-full bg-gray-50 border border-gray-100 rounded-lg 2xl:rounded-2xl px-3 2xl:px-6 py-2.5 2xl:py-4 pr-16 2xl:pr-24 text-[12px] 2xl:text-[14px] text-gray-800 placeholder:text-gray-400 focus:outline-none focus:border-primary focus:bg-white transition-all shadow-sm"
                   onKeyDown={(e) => {
                     if (e.key === "Enter") {
@@ -393,7 +393,7 @@ export default function AIWidget() {
               </div>
 
               <div className="text-[7px] 2xl:text-[9px] text-gray-300 text-center font-bold uppercase tracking-[0.15em] 2xl:tracking-[0.3em]">
-                Secure interaction encrypted by Dentia AI
+                Secure interaction encrypted by UpperEast AI
               </div>
             </div>
           </motion.div>

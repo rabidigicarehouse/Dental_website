@@ -5,18 +5,22 @@ import Footer from '@/components/Footer';
 export default function BlogSingle() {
   return (
     <>
-      <section id="subheader" className="bg-color-op-1 text-center">
+      <section
+        id="subheader"
+        className="page-subheader text-center"
+        style={{
+          backgroundImage: 'url(/office tour/9.png)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+        }}
+      >
         <div className="container relative z-2">
-          <div className="row justify-content-center">
-            <div className="col-lg-10">
-              <h2 className="wow fadeInUp">Discover 10 Easy Tips to Maintain a Healthier and Brighter Smile Today</h2>
-              <div className="border-bottom my-3"></div>
-              <ul className="crumb wow fadeInDown">
-                <li><Link href="/">Home</Link></li>
-                <li className="active">Blog</li>
-              </ul>
-            </div>
-          </div>
+          <div className="page-subheader-eyebrow" style={{ color: 'rgba(255,255,255,0.85)' }}>Blog Post</div>
+          <h2 className="page-subheader-title" style={{ color: '#fff', fontSize: '36px' }}>Discover 10 Easy Tips to Maintain a Healthier and Brighter Smile Today</h2>
+          <ul className="crumb">
+            <li><Link href="/" style={{ color: 'rgba(255,255,255,0.8)' }}>Home</Link></li>
+            <li className="active" style={{ color: '#fff' }}>Blog</li>
+          </ul>
         </div>
       </section>
 

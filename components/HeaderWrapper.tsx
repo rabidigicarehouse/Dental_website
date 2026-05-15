@@ -21,7 +21,9 @@ export default function HeaderWrapper() {
     headerClass = "transparent header-light header-float";
     useHeaderInner = true;
   } else if (!isHomepage) {
-    headerClass = "transparent header-light";
+    // Use the SAME classes as the scrolled-down homepage header
+    // so it looks identical (white bg, dark logo, dark nav text)
+    headerClass = "transparent scroll-light smaller uedi-subpage-header";
   }
 
   /* on3step.js strips `autoshow` from header on ≤992px, so the theme's
@@ -31,6 +33,14 @@ export default function HeaderWrapper() {
     const onScroll = () => {
       const header = document.querySelector('header');
       if (!header) return;
+
+      if (!isHomepage) {
+        // Non-homepage: always keep `smaller` applied
+        header.classList.add('smaller');
+        return;
+      }
+
+      // Homepage: toggle `smaller` on scroll
       if (window.scrollY >= 50) {
         header.classList.add('smaller');
       } else {
@@ -40,7 +50,7 @@ export default function HeaderWrapper() {
     onScroll();
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
-  }, [pathname]);
+  }, [pathname, isHomepage]);
 
   /* Tag the body with `is-homepage` / `is-subpage` so CSS can style
      the header differently on subpages (dark on mobile, content pushed
@@ -84,3 +94,4 @@ export default function HeaderWrapper() {
 
   return <Header className={headerClass} useHeaderInner={useHeaderInner} />;
 }
+

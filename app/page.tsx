@@ -157,7 +157,7 @@ export default function Home() {
       </section>
 
       {/* Info Boxes */}
-      <section className="cta-glass-section text-light pt-50 pb-50">
+      <section className="cta-glass-section text-light pt-20 pb-20" style={{ marginTop: '-30px' }}>
         <div className="cta-glass-bg" />
         <div className="cta-glass-overlay" />
         <div className="container relative" style={{ zIndex: 2 }}>

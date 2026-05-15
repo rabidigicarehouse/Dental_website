@@ -3,6 +3,316 @@
 @tailwind utilities;
 
 /* ========================================== */
+/* Subpage header: use theme's native smaller+scroll-light look
+   but keep position:relative so page content flows BELOW the header
+   instead of hiding behind it (position:fixed). */
+/* ========================================== */
+header.uedi-subpage-header,
+header.uedi-subpage-header.smaller {
+  position: relative !important;
+  top: auto !important;
+}
+
+/* On subpages, keep the top-banner visible (not hidden by scroll) */
+.is-subpage .top-banner {
+  position: relative !important;
+}
+
+/* ========================================== */
+/* Page Subheader Banner (for testimonials, about, etc.) */
+/* ========================================== */
+.page-subheader {
+  padding: 140px 0 100px 0;
+  background: var(--bg-dark-1);
+  color: #fff;
+  position: relative;
+  overflow: hidden;
+}
+.page-subheader::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(0,10,91,0.72), rgba(74,124,210,0.55));
+  z-index: 1;
+}
+.page-subheader-eyebrow {
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 4px;
+  color: rgba(255,255,255,0.7);
+  margin-bottom: 12px;
+}
+.page-subheader-title {
+  font-size: 52px;
+  font-weight: 700;
+  line-height: 1.1;
+  margin-bottom: 6px;
+  font-family: var(--heading-font);
+}
+
+/* Service pages use #13277A overlay instead of the default */
+.page-subheader--service::before {
+  background: linear-gradient(135deg, rgba(19,39,122,0.75), rgba(19,39,122,0.55)) !important;
+}
+
+/* ========================================== */
+/* Custom cursor sizing for ≤1280px          */
+/* ========================================== */
+@media (max-width: 1280px) {
+  .cursor-outer {
+    width: 28px !important;
+    height: 28px !important;
+  }
+  .cursor-inner {
+    width: 6px !important;
+    height: 6px !important;
+  }
+}
+
+/* ========================================== */
+/* Mega Menu — appear BELOW navbar           */
+/* ========================================== */
+/* #mainmenu is the positioning context for the mega dropdown */
+#mainmenu {
+  position: relative !important;
+}
+/* The li containing a .mega dropdown must NOT be a positioning context */
+#mainmenu > li:has(> ul.mega) {
+  position: static !important;
+}
+/* Override theme's position:fixed with position:absolute */
+#mainmenu > li > ul.mega {
+  position: absolute !important;
+  top: 100% !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+  width: 100vw !important;
+  max-width: 1200px !important;
+  height: 0 !important;
+  overflow: hidden !important;
+  transition: height 0.3s ease, opacity 0.3s ease, visibility 0.3s ease !important;
+}
+/* Show mega menu on hover */
+#mainmenu > li:hover > ul.mega {
+  height: auto !important;
+  overflow: visible !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+/* Regular dropdowns still use top:100% */
+#mainmenu li ul:not(.mega) {
+  top: 100% !important;
+}
+
+/* Compact the dropdown menu on ≤1280px */
+@media (max-width: 1280px) {
+  #mainmenu li ul {
+    min-width: 170px !important;
+    padding: 6px 0 !important;
+  }
+  #mainmenu li li a {
+    padding: 5px 14px !important;
+    font-size: 12px !important;
+  }
+  #mainmenu > li > ul.mega {
+    padding: 14px !important;
+    max-width: 960px !important;
+  }
+  #mainmenu li ul.mega li.title {
+    font-size: 11px !important;
+    padding: 0 0 8px 0 !important;
+  }
+  #mainmenu li ul.mega ul li a {
+    font-size: 12px !important;
+    padding: 2px 0 !important;
+  }
+  #mainmenu > li > a {
+    font-size: 12px !important;
+  }
+}
+
+/* ========================================== */
+/* Video Testimonials Card Grid              */
+/* ========================================== */
+.testi-video-section {
+  padding: 80px 0;
+}
+.testi-video-card {
+  border-radius: 16px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.35s ease, box-shadow 0.35s ease;
+  background: #fff;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.07);
+}
+.testi-video-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 16px 48px rgba(0,10,91,0.15);
+}
+.testi-video-thumb {
+  position: relative;
+  aspect-ratio: 16/9;
+  overflow: hidden;
+}
+.testi-video-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.5s ease;
+}
+.testi-video-card:hover .testi-video-thumb img {
+  transform: scale(1.08);
+}
+.testi-video-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(transparent 40%, rgba(0,10,91,0.55));
+  transition: opacity 0.35s;
+}
+.testi-video-card:hover .testi-video-overlay {
+  opacity: 0.7;
+}
+.testi-video-play {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 58px;
+  height: 58px;
+  background: rgba(255,255,255,0.96);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.35), 0 0 0 8px rgba(255,255,255,0.18);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  z-index: 2;
+}
+.testi-video-card:hover .testi-video-play {
+  transform: translate(-50%, -50%) scale(1.12);
+  box-shadow: 0 12px 40px rgba(0,0,0,0.45), 0 0 0 12px rgba(255,255,255,0.25);
+}
+.testi-video-play-tri {
+  width: 0;
+  height: 0;
+  border-top: 10px solid transparent;
+  border-bottom: 10px solid transparent;
+  border-left: 18px solid #4A7CD2;
+  margin-left: 4px;
+}
+.testi-video-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 18px;
+}
+.testi-video-tag {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--heading-font-color);
+}
+.testi-video-num {
+  font-size: 12px;
+  font-weight: 700;
+  color: #4A7CD2;
+  letter-spacing: 1px;
+}
+
+/* ========================================== */
+/* About Page Doctor Section                 */
+/* ========================================== */
+.about-doctor-img {
+  border-radius: 20px;
+  box-shadow: 0 20px 60px rgba(0,10,91,0.15);
+  width: 100%;
+  max-width: 420px;
+}
+.about-video-embed {
+  position: relative;
+  padding-bottom: 56.25%;
+  height: 0;
+  overflow: hidden;
+  border-radius: 16px;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.12);
+}
+.about-video-embed iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+.about-memberships li {
+  font-size: 15px;
+  line-height: 2;
+  color: var(--body-font-color);
+}
+
+/* ========================================== */
+/* Doctor Float Image (book-style text wrap)  */
+/* ========================================== */
+.doctor-float-section {
+  overflow: hidden;
+}
+.doctor-float-img {
+  float: right;
+  width: 380px;
+  max-width: 45%;
+  margin: 0 0 24px 32px;
+  border-radius: 20px;
+  box-shadow: 0 20px 60px rgba(0,10,91,0.15);
+  shape-outside: margin-box;
+}
+@media (max-width: 767px) {
+  .doctor-float-img {
+    float: none;
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    margin: 0 0 24px 0;
+  }
+}
+
+/* ========================================== */
+/* Office Tour Gallery                       */
+/* ========================================== */
+.office-tour-card {
+  position: relative;
+  cursor: pointer;
+  overflow: hidden;
+}
+.office-tour-img {
+  width: 100%;
+  height: 280px;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.5s ease;
+}
+.office-tour-card:hover .office-tour-img {
+  transform: scale(1.08);
+}
+.office-tour-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(transparent 40%, rgba(0,10,91,0.7));
+  display: flex;
+  align-items: flex-end;
+  padding: 20px;
+  transition: opacity 0.35s;
+}
+.office-tour-label {
+  color: #fff;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+/* ========================================== */
 /* Universal card/container overflow protection */
 /* ========================================== */
 .svc-photo-card,
@@ -22,6 +332,16 @@
   min-width: 0;
 }
 
+/* All card containers must clip overflow */
+.svc-photo-card,
+.payment-method-card,
+.testi-video-card,
+.office-tour-card,
+[class*="-card"] {
+  overflow: hidden;
+}
+
+/* All text inside cards wraps properly */
 .svc-photo-card *,
 .payment-method-card *,
 .border-gray *,
@@ -30,13 +350,15 @@
 .map-form-inner *,
 .accordion-item-wrap *,
 .svc-photo-body *,
+.p-40 *,
 [class*="-card"] *,
 [class*="-box"] * {
   overflow-wrap: break-word;
   word-wrap: break-word;
-  word-break: break-word;
+  word-break: normal;
   hyphens: auto;
   max-width: 100%;
+  white-space: normal;
 }
 
 /* But never break long URLs/code awkwardly in plain text */
@@ -44,6 +366,29 @@
 .payment-method-card a,
 [class*="-card"] a {
   hyphens: none;
+}
+
+/* The theme p-40 cards used on testimonials text cards */
+.p-40 {
+  overflow: hidden;
+}
+.p-40 p {
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: normal;
+  hyphens: auto;
+  white-space: normal;
+}
+
+/* When AI panel is open, switch tight 4-col grids to 2-col */
+body.ai-widget-open .payment-method-card {
+  padding: 22px 18px;
+}
+body.ai-widget-open .payment-method-title {
+  font-size: 15px;
+}
+body.ai-widget-open .payment-method-desc {
+  font-size: 12.5px;
 }
 
 /* Hero h1 should NEVER hyphenate */
@@ -674,7 +1019,9 @@ body.ai-widget-open #section-intro .swiper-inner {
 /* ========================================== */
 /* Header / Sticky shifts when AI open        */
 /* ========================================== */
-body.ai-widget-open header.smaller {
+
+/* Homepage scrolled header is position:fixed — needs explicit width/margin */
+body.ai-widget-open header.smaller:not(.uedi-subpage-header) {
   width: calc(100% - 300px) !important;
   margin-right: 300px !important;
   left: 0 !important;
@@ -682,10 +1029,18 @@ body.ai-widget-open header.smaller {
 }
 
 @media (min-width: 1600px) {
-  body.ai-widget-open header.smaller {
+  body.ai-widget-open header.smaller:not(.uedi-subpage-header) {
     width: calc(100% - 420px) !important;
     margin-right: 420px !important;
   }
+}
+
+/* Subpage headers are position:relative INSIDE #wrapper — the wrapper
+   already shifts, so the header shifts with it. No extra override needed.
+   Just make sure the container centers properly. */
+body.ai-widget-open header.uedi-subpage-header {
+  width: 100% !important;
+  margin-right: 0 !important;
 }
 
 /* Non-scrolled header is INSIDE #wrapper which already shifts — don't double-shift */
@@ -2512,6 +2867,7 @@ body.ai-widget-open #back-to-top {
   text-align: left;
   transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
   min-width: 0;
+  overflow: hidden;
 }
 
 .payment-method-card:hover {
@@ -2546,6 +2902,11 @@ body.ai-widget-open #back-to-top {
   line-height: 1.6;
   flex: 1;
   margin-bottom: 14px;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: normal;
+  hyphens: auto;
+  white-space: normal;
 }
 
 .payment-method-note {
@@ -2560,6 +2921,8 @@ body.ai-widget-open #back-to-top {
   text-transform: uppercase;
   margin-bottom: 16px;
   align-self: flex-start;
+  white-space: normal;
+  overflow-wrap: break-word;
 }
 
 .payment-method-link {
@@ -3049,11 +3412,81 @@ body.ai-widget-open .svc-photo-wrap {
 }
 
 /* ========================================== */
+/* Contact Info Cards                         */
+/* ========================================== */
+.contact-info-card {
+  background: #fff;
+  padding: 30px 20px;
+  border-radius: 20px;
+  box-shadow: 0 10px 40px rgba(26, 51, 82, 0.05);
+  transition: all 0.35s ease;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 1px solid rgba(0,0,0,0.03);
+}
+
+.contact-info-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 60px rgba(74, 124, 210, 0.12);
+}
+
+.contact-info-icon {
+  width: 64px;
+  height: 64px;
+  background: rgba(74, 124, 210, 0.1);
+  color: #4A7CD2;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  margin-bottom: 20px;
+  transition: all 0.35s ease;
+}
+
+.contact-info-card:hover .contact-info-icon {
+  background: #4A7CD2;
+  color: #fff;
+  transform: scale(1.1) rotate(8deg);
+}
+
+.contact-info-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #1a3352;
+  margin-bottom: 10px;
+}
+
+.contact-info-text {
+  font-size: 14px;
+  color: #666;
+  line-height: 1.6;
+  margin-bottom: 0;
+}
+
+/* ========================================== */
 /* Map + Get In Touch Section                 */
 /* ========================================== */
 .map-contact-section {
-  background: #f4f7fc;
-  padding: 60px 0;
+  position: relative;
+  background: url('/images/background/4.webp') no-repeat center center;
+  background-size: cover;
+  padding: 80px 0;
+}
+
+.map-contact-section::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(74, 124, 209, 0.82); /* #4A7CD1 overlay */
+  z-index: 1;
+}
+
+.map-contact-section .container {
+  position: relative;
+  z-index: 2;
 }
 
 .map-contact-card {
@@ -3613,3 +4046,337 @@ body.ai-widget-open .svc-photo-wrap {
     font-size: 22px !important;
   }
 }
+
+/* ========================================== */
+/* Forms — clean styled inputs matching brand */
+/* ========================================== */
+.form-page-wrap {
+  background: #f5f7fb;
+  padding: 56px 0;
+}
+
+@media (max-width: 768px) {
+  .form-page-wrap { padding: 40px 0; }
+}
+
+.dental-form {
+  background: #ffffff;
+  border-radius: 18px;
+  padding: 48px 56px;
+  box-shadow: 0 10px 40px rgba(26, 51, 82, 0.08);
+  max-width: 980px;
+  margin: 0 auto;
+}
+
+.dental-form-title {
+  text-align: center;
+  color: #1a3352;
+  font-size: clamp(26px, 3vw, 38px);
+  font-weight: 800;
+  margin: 0 0 36px;
+  letter-spacing: -0.3px;
+}
+
+.dental-form-section-title {
+  color: #1a3352;
+  font-size: 17px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  padding-bottom: 8px;
+  margin: 32px 0 18px;
+  border-bottom: 2px solid #4A7CD2;
+  display: block;
+}
+
+.dental-form-section-title:first-of-type {
+  margin-top: 0;
+}
+
+.dental-form-row {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 14px;
+  flex-wrap: wrap;
+}
+
+.dental-form-row > div {
+  flex: 1;
+  min-width: 180px;
+}
+
+.dental-form-label {
+  display: block;
+  font-size: 13px;
+  font-weight: 700;
+  color: #1a3352;
+  margin: 0 0 6px;
+  letter-spacing: 0.2px;
+}
+
+.dental-form-input,
+.dental-form-select,
+.dental-form-textarea {
+  width: 100%;
+  padding: 11px 14px;
+  border: 1.5px solid #dde3ee;
+  border-radius: 8px;
+  font-size: 14px;
+  color: #1a3352;
+  background: #ffffff;
+  outline: none;
+  transition: all 0.2s ease;
+  font-family: inherit;
+  box-sizing: border-box;
+}
+
+.dental-form-input:focus,
+.dental-form-select:focus,
+.dental-form-textarea:focus {
+  border-color: #4A7CD2;
+  box-shadow: 0 0 0 3px rgba(74, 124, 210, 0.12);
+}
+
+.dental-form-input::placeholder,
+.dental-form-textarea::placeholder {
+  color: #aab4c2;
+}
+
+.dental-form-textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+/* Inline radio group e.g. "○ Yes  ○ No" */
+.dental-radio-group {
+  display: inline-flex;
+  gap: 16px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.dental-radio-group label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #1a3352;
+  cursor: pointer;
+}
+
+.dental-radio-group input[type="radio"],
+.dental-radio-group input[type="checkbox"] {
+  accent-color: #4A7CD2;
+  cursor: pointer;
+}
+
+/* Inline question row "Question text? ○ Yes  ○ No" */
+.dental-q-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px solid #eef2f8;
+  font-size: 14px;
+  color: #1a3352;
+  gap: 12px;
+}
+
+.dental-q-row:last-child {
+  border-bottom: none;
+}
+
+.dental-q-row-text {
+  flex: 1;
+}
+
+/* Medical-conditions 3-column grid with yes/no checkboxes */
+.dental-conditions-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0 24px;
+}
+
+.dental-condition-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 7px 0;
+  border-bottom: 1px solid #f0f3f8;
+  font-size: 13.5px;
+  color: #1a3352;
+  gap: 10px;
+}
+
+@media (max-width: 768px) {
+  .dental-conditions-grid {
+    grid-template-columns: 1fr;
+  }
+  .dental-form { padding: 32px 22px; }
+}
+
+/* Centered section header (for HEALTH INFORMATION etc.) */
+.dental-form-centered-header {
+  text-align: center;
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  color: #1a3352;
+  margin: 36px 0 22px;
+  text-transform: uppercase;
+}
+
+/* Bulleted question list (for screening form) */
+.dental-q-bullets {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.dental-q-bullets > li {
+  position: relative;
+  padding: 14px 0 14px 22px;
+  font-size: 15px;
+  color: #1a3352;
+  font-weight: 700;
+  border-bottom: 1px solid #eef2f8;
+}
+
+.dental-q-bullets > li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 22px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #4A7CD2;
+}
+
+.dental-q-bullets .dental-q-options {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-weight: 400;
+  font-size: 14px;
+  margin-top: 10px;
+  padding-left: 4px;
+}
+
+.dental-q-bullets .dental-q-options label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  color: #56697c;
+}
+
+/* Hint text under a question (e.g. "(e.g., trust, advanced technology…)") */
+.dental-form-hint {
+  font-size: 12px;
+  color: #9aaab8;
+  font-style: italic;
+  margin: 4px 0 8px;
+}
+
+/* COVID consent body — inline text with blank fill-ins */
+.dental-consent-body {
+  font-size: 15px;
+  line-height: 1.85;
+  color: #1a3352;
+}
+
+.dental-consent-body p {
+  margin: 0 0 14px;
+}
+
+.dental-consent-body ul {
+  padding-left: 28px;
+  margin: 14px 0;
+}
+
+.dental-consent-body ul li {
+  margin: 10px 0;
+}
+
+.dental-inline-blank {
+  display: inline-block;
+  border-bottom: 1px solid #4A7CD2;
+  min-width: 200px;
+  padding: 2px 6px;
+  font-size: 14px;
+  font-family: inherit;
+  background: transparent;
+  outline: none;
+  color: #1a3352;
+}
+
+.dental-inline-blank:focus {
+  border-bottom-width: 2px;
+}
+
+/* Bottom action row — Submit + Download side by side */
+.dental-form-actions {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 14px;
+  margin-top: 36px;
+  flex-wrap: wrap;
+}
+
+.dental-btn-submit,
+.dental-btn-download {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 13px 28px;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  min-width: 180px;
+  position: relative;
+  overflow: hidden;
+}
+
+.dental-btn-submit {
+  background: linear-gradient(135deg, #0A1461 0%, #4A7CD2 100%);
+  color: #ffffff;
+  box-shadow: 0 8px 22px rgba(10, 20, 97, 0.32);
+}
+
+.dental-btn-submit:hover {
+  background: linear-gradient(135deg, #4A7CD2 0%, #0A1461 100%);
+  transform: translateY(-3px);
+  box-shadow: 0 14px 32px rgba(10, 20, 97, 0.48);
+}
+
+.dental-btn-download {
+  background: transparent;
+  color: #1a3352;
+  border: 2px solid #4A7CD2;
+}
+
+.dental-btn-download:hover {
+  background: #4A7CD2;
+  color: #ffffff;
+  transform: translateY(-3px);
+  box-shadow: 0 12px 28px rgba(74, 124, 210, 0.38);
+}
+/* ========================================== */
+/* Utility Classes                            */
+/* ========================================== */
+.rounded-30 { border-radius: 30px !important; }
+.rounded-20 { border-radius: 20px !important; }
+.rounded-15 { border-radius: 15px !important; }
+.shadow-2xl { box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25) !important; }
+.fw-800 { font-weight: 800 !important; }
+.fw-900 { font-weight: 900 !important; }

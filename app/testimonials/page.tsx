@@ -1,209 +1,254 @@
+'use client';
+
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { AnimatePresence, motion } from 'framer-motion';
 import MapContactSection from '@/components/MapContactSection';
 import Footer from '@/components/Footer';
 
+const videoIds = [
+  't9qpsdYNPc0',
+  '1grIDPK_6uE',
+  'iCoNhlEWBjY',
+  '79R0SBKLAVw',
+  'CzpEq6RZimI',
+  'EPEo5ivNLhA',
+  'PcZKc9Fn5yw',
+  'vluu5GbOQs8',
+];
+
+const textTestimonials = [
+  {
+    name: 'Stefania',
+    img: '1.webp',
+    stars: 5,
+    text: "Dr. Harvey wants your smile to be perfect so get ready! She is precise and very attentive to details. She will work with your schedule and your needs. Friendly and patient oriented. Highly recommended!",
+    source: 'Google',
+  },
+  {
+    name: 'Michael S.',
+    img: '2.webp',
+    stars: 5,
+    text: "I've always been nervous about dental visits, but the staff made me feel completely comfortable. Their gentle care and attention to detail truly stand out.",
+    source: 'Google',
+  },
+  {
+    name: 'Robert L.',
+    img: '3.webp',
+    stars: 5,
+    text: 'My family and I have been coming here for years. The service is exceptional, and the team always goes the extra mile to make sure we\u2019re happy.',
+    source: 'Google',
+  },
+];
+
 export default function Testimonials() {
+  const [videoPreview, setVideoPreview] = useState<string | null>(null);
+  const [currentTesti, setCurrentTesti] = useState(0);
+
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setVideoPreview(null);
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, []);
+
+  useEffect(() => {
+    document.body.style.overflow = videoPreview ? 'hidden' : '';
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [videoPreview]);
+
   return (
     <>
-      <section id="subheader" className="bg-color-op-1 text-center">
+      {/* Subheader */}
+      <section
+        id="subheader"
+        className="page-subheader text-center"
+        style={{
+          backgroundImage: 'url(/office tour/2.png)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+        }}
+      >
         <div className="container relative z-2">
-          <div className="row align-items-center">
-            <div className="col-lg-12">
-              <h1 className="wow fadeInUp">Testimonials</h1>
-              <div className="border-bottom my-3"></div>
-              <ul className="crumb wow fadeInDown">
-                <li><Link href="/">Home</Link></li>
-                <li className="active">Testimonials</li>
-              </ul>
-            </div>
-          </div>
+          <div className="page-subheader-eyebrow" style={{ color: 'rgba(255,255,255,0.85)' }}>What Patients Say</div>
+          <h1 className="page-subheader-title" style={{ color: '#fff' }}>Testimonials</h1>
+          <ul className="crumb">
+            <li><Link href="/" style={{ color: 'rgba(255,255,255,0.8)' }}>Home</Link></li>
+            <li className="active" style={{ color: '#fff' }}>Testimonials</li>
+          </ul>
         </div>
       </section>
-      
-      <section>
+
+      {/* Video Testimonials Grid */}
+      <section className="testi-video-section">
         <div className="container">
-          <div id="gallery" className="row g-4 justify-content-center wow fadeInUp">
-            <div className="col-md-4 item">
-              <div className="p-40 bg-light rounded-1">
-                <div className="de-rating-ext mb-2">
-                  <span className="d-stars">
-                    <i className="fa fa-star"></i>
-                    <i className="fa fa-star"></i>
-                    <i className="fa fa-star"></i>
-                    <i className="fa fa-star"></i>
-                    <i className="fa fa-star"></i>
-                  </span>
-                </div>
-                <p>Dr. Patel did an amazing job with my teeth whitening. I’ve never felt so confident about my smile!</p>
-                <div className="relative">
-                  <img className="circle absolute w-40px" alt="" src="/images/testimonial/1.webp" />
-                  <div className="ms-60px">
-                    <h4 className="mb-0 fs-16 lh-1">Jessica M.</h4>
-                    <span className="fs-14">Teeth Whitening</span>
-                  </div>
-                </div>
-              </div>
+          <div className="row g-4 justify-content-center text-center mb-5">
+            <div className="col-lg-8">
+              <div className="subtitle id-color wow fadeInUp mb-3">Real Stories from Real Patients</div>
+              <h2 className="wow fadeInUp" data-wow-delay=".2s">Our Happy Customer</h2>
+              <p className="mb-0 wow fadeInUp">
+                Watch our patients share their personal journey, treatment experiences and the transformations they&apos;ve
+                received at Upper East Dental Innovations.
+              </p>
             </div>
+          </div>
 
-            <div className="col-md-4 item">
-              <div className="p-40 bg-light rounded-1">
-                <div className="de-rating-ext mb-2">
-                  <span className="d-stars">
-                    <i className="fa fa-star"></i>
-                    <i className="fa fa-star"></i>
-                    <i className="fa fa-star"></i>
-                    <i className="fa fa-star"></i>
-                    <i className="fa fa-star off"></i>
-                  </span>
-                </div>
-                <p>After my root canal with Dr. Lin, I had zero pain and quick recovery. Truly a top-notch experience.</p>
-                <div className="relative">
-                  <img className="circle absolute w-40px" alt="" src="/images/testimonial/2.webp" />
-                  <div className="ms-60px">
-                    <h4 className="mb-0 fs-16 lh-1">David R.</h4>
-                    <span className="fs-14">Root Canal Therapy</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="col-md-4 item">
-              <div className="p-40 bg-light rounded-1">
-                <div className="de-rating-ext mb-2">
-                  <span className="d-stars">
-                    <i className="fa fa-star"></i>
-                    <i className="fa fa-star"></i>
-                    <i className="fa fa-star"></i>
-                    <i className="fa fa-star"></i>
-                    <i className="fa fa-star"></i>
-                  </span>
-                </div>
-                <p>Dr. Kim’s gentle touch during my cleaning made the whole process so comfortable.</p>
-                <div className="relative">
-                  <img className="circle absolute w-40px" alt="" src="/images/testimonial/3.webp" />
-                  <div className="ms-60px">
-                    <h4 className="mb-0 fs-16 lh-1">Nina T.</h4>
-                    <span className="fs-14">Dental Cleaning</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="col-md-4 item">
-              <div className="p-40 bg-light rounded-1">
-                <div className="de-rating-ext mb-2">
-                  <span className="d-stars">
-                    <i className="fa fa-star"></i>
-                    <i className="fa fa-star"></i>
-                    <i className="fa fa-star"></i>
-                    <i className="fa fa-star"></i>
-                    <i className="fa fa-star"></i>
-                  </span>
-                </div>
-                <p>I was nervous about getting veneers, but Dr. Alvarez and her team walked me through everything. I love my new smile!</p>
-                <div className="relative">
-                  <img className="circle absolute w-40px" alt="" src="/images/testimonial/4.webp" />
-                  <div className="ms-60px">
-                    <h4 className="mb-0 fs-16 lh-1">Matthew L.</h4>
-                    <span className="fs-14">Porcelain Veneers</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="col-md-4 item">
-              <div className="p-40 bg-light rounded-1">
-                <div className="de-rating-ext mb-2">
-                  <span className="d-stars">
-                    <i className="fa fa-star"></i>
-                    <i className="fa fa-star"></i>
-                    <i className="fa fa-star"></i>
-                    <i className="fa fa-star"></i>
-                    <i className="fa fa-star off"></i>
-                  </span>
-                </div>
-                <p>Thanks to Dr. Chen, my dental implant looks and feels just like a real tooth.</p>
-                <div className="relative">
-                  <img className="circle absolute w-40px" alt="" src="/images/testimonial/5.webp" />
-                  <div className="ms-60px">
-                    <h4 className="mb-0 fs-16 lh-1">Olivia S.</h4>
-                    <span className="fs-14">Dental Implant</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="col-md-4 item">
-              <div className="p-40 bg-light rounded-1">
-                <div className="de-rating-ext mb-2">
-                  <span className="d-stars">
-                    <i className="fa fa-star"></i>
-                    <i className="fa fa-star"></i>
-                    <i className="fa fa-star"></i>
-                    <i className="fa fa-star"></i>
-                    <i className="fa fa-star"></i>
-                  </span>
-                </div>
-                <p>I chipped a tooth on vacation, but Dr. Nguyen fixed it the same day with bonding that looks perfect.</p>
-                <div className="relative">
-                  <img className="circle absolute w-40px" alt="" src="/images/testimonial/6.webp" />
-                  <div className="ms-60px">
-                    <h4 className="mb-0 fs-16 lh-1">Jake H.</h4>
-                    <span className="fs-14">Tooth Bonding</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="col-md-4 item">
-              <div className="p-40 bg-light rounded-1">
-                <div className="de-rating-ext mb-2">
-                  <span className="d-stars">
-                    <i className="fa fa-star"></i>
-                    <i className="fa fa-star"></i>
-                    <i className="fa fa-star"></i>
-                    <i className="fa fa-star"></i>
-                    <i className="fa fa-star"></i>
-                  </span>
-                </div>
-                <p>My daughter had her first cavity filled by Dr. Singh. He was so kind and patient with her.</p>
-                <div className="relative">
-                  <img className="circle absolute w-40px" alt="" src="/images/testimonial/7.webp" />
-                  <div className="ms-60px">
-                    <h4 className="mb-0 fs-16 lh-1">Melissa A.</h4>
-                    <span className="fs-14">Pediatric Dentistry</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="col-md-4 item">
-              <div className="p-40 bg-light rounded-1">
-                <div className="de-rating-ext mb-2">
-                  <span className="d-stars">
-                    <i className="fa fa-star"></i>
-                    <i className="fa fa-star"></i>
-                    <i className="fa fa-star"></i>
-                    <i className="fa fa-star"></i>
-                    <i className="fa fa-star"></i>
-                  </span>
-                </div>
-                <p>They’re professional, friendly, and genuinely care about your dental health. I trust them completely and recommend them to anyone looking for great care.</p>
-                <div className="relative">
-                    <img className="circle absolute w-40px" alt="" src="/images/testimonial/8.webp" />
-                    <div className="ms-60px">
-                        <h4 className="mb-0 fs-16 lh-1">Alex P.</h4>
-                        <span className="fs-14">Customer</span>
+          <div className="row g-4">
+            {videoIds.map((id, i) => (
+              <div className="col-lg-3 col-md-6 col-12 d-flex" key={id}>
+                <div
+                  className="testi-video-card w-100 wow fadeInUp"
+                  data-wow-delay={`${(i % 4) * 0.08}s`}
+                  onClick={() => setVideoPreview(id)}
+                >
+                  <div className="testi-video-thumb">
+                    <img
+                      src={`https://img.youtube.com/vi/${id}/hqdefault.jpg`}
+                      alt={`Patient Testimonial ${i + 1}`}
+                    />
+                    <div className="testi-video-overlay" />
+                    <div className="testi-video-play">
+                      <div className="testi-video-play-tri" />
                     </div>
+                  </div>
+                  <div className="testi-video-meta">
+                    <span className="testi-video-tag">Patient Story</span>
+                    <span className="testi-video-num">#{String(i + 1).padStart(2, '0')}</span>
+                  </div>
                 </div>
               </div>
-            </div>
-
+            ))}
           </div>
         </div>
       </section>
+
+      {/* Text Testimonials — same Premium Single Slide as homepage */}
+      <section className="bg-color-op-1 pt-100 pb-100">
+        <div className="container text-center">
+          <div className="subtitle id-color wow fadeInUp mb-3">Testimonials Revealed</div>
+          <h2 className="wow fadeInUp fs-60 mb-5" data-wow-delay=".2s">Hear Why Our Patients Love Us</h2>
+
+          <div className="testimonial-single-wrapper relative wow fadeInUp" data-wow-delay=".4s">
+            <div
+              className="testimonial-nav-btn prev"
+              onClick={() => setCurrentTesti((p) => (p - 1 + textTestimonials.length) % textTestimonials.length)}
+            >
+              <i className="arrow_carrot-left"></i>
+            </div>
+
+            <div className="testimonial-content-area">
+              <div className="d-flex align-items-center justify-content-center mb-4">
+                <img
+                  src={`/images/testimonial/${textTestimonials[currentTesti].img}`}
+                  className="testi-avatar-premium"
+                  alt={textTestimonials[currentTesti].name}
+                />
+                <div className="text-start ms-3">
+                  <h4 className="mb-1">{textTestimonials[currentTesti].name}</h4>
+                  <div className="stars-rating">
+                    {[...Array(textTestimonials[currentTesti].stars)].map((_, i) => (
+                      <i key={i} className="fa fa-star text-warning"></i>
+                    ))}
+                  </div>
+                </div>
+              </div>
+              <p className="testi-text-premium mb-4">{textTestimonials[currentTesti].text}</p>
+              <div className="testi-source-premium">
+                Posted On{' '}
+                <Link href="https://google.com" target="_blank" className="id-color fw-bold">
+                  {textTestimonials[currentTesti].source}
+                </Link>
+              </div>
+            </div>
+
+            <div
+              className="testimonial-nav-btn next"
+              onClick={() => setCurrentTesti((p) => (p + 1) % textTestimonials.length)}
+            >
+              <i className="arrow_carrot-right"></i>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* CTA */}
+      <section className="bg-color text-light pt-40 pb-40">
+        <div className="container">
+          <div className="row g-4 align-items-center">
+            <div className="col-md-9">
+              <h3 className="mb-0 fs-32 text-white">Ready to become our next happy patient?</h3>
+            </div>
+            <div className="col-lg-3 text-lg-end">
+              <Link className="btn-main btn-line fx-slide" href="/booking"><span>Book Appointment</span></Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <MapContactSection />
       <Footer />
+
+      {/* Video Modal */}
+      <AnimatePresence>
+        {videoPreview && (
+          <motion.div
+            className="preview-modal-overlay"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.25 }}
+            onClick={() => setVideoPreview(null)}
+            style={{
+              position: 'fixed', inset: 0,
+              background: 'rgba(0,0,0,0.96)',
+              backdropFilter: 'blur(24px)',
+              zIndex: 2147483647,
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              perspective: '1400px',
+              padding: '20px',
+            }}
+          >
+            <motion.div
+              initial={{ opacity: 0, scale: 0.35, rotateY: -22, rotateX: 10, y: 80 }}
+              animate={{ opacity: 1, scale: 1, rotateY: 0, rotateX: 0, y: 0 }}
+              exit={{ opacity: 0, scale: 0.35, rotateY: 22, y: 80 }}
+              transition={{ type: 'spring', damping: 22, stiffness: 270 }}
+              onClick={(e) => e.stopPropagation()}
+              style={{ position: 'relative', width: 'min(82vw, 920px)' }}
+            >
+              <div style={{
+                background: 'linear-gradient(135deg, #1a237e 0%, #4A7CD2 55%, #7BA7E8 100%)',
+                padding: '4px', borderRadius: '22px',
+                boxShadow: '0 30px 90px rgba(0,0,0,0.95), 0 0 80px rgba(74,124,210,0.6)',
+              }}>
+                <div style={{ borderRadius: '18px', overflow: 'hidden', aspectRatio: '16/9', background: '#000' }}>
+                  <iframe
+                    width="100%" height="100%"
+                    src={`https://www.youtube.com/embed/${videoPreview}?autoplay=1&rel=0`}
+                    title="Patient Testimonial"
+                    frameBorder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    referrerPolicy="strict-origin-when-cross-origin"
+                    allowFullScreen
+                    style={{ border: 'none', display: 'block', width: '100%', height: '100%' }}
+                  />
+                </div>
+              </div>
+
+              <button onClick={() => setVideoPreview(null)} style={{
+                position: 'absolute', top: '-18px', right: '-18px',
+                width: '44px', height: '44px', background: '#fff', border: 'none',
+                borderRadius: '50%', fontSize: '20px', fontWeight: 800, cursor: 'pointer',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                color: '#1a3352', boxShadow: '0 6px 24px rgba(0,0,0,0.6)', lineHeight: 1,
+              }}>&times;</button>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </>
   );
 }

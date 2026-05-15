@@ -72,18 +72,22 @@ const methods = [
 export default function Payments() {
   return (
     <>
-      <section id="subheader" className="bg-color-op-1 text-center">
+      <section
+        id="subheader"
+        className="page-subheader text-center"
+        style={{
+          backgroundImage: 'url(/office tour/9.png)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+        }}
+      >
         <div className="container relative z-2">
-          <div className="row align-items-center">
-            <div className="col-lg-12">
-              <h1 className="wow fadeInUp">Payment Options</h1>
-              <div className="border-bottom my-3"></div>
-              <ul className="crumb wow fadeInDown">
-                <li><Link href="/">Home</Link></li>
-                <li className="active">Payments</li>
-              </ul>
-            </div>
-          </div>
+          <div className="page-subheader-eyebrow" style={{ color: 'rgba(255,255,255,0.85)' }}>Flexible &amp; Convenient</div>
+          <h1 className="page-subheader-title" style={{ color: '#fff' }}>Payment Options</h1>
+          <ul className="crumb">
+            <li><Link href="/" style={{ color: 'rgba(255,255,255,0.8)' }}>Home</Link></li>
+            <li className="active" style={{ color: '#fff' }}>Payments</li>
+          </ul>
         </div>
       </section>
 
@@ -102,7 +106,7 @@ export default function Payments() {
 
           <div className="row g-4">
             {methods.map((m, i) => (
-              <div className="col-lg-3 col-md-6 d-flex" key={m.title}>
+              <div className="col-xl-3 col-lg-6 col-md-6 d-flex" key={m.title}>
                 <div
                   className="payment-method-card wow fadeInUp w-100"
                   data-wow-delay={`${i * 0.08}s`}

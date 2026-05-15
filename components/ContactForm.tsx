@@ -27,7 +27,7 @@ export default function ContactForm() {
         // Fallback for demo purposes if keys aren't set
         setTimeout(() => {
             const formData = new FormData(form.current!);
-            const mailtoLink = `mailto:contact@dentiacare.com?subject=New Contact from ${formData.get('name')}&body=${formData.get('message')}%0D%0A%0D%0AFrom: ${formData.get('name')} (${formData.get('email')}, ${formData.get('phone')})`;
+            const mailtoLink = `mailto:info@uedi.nyc?subject=New Contact from ${formData.get('name')}&body=${formData.get('message')}%0D%0A%0D%0AFrom: ${formData.get('name')} (${formData.get('email')}, ${formData.get('phone')})`;
             window.location.href = mailtoLink;
             setStatus('success');
         }, 1000);

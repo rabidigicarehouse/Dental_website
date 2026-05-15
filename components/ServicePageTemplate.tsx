@@ -91,19 +91,23 @@ export default function ServicePageTemplate(props: ServicePageProps) {
   return (
     <>
       {/* Subheader */}
-      <section id="subheader" className="bg-color-op-1 text-center">
+      <section
+        id="subheader"
+        className="page-subheader page-subheader--service text-center"
+        style={{
+          backgroundImage: `url("${introImage}")`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+        }}
+      >
         <div className="container relative z-2">
-          <div className="row align-items-center">
-            <div className="col-lg-12">
-              <h1 className="wow fadeInUp">{name}</h1>
-              <div className="border-bottom my-3"></div>
-              <ul className="crumb wow fadeInDown">
-                <li><Link href="/">Home</Link></li>
-                <li><Link href="/services">Services</Link></li>
-                <li className="active">{name}</li>
-              </ul>
-            </div>
-          </div>
+          <div className="page-subheader-eyebrow" style={{ color: 'rgba(255,255,255,0.85)' }}>Our Services</div>
+          <h1 className="page-subheader-title" style={{ color: '#fff' }}>{name}</h1>
+          <ul className="crumb">
+            <li><Link href="/" style={{ color: 'rgba(255,255,255,0.8)' }}>Home</Link></li>
+            <li><Link href="/services" style={{ color: 'rgba(255,255,255,0.8)' }}>Services</Link></li>
+            <li className="active" style={{ color: '#fff' }}>{name}</li>
+          </ul>
         </div>
       </section>
 

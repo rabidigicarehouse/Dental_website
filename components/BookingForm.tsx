@@ -31,7 +31,7 @@ export default function BookingForm() {
 
     if (!serviceId || !templateId || !publicKey) {
       const formData = new FormData(formRef.current);
-      const mailto = `mailto:contact@dentiacare.com?subject=Booking Appointment - ${formData.get('service')}&body=Name: ${formData.get('name')}%0D%0AEmail: ${formData.get('email')}%0D%0APhone: ${formData.get('phone')}%0D%0AService: ${formData.get('service')}%0D%0ADate: ${formData.get('date')}%0D%0ATime: ${formData.get('time')}%0D%0AMessage: ${formData.get('message')}`;
+      const mailto = `mailto:info@uedi.nyc?subject=Booking Appointment - ${formData.get('service')}&body=Name: ${formData.get('name')}%0D%0AEmail: ${formData.get('email')}%0D%0APhone: ${formData.get('phone')}%0D%0AService: ${formData.get('service')}%0D%0ADate: ${formData.get('date')}%0D%0ATime: ${formData.get('time')}%0D%0AMessage: ${formData.get('message')}`;
       window.location.href = mailto;
       setStatus('success');
       return;

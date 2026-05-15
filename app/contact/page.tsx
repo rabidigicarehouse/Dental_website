@@ -6,61 +6,83 @@ import Footer from '@/components/Footer';
 export default function Contact() {
   return (
     <>
-      <section id="subheader" className="bg-color-op-1 text-center">
+      <section
+        id="subheader"
+        className="page-subheader text-center"
+        style={{
+          backgroundImage: 'url(/office tour/8.jpeg)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+        }}
+      >
         <div className="container relative z-2">
-          <div className="row align-items-center">
-            <div className="col-lg-12">
-              <h1 className="wow fadeInUp">Contact Us</h1>
-              <div className="border-bottom my-3"></div>
-              <ul className="crumb wow fadeInDown">
-                <li><Link href="/">Home</Link></li>
-                <li className="active">Contact</li>
-              </ul>
-            </div>
-          </div>
+          <div className="page-subheader-eyebrow" style={{ color: 'rgba(255,255,255,0.85)' }}>Get In Touch</div>
+          <h1 className="page-subheader-title" style={{ color: '#fff' }}>Contact Us</h1>
+          <ul className="crumb">
+            <li><Link href="/" style={{ color: 'rgba(255,255,255,0.8)' }}>Home</Link></li>
+            <li className="active" style={{ color: '#fff' }}>Contact</li>
+          </ul>
         </div>
       </section>
 
       <section>
         <div className="container">
-          <div className="row g-4">
-            <div className="col-lg-6">
-              <div className="subtitle">Get In Touch</div>
-              <h2 className="wow fadeInUp">We are always ready to help you and answer your questions</h2>
+          <div className="row justify-content-center text-center">
+            <div className="col-lg-10">
+              <div className="subtitle wow fadeInUp">Get In Touch</div>
+              <h2 className="wow fadeInUp" data-wow-delay=".2s">We are always ready to help you and answer your questions</h2>
+              <p className="wow fadeInUp" data-wow-delay=".3s">
+                Whether you have a question, a suggestion, or just want to say hello, this is the place to do it. Our team is dedicated to providing you with the best possible care and information. Reach out to us through any of the channels below.
+              </p>
 
-              <p>Whether you have a question, a suggestion, or just want to say hello, this is the place to do it. Please fill out the form below with your details and message, and we&apos;ll get back to you as soon as possible.</p>
+              <div className="spacer-single"></div>
 
-              <div className="row g-4 gx-5">
-                <div className="col-lg-6">
-                  <div className="fw-bold text-dark"><i className="icofont-clock-time me-2 id-color-2"></i>We&apos;re Open</div>
-                  MON - Fri (09 am - 06 pm)
+              <div className="row g-4 gx-5 justify-content-center">
+                {/* Card 1: We're Open */}
+                <div className="col-lg-3 col-md-6">
+                  <div className="contact-info-card wow fadeInRight" data-wow-delay=".1s">
+                    <div className="contact-info-icon"><i className="icofont-clock-time"></i></div>
+                    <h4 className="contact-info-title">We&apos;re Open</h4>
+                    <p className="contact-info-text">MON - Fri (09 am - 06 pm)</p>
+                  </div>
                 </div>
 
-                <div className="col-lg-6">
-                  <div className="fw-bold text-dark"><i className="icofont-location-pin me-2 id-color-2"></i>Clinic Location</div>
-                  121 East 60th Street, Suite 1B New York, NY 10022
+                {/* Card 2: Clinic Location */}
+                <div className="col-lg-3 col-md-6">
+                  <div className="contact-info-card wow fadeInRight" data-wow-delay=".2s">
+                    <div className="contact-info-icon"><i className="icofont-location-pin"></i></div>
+                    <h4 className="contact-info-title">Clinic Location</h4>
+                    <p className="contact-info-text">121 East 60th Street, Suite 1B<br/>New York, NY 10022</p>
+                  </div>
                 </div>
 
-                <div className="col-lg-6">
-                  <div className="fw-bold text-dark"><i className="icofont-phone me-2 id-color-2"></i>Call Us Directly</div>
-                  <Link href="tel:+12126971701">212.697.1701</Link>
+                {/* Card 3: Call Us Directly */}
+                <div className="col-lg-3 col-md-6">
+                  <div className="contact-info-card wow fadeInRight" data-wow-delay=".3s">
+                    <div className="contact-info-icon"><i className="icofont-phone"></i></div>
+                    <h4 className="contact-info-title">Call Us Directly</h4>
+                    <p className="contact-info-text">
+                      <Link href="tel:+12126971701" className="id-color-2 fw-bold">212.697.1701</Link>
+                    </p>
+                  </div>
                 </div>
 
-                <div className="col-lg-6">
-                  <div className="fw-bold text-dark"><i className="icofont-envelope me-2 id-color-2"></i>Send a Message</div>
-                  contact@uppereastdentalnyc.com
+                {/* Card 4: Send an Email */}
+                <div className="col-lg-3 col-md-6">
+                  <div className="contact-info-card wow fadeInRight" data-wow-delay=".4s">
+                    <div className="contact-info-icon"><i className="icofont-envelope"></i></div>
+                    <h4 className="contact-info-title">Send an Email</h4>
+                    <p className="contact-info-text">
+                      <Link href="mailto:info@uedi.nyc" className="id-color-2 fw-bold">info@uedi.nyc</Link>
+                    </p>
+                  </div>
                 </div>
               </div>
-
             </div>
-
-            <div className="col-lg-6">
-              <ContactForm />
-            </div>
-
           </div>
         </div>
       </section>
+
       <MapContactSection />
       <Footer />
     </>

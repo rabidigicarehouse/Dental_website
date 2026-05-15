@@ -63,6 +63,11 @@ export default function Footer() {
 
               <div className="fw-bold text-white"><i className="icofont-clock-time me-2 id-color"></i>Opening Hours</div>
               MON - Fri (09 am - 06 pm)
+
+              <div className="spacer-20"></div>
+
+              <div className="fw-bold text-white"><i className="icofont-envelope me-2 id-color"></i>Email Us</div>
+              <Link href="mailto:info@uedi.nyc" className="text-white">info@uedi.nyc</Link>
             </div>
           </div>
         </div>

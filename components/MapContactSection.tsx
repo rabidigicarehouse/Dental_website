@@ -10,7 +10,7 @@ export default function MapContactSection() {
     e.preventDefault();
     if (!formRef.current) return;
     const d = new FormData(formRef.current);
-    const link = `mailto:contact@dentiacare.com?subject=Website Inquiry&body=Name: ${d.get('hcname')}%0D%0AEmail: ${d.get('hcemail')}%0D%0APhone: ${d.get('hcphone')}%0D%0AMessage: ${d.get('hcmsg')}`;
+    const link = `mailto:info@uedi.nyc?subject=Website Inquiry&body=Name: ${d.get('hcname')}%0D%0AEmail: ${d.get('hcemail')}%0D%0APhone: ${d.get('hcphone')}%0D%0AMessage: ${d.get('hcmsg')}`;
     window.location.href = link;
     setSent(true);
     formRef.current.reset();

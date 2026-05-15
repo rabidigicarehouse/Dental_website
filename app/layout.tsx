@@ -85,7 +85,7 @@ export default function RootLayout({
             <h5>Contact Us</h5>
             <div><i className="icofont-clock-time me-2 op-5"></i>Monday - Friday 08.00 - 18.00</div>
             <div><i className="icofont-location-pin me-2 op-5"></i>100 S Main St, New York, </div>
-            <div><i className="icofont-envelope me-2 op-5"></i>contact@dentiacare.com </div>
+            <div><i className="icofont-envelope me-2 op-5"></i>info@uedi.nyc </div>
 
             <div className="spacer-30-line"></div>
 
