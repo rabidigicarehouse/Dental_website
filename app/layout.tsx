@@ -9,6 +9,7 @@ import ScriptHandler from "@/components/ScriptHandler";
 import AIWidget from "@/components/ai/AIWidget";
 import TopBanner from "@/components/TopBanner";
 import Image from "next/image";
+import AccessibilityWidget from "@/components/AccessibilityWidget";
 
 export const metadata: Metadata = {
   title: "Upper East Dental — Dentist & Dental Clinic",
@@ -48,6 +49,7 @@ export default function RootLayout({
 
           <TopBanner />
           <HeaderWrapper />
+          <AccessibilityWidget />
 
           {/* content begin */}
           <div className="no-bottom no-top" id="content">
