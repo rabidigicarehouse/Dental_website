@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, ReactNode } from 'react';
+import { motion, PanInfo } from 'framer-motion';
 
 interface StackedSectionSliderProps {
   children: ReactNode;
@@ -8,13 +9,12 @@ interface StackedSectionSliderProps {
 }
 
 export default function StackedSectionSlider({ children, labels }: StackedSectionSliderProps) {
-  // Safely convert React children to an array
   const cards = React.Children.toArray(children);
   const count = cards.length;
   const [activeIdx, setActiveIdx] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
 
-  // Detect mobile viewport for responsive fanned deck offsets
+  // Detect mobile viewport
   useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.innerWidth < 992);
@@ -24,12 +24,12 @@ export default function StackedSectionSlider({ children, labels }: StackedSectio
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  // Handle automatic swapping every 5 seconds
+  // Handle automatic swapping
   useEffect(() => {
-    if (count <= 1) return; // No auto-swap if only 1 card
+    if (count <= 1) return;
     
     const timer = setInterval(() => {
-      setActiveIdx((prev) => (prev + 1) % count);
+      moveToNext();
     }, 5000);
 
     return () => clearInterval(timer);
@@ -39,9 +39,45 @@ export default function StackedSectionSlider({ children, labels }: StackedSectio
     setActiveIdx(idx);
   };
 
+  const moveToNext = () => {
+    setActiveIdx((prev) => (prev + 1) % count);
+  };
+
+  const moveToPrev = () => {
+    setActiveIdx((prev) => (prev - 1 + count) % count);
+  };
+
+  // Fluid drag-to-swap handler
+  const handleDragEnd = (idx: number, { offset, velocity }: PanInfo) => {
+    if (idx !== activeIdx) {
+      goTo(idx);
+      return;
+    }
+
+    const swipe = offset.x;
+    const threshold = 80;
+    const velocityThreshold = 400;
+
+    // Dragged left -> Next
+    if (swipe < -threshold || velocity.x < -velocityThreshold) {
+      moveToNext();
+    } 
+    // Dragged right -> Prev
+    else if (swipe > threshold || velocity.x > velocityThreshold) {
+      moveToPrev();
+    }
+  };
+
+  const getRelativeOffset = (idx: number, active: number, total: number) => {
+    let diff = idx - active;
+    if (diff > Math.floor(total / 2)) diff -= total;
+    if (diff < -Math.floor(total / 2)) diff += total;
+    return diff;
+  };
+
   return (
     <div className="stacked-slider">
-      {/* Tabs / labels at top */}
+      {/* Tabs */}
       <div className="stacked-tabs">
         {labels.map((label, idx) => (
           <button
@@ -55,52 +91,74 @@ export default function StackedSectionSlider({ children, labels }: StackedSectio
         ))}
       </div>
 
-      <div className="stacked-stage">
+      <div className="stacked-stage" style={{ paddingTop: isMobile ? '28px' : '54px' }}>
         <div className="stacked-cards-wrap">
           {cards.map((card, idx) => {
             const isActive = idx === activeIdx;
+            const relativeOffset = getRelativeOffset(idx, activeIdx, count);
             
-            // Dramatic, unmissable envelope-stack calculations!
-            // The back card is centered, but rotated massively so its corners stick out boldly.
-            const xOffset = 0; 
-            const yOffset = isActive ? 0 : (isMobile ? -25 : -35); // Shifted UP
-            const scale = isActive ? 1 : 0.98; // Keeps it large enough to peek out
-            
-            // Apply a dramatic 12-degree tilt for desktop, 8-degree for mobile
-            const tiltAngle = isMobile ? 8 : 12;
-            const rotate = isActive ? 0 : (idx === 0 ? -tiltAngle : tiltAngle); 
-            
-            const opacity = isActive ? 1 : 0.55; 
-            const zIndex = isActive ? 10 : 5;
+            const spreadX = isMobile ? 26 : 58;
+            const spreadY = isMobile ? -18 : -30;
+            const angle = isMobile ? 4 : 7;
 
-            // Pure CSS transforms for 100% reliable, fluid rendering (zero Framer Motion bugs)
-            const transform = `translate3d(${xOffset}px, ${yOffset}px, 0) scale(${scale}) rotate(${rotate}deg)`;
+            const xOffset = isActive ? 0 : relativeOffset * spreadX;
+            const yOffset = isActive ? 0 : spreadY;
+            const scale = isActive ? 1 : 0.94;
+            const rotate = isActive ? 0 : relativeOffset * angle;
+
+            const opacity = isActive ? 1 : 0.42;
+            const zIndex = 10 - Math.abs(relativeOffset);
 
             return (
-              <div
+              <motion.div
                 key={idx}
                 className={`stacked-card${isActive ? ' is-active' : ''}`}
-                style={{
-                  transform,
+                drag="x"
+                dragConstraints={{ left: 0, right: 0 }}
+                dragElastic={0.14}
+                onDragStart={() => {
+                  if (!isActive) {
+                    goTo(idx);
+                  }
+                }}
+                onDragEnd={(_, info) => handleDragEnd(idx, info)}
+                initial={false}
+                animate={{
+                  x: xOffset,
+                  y: yOffset,
+                  scale,
+                  rotate,
                   opacity,
                   zIndex,
-                  pointerEvents: isActive ? 'auto' : 'none',
-                  transition: 'all 0.65s cubic-bezier(0.25, 1, 0.15, 1)', // Smooth, premium spring-like CSS ease
+                }}
+                transition={{
+                  type: 'spring',
+                  stiffness: 240,
+                  damping: 24,
+                  mass: 0.9
+                }}
+                style={{ 
+                  zIndex,
+                  pointerEvents: 'auto',
                   position: 'absolute',
                   inset: 0,
-                  transformOrigin: 'center center' // Rotates exactly from the middle like an envelope
+                  transformOrigin: 'center center' 
+                }}
+                onClick={() => {
+                  if (!isActive) {
+                    goTo(idx);
+                  }
                 }}
               >
                 <div className="stacked-card-inner">
                   {card}
                 </div>
-              </div>
+              </motion.div>
             );
           })}
         </div>
       </div>
 
-      {/* Dots navigation at the bottom (replaces the arrows) */}
       <div className="stacked-dots">
         {cards.map((_, idx) => (
           <button

@@ -96,7 +96,7 @@ export default function Technology() {
                       {tech.content}
                     </div>
                     <div className="mt-4">
-                      <Link href="/booking" className="btn-main fx-slide"><span>Book Appointment</span></Link>
+                      <Link href="https://scheduling.simplifeye.co/#key=7O4hoFG2aH6pBmQ2YLegk45hvPEJrqZ&gaID=null" className="btn-main fx-slide"><span>Book Appointment</span></Link>
                     </div>
                   </div>
                 </div>
@@ -114,7 +114,7 @@ export default function Technology() {
               <h3 className="mb-0 fs-32 text-white">Experience the future of dentistry today.</h3>
             </div>
             <div className="col-lg-3 text-lg-end">
-              <Link className="btn-main btn-line fx-slide" href="/booking" data-hover="Book Appointment"><span>Book Appointment</span></Link>
+              <Link className="btn-main btn-line fx-slide" href="https://scheduling.simplifeye.co/#key=7O4hoFG2aH6pBmQ2YLegk45hvPEJrqZ&gaID=null" data-hover="Book Appointment"><span>Book Appointment</span></Link>
             </div>
           </div>
         </div>

@@ -174,7 +174,7 @@ export default function Services() {
               <h3 className="mb-0 fs-32 text-white">Ready to book your dental care session?</h3>
             </div>
             <div className="col-lg-3 text-lg-end">
-              <Link className="btn-main btn-line fx-slide" href="/booking"><span>Book Appointment</span></Link>
+              <Link className="btn-main btn-line fx-slide" href="https://scheduling.simplifeye.co/#key=7O4hoFG2aH6pBmQ2YLegk45hvPEJrqZ&gaID=null"><span>Book Appointment</span></Link>
             </div>
           </div>
         </div>

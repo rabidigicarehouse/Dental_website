@@ -105,6 +105,7 @@ header.uedi-subpage-header.smaller {
 body.is-homepage header:not(.smaller) #mainmenu>li>ul.mega {
   margin-top: 40px !important;
 }
+
 body.is-homepage header:not(.smaller) #mainmenu>li>ul.mega::before {
   content: '';
   position: absolute;
@@ -500,18 +501,20 @@ body.ai-widget-open .payment-method-desc {
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 540px;
+  min-height: 560px;
+  overflow: visible;
 }
 
 .stacked-cards-wrap {
   position: relative;
   width: min(95%, 1100px);
   height: 100%;
-  min-height: 540px;
+  min-height: 560px;
   display: flex;
   align-items: center;
   justify-content: center;
   perspective: 1400px;
+  overflow: visible;
 }
 
 .stacked-card {
@@ -522,14 +525,15 @@ body.ai-widget-open .payment-method-desc {
   justify-content: center;
   cursor: grab;
   filter: blur(0px);
-  transition: filter 0.4s ease;
+  transition: filter 0.4s ease, opacity 0.35s ease;
   user-select: none;
   transform-origin: center 60%;
+  overflow: visible;
 }
 
 .stacked-card:not(.is-active) {
-  filter: saturate(0.95);
-  pointer-events: auto;
+  filter: saturate(0.78) brightness(0.97);
+  cursor: pointer;
 }
 
 .stacked-card.is-active {
@@ -553,15 +557,39 @@ body.ai-widget-open .payment-method-desc {
   padding: 44px 48px;
   display: flex;
   align-items: center;
+  position: relative;
 }
 
 /* Back cards get a stronger paper-stack rim shadow */
 .stacked-card:not(.is-active) .stacked-card-inner {
   box-shadow:
-    0 14px 38px rgba(26, 51, 82, 0.22),
-    0 0 0 1px rgba(0, 0, 0, 0.05),
-    0 2px 6px rgba(0, 0, 0, 0.08);
-  background: linear-gradient(180deg, #ffffff 0%, #f0f4fa 100%);
+    0 16px 38px rgba(26, 51, 82, 0.14),
+    0 0 0 1px rgba(0, 0, 0, 0.04),
+    0 2px 8px rgba(0, 0, 0, 0.04);
+  background: linear-gradient(180deg, #fbfdff 0%, #e9f0f8 100%);
+}
+
+.stacked-card:not(.is-active) .stacked-card-inner::before {
+  content: '';
+  position: absolute;
+  top: 14px;
+  left: 18px;
+  right: 18px;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(26, 51, 82, 0.2), rgba(26, 51, 82, 0.05));
+  opacity: 0.75;
+}
+
+.stacked-card:not(.is-active) .stacked-card-inner::after {
+  content: '';
+  position: absolute;
+  top: 20px;
+  bottom: 20px;
+  left: 14px;
+  width: 6px;
+  border-radius: 6px;
+  background: linear-gradient(180deg, rgba(26, 51, 82, 0.16), rgba(26, 51, 82, 0.04));
+  opacity: 0.55;
 }
 
 /* Stacked Slider Dots Navigation */
@@ -945,7 +973,9 @@ body.is-homepage header.smaller {
 /* ========================================== */
 /* Custom Cursors — Tooth + Brush Combined   */
 /* ========================================== */
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   cursor: url('/cursors/combined_default.png') 30 3, auto !important;
 }
 
@@ -1010,16 +1040,16 @@ html body .stacked-tab * {
 /* ========================================== */
 /* Navbar Hover Glow Effect                   */
 /* ========================================== */
-#mainmenu > li:hover > a,
-#mainmenu > li:hover > a span,
-#mainmenu > li.has-child:hover:after,
-#mainmenu li ul li:hover > a,
-#mainmenu li ul li:hover > a span {
+#mainmenu>li:hover>a,
+#mainmenu>li:hover>a span,
+#mainmenu>li.has-child:hover:after,
+#mainmenu li ul li:hover>a,
+#mainmenu li ul li:hover>a span {
   color: #4A7CD1 !important;
   text-shadow: 0 0 12px rgba(74, 124, 209, 0.9), 0 0 24px rgba(74, 124, 209, 0.6) !important;
 }
 
-#mainmenu > li.has-child:after {
+#mainmenu>li.has-child:after {
   transition: color 0.3s ease, text-shadow 0.3s ease !important;
 }
 
@@ -1728,8 +1758,8 @@ body.ai-widget-open #mainmenu li ul.mega {
 /* ========================================== */
 
 .portfolio-section {
-  background: #000A5B;
-  /* Deep navy theme */
+  background: #ffffff;
+  /* Pure white background */
   padding: 100px 0;
   position: relative;
   overflow: hidden;
@@ -1746,7 +1776,7 @@ body.ai-widget-open #mainmenu li ul.mega {
 .portfolio-title {
   font-size: 48px;
   font-weight: 800;
-  color: #ffffff;
+  color: #1A3352;
   text-align: center;
   margin-bottom: 60px;
   line-height: 1.2;
@@ -4579,7 +4609,7 @@ body.ai-widget-open .svc-photo-wrap {
   align-items: center !important;
   justify-content: center !important;
   transition: background-color 0.3s ease !important;
-  box-shadow: 2px 0 10px rgba(0,0,0,0.2) !important;
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.2) !important;
 }
 
 .a11y-toggle-btn:hover {
@@ -4592,7 +4622,7 @@ body.ai-widget-open .svc-photo-wrap {
   border-radius: 0 12px 12px 0 !important;
   width: 260px !important;
   max-height: 80vh !important;
-  box-shadow: 10px 0 30px rgba(0,0,0,0.15) !important;
+  box-shadow: 10px 0 30px rgba(0, 0, 0, 0.15) !important;
   display: flex !important;
   flex-direction: column !important;
   overflow: hidden !important;
@@ -4694,13 +4724,14 @@ body.ai-widget-open .svc-photo-wrap {
   background-color: #4A7CD2 !important;
   color: #ffffff !important;
   border: 2px solid #ffffff !important;
-  border-radius: 8px !important; /* square rounder border shape */
+  border-radius: 8px !important;
+  /* square rounder border shape */
   padding: 8px 12px !important;
   cursor: pointer !important;
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.2) !important;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2) !important;
   font-size: 16px !important;
   transition: transform 0.2s ease, background-color 0.2s ease !important;
 }
@@ -4727,16 +4758,17 @@ html.a11y-negative-contrast {
   filter: invert(100%) hue-rotate(180deg) !important;
 }
 
-html.a11y-light-background, 
-html.a11y-light-background body, 
-html.a11y-light-background div:not(.a11y-widget-container):not(.a11y-menu):not(.a11y-toggle-btn):not(.a11y-sidebar):not(.a11y-sidebar-header):not(.a11y-sidebar-content), 
-html.a11y-light-background section, 
-html.a11y-light-background header, 
+html.a11y-light-background,
+html.a11y-light-background body,
+html.a11y-light-background div:not(.a11y-widget-container):not(.a11y-menu):not(.a11y-toggle-btn):not(.a11y-sidebar):not(.a11y-sidebar-header):not(.a11y-sidebar-content),
+html.a11y-light-background section,
+html.a11y-light-background header,
 html.a11y-light-background footer {
   background-color: #ffffff !important;
   background-image: none !important;
   color: #000000 !important;
 }
+
 html.a11y-light-background h1,
 html.a11y-light-background h2,
 html.a11y-light-background h3,
@@ -4755,4 +4787,273 @@ html.a11y-links-underline a {
 
 html.a11y-readable-font * {
   font-family: Arial, Helvetica, sans-serif !important;
+}
+
+/* Teeth Before/After Compare Slider & Carousel */
+.teeth-compare-carousel {
+  width: 100%;
+  max-width: none;
+  margin: 0;
+}
+
+.teeth-compare-window {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  width: 100%;
+}
+
+.teeth-compare-slider-container {
+  width: 100%;
+  max-width: none;
+  overflow: hidden;
+  border-radius: 20px;
+  box-shadow: 
+    0 24px 60px rgba(26, 51, 82, 0.12),
+    0 0 0 1px rgba(95, 111, 136, 0.12);
+  background: #fcfaf7;
+  border: 1px solid rgba(95, 111, 136, 0.16);
+}
+
+.teeth-compare-slide {
+  width: 100%;
+  display: block;
+}
+
+.image-compare-viewer-container {
+  width: 100%;
+  aspect-ratio: 16 / 10; /* Shorter, content-aligned compare frame while preserving a locked ratio. */
+  position: relative;
+  overflow: hidden;
+  background: #f7f4ef;
+}
+
+.image-compare-viewer-container img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  object-position: center 42% !important;
+  display: block !important;
+}
+
+.portfolio-cta-wrap {
+  display: flex;
+  justify-content: center;
+}
+
+/* Compare Arrow Buttons */
+.teeth-compare-arrow {
+  background: rgba(74, 124, 210, 0.08);
+  border: 1px solid rgba(74, 124, 210, 0.18);
+  backdrop-filter: blur(8px);
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 100;
+}
+
+.teeth-compare-arrow:hover {
+  background: rgba(74, 124, 210, 0.9);
+  border-color: rgba(74, 124, 210, 0.95);
+  box-shadow: 0 4px 15px rgba(74, 124, 210, 0.3);
+  transform: translateY(-50%) scale(1.1);
+}
+
+.teeth-compare-arrow:hover svg {
+  color: #ffffff !important;
+}
+
+.prev-btn {
+  left: -26px;
+}
+
+.next-btn {
+  right: -26px;
+}
+
+/* Responsive arrows for smaller layouts */
+@media (max-width: 991px) {
+  .prev-btn {
+    left: -12px;
+  }
+  .next-btn {
+    right: -12px;
+  }
+  .teeth-compare-arrow {
+    width: 44px;
+    height: 44px;
+  }
+}
+
+/* Dots indicator */
+.teeth-compare-dots {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-top: 30px;
+}
+
+.teeth-compare-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: rgba(26, 51, 82, 0.15);
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.teeth-compare-dot:hover {
+  background: rgba(26, 51, 82, 0.35);
+}
+
+.teeth-compare-dot.active {
+  background: #4A7CD2;
+  width: 24px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(74, 124, 210, 0.3);
+}
+
+/* Override image-compare labels for premium aesthetics */
+.icv__label {
+  font-family: inherit !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+  background: rgba(132, 128, 124, 0.72) !important;
+  color: #ffffff !important;
+  padding: 8px 12px !important;
+  border-radius: 4px !important;
+  border: none !important;
+  box-shadow: none !important;
+  bottom: 1rem !important;
+}
+
+.icv__label-before {
+  left: 1rem !important;
+}
+
+.icv__label-after {
+  right: 1rem !important;
+}
+
+/* Teeth compare divider: single uninterrupted line + diamond to arrows interaction */
+.teeth-compare-icv {
+  cursor: col-resize !important;
+}
+
+.teeth-compare-icv .icv__control {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  width: 56px !important;
+  height: calc(100% + 2px) !important;
+  top: -1px !important;
+  justify-content: center !important;
+  padding-top: 0 !important;
+  pointer-events: auto !important;
+  overflow: visible !important;
+}
+
+.teeth-compare-icv .icv__control::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 2px;
+  transform: translateX(-50%);
+  background: #4a7bd1;
+  z-index: 7;
+}
+
+.teeth-compare-icv .icv__control-line {
+  display: none !important;
+}
+
+.teeth-compare-icv .icv__theme-wrapper {
+  position: absolute !important;
+  inset: 50% auto auto 50% !important;
+  width: 40px !important;
+  height: 40px !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  gap: 0 !important;
+  transform: translate(-50%, -50%) !important;
+  z-index: 9 !important;
+  pointer-events: none !important;
+}
+
+.teeth-compare-icv .icv__theme-wrapper::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 16px;
+  height: 16px;
+  background: #4a7bd1;
+  border-radius: 2px;
+  transform: translate(-50%, -50%) rotate(45deg);
+  transition: opacity 0.22s ease, transform 0.22s ease;
+}
+
+.teeth-compare-icv .icv__arrow-wrapper {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  opacity: 0 !important;
+  transition: transform 0.22s ease, opacity 0.18s ease !important;
+}
+
+.teeth-compare-icv .icv__arrow-wrapper:first-child {
+  transform: translateX(-1px) !important;
+}
+
+.teeth-compare-icv .icv__arrow-wrapper:last-child {
+  transform: translateX(1px) !important;
+}
+
+.teeth-compare-icv .icv__arrow-wrapper svg {
+  width: 12px !important;
+  height: 12px !important;
+  filter: none !important;
+}
+
+.teeth-compare-icv .icv__arrow-wrapper path {
+  fill: #4a7bd1 !important;
+  stroke: #4a7bd1 !important;
+  stroke-width: 0 !important;
+}
+
+.teeth-compare-icv .icv__control:hover .icv__theme-wrapper::before,
+.teeth-compare-icv:focus-visible .icv__theme-wrapper::before {
+  opacity: 0 !important;
+  transform: translate(-50%, -50%) rotate(45deg) scale(0.7);
+}
+
+.teeth-compare-icv .icv__control:hover .icv__arrow-wrapper,
+.teeth-compare-icv:focus-visible .icv__arrow-wrapper {
+  opacity: 1 !important;
+}
+
+.teeth-compare-icv .icv__control:hover .icv__arrow-wrapper:first-child,
+.teeth-compare-icv:focus-visible .icv__arrow-wrapper:first-child {
+  transform: translateX(-8px) !important;
+}
+
+.teeth-compare-icv .icv__control:hover .icv__arrow-wrapper:last-child,
+.teeth-compare-icv:focus-visible .icv__arrow-wrapper:last-child {
+  transform: translateX(8px) !important;
 }

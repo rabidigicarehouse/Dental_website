@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { AnimatePresence, motion } from 'framer-motion';
 import CardSwap, { Card } from '@/components/CardSwap';
+import TeethCompareSlider from '@/components/TeethCompareSlider';
 import StackedSectionSlider from '@/components/StackedSectionSlider';
 import MapContactSection from '@/components/MapContactSection';
 import Footer from '@/components/Footer';
@@ -104,7 +105,7 @@ export default function Home() {
                     <h1 className="wow fadeInUp mb-4" key={`title-${currentBg}`} style={{ maxWidth: '800px' }}>
                       {heroContent[currentBg].title}
                     </h1>
-                    <Link className="btn-main fx-slide" href="/booking" data-hover="Book Appointment"><span>Book Appointment</span></Link>
+                    <Link className="btn-main fx-slide" href="https://scheduling.simplifeye.co/#key=7O4hoFG2aH6pBmQ2YLegk45hvPEJrqZ&gaID=null" data-hover="Book Appointment"><span>Book Appointment</span></Link>
                   </div>
                 </div>
               </div>
@@ -467,61 +468,21 @@ export default function Home() {
       </section>
 
       {/* Portfolio Section */}
-      <section className="portfolio-section">
+      <section className="portfolio-section bg-white">
         <div className="container">
           <div className="row align-items-center">
             <div className="col-lg-5 order-2 order-lg-1">
               <div className="portfolio-subtitle wow fadeInUp">Our Portfolio</div>
-              <h2 className="portfolio-title text-start wow fadeInUp" data-wow-delay=".2s">Real People, Real Results</h2>
-              <p className="text-white op-7 mb-4 wow fadeInUp" data-wow-delay=".3s">
+              <h2 className="portfolio-title text-start wow fadeInUp" data-wow-delay=".2s" style={{ color: '#1A3352' }}>Real People, Real Results</h2>
+              <p className="text-dark op-7 mb-4 wow fadeInUp" data-wow-delay=".3s">
                 Experience the life-changing impact of our dental expertise. Our portfolio showcases the dedication and precision we bring to every smile transformation.
               </p>
-              <div className="wow fadeInUp" data-wow-delay=".4s">
-                <Link href="/portfolio" className="btn-main fx-slide portfolio-btn-custom" data-hover="View All Portfolio"><span>View All Portfolio</span></Link>
+              <div className="wow fadeInUp portfolio-cta-wrap" data-wow-delay=".4s">
+                <Link href="/smile-gallery" className="btn-main fx-slide portfolio-btn-custom" data-hover="Visit Smile Gallery"><span>Visit Smile Gallery</span></Link>
               </div>
             </div>
             <div className="col-lg-7 order-1 order-lg-2">
-              <div className="cardswap-wrap" style={{ height: '620px', position: 'relative' }}>
-                <CardSwap
-                  cardDistance={60}
-                  verticalDistance={70}
-                  delay={5000}
-                  pauseOnHover={true}
-                  width={440}
-                  height={540}
-                  onCardPreview={(i) => setPortfolioPreview(i)}
-                >
-                  {portfolioImages.map((img, i) => (
-                    <Card key={i} style={{
-                      border: '3px solid transparent',
-                      background: 'linear-gradient(#000A5B, #000A5B) padding-box, linear-gradient(135deg, #D4AF37 0%, #4A7CD2 55%, #7BA7E8 100%) border-box',
-                      boxShadow: '0 28px 70px rgba(0,0,0,0.7), 0 0 50px rgba(74,124,210,0.45), 0 0 100px rgba(212,175,55,0.12)',
-                      cursor: 'pointer',
-                    }}>
-                      <div style={{ position: 'relative', width: '100%', height: '100%' }}>
-                        <img src={img} alt={`Smile Transformation ${i + 1}`} style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
-                        <div style={{
-                          position: 'absolute', bottom: 0, left: 0, right: 0,
-                          background: 'linear-gradient(transparent, rgba(0,0,10,0.88))',
-                          padding: '48px 18px 18px',
-                          textAlign: 'center', color: '#fff',
-                        }}>
-                          <span style={{ fontSize: '10px', letterSpacing: '4px', textTransform: 'uppercase', fontWeight: 700, opacity: 0.85 }}>Before & After</span>
-                        </div>
-                        <div style={{
-                          position: 'absolute', top: '14px', right: '14px',
-                          width: '36px', height: '36px',
-                          background: 'linear-gradient(135deg, #D4AF37, #4A7CD2)',
-                          borderRadius: '50%',
-                          display: 'flex', alignItems: 'center', justifyContent: 'center',
-                          boxShadow: '0 4px 16px rgba(74,124,210,0.6)',
-                          fontSize: '15px', color: '#fff', fontWeight: 700,
-                        }}>+</div>
-                      </div>
-                    </Card>
-                  ))}
-                </CardSwap>
-              </div>
+              <TeethCompareSlider />
             </div>
           </div>
         </div>
@@ -610,7 +571,7 @@ export default function Home() {
               <h3 className="mb-0 fs-32 text-white">Ready to book your dental care session?</h3>
             </div>
             <div className="col-lg-3 text-lg-end">
-              <Link className="btn-main btn-line fx-slide" href="/booking" data-hover="Book Appointment"><span>Book Appointment</span></Link>
+              <Link className="btn-main btn-line fx-slide" href="https://scheduling.simplifeye.co/#key=7O4hoFG2aH6pBmQ2YLegk45hvPEJrqZ&gaID=null" data-hover="Book Appointment"><span>Book Appointment</span></Link>
             </div>
           </div>
         </div>
