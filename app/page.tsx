@@ -12,8 +12,9 @@ import Footer from '@/components/Footer';
 export default function Home() {
   const storyVideoId = "WmNFiHfmM0o";
   const bgImages = [
-    '/hero_carousel/image_011.jpg',
-    '/hero_carousel/image_022.jpg',
+    '/hero_carousel/image_094.jpg',
+    '/hero_carousel/image_119.jpg',
+    '/hero_carousel/image_121.jpg',
     '/hero_carousel/image_055.jpg',
     '/hero_carousel/image_126.jpg',
     '/hero_carousel/image_133.jpg'
@@ -38,6 +39,10 @@ export default function Home() {
     {
       subtitle: "Smile Transformations",
       title: "Crafting beautiful, healthy, and natural-looking smiles"
+    },
+    {
+      subtitle: "Trusted Patient Care",
+      title: "Personalized treatment plans backed by decades of dental expertise"
     }
   ];
 

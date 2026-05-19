@@ -1237,13 +1237,15 @@ body.ai-widget-open header.uedi-subpage-header {
   margin-right: 0 !important;
 }
 
-/* Non-scrolled header is INSIDE #wrapper which already shifts — don't double-shift */
+/* Non-scrolled header is INSIDE #wrapper which already shifts — don't double-shift.
+   Note: do NOT override `top` here; the homepage rule keeps the transparent
+   header at top = banner+marquee height so the glass effect sits over the
+   hero, not over the dark marquee/top-banner (which would look opaque). */
 body.ai-widget-open header:not(.smaller) {
   width: 100% !important;
   margin-right: 0 !important;
   left: 0 !important;
   right: 0 !important;
-  top: 0 !important;
   position: absolute !important;
   z-index: 1001 !important;
 }
@@ -5414,4 +5416,336 @@ footer.section-dark .subfooter a:hover {
   /* Fully rounded capsule */
   letter-spacing: 0.7px;
   box-shadow: 0 2px 6px rgba(255, 0, 0, 0.3);
+}
+
+/* ================================================================ */
+/* Laptop overhaul (1025px – 1280px)                                 */
+/* Proportional scale-down so layout matches large-screen design.    */
+/* Scoped above the mobile breakpoint (1024px) so phones/tablets     */
+/* keep their dedicated layout.                                      */
+/* ================================================================ */
+@media (min-width: 1025px) and (max-width: 1280px) {
+  /* --- Container width --- */
+  .container,
+  .container-lg,
+  .container-md,
+  .container-sm,
+  .container-xl,
+  .container-xxl {
+    max-width: 1100px !important;
+  }
+
+  /* --- Headings via CSS vars (theme reads these) --- */
+  :root {
+    --h1-font-size: 48px;
+    --h1-margin-bottom: 16px;
+    --h2-font-size: 38px;
+    --h2-margin-bottom: 16px;
+    --h3-font-size: 22px;
+    --h4-font-size: 17px;
+    --h5-font-size: 15px;
+    --body-font-size: 14px;
+  }
+
+  .subtitle {
+    font-size: 13px !important;
+  }
+
+  /* --- Section vertical spacing --- */
+  section {
+    padding-top: 64px !important;
+    padding-bottom: 64px !important;
+  }
+  section.no-top { padding-top: 0 !important; }
+  section.no-bottom { padding-bottom: 0 !important; }
+  section.pt-60 { padding-top: 48px !important; }
+  section.pb-60 { padding-bottom: 48px !important; }
+
+  .testi-video-section,
+  .services-photo-section,
+  .doctor-float-section {
+    padding: 64px 0 !important;
+  }
+
+  .spacer-single { height: 36px !important; }
+  .spacer-double { height: 60px !important; }
+
+  /* --- Buttons --- */
+  .btn-main {
+    padding: 11px 22px !important;
+    font-size: 12px !important;
+    letter-spacing: 1px !important;
+  }
+  .btn-main.fx-slide {
+    padding: 11px 22px !important;
+  }
+
+  /* --- Hero (#section-intro) --- */
+  .mh-950-hero {
+    min-height: 620px !important;
+    height: 620px !important;
+  }
+  .hero-glass-container {
+    padding: 22px 26px !important;
+    max-width: 480px !important;
+  }
+  .hero-glass-container h1 {
+    font-size: 26px !important;
+    margin-bottom: 8px !important;
+  }
+  .hero-glass-container .subtitle {
+    font-size: 11px !important;
+    margin-bottom: 6px !important;
+  }
+  .hero-glass-container .btn-main {
+    padding: 8px 18px !important;
+    font-size: 11px !important;
+  }
+
+  /* --- Hero info boxes (3 buttons row) --- */
+  .cta-glass-section .info-box-floating {
+    padding: 14px 16px !important;
+  }
+  .cta-glass-section .info-box-floating h4 {
+    font-size: 12px !important;
+    margin-bottom: 2px !important;
+  }
+  .cta-glass-section .info-box-floating p {
+    font-size: 11px !important;
+  }
+  .cta-glass-section .info-box-floating i.fs-60,
+  .cta-glass-section .info-box-floating i {
+    font-size: 26px !important;
+  }
+
+  /* --- Services cards: force 4-per-row when grid drops to col-lg-6
+         so they match the large-screen XL layout, just smaller. --- */
+  .services-photo-section .col-xl-3.col-lg-6.col-md-6 {
+    flex: 0 0 25% !important;
+    max-width: 25% !important;
+  }
+  .svc-photo-wrap {
+    height: 180px !important;
+  }
+  .svc-photo-body {
+    padding: 18px 16px 22px !important;
+  }
+  .svc-photo-title {
+    font-size: 14px !important;
+    margin-bottom: 8px !important;
+  }
+  .svc-photo-desc {
+    font-size: 12px !important;
+    line-height: 1.55 !important;
+    margin-bottom: 14px !important;
+  }
+  .svc-icon-wrap {
+    width: 44px !important;
+    height: 44px !important;
+    margin-bottom: 12px !important;
+  }
+  .svc-icon-wrap img {
+    width: 24px !important;
+    height: 24px !important;
+  }
+  .svc-photo-btn {
+    font-size: 11px !important;
+  }
+  .svc-badge {
+    font-size: 9px !important;
+    padding: 4px 9px !important;
+    top: 10px !important;
+    left: 10px !important;
+  }
+
+  /* --- About stacked slider / CardSwap visuals --- */
+  .cardswap-wrap {
+    height: 500px !important;
+  }
+  .cardswap-wrap--video {
+    height: 380px !important;
+  }
+  .card-swap-container {
+    transform: scale(0.85) !important;
+    transform-origin: center center !important;
+  }
+
+  /* --- Stacked Section Slider (Our Story / About The Doctor) ---
+     Give the cards more vertical room so the Read More + Watch Video
+     row isn't clipped by `overflow: hidden` on the card. */
+  .stacked-stage,
+  .stacked-cards-wrap {
+    min-height: 620px !important;
+  }
+  .stacked-card-inner {
+    min-height: 600px !important;
+    padding: 32px 36px !important;
+  }
+
+  /* --- Count strip (10000+ Happy Patients etc) --- */
+  .de_count .fs-40 {
+    font-size: 32px !important;
+  }
+
+  /* --- Testimonials text/cards --- */
+  .testi-video-meta {
+    padding: 12px 14px !important;
+  }
+  .testi-video-tag {
+    font-size: 11px !important;
+  }
+
+  /* --- Portfolio section --- */
+  .portfolio-title {
+    font-size: 32px !important;
+  }
+
+  /* --- Footer --- */
+  footer {
+    padding-top: 56px !important;
+    padding-bottom: 24px !important;
+  }
+  footer h5 { font-size: 14px !important; }
+  footer p, footer a, footer li { font-size: 13px !important; }
+
+  /* --- Page subheader (subpages hero) --- */
+  .page-subheader {
+    padding: 100px 0 70px 0 !important;
+  }
+  .page-subheader-title {
+    font-size: 40px !important;
+  }
+  .page-subheader-eyebrow {
+    font-size: 11px !important;
+    letter-spacing: 3px !important;
+  }
+}
+
+/* ================================================================ */
+/* AI Widget OPEN at 1025–1280px                                    */
+/* Wrapper is narrowed by the 300px AI panel. Tighten further so     */
+/* cards/sections stay in the same proportions as the AI-closed view.*/
+/* ================================================================ */
+@media (min-width: 1025px) and (max-width: 1280px) {
+  /* Override the legacy 50%/2-per-row services rule */
+  body.ai-widget-open .services-photo-section .col-xl-3,
+  body.ai-widget-open .services-photo-section .col-xl-3.col-lg-6.col-md-6 {
+    flex: 0 0 25% !important;
+    max-width: 25% !important;
+  }
+
+  /* Tighter card internals to fit the narrower 4-up grid */
+  body.ai-widget-open .svc-photo-wrap {
+    height: 140px !important;
+  }
+  body.ai-widget-open .svc-photo-body {
+    padding: 14px 12px 16px !important;
+  }
+  body.ai-widget-open .svc-photo-title {
+    font-size: 12px !important;
+    margin-bottom: 6px !important;
+  }
+  body.ai-widget-open .svc-photo-desc {
+    font-size: 10.5px !important;
+    line-height: 1.5 !important;
+    margin-bottom: 10px !important;
+  }
+  body.ai-widget-open .svc-icon-wrap {
+    width: 34px !important;
+    height: 34px !important;
+    margin-bottom: 8px !important;
+  }
+  body.ai-widget-open .svc-icon-wrap img {
+    width: 18px !important;
+    height: 18px !important;
+  }
+  body.ai-widget-open .svc-photo-btn {
+    font-size: 10px !important;
+  }
+  body.ai-widget-open .svc-badge {
+    font-size: 8px !important;
+    padding: 3px 7px !important;
+  }
+
+  /* Container fills the narrowed wrapper, no double-margin */
+  body.ai-widget-open .container,
+  body.ai-widget-open .container-lg,
+  body.ai-widget-open .container-md,
+  body.ai-widget-open .container-sm,
+  body.ai-widget-open .container-xl,
+  body.ai-widget-open .container-xxl {
+    max-width: 100% !important;
+    padding-left: 18px !important;
+    padding-right: 18px !important;
+  }
+
+  /* Hero shrinks aggressively so the 3 info-box CTAs stay in the viewport */
+  body.ai-widget-open .mh-950-hero {
+    min-height: 500px !important;
+    height: 500px !important;
+  }
+  body.ai-widget-open .hero-glass-container {
+    max-width: 340px !important;
+    padding: 14px 18px !important;
+  }
+  body.ai-widget-open .hero-glass-container h1 {
+    font-size: 20px !important;
+    line-height: 1.2 !important;
+    margin-bottom: 6px !important;
+  }
+  body.ai-widget-open .hero-glass-container .subtitle {
+    font-size: 10px !important;
+    margin-bottom: 4px !important;
+  }
+  body.ai-widget-open .hero-glass-container .btn-main {
+    padding: 6px 14px !important;
+    font-size: 10px !important;
+  }
+  /* Center the hero text vertically inside the shorter hero */
+  body.ai-widget-open #section-intro .spacer-single {
+    height: 0 !important;
+  }
+  body.ai-widget-open .cta-glass-section .info-box-floating {
+    padding: 10px 12px !important;
+  }
+  body.ai-widget-open .cta-glass-section .info-box-floating h4 {
+    font-size: 11px !important;
+  }
+  body.ai-widget-open .cta-glass-section .info-box-floating p {
+    font-size: 10px !important;
+  }
+  body.ai-widget-open .cta-glass-section .info-box-floating i.fs-60,
+  body.ai-widget-open .cta-glass-section .info-box-floating i {
+    font-size: 22px !important;
+  }
+
+  /* Section padding shrinks a bit more so verticals match */
+  body.ai-widget-open section {
+    padding-top: 52px !important;
+    padding-bottom: 52px !important;
+  }
+  body.ai-widget-open .testi-video-section,
+  body.ai-widget-open .services-photo-section,
+  body.ai-widget-open .doctor-float-section {
+    padding: 52px 0 !important;
+  }
+
+  /* Headings (override our laptop overhaul) */
+  body.ai-widget-open {
+    --h1-font-size: 40px;
+    --h2-font-size: 32px;
+    --h3-font-size: 20px;
+    --h4-font-size: 16px;
+  }
+
+  /* Stacked Section Slider: narrower wrapper reflows text taller,
+     so give the cards more vertical room. */
+  body.ai-widget-open .stacked-stage,
+  body.ai-widget-open .stacked-cards-wrap {
+    min-height: 680px !important;
+  }
+  body.ai-widget-open .stacked-card-inner {
+    min-height: 660px !important;
+    padding: 26px 28px !important;
+  }
 }
