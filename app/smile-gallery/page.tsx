@@ -45,7 +45,7 @@ export default function SmileGallery() {
           <div className="row align-items-center">
             <div className="col-lg-5 order-2 order-lg-1">
               <div className="portfolio-subtitle wow fadeInUp">Real Results</div>
-              <h2 className="portfolio-title text-start wow fadeInUp" data-wow-delay=".2s" style={{ color: '#4A7CD2' }}>Real People, Real Results</h2>
+              <h2 className="portfolio-title text-start wow fadeInUp" data-wow-delay=".2s" style={{ color: '#165369' }}>Real People, Real Results</h2>
               <p className="text-dark op-7 mb-4 wow fadeInUp" data-wow-delay=".3s">
                 Experience the life-changing impact of our dental expertise. Our portfolio showcases the dedication and precision we bring to every smile transformation. From subtle enhancements to full-mouth reconstructions, our work speaks for itself.
               </p>
@@ -68,7 +68,7 @@ export default function SmileGallery() {
               <h3 className="mb-0 fs-32 text-white">Inspired by these results? Get your dream smile.</h3>
             </div>
             <div className="col-lg-3 text-lg-end">
-              <Link className="btn-main btn-line fx-slide" href="https://scheduling.simplifeye.co/#key=7O4hoFG2aH6pBmQ2YLegk45hvPEJrqZ&gaID=null" data-hover="Book Appointment"><span>Book Appointment</span></Link>
+              <Link className="btn-main btn-line fx-slide" href="https://scheduling.simplifeye.co/#key=7O4hoFG2aH6pBmQ2YLegk45hvPEJrqZ&gaID=null" data-hover="Connect Us"><span>Connect Us</span></Link>
             </div>
           </div>
         </div>

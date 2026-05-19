@@ -70,7 +70,7 @@ export default function VoiceButton({ onTranscript, isListening, setIsListening 
       className={`p-4 rounded-full transition-all duration-300 shadow-lg ${
         isListening 
           ? "bg-red-500 shadow-[0_0_20px_rgba(239,68,68,0.4)]" 
-          : "bg-white hover:bg-gray-50 border border-gray-100 text-primary shadow-[0_10px_20px_rgba(74,124,210,0.15)]"
+          : "bg-white hover:bg-gray-50 border border-gray-100 text-primary shadow-[0_10px_20px_rgba(22, 83, 105,0.15)]"
       }`}
     >
       {isListening ? (

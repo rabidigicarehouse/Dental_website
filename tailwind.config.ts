@@ -9,7 +9,9 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        primary: "#4A7CD2",
+        primary: "#165369",
+        accent: "#1D2C36",
+        muted: "#C0C2C3",
         background: "#ffffff",
       },
       animation: {

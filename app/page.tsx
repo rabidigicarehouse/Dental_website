@@ -10,7 +10,14 @@ import MapContactSection from '@/components/MapContactSection';
 import Footer from '@/components/Footer';
 
 export default function Home() {
-  const bgImages = ['/images/background/5.png', '/images/background/6.png'];
+  const storyVideoId = "WmNFiHfmM0o";
+  const bgImages = [
+    '/hero_carousel/image_011.jpg',
+    '/hero_carousel/image_022.jpg',
+    '/hero_carousel/image_055.jpg',
+    '/hero_carousel/image_126.jpg',
+    '/hero_carousel/image_133.jpg'
+  ];
   const heroContent = [
     {
       subtitle: "Leading Midtown Dentist",
@@ -19,6 +26,18 @@ export default function Home() {
     {
       subtitle: "New York City Dental",
       title: "Elevated dental experience in the heart of NYC"
+    },
+    {
+      subtitle: "Modern Aesthetics",
+      title: "State-of-the-art facility designed for your premium comfort"
+    },
+    {
+      subtitle: "World-Class Expertise",
+      title: "Compassionate dental care with precision and cosmetic artistry"
+    },
+    {
+      subtitle: "Smile Transformations",
+      title: "Crafting beautiful, healthy, and natural-looking smiles"
     }
   ];
 
@@ -89,11 +108,15 @@ export default function Home() {
     return () => { document.body.style.overflow = ''; };
   }, [portfolioPreview, videoPreview]);
 
+  const modalVideoIds = videoPreview && !videoIds.includes(videoPreview)
+    ? [storyVideoId, ...videoIds]
+    : videoIds;
+
 
   return (
     <>
       {/* Hero Section */}
-      <section id="section-intro" className="text-light no-top no-bottom relative overflow-hidden">
+      <section id="section-intro" className="text-light no-top no-bottom relative" style={{ zIndex: 10, overflow: 'visible' }}>
         <div className="relative">
           <div className="abs abs-centered w-100 z-2">
             <div className="container">
@@ -112,7 +135,7 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="mh-800 relative">
+          <div className="mh-950-hero relative">
             {bgImages.map((img, index) => (
               <div
                 key={index}
@@ -129,13 +152,15 @@ export default function Home() {
                   top: 0,
                   left: 0
                 }}
-              >
-
-              </div>
+              />
             ))}
+          </div>
 
-            <div className="abs z-3" style={{ bottom: '40px', left: '50%', transform: 'translateX(-50%)' }}>
-              <div className="d-flex justify-content-center gap-3">
+          {/* Dots and Buttons Container */}
+          <div className="abs w-100" style={{ bottom: '-25px', left: 0, zIndex: 999, overflow: 'visible', pointerEvents: 'none' }}>
+            <div className="container">
+              {/* Carousel Dots */}
+              <div className="d-flex justify-content-center gap-3 mb-4" style={{ pointerEvents: 'auto' }}>
                 {bgImages.map((_, index) => (
                   <div
                     key={index}
@@ -145,62 +170,59 @@ export default function Home() {
                       width: currentBg === index ? '45px' : '14px',
                       height: '14px',
                       borderRadius: '7px',
-                      backgroundColor: currentBg === index ? '#4A7CD2' : 'rgba(255,255,255,0.6)',
+                      backgroundColor: currentBg === index ? '#165369' : 'rgba(255,255,255,0.6)',
                       transition: 'all 0.4s ease',
-                      boxShadow: '0 4px 15px rgba(0,0,0,0.3)'
+                      boxShadow: '0 4px 15px rgba(0,0,0,0.3)',
+                      cursor: 'pointer'
                     }}
                   />
                 ))}
               </div>
+
+              {/* The Three Buttons Row */}
+              <div className="cta-glass-section" style={{ background: 'none', backdropFilter: 'none', border: 'none', padding: 0, boxShadow: 'none', overflow: 'visible', pointerEvents: 'auto' }}>
+                <div className="row g-4 justify-content-center">
+                  <div className="col-lg-4 col-md-6">
+                    <Link href="tel:+12126971701" className="info-box-floating">
+                      <i className="fs-60 id-color icon_phone"></i>
+                      <div className="ms-3">
+                        <h4 className="mb-0">Need Dental Services?</h4>
+                        <p className="mb-0">Call: 212.697.1701</p>
+                      </div>
+                    </Link>
+                  </div>
+
+                  <div className="col-lg-4 col-md-6">
+                    <Link href="https://square.site/book/8YN3X16T15M6W/upper-east-dental-innovations" target="_blank" rel="noopener noreferrer" className="info-box-floating">
+                      <i className="fs-60 id-color icon_calendar"></i>
+                      <div className="ms-3">
+                        <h4 className="mb-0">BOOK A TELE-CONSULT</h4>
+                        <p className="mb-0">Virtual Consultation</p>
+                      </div>
+                    </Link>
+                  </div>
+
+                  <div className="col-lg-4 col-md-6 dropdown-info-box">
+                    <div className="info-box-floating">
+                      <i className="fs-60 id-color icon_wallet"></i>
+                      <div className="ms-3">
+                        <h4 className="mb-0">Pay my bill <i className="arrow_carrot-down fs-14 ms-1"></i></h4>
+                        <p className="mb-0">Choose payment method</p>
+                      </div>
+                    </div>
+                    <div className="dropdown-content">
+                      <Link href="https://payment.ipospays.com/api/v1/merchantPay?t=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0cmFuc2FjdGlvbl9pZCI6Ijk3NTAxOTQzNDk4OCIsInRwbiI6IjExODEyMzE1NzY1NyIsIm1lcmNoYW50SWQiOiI1ZmFkZjY2NS01YWNkLTQ3NWYtYWExOC0wYmEwYjA4OTFjMDkiLCJzdG9yZUlkIjoiOTFhZDk3OGMtNzM0My00MjVmLTk0OTYtMTdiODNlZTkyYmIyIn0.tEzAOjtDENZasUqeJXko18J60YjRuyO89g0vw3ZE88Y" target="_blank" rel="noopener noreferrer">Credit Card (3% fee applies)</Link>
+                      <Link href="/zelle">Pay by Zelle (no fee)</Link>
+                      <Link href="https://pay.withcherry.com/upper-east-dental-innovations-?utm_source=practice&utm_medium=website&m=39005" target="_blank" rel="noopener noreferrer">Cherry Financing</Link>
+                      <Link href="https://www.carecredit.com/apply/?utm_source=SA360&utm_medium=paidsearch&utm_campaign=SR_HW_CCD2C_G_G_BR-LF-General-Restructure_AQ_MY_25-27_RRDT&utm_content=care+credit&sitecode=HDLSGOIGBN&gclsrc=aw.ds&gad_source=1&gad_campaignid=207722066&gbraid=0AAAAADrq0Z6Cz4G4uXTCm0nOfNT5ElpYH&gclid=Cj0KCQjwvajDBhCNARIsAEE29Wo6jMR5wHQs2RDEcMgzCOkY6EA3xyd2pBgeDnNvVW1j3GTLDnWMEE8aAlhtEALw_wcB" target="_blank" rel="noopener noreferrer">Care Credit</Link>
+                    </div>
+                  </div>
+                </div>
             </div>
           </div>
         </div>
-      </section>
-
-      {/* Info Boxes */}
-      <section className="cta-glass-section text-light pt-20 pb-20" style={{ marginTop: '-30px' }}>
-        <div className="cta-glass-bg" />
-        <div className="cta-glass-overlay" />
-        <div className="container relative" style={{ zIndex: 2 }}>
-          <div className="row g-4 justify-content-center">
-            <div className="col-lg-4 col-md-6">
-              <Link href="tel:+12126971701" className="info-box-floating">
-                <i className="fs-60 id-color icon_phone"></i>
-                <div className="ms-3">
-                  <h4 className="mb-0">Need Dental Services?</h4>
-                  <p className="mb-0">Call: 212.697.1701</p>
-                </div>
-              </Link>
-            </div>
-
-            <div className="col-lg-4 col-md-6">
-              <Link href="/booking" className="info-box-floating">
-                <i className="fs-60 id-color icon_calendar"></i>
-                <div className="ms-3">
-                  <h4 className="mb-0">BOOK A TELE-CONSULT</h4>
-                  <p className="mb-0">Virtual Consultation</p>
-                </div>
-              </Link>
-            </div>
-
-            <div className="col-lg-4 col-md-6 dropdown-info-box">
-              <div className="info-box-floating">
-                <i className="fs-60 id-color icon_wallet"></i>
-                <div className="ms-3">
-                  <h4 className="mb-0">Pay my bill <i className="arrow_carrot-down fs-14 ms-1"></i></h4>
-                  <p className="mb-0">Choose payment method</p>
-                </div>
-              </div>
-              <div className="dropdown-content">
-                <Link href="/payment/credit-card">Credit Card (3% fee applies)</Link>
-                <Link href="/payment/zelle">Pay by Zelle (no fee)</Link>
-                <Link href="/payment/cherry">Cherry Financing</Link>
-                <Link href="/payment/care-credit">Care Credit</Link>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      </div>
+    </section>
 
       {/* About — Stacked Slider (Our Story + About The Doctor) */}
       <section className="bg-light">
@@ -235,12 +257,16 @@ export default function Home() {
 
                   <div className="d-flex align-items-center justify-content-between flex-wrap gap-3">
                     <Link href="/about" className="btn-main fx-slide" data-hover="Read More"><span>Read More</span></Link>
-                    <Link href="/video" className="btn-watch-video">
+                    <button
+                      type="button"
+                      className="btn-watch-video"
+                      onClick={() => setVideoPreview(storyVideoId)}
+                    >
                       <div className="play-icon">
                         <i className="arrow_triangle-right"></i>
                       </div>
                       <span>Watch Video</span>
-                    </Link>
+                    </button>
                   </div>
                 </div>
               </div>
@@ -473,7 +499,7 @@ export default function Home() {
           <div className="row align-items-center">
             <div className="col-lg-5 order-2 order-lg-1">
               <div className="portfolio-subtitle wow fadeInUp">Our Portfolio</div>
-              <h2 className="portfolio-title text-start wow fadeInUp" data-wow-delay=".2s" style={{ color: '#1A3352' }}>Real People, Real Results</h2>
+              <h2 className="portfolio-title text-start wow fadeInUp" data-wow-delay=".2s" style={{ color: '#1D2C36' }}>Real People, Real Results</h2>
               <p className="text-dark op-7 mb-4 wow fadeInUp" data-wow-delay=".3s">
                 Experience the life-changing impact of our dental expertise. Our portfolio showcases the dedication and precision we bring to every smile transformation.
               </p>
@@ -571,7 +597,7 @@ export default function Home() {
               <h3 className="mb-0 fs-32 text-white">Ready to book your dental care session?</h3>
             </div>
             <div className="col-lg-3 text-lg-end">
-              <Link className="btn-main btn-line fx-slide" href="https://scheduling.simplifeye.co/#key=7O4hoFG2aH6pBmQ2YLegk45hvPEJrqZ&gaID=null" data-hover="Book Appointment"><span>Book Appointment</span></Link>
+              <Link className="btn-main btn-line fx-slide" href="https://scheduling.simplifeye.co/#key=7O4hoFG2aH6pBmQ2YLegk45hvPEJrqZ&gaID=null" data-hover="Connect Us"><span>Connect Us</span></Link>
             </div>
           </div>
         </div>
@@ -616,16 +642,16 @@ export default function Home() {
       </section>
 
       {/* Video Testimonials Section */}
-      <section className="bg-dark pt-100 pb-100 overflow-hidden">
+      <section className="video-testimonials-section pt-100 pb-100 overflow-hidden">
         <div className="container">
           <div className="row align-items-center">
-            <div className="col-lg-5 order-2 order-lg-2">
-              <div className="portfolio-subtitle wow fadeInUp">Patient Stories</div>
-              <h2 className="portfolio-title text-start wow fadeInUp" data-wow-delay=".2s">Video Testimonials</h2>
-              <p className="text-white op-7 mb-4 wow fadeInUp" data-wow-delay=".3s">
+            <div className="col-lg-5 order-2 order-lg-2 text-center">
+              <div className="portfolio-subtitle wow fadeInUp text-center">Patient Stories</div>
+              <h2 className="portfolio-title text-center wow fadeInUp" data-wow-delay=".2s">Video Testimonials</h2>
+              <p className="text-white op-7 mb-4 wow fadeInUp text-center" data-wow-delay=".3s">
                 Listen to our patients share their personal journeys and experiences. Discover why UEDI is the trusted choice for premium dental care.
               </p>
-              <div className="wow fadeInUp" data-wow-delay=".4s">
+              <div className="wow fadeInUp text-center" data-wow-delay=".4s">
                 <Link href="/testimonials" className="btn-main fx-slide" data-hover="Watch More Stories"><span>Watch More Stories</span></Link>
               </div>
             </div>
@@ -644,8 +670,8 @@ export default function Home() {
                   {videoIds.map((id) => (
                     <Card key={id} style={{
                       border: '3px solid transparent',
-                      background: 'linear-gradient(#0a0f1e, #0a0f1e) padding-box, linear-gradient(135deg, #1a237e 0%, #4A7CD2 55%, #7BA7E8 100%) border-box',
-                      boxShadow: '0 24px 60px rgba(0,0,0,0.85), 0 0 45px rgba(74,124,210,0.5)',
+                      background: 'linear-gradient(#1D2C36, #1D2C36) padding-box, linear-gradient(135deg, #1D2C36 0%, #165369 55%, #C0C2C3 100%) border-box',
+                      boxShadow: '0 24px 60px rgba(0,0,0,0.85), 0 0 45px rgba(22, 83, 105,0.5)',
                       cursor: 'pointer',
                     }}>
                       <div style={{ position: 'relative', width: '100%', height: '100%' }}>
@@ -664,7 +690,7 @@ export default function Home() {
                           display: 'flex', alignItems: 'center', justifyContent: 'center',
                           boxShadow: '0 8px 32px rgba(0,0,0,0.5), 0 0 0 8px rgba(255,255,255,0.18)',
                         }}>
-                          <div style={{ width: 0, height: 0, borderTop: '11px solid transparent', borderBottom: '11px solid transparent', borderLeft: '19px solid #4A7CD2', marginLeft: '5px' }} />
+                          <div style={{ width: 0, height: 0, borderTop: '11px solid transparent', borderBottom: '11px solid transparent', borderLeft: '19px solid #165369', marginLeft: '5px' }} />
                         </div>
                         <div style={{
                           position: 'absolute', bottom: 0, left: 0, right: 0,
@@ -717,12 +743,12 @@ export default function Home() {
             >
               {/* Gradient border frame — explicit width forces image to scale up */}
               <div style={{
-                background: 'linear-gradient(135deg, #D4AF37 0%, #4A7CD2 55%, #7BA7E8 100%)',
+                background: 'linear-gradient(135deg, #C0C2C3 0%, #165369 55%, #1D2C36 100%)',
                 padding: '5px', borderRadius: '26px',
-                boxShadow: '0 30px 90px rgba(0,0,0,0.85), 0 0 80px rgba(74,124,210,0.55), 0 0 140px rgba(212,175,55,0.2)',
+                boxShadow: '0 30px 90px rgba(0,0,0,0.85), 0 0 80px rgba(22, 83, 105, 0.55), 0 0 140px rgba(192,194,195,0.2)',
                 width: 'clamp(260px, min(52vw, 520px), 92vw)',
               }}>
-                <div style={{ borderRadius: '22px', overflow: 'hidden', position: 'relative', background: '#000A5B', lineHeight: 0 }}>
+                <div style={{ borderRadius: '22px', overflow: 'hidden', position: 'relative', background: '#1D2C36', lineHeight: 0 }}>
                   <img
                     src={portfolioImages[portfolioPreview]}
                     alt={`Smile Transformation ${portfolioPreview + 1}`}
@@ -743,7 +769,7 @@ export default function Home() {
                 width: '44px', height: '44px', background: '#fff', border: 'none',
                 borderRadius: '50%', fontSize: '20px', fontWeight: 800, cursor: 'pointer',
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
-                color: '#1a3352', boxShadow: '0 6px 24px rgba(0,0,0,0.5)', lineHeight: 1,
+                color: '#1D2C36', boxShadow: '0 6px 24px rgba(0,0,0,0.5)', lineHeight: 1,
               }}>×</button>
 
               {/* Dot indicators */}
@@ -752,7 +778,7 @@ export default function Home() {
                   <div key={idx} onClick={() => setPortfolioPreview(idx)} style={{
                     width: portfolioPreview === idx ? '32px' : '10px', height: '10px',
                     borderRadius: '5px', cursor: 'pointer',
-                    background: portfolioPreview === idx ? 'linear-gradient(90deg,#D4AF37,#4A7CD2)' : 'rgba(255,255,255,0.3)',
+                    background: portfolioPreview === idx ? 'linear-gradient(90deg,#C0C2C3,#165369)' : 'rgba(255,255,255,0.3)',
                     transition: 'all 0.35s ease',
                   }} />
                 ))}
@@ -791,9 +817,9 @@ export default function Home() {
             >
               {/* Gradient border frame */}
               <div style={{
-                background: 'linear-gradient(135deg, #1a237e 0%, #4A7CD2 55%, #7BA7E8 100%)',
+                background: 'linear-gradient(135deg, #1D2C36 0%, #165369 55%, #C0C2C3 100%)',
                 padding: '4px', borderRadius: '22px',
-                boxShadow: '0 30px 90px rgba(0,0,0,0.95), 0 0 80px rgba(74,124,210,0.6)',
+                boxShadow: '0 30px 90px rgba(0,0,0,0.95), 0 0 80px rgba(22, 83, 105,0.6)',
               }}>
                 <div style={{ borderRadius: '18px', overflow: 'hidden', aspectRatio: '16/9', background: '#000' }}>
                   <iframe
@@ -815,17 +841,17 @@ export default function Home() {
                 width: '48px', height: '48px', background: '#fff', border: 'none',
                 borderRadius: '50%', fontSize: '22px', fontWeight: 800, cursor: 'pointer',
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
-                color: '#1a3352', boxShadow: '0 6px 24px rgba(0,0,0,0.6)',
+                color: '#1D2C36', boxShadow: '0 6px 24px rgba(0,0,0,0.6)',
                 lineHeight: 1,
               }}>×</button>
 
               {/* Video nav dots */}
               <div style={{ display: 'flex', justifyContent: 'center', gap: '10px', marginTop: '20px' }}>
-                {videoIds.map((id) => (
+                {modalVideoIds.map((id) => (
                   <div key={id} onClick={() => setVideoPreview(id)} style={{
                     width: videoPreview === id ? '32px' : '10px', height: '10px',
                     borderRadius: '5px', cursor: 'pointer',
-                    background: videoPreview === id ? 'linear-gradient(90deg,#1a237e,#4A7CD2)' : 'rgba(255,255,255,0.25)',
+                    background: videoPreview === id ? 'linear-gradient(90deg,#1D2C36,#165369)' : 'rgba(255,255,255,0.25)',
                     transition: 'all 0.35s ease',
                   }} />
                 ))}

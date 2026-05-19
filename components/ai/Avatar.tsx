@@ -43,7 +43,7 @@ export default function Avatar({ isSpeaking, isListening }: AvatarProps) {
             ease: "easeInOut",
           }
         }}
-        className="relative w-24 h-24 rounded-full border-4 border-white shadow-[0_15px_35px_rgba(74,124,210,0.25)] overflow-hidden bg-gray-50"
+        className="relative w-24 h-24 rounded-full border-4 border-white shadow-[0_15px_35px_rgba(22, 83, 105,0.25)] overflow-hidden bg-gray-50"
       >
         <Image
           src="/ai avatar.png"

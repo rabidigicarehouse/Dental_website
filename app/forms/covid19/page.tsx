@@ -13,9 +13,9 @@ export default function Covid19FormPage() {
     const w = window.open('', '_blank');
     if (!w) return;
     w.document.write(`<html><head><title>COVID-19 Emergency Consent for Treatment</title><style>
-      body{font-family:Arial,sans-serif;padding:40px;color:#1a3352}
-      h1{color:#1a3352;text-align:center;margin-bottom:24px}
-      input{border:none;border-bottom:1px solid #4A7CD2;min-width:180px;padding:2px}
+      body{font-family:Arial,sans-serif;padding:40px;color:#1D2C36}
+      h1{color:#1D2C36;text-align:center;margin-bottom:24px}
+      input{border:none;border-bottom:1px solid #165369;min-width:180px;padding:2px}
       ul{padding-left:28px}
       @media print{button{display:none!important}}
     </style></head><body>${formRef.current.outerHTML}</body></html>`);

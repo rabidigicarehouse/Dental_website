@@ -189,7 +189,7 @@ export default function About() {
               <p className="mb-0 text-white op-7">Contact us today and take the first step toward a healthier, more confident smile.</p>
             </div>
             <div className="col-lg-3 text-lg-end">
-              <Link className="btn-main btn-line fx-slide" href="/contact"><span>Get In Touch</span></Link>
+              <Link className="btn-main btn-line fx-slide" href="https://scheduling.simplifeye.co/#key=7O4hoFG2aH6pBmQ2YLegk45hvPEJrqZ&gaID=null" data-hover="Connect Us"><span>Connect Us</span></Link>
             </div>
           </div>
         </div>

@@ -79,8 +79,8 @@ export default function PatientScreeningPage() {
     const w = window.open('', '_blank');
     if (!w) return;
     w.document.write(`<html><head><title>Patient Screening Form</title><style>
-      body{font-family:Arial,sans-serif;padding:40px;color:#1a3352}
-      h1{color:#1a3352;text-align:center;margin-bottom:24px}
+      body{font-family:Arial,sans-serif;padding:40px;color:#1D2C36}
+      h1{color:#1D2C36;text-align:center;margin-bottom:24px}
       ol li{font-weight:700;padding:10px 0}
       label{display:block;font-weight:400;padding:4px 0}
       textarea,input{width:100%;padding:8px;border:1px solid #dde3ee;border-radius:6px;margin-top:6px}

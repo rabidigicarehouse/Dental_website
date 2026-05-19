@@ -13,9 +13,9 @@ export default function PatientFormPage() {
     const w = window.open('', '_blank');
     if (!w) return;
     w.document.write(`<html><head><title>Patient Form</title><style>
-      body{font-family:Arial,sans-serif;padding:40px;color:#1a3352}
-      h1{color:#1a3352;text-align:center;margin-bottom:24px}
-      h3{color:#1a3352;border-bottom:2px solid #4A7CD2;padding-bottom:6px;margin:24px 0 12px;text-transform:uppercase;letter-spacing:1.5px;font-size:15px}
+      body{font-family:Arial,sans-serif;padding:40px;color:#1D2C36}
+      h1{color:#1D2C36;text-align:center;margin-bottom:24px}
+      h3{color:#1D2C36;border-bottom:2px solid #165369;padding-bottom:6px;margin:24px 0 12px;text-transform:uppercase;letter-spacing:1.5px;font-size:15px}
       label{display:block;margin:6px 0 4px;font-weight:600;font-size:13px}
       input,select,textarea{width:100%;padding:8px;border:1px solid #dde3ee;border-radius:6px;margin-bottom:10px;font-size:13px}
       .row{display:flex;gap:16px}.row>div{flex:1}

@@ -66,22 +66,22 @@ export default function Membership() {
                 <div className="mb-4">
                   <img src="/dental services/Holistic Dentistry.webp" alt="Dental Plan Icon" style={{ width: '80px', height: '80px', objectFit: 'contain' }} />
                 </div>
-                <h2 className="fs-40 fw-800 mb-2" style={{ color: '#1a3352' }}>Dental Plan</h2>
+                <h2 className="fs-40 fw-800 mb-2" style={{ color: '#1D2C36' }}>Dental Plan</h2>
                 <div className="d-flex align-items-baseline mb-4">
-                  <span className="fs-24 fw-600 me-2" style={{ color: '#007bff' }}>$</span>
-                  <span className="fs-60 fw-900" style={{ color: '#007bff' }}>1299</span>
+                  <span className="fs-24 fw-600 me-2" style={{ color: '#165369' }}>$</span>
+                  <span className="fs-60 fw-900" style={{ color: '#165369' }}>1299</span>
                 </div>
                 
                 <ul className="membership-list list-unstyled mb-5">
                   {planDetails.map((detail, i) => (
                     <li key={i} className="mb-3 d-flex align-items-start">
-                      <i className="icofont-check-circled me-3 fs-20" style={{ color: '#007bff', marginTop: '4px' }}></i>
+                      <i className="icofont-check-circled me-3 fs-20" style={{ color: '#165369', marginTop: '4px' }}></i>
                       <span className="fs-18 text-muted">{detail}</span>
                     </li>
                   ))}
                 </ul>
 
-                <Link href="/booking" className="btn-main w-100 py-3 rounded-15 fs-18 fw-700" style={{ backgroundColor: '#1b647c', border: 'none' }}>
+                <Link href="https://uedinyc.securepayments.cardpointe.com/pay?" target="_blank" rel="noopener noreferrer" className="btn-main w-100 py-3 rounded-15 fs-18 fw-700 text-center" style={{ backgroundColor: '#165369', border: 'none', display: 'block' }}>
                   Apply Now
                 </Link>
               </motion.div>
@@ -111,7 +111,7 @@ export default function Membership() {
               <h3 className="mb-0 fs-32 text-white">Join our family and save on premium dental care.</h3>
             </div>
             <div className="col-lg-3 text-lg-end">
-              <Link className="btn-main btn-line fx-slide" href="/booking" data-hover="Join Now"><span>Join Now</span></Link>
+              <Link className="btn-main btn-line fx-slide" href="https://scheduling.simplifeye.co/#key=7O4hoFG2aH6pBmQ2YLegk45hvPEJrqZ&gaID=null" data-hover="Connect Us"><span>Connect Us</span></Link>
             </div>
           </div>
         </div>

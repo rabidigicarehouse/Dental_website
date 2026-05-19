@@ -276,7 +276,7 @@ export default function ServicePageTemplate(props: ServicePageProps) {
               <p className="mb-0">Contact us today to schedule your visit and take the first step toward a healthier smile.</p>
             </div>
             <div className="col-lg-3 text-lg-end">
-              <Link className="btn-main fx-slide btn-line" href="https://scheduling.simplifeye.co/#key=7O4hoFG2aH6pBmQ2YLegk45hvPEJrqZ&gaID=null"><span>Book Appointment</span></Link>
+              <Link className="btn-main fx-slide btn-line" href="https://scheduling.simplifeye.co/#key=7O4hoFG2aH6pBmQ2YLegk45hvPEJrqZ&gaID=null" data-hover="Connect Us"><span>Connect Us</span></Link>
             </div>
           </div>
         </div>

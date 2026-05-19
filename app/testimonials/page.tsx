@@ -182,7 +182,7 @@ export default function Testimonials() {
               <h3 className="mb-0 fs-32 text-white">Ready to become our next happy patient?</h3>
             </div>
             <div className="col-lg-3 text-lg-end">
-              <Link className="btn-main btn-line fx-slide" href="https://scheduling.simplifeye.co/#key=7O4hoFG2aH6pBmQ2YLegk45hvPEJrqZ&gaID=null"><span>Book Appointment</span></Link>
+              <Link className="btn-main btn-line fx-slide" href="https://scheduling.simplifeye.co/#key=7O4hoFG2aH6pBmQ2YLegk45hvPEJrqZ&gaID=null" data-hover="Connect Us"><span>Connect Us</span></Link>
             </div>
           </div>
         </div>
@@ -220,9 +220,9 @@ export default function Testimonials() {
               style={{ position: 'relative', width: 'min(82vw, 920px)' }}
             >
               <div style={{
-                background: 'linear-gradient(135deg, #1a237e 0%, #4A7CD2 55%, #7BA7E8 100%)',
+                background: 'linear-gradient(135deg, #1D2C36 0%, #165369 55%, #C0C2C3 100%)',
                 padding: '4px', borderRadius: '22px',
-                boxShadow: '0 30px 90px rgba(0,0,0,0.95), 0 0 80px rgba(74,124,210,0.6)',
+                boxShadow: '0 30px 90px rgba(0,0,0,0.95), 0 0 80px rgba(22, 83, 105,0.6)',
               }}>
                 <div style={{ borderRadius: '18px', overflow: 'hidden', aspectRatio: '16/9', background: '#000' }}>
                   <iframe
@@ -243,7 +243,7 @@ export default function Testimonials() {
                 width: '44px', height: '44px', background: '#fff', border: 'none',
                 borderRadius: '50%', fontSize: '20px', fontWeight: 800, cursor: 'pointer',
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
-                color: '#1a3352', boxShadow: '0 6px 24px rgba(0,0,0,0.6)', lineHeight: 1,
+                color: '#1D2C36', boxShadow: '0 6px 24px rgba(0,0,0,0.6)', lineHeight: 1,
               }}>&times;</button>
             </motion.div>
           </motion.div>

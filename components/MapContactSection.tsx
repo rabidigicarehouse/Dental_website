@@ -39,8 +39,8 @@ export default function MapContactSection() {
             <div className="map-form-inner">
               {sent ? (
                 <div style={{ textAlign: 'center', padding: '30px 0' }}>
-                  <div style={{ fontSize: '44px', marginBottom: '12px', color: '#4A7CD2' }}>✓</div>
-                  <h3 style={{ color: '#1a3352', marginBottom: '8px' }}>Message Sent!</h3>
+                  <div style={{ fontSize: '44px', marginBottom: '12px', color: '#165369' }}>✓</div>
+                  <h3 style={{ color: '#1D2C36', marginBottom: '8px' }}>Message Sent!</h3>
                   <p style={{ color: '#888' }}>We&apos;ll get back to you shortly.</p>
                   <button
                     onClick={() => setSent(false)}

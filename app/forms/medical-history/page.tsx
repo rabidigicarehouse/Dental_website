@@ -43,9 +43,9 @@ export default function MedicalHistoryPage() {
     const w = window.open('', '_blank');
     if (!w) return;
     w.document.write(`<html><head><title>Medical History Form</title><style>
-      body{font-family:Arial,sans-serif;padding:40px;color:#1a3352}
-      h1{color:#1a3352;text-align:center;margin-bottom:24px}
-      h3{color:#1a3352;border-bottom:2px solid #4A7CD2;padding-bottom:6px;margin:24px 0 12px;text-transform:uppercase;letter-spacing:1.5px;font-size:15px}
+      body{font-family:Arial,sans-serif;padding:40px;color:#1D2C36}
+      h1{color:#1D2C36;text-align:center;margin-bottom:24px}
+      h3{color:#1D2C36;border-bottom:2px solid #165369;padding-bottom:6px;margin:24px 0 12px;text-transform:uppercase;letter-spacing:1.5px;font-size:15px}
       label{display:block;margin:6px 0 4px;font-weight:600;font-size:13px}
       input{width:100%;padding:8px;border:1px solid #dde3ee;border-radius:6px;margin-bottom:10px;font-size:13px}
       table{width:100%;border-collapse:collapse}
@@ -163,7 +163,7 @@ export default function MedicalHistoryPage() {
               </div>
             </div>
 
-            <p style={{ fontWeight: 700, color: '#1a3352', margin: '18px 0 10px', fontSize: 14 }}>
+            <p style={{ fontWeight: 700, color: '#1D2C36', margin: '18px 0 10px', fontSize: 14 }}>
               Have you ever had any of the following? Please answer Yes or No to each question by marking the boxes below.
             </p>
 
@@ -191,11 +191,11 @@ export default function MedicalHistoryPage() {
               ))}
             </div>
 
-            <p style={{ fontSize: 14, color: '#1a3352', marginTop: 24, lineHeight: 1.6 }}>
+            <p style={{ fontSize: 14, color: '#1D2C36', marginTop: 24, lineHeight: 1.6 }}>
               To the best of my knowledge, all of the preceding answers and information provided are true and correct. If I ever have any change in my health, I will inform the doctors at the next appointment without fail.
             </p>
 
-            <label style={{ display: 'flex', alignItems: 'flex-start', gap: 8, marginTop: 14, fontSize: 13, color: '#1a3352' }}>
+            <label style={{ display: 'flex', alignItems: 'flex-start', gap: 8, marginTop: 14, fontSize: 13, color: '#1D2C36' }}>
               <input type="checkbox" style={{ marginTop: 4 }} />
               <span>Reviewed the medical and Dental history directly with the Patient and hereby certify that I have read and understand the above. I acknowledge that my questions, if any about the above have been answered to my satisfaction, I will not hold my dentist or any other member of their staff, responsible for any errors or omissions that I may have made in the completion of this form.</span>
             </label>

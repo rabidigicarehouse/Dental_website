@@ -6,9 +6,9 @@ export default function Footer() {
       <div className="container">
         <div className="row gx-5">
           <div className="col-lg-4 col-sm-6">
-            <img src="/main logo.png" className="logo-footer" alt="Dentia Logo" />
+            <img src="/main logo dark.png" className="logo-footer" alt="Dentia Logo" />
             <div className="spacer-20"></div>
-            <p>At Dentia, we’re dedicated to providing high-quality, personalized dental care for patients of all ages. Our skilled team uses the latest technology to ensure comfortable, efficient treatments and beautiful, healthy smiles for life.</p>
+            <p>At Upper East, we’re dedicated to providing high-quality, personalized dental care for patients of all ages. Our skilled team uses the latest technology to ensure comfortable, efficient treatments and beautiful, healthy smiles for life.</p>
 
             <div className="social-icons mb-sm-30">
               <Link href="https://www.facebook.com/UpperEastDental/" target="_blank"><i style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}><img src="/social icons/facebook.png" alt="Facebook" style={{ width: '18px', height: '18px', objectFit: 'contain' }} /></i></Link>
@@ -54,20 +54,21 @@ export default function Footer() {
               <div className="fw-bold text-white"><i className="icofont-location-pin me-2 id-color"></i>Clinic Location</div>
               121 East 60th Street, Suite 1B New York, NY 10022
 
-              <div className="spacer-20"></div>
-
-              <div className="fw-bold text-white"><i className="icofont-phone me-2 id-color"></i>Call Us</div>
-              <Link href="tel:+12126971701" className="text-white">212.697.1701</Link>
+              <div className="row g-3">
+                <div className="col-6">
+                  <div className="fw-bold text-white"><i className="icofont-phone me-2 id-color"></i>Call Us</div>
+                  <Link href="tel:+12126971701" className="text-white">212.697.1701</Link>
+                </div>
+                <div className="col-6">
+                  <div className="fw-bold text-white"><i className="icofont-envelope me-2 id-color"></i>Email Us</div>
+                  <Link href="mailto:info@uedi.nyc" className="text-white">info@uedi.nyc</Link>
+                </div>
+              </div>
 
               <div className="spacer-20"></div>
 
               <div className="fw-bold text-white"><i className="icofont-clock-time me-2 id-color"></i>Opening Hours</div>
               MON - Fri (09 am - 06 pm)
-
-              <div className="spacer-20"></div>
-
-              <div className="fw-bold text-white"><i className="icofont-envelope me-2 id-color"></i>Email Us</div>
-              <Link href="mailto:info@uedi.nyc" className="text-white">info@uedi.nyc</Link>
             </div>
           </div>
         </div>
@@ -78,7 +79,7 @@ export default function Footer() {
             <div className="col-md-12">
               <div className="de-flex">
                 <div className="de-flex-col">
-                  Copyright {new Date().getFullYear()} - Dentia by on3step
+                  Copyright {new Date().getFullYear()} - UpperEastDentalInnovation
                 </div>
                 <ul className="menu-simple">
                   <li><Link href="#">Terms &amp; Conditions</Link></li>

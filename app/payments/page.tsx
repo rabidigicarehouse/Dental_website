@@ -9,7 +9,7 @@ const methods = [
     desc: 'Visa, Mastercard, American Express and Discover accepted.',
     note: '3% processing fee applies',
     href: '/payment/credit-card',
-    color: '#4A7CD2',
+    color: '#165369',
   },
   {
     title: 'Zelle',
@@ -17,7 +17,7 @@ const methods = [
     desc: 'Fast, secure bank-to-bank transfers — no fees, no waiting.',
     note: 'No fee',
     href: '/payment/zelle',
-    color: '#6E48AA',
+    color: '#1D2C36',
   },
   {
     title: 'Cherry Financing',
@@ -25,7 +25,7 @@ const methods = [
     desc: 'Flexible monthly payment plans for any treatment plan.',
     note: '0% APR available',
     href: '/payment/cherry',
-    color: '#D4567A',
+    color: '#165369',
   },
   {
     title: 'CareCredit',
@@ -33,7 +33,7 @@ const methods = [
     desc: 'Healthcare credit card with promotional financing options.',
     note: 'No interest if paid in full',
     href: '/payment/care-credit',
-    color: '#16A99D',
+    color: '#165369',
   },
   {
     title: 'Cryptocurrency',
@@ -41,7 +41,7 @@ const methods = [
     desc: 'Bitcoin, Ethereum and other major cryptocurrencies accepted.',
     note: 'Network fees may apply',
     href: '/payment/crypto',
-    color: '#F7931A',
+    color: '#165369',
   },
   {
     title: 'Cash & Check',
@@ -49,7 +49,7 @@ const methods = [
     desc: 'Traditional payment methods welcome at the front desk.',
     note: 'No fee',
     href: '/payment/cash',
-    color: '#2A5298',
+    color: '#165369',
   },
   {
     title: 'Insurance',
@@ -57,7 +57,7 @@ const methods = [
     desc: 'We accept and bill most major dental insurance plans.',
     note: 'Verification provided',
     href: '/payment/insurance',
-    color: '#1a3352',
+    color: '#1D2C36',
   },
   {
     title: 'HSA / FSA',
@@ -65,7 +65,7 @@ const methods = [
     desc: 'Use your tax-advantaged Health or Flexible Spending Account.',
     note: 'Eligible expenses',
     href: '/payment/hsa-fsa',
-    color: '#D4AF37',
+    color: '#C0C2C3',
   },
 ];
 
