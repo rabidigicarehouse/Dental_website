@@ -252,6 +252,9 @@ export default function AIWidget() {
       >
         {/* Social Icons Stack */}
         <div className="sticky-social-bar-integrated items-center justify-center">
+          <Link href="https://www.youtube.com/@askadentistaskdr.harvey7701" target="_blank" className="social-icon-btn">
+            <Image src="/social icons/youtube.png" alt="YouTube" width={20} height={20} className="w-4 h-4 lg:w-5 lg:h-5 object-contain" />
+          </Link>
           <Link href="https://www.facebook.com/UpperEastDental/" target="_blank" className="social-icon-btn">
             <Image src="/social icons/facebook.png" alt="Facebook" width={20} height={20} className="w-4 h-4 lg:w-5 lg:h-5 object-contain" />
           </Link>
@@ -263,9 +266,6 @@ export default function AIWidget() {
           </Link>
           <Link href="https://www.linkedin.com/in/shardeharvey/?_l=en_US" target="_blank" className="social-icon-btn">
             <Image src="/social icons/linkedin.png" alt="LinkedIn" width={20} height={20} className="w-4 h-4 lg:w-5 lg:h-5 object-contain" />
-          </Link>
-          <Link href="https://www.youtube.com/@askadentistaskdr.harvey7701" target="_blank" className="social-icon-btn">
-            <Image src="/social icons/youtube.png" alt="YouTube" width={20} height={20} className="w-4 h-4 lg:w-5 lg:h-5 object-contain" />
           </Link>
 
           {/* AI Toggle Button - Premium Emblem Trigger */}

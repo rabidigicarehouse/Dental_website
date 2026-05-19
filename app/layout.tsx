@@ -8,6 +8,7 @@ import Footer from "@/components/Footer";
 import ScriptHandler from "@/components/ScriptHandler";
 import AIWidget from "@/components/ai/AIWidget";
 import TopBanner from "@/components/TopBanner";
+import YoutubeMarquee from "@/components/YoutubeMarquee";
 import Image from "next/image";
 import AccessibilityWidget from "@/components/AccessibilityWidget";
 
@@ -47,6 +48,7 @@ export default function RootLayout({
           <Preloader />
           {/* preloader end */}
 
+          <YoutubeMarquee />
           <TopBanner />
           <HeaderWrapper />
           <AccessibilityWidget />

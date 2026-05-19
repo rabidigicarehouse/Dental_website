@@ -103,16 +103,16 @@ header.uedi-subpage-header.smaller {
 
 /* Bridging the gap for the large homepage header to prevent hover loss and overlapping */
 body.is-homepage header:not(.smaller) #mainmenu>li>ul.mega {
-  margin-top: 40px !important;
+  margin-top: 8px !important;
 }
 
 body.is-homepage header:not(.smaller) #mainmenu>li>ul.mega::before {
   content: '';
   position: absolute;
-  top: -45px;
+  top: -20px;
   left: 0;
   right: 0;
-  height: 45px;
+  height: 20px;
   background: transparent;
 }
 
@@ -836,15 +836,15 @@ body.ai-widget-open .payment-method-desc {
   min-height: var(--top-banner-h);
 }
 
-/* Push the absolute homepage header DOWN by the banner height so they don't overlap */
+/* Push the absolute homepage header DOWN by the banner height + marquee height so they don't overlap */
 body.is-homepage header.transparent:not(.smaller):not(.menu-open),
 body.is-homepage header:not(.smaller):not(.menu-open) {
-  top: var(--top-banner-h, 44px) !important;
+  top: calc(var(--top-banner-h, 44px) * 2) !important;
 }
 
-/* When scrolled, the smaller header becomes fixed at top:0 (banner scrolls away) */
+/* When scrolled, the smaller header sits directly below the sticky YouTube marquee */
 body.is-homepage header.smaller {
-  top: 0 !important;
+  top: var(--top-banner-h, 44px) !important;
 }
 
 .top-banner-inner {
@@ -1092,7 +1092,7 @@ html body .stacked-tab * {
 }
 
 html {
-  overflow-x: hidden;
+  overflow-x: clip !important;
 }
 
 body {
@@ -1101,7 +1101,7 @@ body {
   font-family: Arial, Helvetica, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  overflow-x: hidden;
+  overflow-x: clip !important;
 }
 
 /* Flex layout for sticky footer */
@@ -1473,7 +1473,7 @@ header .de-flex-col.header-col-mid {
 /* ========================================== */
 
 #mainmenu li ul.mega {
-  position: fixed !important;
+  position: absolute !important;
   left: 50% !important;
   transform: translateX(-50%) translateY(8px) !important;
   width: 95vw !important;
@@ -1482,7 +1482,7 @@ header .de-flex-col.header-col-mid {
   border-radius: 16px !important;
   box-shadow: 0 30px 80px rgba(29, 44, 54, 0.18), 0 0 0 1px rgba(22, 83, 105, 0.06) !important;
   background: linear-gradient(180deg, #ffffff 0%, #fbfcfe 100%) !important;
-  top: 90px !important;
+  top: 100% !important;
   visibility: hidden !important;
   opacity: 0 !important;
   pointer-events: none !important;
@@ -1521,17 +1521,13 @@ header .de-flex-col.header-col-mid {
 }
 
 #mainmenu li:hover>ul.mega,
-#mainmenu li:focus-within>ul.mega {
+#mainmenu li:focus-within>ul.mega,
+#mainmenu li.mega-open>ul.mega {
   visibility: visible !important;
   opacity: 1 !important;
   pointer-events: auto !important;
   transform: translateX(-50%) translateY(0) !important;
   transition-delay: 0s !important;
-}
-
-/* Ensure sticky header mega menu is also centered */
-header.smaller #mainmenu li ul.mega {
-  top: 70px !important;
 }
 
 #mainmenu:hover>li:not(:hover):not(:focus-within)>ul.mega {
@@ -1542,7 +1538,8 @@ header.smaller #mainmenu li ul.mega {
 }
 
 header.smaller #mainmenu li:hover>ul.mega,
-header.smaller #mainmenu li:focus-within>ul.mega {
+header.smaller #mainmenu li:focus-within>ul.mega,
+header.smaller #mainmenu li.mega-open>ul.mega {
   transform: translateX(-50%) translateY(0) !important;
 }
 
@@ -5279,4 +5276,142 @@ footer.section-dark .subfooter a:hover {
   .mh-950-hero {
     min-height: 1000px !important;
   }
+}
+
+/* ========================================== */
+/* YouTube Marquee Channel Banner             */
+/* ========================================== */
+.youtube-marquee-banner-link {
+  display: block;
+  width: 100%;
+  text-decoration: none !important;
+  position: sticky;
+  top: 0;
+  z-index: 1005;
+}
+
+.youtube-marquee-banner {
+  width: 100%;
+  height: var(--top-banner-h);
+  background: #165369;
+  /* Theme Teal background */
+  overflow: hidden;
+  position: relative;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+  /* Subtle white border */
+  display: flex;
+  align-items: center;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+}
+
+.youtube-marquee-banner .marquee-track {
+  display: flex;
+  align-items: center;
+  width: max-content;
+  height: 100%;
+  animation: marquee-scroll-channel 40s linear infinite;
+}
+
+.youtube-marquee-banner .marquee-track:hover {
+  animation-play-state: paused;
+}
+
+@keyframes marquee-scroll-channel {
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(-25%);
+  }
+}
+
+.marquee-content-group {
+  display: flex;
+  align-items: center;
+  gap: 36px;
+  padding: 0 18px;
+}
+
+.marquee-item-bubble {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: #ffffff;
+  /* White text for contrast on teal */
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.marquee-item-bubble .avatar-wrapper {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 1.5px solid #ffffff;
+  /* White ring border */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 6px rgba(255, 255, 255, 0.25);
+}
+
+.marquee-item-bubble .avatar-img {
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+}
+
+.marquee-text {
+  font-size: 13px;
+  color: #ffffff;
+  /* White text */
+}
+
+.marquee-text-channel {
+  color: #FF0000;
+  /* YouTube Red */
+  font-weight: 800;
+  font-family: 'Outfit', 'Inter', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  text-shadow: 0 0 4px rgba(255, 0, 0, 0.15);
+}
+
+.marquee-separator {
+  display: flex;
+  align-items: center;
+  opacity: 0.85;
+}
+
+/* Make YouTube red logo white for high premium contrast on teal bg */
+.marquee-separator img {
+  filter: brightness(0) invert(1) opacity(0.95);
+}
+
+.text-youtube {
+  color: #FF0000;
+  /* YouTube Red */
+  text-shadow: 0 0 6px rgba(255, 0, 0, 0.4);
+}
+
+.marquee-item-bubble.highlight {
+  background: rgba(255, 255, 255, 0.12);
+  /* White light tint */
+  padding: 3px 12px;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+}
+
+.subscribe-badge {
+  background: #FF0000;
+  /* YouTube Red */
+  color: #ffffff;
+  font-size: 9px;
+  font-weight: 900;
+  padding: 2.5px 8px;
+  border-radius: 50px;
+  /* Fully rounded capsule */
+  letter-spacing: 0.7px;
+  box-shadow: 0 2px 6px rgba(255, 0, 0, 0.3);
 }

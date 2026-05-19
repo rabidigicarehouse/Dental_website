@@ -157,14 +157,16 @@ export default function Home() {
           </div>
 
           {/* Dots and Buttons Container */}
-          <div className="abs w-100" style={{ bottom: '-25px', left: 0, zIndex: 999, overflow: 'visible', pointerEvents: 'none' }}>
+          <div className="abs w-100" style={{ bottom: '-25px', left: 0, zIndex: 999, overflow: 'visible', pointerEvents: 'auto' }}>
             <div className="container">
               {/* Carousel Dots */}
-              <div className="d-flex justify-content-center gap-3 mb-4" style={{ pointerEvents: 'auto' }}>
+              <div className="d-flex justify-content-center gap-3 mb-4" style={{ pointerEvents: 'auto', position: 'relative', zIndex: 20 }}>
                 {bgImages.map((_, index) => (
                   <div
                     key={index}
                     onClick={() => setCurrentBg(index)}
+                    role="button"
+                    aria-label={`Go to slide ${index + 1}`}
                     className="cursor-pointer"
                     style={{
                       width: currentBg === index ? '45px' : '14px',
@@ -173,7 +175,8 @@ export default function Home() {
                       backgroundColor: currentBg === index ? '#165369' : 'rgba(255,255,255,0.6)',
                       transition: 'all 0.4s ease',
                       boxShadow: '0 4px 15px rgba(0,0,0,0.3)',
-                      cursor: 'pointer'
+                      cursor: 'pointer',
+                      pointerEvents: 'auto'
                     }}
                   />
                 ))}
@@ -218,11 +221,11 @@ export default function Home() {
                     </div>
                   </div>
                 </div>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
 
       {/* About — Stacked Slider (Our Story + About The Doctor) */}
       <section className="bg-light">

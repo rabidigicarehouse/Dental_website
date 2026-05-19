@@ -92,6 +92,73 @@ export default function HeaderWrapper() {
     return () => document.removeEventListener('click', handleClick);
   }, []);
 
+  /* Desktop mega menu: keep open while cursor is over the Services <li>
+     OR the mega panel. Uses a 200ms close delay so the cursor can cross
+     the small gap between the navbar and the mega without losing hover. */
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    if (window.innerWidth <= 1024) return;
+
+    const bind = () => {
+      const items = Array.from(
+        document.querySelectorAll<HTMLElement>('#mainmenu > li')
+      ).filter((li) => li.querySelector(':scope > ul.mega') !== null);
+
+      const cleanups: (() => void)[] = [];
+
+      items.forEach((li) => {
+        const mega = li.querySelector<HTMLElement>(':scope > ul.mega');
+        if (!mega) return;
+
+        let hideTimer: number | null = null;
+
+        const show = () => {
+          if (hideTimer !== null) {
+            window.clearTimeout(hideTimer);
+            hideTimer = null;
+          }
+          li.classList.add('mega-open');
+        };
+        const scheduleHide = () => {
+          if (hideTimer !== null) window.clearTimeout(hideTimer);
+          hideTimer = window.setTimeout(() => {
+            li.classList.remove('mega-open');
+            hideTimer = null;
+          }, 200);
+        };
+
+        li.addEventListener('mouseenter', show);
+        li.addEventListener('mouseleave', scheduleHide);
+        mega.addEventListener('mouseenter', show);
+        mega.addEventListener('mouseleave', scheduleHide);
+
+        cleanups.push(() => {
+          if (hideTimer !== null) window.clearTimeout(hideTimer);
+          li.removeEventListener('mouseenter', show);
+          li.removeEventListener('mouseleave', scheduleHide);
+          mega.removeEventListener('mouseenter', show);
+          mega.removeEventListener('mouseleave', scheduleHide);
+          li.classList.remove('mega-open');
+        });
+      });
+
+      return cleanups;
+    };
+
+    /* Rebind after the theme finishes mounting the menu (on3step.js
+       reshuffles the markup, which detaches our listeners). */
+    let cleanups = bind();
+    const rebindTimer = window.setTimeout(() => {
+      cleanups.forEach((fn) => fn());
+      cleanups = bind();
+    }, 1100);
+
+    return () => {
+      window.clearTimeout(rebindTimer);
+      cleanups.forEach((fn) => fn());
+    };
+  }, [pathname]);
+
   return <Header className={headerClass} useHeaderInner={useHeaderInner} />;
 }
 
