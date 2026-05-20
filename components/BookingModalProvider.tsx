@@ -206,12 +206,14 @@ function BookingModal({ onClose }: { onClose: () => void }) {
   const [submitted, setSubmitted] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
 
-  // Lock body scroll while open
+  // Lock body scroll and add blur class while open
   useEffect(() => {
     const prev = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
+    document.body.classList.add('booking-modal-open');
     return () => {
       document.body.style.overflow = prev;
+      document.body.classList.remove('booking-modal-open');
     };
   }, []);
 

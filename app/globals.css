@@ -1351,7 +1351,12 @@ body.ai-widget-open header:not(.smaller) {
   z-index: 1001 !important;
 }
 
-/* Side panel (#extra-wrap) — keep HIDDEN by default, only shift when .open */
+/* Side panel (#extra-wrap) — keep HIDDEN by default, only shift when .open.
+   Must appear above the header and all overlays when open. */
+#extra-wrap {
+  z-index: 99999 !important;
+}
+
 body.ai-widget-open #extra-wrap {
   transition: right 0.5s ease-in-out;
 }
@@ -1359,7 +1364,7 @@ body.ai-widget-open #extra-wrap {
 body.ai-widget-open #extra-wrap.open {
   right: 300px !important;
   width: 500px !important;
-  z-index: 2000 !important;
+  z-index: 99999 !important;
 }
 
 @media (min-width: 1600px) {
@@ -6131,9 +6136,23 @@ footer.section-dark .subfooter a:hover {
   }
 }
 
-/* ================================================================ */
-/* Booking Modal (multi-step appointment form)                       */
-/* ================================================================ */
+/* Smooth transition for blurring background elements */
+#wrapper,
+#extra-wrap,
+.ai-widget-floating-container,
+.ai-widget-side-panel {
+  transition: filter 0.3s ease-in-out, width 0.5s ease-in-out, margin-right 0.5s ease-in-out, right 0.5s ease-in-out !important;
+}
+
+/* Blur everything behind the modal when it is open */
+body.booking-modal-open #wrapper,
+body.booking-modal-open #extra-wrap,
+body.booking-modal-open .ai-widget-floating-container,
+body.booking-modal-open .ai-widget-side-panel {
+  filter: blur(8px) !important;
+  pointer-events: none !important;
+}
+
 .bmp-backdrop {
   position: fixed;
   inset: 0;

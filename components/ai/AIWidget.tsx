@@ -296,7 +296,7 @@ export default function AIWidget() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
-            className="fixed bottom-0 right-0 lg:top-0 z-[9999] w-full lg:w-[300px] 2xl:w-[420px] h-[85vh] lg:h-full bg-white border border-gray-100 lg:border-none lg:border-l rounded-t-[32px] lg:rounded-none flex flex-col overflow-hidden pointer-events-auto shadow-[0_-20px_50px_rgba(0,0,0,0.15)] lg:shadow-none"
+            className="fixed bottom-0 right-0 lg:top-0 z-[9999] w-full lg:w-[300px] 2xl:w-[420px] h-[85vh] lg:h-full bg-white border border-gray-100 lg:border-none lg:border-l rounded-t-[32px] lg:rounded-none flex flex-col overflow-hidden pointer-events-auto shadow-[0_-20px_50px_rgba(0,0,0,0.15)] lg:shadow-none ai-widget-side-panel"
           >
             {/* Header */}
             <div className="p-3 2xl:p-6 border-b border-gray-100 flex items-center justify-between bg-white">
