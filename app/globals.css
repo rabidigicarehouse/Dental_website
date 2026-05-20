@@ -11,21 +11,26 @@
    transparent state) can't win the cascade and revert to the teal look.
 /* ================================================================ */
 
-/* --- Position + background (works on both homepage AND subpages) --- */
+/* --- Position + background (works on both homepage AND subpages).
+   `position: sticky` with top = marquee height (--top-banner-h) so the
+   navbar pins itself directly under the sticky YouTube banner on every
+   page, on every scroll. */
 header.uedi-subpage-header,
 header.uedi-subpage-header.smaller,
 body.is-homepage header.uedi-subpage-header,
 body.is-homepage header.uedi-subpage-header.smaller,
 body.is-homepage header.uedi-subpage-header:not(.menu-open),
 body.is-subpage header.uedi-subpage-header:not(.menu-open) {
-  position: relative !important;
-  top: auto !important;
+  position: sticky !important;
+  top: var(--top-banner-h, 44px) !important;
+  z-index: 1003 !important;
   padding-top: 0 !important;
   background: #ffffff !important;
   background-color: #ffffff !important;
   backdrop-filter: none !important;
   -webkit-backdrop-filter: none !important;
   border-bottom: 1px solid rgba(0, 0, 0, 0.06) !important;
+  box-shadow: 0 2px 12px rgba(29, 44, 54, 0.06);
 }
 
 /* --- Always show the DARK logo (homepage variants of the white logo
@@ -77,6 +82,30 @@ body.is-homepage header.uedi-subpage-header:not(.menu-open) #btn-extra span,
 body.is-subpage header.uedi-subpage-header:not(.menu-open) #menu-btn,
 body.is-subpage header.uedi-subpage-header:not(.menu-open) #btn-extra span {
   background: #1D2C36 !important;
+}
+
+/* --- Regular (non-mega) dropdowns: About + Patient Form. Force readable
+   white-on-teal hover so the item never becomes "dark on dark". --- */
+body.is-homepage header.uedi-subpage-header #mainmenu li ul:not(.mega) li a,
+body.is-subpage header.uedi-subpage-header #mainmenu li ul:not(.mega) li a,
+header.uedi-subpage-header #mainmenu li ul:not(.mega) li a {
+  color: #1D2C36 !important;
+  background: #ffffff !important;
+  font-weight: 500 !important;
+  padding: 10px 16px !important;
+  text-shadow: none !important;
+  transition: color 0.18s ease, background 0.18s ease !important;
+  white-space: normal !important;
+}
+
+body.is-homepage header.uedi-subpage-header #mainmenu li ul:not(.mega) li a:hover,
+body.is-homepage header.uedi-subpage-header #mainmenu li ul:not(.mega) li:hover > a,
+body.is-subpage header.uedi-subpage-header #mainmenu li ul:not(.mega) li a:hover,
+body.is-subpage header.uedi-subpage-header #mainmenu li ul:not(.mega) li:hover > a,
+header.uedi-subpage-header #mainmenu li ul:not(.mega) li a:hover,
+header.uedi-subpage-header #mainmenu li ul:not(.mega) li:hover > a {
+  color: #ffffff !important;
+  background: #165369 !important;
 }
 body.is-homepage header.uedi-subpage-header:not(.menu-open) #btn-extra span::before,
 body.is-homepage header.uedi-subpage-header:not(.menu-open) #btn-extra span::after,
@@ -5601,32 +5630,34 @@ footer.section-dark .subfooter a:hover {
   opacity: 0.85 !important;
 }
 
-/* Custom height for home page hero with buttons */
+/* Custom height for home page hero with buttons
+   Reduced by ~70px (navbar height) so the hero doesn't
+   extend too far below the visible viewport area. */
 .mh-950-hero {
-  min-height: 860px;
+  min-height: 790px;
 }
 
 @media (max-width: 1199px) {
   .mh-950-hero {
-    min-height: 820px !important;
+    min-height: 750px !important;
   }
 }
 
 @media (max-width: 991px) {
   .mh-950-hero {
-    min-height: 800px !important;
+    min-height: 730px !important;
   }
 }
 
 @media (max-width: 767px) {
   .mh-950-hero {
-    min-height: 900px !important;
+    min-height: 830px !important;
   }
 }
 
 @media (max-width: 576px) {
   .mh-950-hero {
-    min-height: 1000px !important;
+    min-height: 930px !important;
   }
 }
 
@@ -5832,8 +5863,8 @@ footer.section-dark .subfooter a:hover {
 
   /* --- Hero (#section-intro) --- */
   .mh-950-hero {
-    min-height: 620px !important;
-    height: 620px !important;
+    min-height: 550px !important;
+    height: 550px !important;
   }
   .hero-glass-container {
     padding: 22px 26px !important;
@@ -6031,8 +6062,8 @@ footer.section-dark .subfooter a:hover {
 
   /* Hero shrinks aggressively so the 3 info-box CTAs stay in the viewport */
   body.ai-widget-open .mh-950-hero {
-    min-height: 500px !important;
-    height: 500px !important;
+    min-height: 430px !important;
+    height: 430px !important;
   }
   body.ai-widget-open .hero-glass-container {
     max-width: 340px !important;
