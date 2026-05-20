@@ -2,19 +2,100 @@
 @tailwind components;
 @tailwind utilities;
 
-/* ========================================== */
-/* Subpage header: use theme's native smaller+scroll-light look
-   but keep position:relative so page content flows BELOW the header
-   instead of hiding behind it (position:fixed). */
-/* ========================================== */
+/* ================================================================ */
+/* Solid white "subpage" header — applied to every page that carries
+   `uedi-subpage-header` (now including the main homepage).
+   Each selector is intentionally prefixed with `body.is-homepage`-or-
+   higher specificity so the homepage's existing `body.is-homepage
+   header:not(.smaller):not(.menu-open)` rules (which target the legacy
+   transparent state) can't win the cascade and revert to the teal look.
+/* ================================================================ */
+
+/* --- Position + background (works on both homepage AND subpages) --- */
 header.uedi-subpage-header,
-header.uedi-subpage-header.smaller {
+header.uedi-subpage-header.smaller,
+body.is-homepage header.uedi-subpage-header,
+body.is-homepage header.uedi-subpage-header.smaller,
+body.is-homepage header.uedi-subpage-header:not(.menu-open),
+body.is-subpage header.uedi-subpage-header:not(.menu-open) {
   position: relative !important;
+  top: auto !important;
+  padding-top: 0 !important;
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06) !important;
+}
+
+/* --- Always show the DARK logo (homepage variants of the white logo
+   are meant for the gone-transparent state). --- */
+body.is-homepage header.uedi-subpage-header .logo-main,
+body.is-subpage header.uedi-subpage-header .logo-main,
+header.uedi-subpage-header .logo-main {
+  display: none !important;
+}
+body.is-homepage header.uedi-subpage-header .logo-scroll,
+body.is-homepage header.uedi-subpage-header .logo-2,
+body.is-subpage header.uedi-subpage-header .logo-scroll,
+body.is-subpage header.uedi-subpage-header .logo-2,
+header.uedi-subpage-header .logo-scroll,
+header.uedi-subpage-header .logo-2 {
+  display: inline-block !important;
+}
+
+/* --- Dark nav text + dark dropdown carat (override the homepage
+   `:not(.smaller):not(.menu-open)` white-text rule by matching its
+   3-class specificity AND coming later in source order). --- */
+body.is-homepage header.uedi-subpage-header:not(.menu-open) #mainmenu > li > a,
+body.is-homepage header.uedi-subpage-header:not(.menu-open) #mainmenu > li > a.menu-item,
+body.is-subpage header.uedi-subpage-header:not(.menu-open) #mainmenu > li > a,
+body.is-subpage header.uedi-subpage-header:not(.menu-open) #mainmenu > li > a.menu-item {
+  color: #1D2C36 !important;
+  text-shadow: none !important;
+  font-weight: 600 !important;
+}
+
+body.is-homepage header.uedi-subpage-header:not(.menu-open) #mainmenu > li:hover > a,
+body.is-homepage header.uedi-subpage-header:not(.menu-open) #mainmenu > li > a:hover,
+body.is-subpage header.uedi-subpage-header:not(.menu-open) #mainmenu > li:hover > a,
+body.is-subpage header.uedi-subpage-header:not(.menu-open) #mainmenu > li > a:hover {
+  color: #165369 !important;
+  text-shadow: none !important;
+}
+
+body.is-homepage header.uedi-subpage-header:not(.menu-open) #mainmenu > li.has-child:after,
+body.is-homepage header.uedi-subpage-header:not(.menu-open) #mainmenu li.has-child:after,
+body.is-subpage header.uedi-subpage-header:not(.menu-open) #mainmenu > li.has-child:after,
+body.is-subpage header.uedi-subpage-header:not(.menu-open) #mainmenu li.has-child:after {
+  color: #1D2C36 !important;
+}
+
+/* --- Dark hamburger / extras --- */
+body.is-homepage header.uedi-subpage-header:not(.menu-open) #menu-btn,
+body.is-homepage header.uedi-subpage-header:not(.menu-open) #btn-extra span,
+body.is-subpage header.uedi-subpage-header:not(.menu-open) #menu-btn,
+body.is-subpage header.uedi-subpage-header:not(.menu-open) #btn-extra span {
+  background: #1D2C36 !important;
+}
+body.is-homepage header.uedi-subpage-header:not(.menu-open) #btn-extra span::before,
+body.is-homepage header.uedi-subpage-header:not(.menu-open) #btn-extra span::after,
+body.is-subpage header.uedi-subpage-header:not(.menu-open) #btn-extra span::before,
+body.is-subpage header.uedi-subpage-header:not(.menu-open) #btn-extra span::after {
+  background: #1D2C36 !important;
+}
+
+/* --- The legacy "transparent → push header DOWN" rule sets top:88px on
+   homepages when header isn't .smaller. Cancel that out when our new
+   subpage-style header is in use, so it stays flush in document flow. */
+body.is-homepage header.uedi-subpage-header.transparent:not(.smaller):not(.menu-open),
+body.is-homepage header.uedi-subpage-header:not(.smaller):not(.menu-open) {
   top: auto !important;
 }
 
-/* On subpages, keep the top-banner visible (not hidden by scroll) */
-.is-subpage .top-banner {
+/* --- Keep top-banner visible on both subpages and homepage --- */
+.is-subpage .top-banner,
+.is-homepage .top-banner {
   position: relative !important;
 }
 
@@ -842,8 +923,10 @@ body.is-homepage header:not(.smaller):not(.menu-open) {
   top: calc(var(--top-banner-h, 44px) * 2) !important;
 }
 
-/* When scrolled, the smaller header sits directly below the sticky YouTube marquee */
-body.is-homepage header.smaller {
+/* When scrolled, the smaller header sits directly below the sticky YouTube marquee.
+   `:not(.uedi-subpage-header)` so the main homepage (which now uses the same
+   solid white subpage-style navbar) keeps position:relative + top:auto. */
+body.is-homepage header.smaller:not(.uedi-subpage-header) {
   top: var(--top-banner-h, 44px) !important;
 }
 
@@ -1272,12 +1355,13 @@ header {
   background-clip: padding-box;
 }
 
-/* On hero: glassmorphic treatment, no white leak */
+/* On hero: solid teal bar (no glass effect) */
 header.transparent:not(.smaller) {
-  background: rgba(22, 83, 105, 0.25) !important;
-  backdrop-filter: blur(14px) saturate(1.3) !important;
-  -webkit-backdrop-filter: blur(14px) saturate(1.3) !important;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+  background: #165369 !important;
+  background-color: #165369 !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
 }
 
 /* Force white nav menu text on transparent/hero header — TOP-LEVEL ONLY */
@@ -2155,17 +2239,38 @@ body.ai-widget-open #mainmenu>li>a {
 
 /* Tight laptops (≤1280px) — center nav + shrink everything more */
 @media (max-width: 1280px) {
+  /* The header content row uses justify-content: space-between by default,
+     which leaves the nav floating wherever there happens to be room.
+     For laptop viewports we instead want: logo on the left, hamburger/CTA
+     on the right, and the nav genuinely centered in the leftover middle. */
   header .de-flex {
     gap: 10px !important;
+    align-items: center !important;
+  }
+
+  /* The middle column (containing #mainmenu) flexes to fill the space
+     between logo and CTA. justify-content centers the menu inside it,
+     so the menu sits at the visual middle of the available header width. */
+  header .de-flex-col.header-col-mid {
+    flex: 1 1 auto !important;
+    display: flex !important;
+    justify-content: center !important;
+    padding: 0 14px !important;
   }
 
   #mainmenu {
     justify-content: center !important;
     gap: 0 !important;
+    display: flex !important;
+    flex-wrap: nowrap !important;
   }
 
   #mainmenu>li {
     margin-right: 14px !important;
+  }
+
+  #mainmenu>li:last-child {
+    margin-right: 0 !important;
   }
 
   #mainmenu>li>a {
@@ -2187,9 +2292,53 @@ body.ai-widget-open #mainmenu>li>a {
     padding: 9px 16px !important;
     font-size: 12px !important;
   }
+}
 
-  header .de-flex-col.header-col-mid {
-    padding: 0 14px !important;
+/* When the AI panel opens, the wrapper (and therefore the header) is
+   narrowed by 300px on the right. Re-center the header content so the
+   nav doesn't get pushed off the visible portion of the viewport. */
+@media (max-width: 1280px) {
+  body.ai-widget-open header .de-flex {
+    gap: 8px !important;
+  }
+  body.ai-widget-open header .de-flex-col.header-col-mid {
+    flex: 1 1 auto !important;
+    display: flex !important;
+    justify-content: center !important;
+    padding: 0 8px !important;
+  }
+  body.ai-widget-open #mainmenu {
+    justify-content: center !important;
+    gap: 0 !important;
+    display: flex !important;
+    flex-wrap: nowrap !important;
+  }
+  body.ai-widget-open #mainmenu>li {
+    margin-right: 10px !important;
+  }
+  body.ai-widget-open #mainmenu>li:last-child {
+    margin-right: 0 !important;
+  }
+}
+
+/* AI panel open at any viewport: ensure the header itself is sized to
+   exactly the available content area (viewport minus AI panel) and
+   stays anchored to the left so its centered nav lines up with the
+   page content below it. */
+body.ai-widget-open header.transparent:not(.smaller),
+body.ai-widget-open header:not(.smaller):not(.uedi-subpage-header) {
+  width: calc(100% - 300px) !important;
+  max-width: calc(100vw - 300px) !important;
+  left: 0 !important;
+  right: auto !important;
+  margin-right: 0 !important;
+}
+
+@media (min-width: 1600px) {
+  body.ai-widget-open header.transparent:not(.smaller),
+  body.ai-widget-open header:not(.smaller):not(.uedi-subpage-header) {
+    width: calc(100% - 420px) !important;
+    max-width: calc(100vw - 420px) !important;
   }
 }
 

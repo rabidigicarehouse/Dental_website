@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useRef } from 'react';
-import emailjs from '@emailjs/browser';
 
 export default function ContactForm() {
   const form = useRef<HTMLFormElement>(null);
@@ -13,33 +12,56 @@ export default function ContactForm() {
     setStatus('sending');
     setErrorMessage('');
 
-    if (form.current) {
+    if (!form.current) return;
+
+    try {
+      const formData = new FormData(form.current);
+      const name = formData.get('name') as string;
+      const email = formData.get('email') as string;
+      const phone = formData.get('phone') as string;
+      const message = formData.get('message') as string;
+
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ name, email, phone, message }),
+      });
+
+      // Always try to read the body so we can surface a useful message.
+      let payload: { success?: boolean; error?: string; message?: string } = {};
       try {
-        const formData = new FormData(form.current);
-        const name = formData.get('name') as string;
-        const email = formData.get('email') as string;
-        const phone = formData.get('phone') as string;
-        const message = formData.get('message') as string;
-
-        const response = await fetch('/api/contact', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ name, email, phone, message }),
-        });
-
-        if (!response.ok) {
-          throw new Error('Failed to send message. Please try again.');
-        }
-
-        setStatus('success');
-        form.current.reset();
-      } catch (err: any) {
-        console.error('Contact form submission error:', err);
-        setStatus('error');
-        setErrorMessage(err.message || 'Failed to send message. Please try again later or contact us directly.');
+        payload = await response.json();
+      } catch {
+        /* no JSON body — fall through to status-based message */
       }
+
+      if (!response.ok) {
+        const backendMsg = payload.error || payload.message;
+        const looksLikeBackendDown =
+          response.status === 502 ||
+          (typeof backendMsg === 'string' &&
+            /backend is not reachable|failed to connect to contact service/i.test(
+              backendMsg
+            ));
+
+        const friendly = looksLikeBackendDown
+          ? 'We couldn’t reach our message service. Please try again in a moment, or email us at info@uedi.nyc.'
+          : backendMsg || `Message failed (${response.status}). Please try again.`;
+        throw new Error(friendly);
+      }
+
+      setStatus('success');
+      form.current.reset();
+    } catch (err: any) {
+      console.error('Contact form submission error:', err);
+      const friendly =
+        err?.name === 'TypeError'
+          ? 'Network error — please check your internet connection and try again.'
+          : err?.message || 'Failed to send message. Please try again later or contact us directly.';
+      setStatus('error');
+      setErrorMessage(friendly);
     }
   };
 

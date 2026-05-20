@@ -7,9 +7,13 @@ import Header from './Header';
 export default function HeaderWrapper() {
   const pathname = usePathname();
 
-  let headerClass = "transparent scroll-light";
   let useHeaderInner = false;
   const isHomepage = pathname === '/' || pathname.startsWith('/homepage-');
+
+  /* Default: solid-white "subpage" navbar (same look on every page,
+     including the main homepage). Variant homepage demos keep their
+     own transparent treatment. */
+  let headerClass = "transparent scroll-light smaller uedi-subpage-header";
 
   if (pathname === '/homepage-2') {
     headerClass = "transparent header-light";
@@ -20,32 +24,17 @@ export default function HeaderWrapper() {
   } else if (pathname === '/homepage-3' || pathname === '/homepage-7') {
     headerClass = "transparent header-light header-float";
     useHeaderInner = true;
-  } else if (!isHomepage) {
-    // Use the SAME classes as the scrolled-down homepage header
-    // so it looks identical (white bg, dark logo, dark nav text)
-    headerClass = "transparent scroll-light smaller uedi-subpage-header";
   }
 
   /* on3step.js strips `autoshow` from header on ≤992px, so the theme's
-     scroll-handler never adds `smaller` on mobile. Mirror the desktop
-     behavior here: toggle `smaller` based on scroll for all viewports. */
+     scroll-handler never adds `smaller` on mobile. We force `.smaller`
+     unconditionally — every page (including the main homepage) uses the
+     solid white "subpage" header look. */
   useEffect(() => {
     const onScroll = () => {
       const header = document.querySelector('header');
       if (!header) return;
-
-      if (!isHomepage) {
-        // Non-homepage: always keep `smaller` applied
-        header.classList.add('smaller');
-        return;
-      }
-
-      // Homepage: toggle `smaller` on scroll
-      if (window.scrollY >= 50) {
-        header.classList.add('smaller');
-      } else {
-        header.classList.remove('smaller');
-      }
+      header.classList.add('smaller');
     };
     onScroll();
     window.addEventListener('scroll', onScroll, { passive: true });

@@ -300,14 +300,37 @@ function BookingModal({ onClose }: { onClose: () => void }) {
         }),
       });
 
+      // Always try to read the body so we can surface a useful message
+      let payload: { success?: boolean; error?: string; message?: string } = {};
+      try {
+        payload = await response.json();
+      } catch {
+        /* response had no JSON body — fine, we'll fall back to status text */
+      }
+
       if (!response.ok) {
-        throw new Error('Failed to submit booking request. Please try again.');
+        const backendMsg = payload.error || payload.message;
+        const looksLikeBackendDown =
+          response.status === 502 ||
+          (typeof backendMsg === 'string' &&
+            /backend is not reachable|failed to connect to booking service/i.test(
+              backendMsg
+            ));
+
+        const friendly = looksLikeBackendDown
+          ? 'We couldn’t reach our booking service. Please try again in a moment, or call us directly at 212.697.1701.'
+          : backendMsg || `Booking failed (${response.status}). Please try again.`;
+        throw new Error(friendly);
       }
 
       setSubmitted(true);
     } catch (err: any) {
       console.error('Booking submission error:', err);
-      setSubmitError(err.message || 'Something went wrong. Please try again.');
+      const message =
+        err?.name === 'TypeError'
+          ? 'Network error — please check your internet connection and try again.'
+          : err?.message || 'Something went wrong. Please try again.';
+      setSubmitError(message);
     } finally {
       setSubmitting(false);
     }
@@ -729,6 +752,15 @@ export default function BookingModalProvider({ children }: { children: ReactNode
       if (e.defaultPrevented) return;
       const target = e.target as HTMLElement | null;
       if (!target || typeof target.closest !== 'function') return;
+
+      // CRITICAL: never intercept clicks that originate INSIDE the booking
+      // modal itself, otherwise the Step 3 "BOOK APPOINTMENT" button is
+      // swallowed by this listener (matches BOOK_TEXT_RE) and the form
+      // never submits.
+      if (target.closest('.bmp-backdrop') || target.closest('.bmp-modal')) {
+        return;
+      }
+
       const el = target.closest('a, button') as HTMLElement | null;
       if (!el) return;
 
