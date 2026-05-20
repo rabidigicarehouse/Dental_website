@@ -11,6 +11,8 @@ import TopBanner from "@/components/TopBanner";
 import YoutubeMarquee from "@/components/YoutubeMarquee";
 import Image from "next/image";
 import AccessibilityWidget from "@/components/AccessibilityWidget";
+import CursorGlow from "@/components/CursorGlow";
+import BookingModalProvider from "@/components/BookingModalProvider";
 
 export const metadata: Metadata = {
   title: "Upper East Dental — Dentist & Dental Clinic",
@@ -41,6 +43,8 @@ export default function RootLayout({
       </head>
       <body suppressHydrationWarning>
         <ScriptHandler />
+        <CursorGlow />
+        <BookingModalProvider>
         <div id="wrapper">
           <a href="#" id="back-to-top"></a>
 
@@ -115,6 +119,8 @@ export default function RootLayout({
             </div>
           </div>
         </div>
+
+        </BookingModalProvider>
 
         <Script src="/js/plugins.js" strategy="beforeInteractive" />
         <Script src="/js/on3step.js" strategy="lazyOnload" />

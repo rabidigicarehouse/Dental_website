@@ -50,7 +50,7 @@ export default function SmileGallery() {
                 Experience the life-changing impact of our dental expertise. Our portfolio showcases the dedication and precision we bring to every smile transformation. From subtle enhancements to full-mouth reconstructions, our work speaks for itself.
               </p>
               <div className="wow fadeInUp" data-wow-delay=".4s">
-                <Link href="https://scheduling.simplifeye.co/#key=7O4hoFG2aH6pBmQ2YLegk45hvPEJrqZ&gaID=null" className="btn-main fx-slide" data-hover="Book Your Consultation"><span>Book Your Consultation</span></Link>
+                <Link href="#book" className="btn-main fx-slide" data-hover="Book Your Consultation"><span>Book Your Consultation</span></Link>
               </div>
             </div>
             <div className="col-lg-7 order-1 order-lg-2">
@@ -68,7 +68,7 @@ export default function SmileGallery() {
               <h3 className="mb-0 fs-32 text-white">Inspired by these results? Get your dream smile.</h3>
             </div>
             <div className="col-lg-3 text-lg-end">
-              <Link className="btn-main btn-line fx-slide" href="https://scheduling.simplifeye.co/#key=7O4hoFG2aH6pBmQ2YLegk45hvPEJrqZ&gaID=null" data-hover="Connect Us"><span>Connect Us</span></Link>
+              <Link className="btn-main btn-line fx-slide" href="#book" data-hover="Connect Us"><span>Connect Us</span></Link>
             </div>
           </div>
         </div>

@@ -113,7 +113,7 @@ export default function OfficeTour() {
               <p className="mb-0 text-white op-7">Schedule your first visit and experience premium dental care firsthand.</p>
             </div>
             <div className="col-lg-3 text-lg-end">
-              <Link className="btn-main btn-line fx-slide" href="https://scheduling.simplifeye.co/#key=7O4hoFG2aH6pBmQ2YLegk45hvPEJrqZ&gaID=null" data-hover="Connect Us"><span>Connect Us</span></Link>
+              <Link className="btn-main btn-line fx-slide" href="#book" data-hover="Connect Us"><span>Connect Us</span></Link>
             </div>
           </div>
         </div>

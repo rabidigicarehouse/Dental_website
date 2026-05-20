@@ -8,43 +8,38 @@ export default function ContactForm() {
   const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
   const [errorMessage, setErrorMessage] = useState('');
 
-  const sendEmail = (e: React.FormEvent) => {
+  const sendEmail = async (e: React.FormEvent) => {
     e.preventDefault();
     setStatus('sending');
-
-    // REPLACE THESE VALUES WITH YOUR EMAILJS CREDENTIALS
-    // 1. Go to https://www.emailjs.com/
-    // 2. Create a free account
-    // 3. Add an "Email Service" (e.g., Gmail) -> get SERVICE_ID
-    // 4. Create an "Email Template" -> get TEMPLATE_ID
-    // 5. Go to Account > API Keys -> get PUBLIC_KEY
-    
-    const SERVICE_ID = 'YOUR_SERVICE_ID';
-    const TEMPLATE_ID = 'YOUR_TEMPLATE_ID';
-    const PUBLIC_KEY = 'YOUR_PUBLIC_KEY';
-
-    if (SERVICE_ID === 'YOUR_SERVICE_ID') {
-        // Fallback for demo purposes if keys aren't set
-        setTimeout(() => {
-            const formData = new FormData(form.current!);
-            const mailtoLink = `mailto:info@uedi.nyc?subject=New Contact from ${formData.get('name')}&body=${formData.get('message')}%0D%0A%0D%0AFrom: ${formData.get('name')} (${formData.get('email')}, ${formData.get('phone')})`;
-            window.location.href = mailtoLink;
-            setStatus('success');
-        }, 1000);
-        return;
-    }
+    setErrorMessage('');
 
     if (form.current) {
-      emailjs.sendForm(SERVICE_ID, TEMPLATE_ID, form.current, PUBLIC_KEY)
-        .then((result) => {
-            console.log(result.text);
-            setStatus('success');
-            if (form.current) form.current.reset();
-        }, (error) => {
-            console.log(error.text);
-            setStatus('error');
-            setErrorMessage('Failed to send message. Please try again later or contact us directly.');
+      try {
+        const formData = new FormData(form.current);
+        const name = formData.get('name') as string;
+        const email = formData.get('email') as string;
+        const phone = formData.get('phone') as string;
+        const message = formData.get('message') as string;
+
+        const response = await fetch('/api/contact', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ name, email, phone, message }),
         });
+
+        if (!response.ok) {
+          throw new Error('Failed to send message. Please try again.');
+        }
+
+        setStatus('success');
+        form.current.reset();
+      } catch (err: any) {
+        console.error('Contact form submission error:', err);
+        setStatus('error');
+        setErrorMessage(err.message || 'Failed to send message. Please try again later or contact us directly.');
+      }
     }
   };
 

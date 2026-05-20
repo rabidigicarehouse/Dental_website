@@ -133,7 +133,7 @@ export default function Home() {
                     <h1 className="wow fadeInUp mb-4" key={`title-${currentBg}`} style={{ maxWidth: '800px' }}>
                       {heroContent[currentBg].title}
                     </h1>
-                    <Link className="btn-main fx-slide" href="https://scheduling.simplifeye.co/#key=7O4hoFG2aH6pBmQ2YLegk45hvPEJrqZ&gaID=null" data-hover="Book Appointment"><span>Book Appointment</span></Link>
+                    <Link className="btn-main fx-slide" href="#book" data-hover="Book Appointment"><span>Book Appointment</span></Link>
                   </div>
                 </div>
               </div>
@@ -605,7 +605,7 @@ export default function Home() {
               <h3 className="mb-0 fs-32 text-white">Ready to book your dental care session?</h3>
             </div>
             <div className="col-lg-3 text-lg-end">
-              <Link className="btn-main btn-line fx-slide" href="https://scheduling.simplifeye.co/#key=7O4hoFG2aH6pBmQ2YLegk45hvPEJrqZ&gaID=null" data-hover="Connect Us"><span>Connect Us</span></Link>
+              <Link className="btn-main btn-line fx-slide" href="#book" data-hover="Connect Us"><span>Connect Us</span></Link>
             </div>
           </div>
         </div>

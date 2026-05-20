@@ -5,15 +5,42 @@ import { useRef, useState } from 'react';
 export default function MapContactSection() {
   const formRef = useRef<HTMLFormElement>(null);
   const [sent, setSent] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [errorMsg, setErrorMsg] = useState('');
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!formRef.current) return;
-    const d = new FormData(formRef.current);
-    const link = `mailto:info@uedi.nyc?subject=Website Inquiry&body=Name: ${d.get('hcname')}%0D%0AEmail: ${d.get('hcemail')}%0D%0APhone: ${d.get('hcphone')}%0D%0AMessage: ${d.get('hcmsg')}`;
-    window.location.href = link;
-    setSent(true);
-    formRef.current.reset();
+    setSubmitting(true);
+    setErrorMsg('');
+
+    try {
+      const d = new FormData(formRef.current);
+      const name = d.get('hcname') as string;
+      const email = d.get('hcemail') as string;
+      const phone = d.get('hcphone') as string;
+      const message = d.get('hcmsg') as string;
+
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ name, email, phone, message }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to send message. Please try again.');
+      }
+
+      setSent(true);
+      formRef.current.reset();
+    } catch (err: any) {
+      console.error('Map contact form submission error:', err);
+      setErrorMsg(err.message || 'Failed to send message. Please try again later.');
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -75,7 +102,14 @@ export default function MapContactSection() {
                       I consent to receive SMS text messages from UPPER EAST DENTAL INNOVATIONS for appointment
                       reminders and general communication. Msg &amp; data rates may apply. Reply STOP to opt out.
                     </p>
-                    <button type="submit" className="mcf-submit">Submit</button>
+                     {errorMsg && (
+                      <div className="mcf-error" style={{ color: '#dc2626', fontSize: '13px', marginBottom: '12px' }}>
+                        {errorMsg}
+                      </div>
+                    )}
+                    <button type="submit" className="mcf-submit" disabled={submitting}>
+                      {submitting ? 'Submitting...' : 'Submit'}
+                    </button>
                   </form>
                 </>
               )}

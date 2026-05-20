@@ -137,7 +137,7 @@ export default function Header({
               </div>
               <div className="de-flex-col">
                 <div className="menu_side_area">
-                  <Link href="https://scheduling.simplifeye.co/#key=7O4hoFG2aH6pBmQ2YLegk45hvPEJrqZ&gaID=null" className="btn-main fx-slide" data-hover="Book Appointment"><span>Book Appointment</span></Link>
+                  <Link href="#book" className="btn-main fx-slide" data-hover="Book Appointment"><span>Book Appointment</span></Link>
                   <span id="menu-btn"></span>
                 </div>
               </div>
