@@ -40,6 +40,7 @@ body.is-subpage header.uedi-subpage-header .logo-main,
 header.uedi-subpage-header .logo-main {
   display: none !important;
 }
+
 body.is-homepage header.uedi-subpage-header .logo-scroll,
 body.is-homepage header.uedi-subpage-header .logo-2,
 body.is-subpage header.uedi-subpage-header .logo-scroll,
@@ -52,28 +53,59 @@ header.uedi-subpage-header .logo-2 {
 /* --- Dark nav text + dark dropdown carat (override the homepage
    `:not(.smaller):not(.menu-open)` white-text rule by matching its
    3-class specificity AND coming later in source order). --- */
-body.is-homepage header.uedi-subpage-header:not(.menu-open) #mainmenu > li > a,
-body.is-homepage header.uedi-subpage-header:not(.menu-open) #mainmenu > li > a.menu-item,
-body.is-subpage header.uedi-subpage-header:not(.menu-open) #mainmenu > li > a,
-body.is-subpage header.uedi-subpage-header:not(.menu-open) #mainmenu > li > a.menu-item {
+body.is-homepage header.uedi-subpage-header:not(.menu-open) #mainmenu>li>a,
+body.is-homepage header.uedi-subpage-header:not(.menu-open) #mainmenu>li>a.menu-item,
+body.is-subpage header.uedi-subpage-header:not(.menu-open) #mainmenu>li>a,
+body.is-subpage header.uedi-subpage-header:not(.menu-open) #mainmenu>li>a.menu-item {
   color: #1D2C36 !important;
   text-shadow: none !important;
   font-weight: 600 !important;
 }
 
-body.is-homepage header.uedi-subpage-header:not(.menu-open) #mainmenu > li:hover > a,
-body.is-homepage header.uedi-subpage-header:not(.menu-open) #mainmenu > li > a:hover,
-body.is-subpage header.uedi-subpage-header:not(.menu-open) #mainmenu > li:hover > a,
-body.is-subpage header.uedi-subpage-header:not(.menu-open) #mainmenu > li > a:hover {
+body.is-homepage header.uedi-subpage-header:not(.menu-open) #mainmenu>li:hover>a,
+body.is-homepage header.uedi-subpage-header:not(.menu-open) #mainmenu>li>a:hover,
+body.is-subpage header.uedi-subpage-header:not(.menu-open) #mainmenu>li:hover>a,
+body.is-subpage header.uedi-subpage-header:not(.menu-open) #mainmenu>li>a:hover {
   color: #165369 !important;
   text-shadow: none !important;
 }
 
-body.is-homepage header.uedi-subpage-header:not(.menu-open) #mainmenu > li.has-child:after,
+body.is-homepage header.uedi-subpage-header:not(.menu-open) #mainmenu>li.has-child:after,
 body.is-homepage header.uedi-subpage-header:not(.menu-open) #mainmenu li.has-child:after,
-body.is-subpage header.uedi-subpage-header:not(.menu-open) #mainmenu > li.has-child:after,
+body.is-subpage header.uedi-subpage-header:not(.menu-open) #mainmenu>li.has-child:after,
 body.is-subpage header.uedi-subpage-header:not(.menu-open) #mainmenu li.has-child:after {
   color: #1D2C36 !important;
+}
+
+/* Top of page (no .smaller yet / on3step stripped it) — same dark links on white bar */
+header.uedi-subpage-header:not(.smaller) #mainmenu>li>a,
+header.uedi-subpage-header:not(.smaller) #mainmenu>li>a.menu-item,
+body.is-homepage header.uedi-subpage-header:not(.smaller):not(.menu-open) #mainmenu>li>a,
+body.is-subpage header.uedi-subpage-header:not(.smaller):not(.menu-open) #mainmenu>li>a {
+  color: #1D2C36 !important;
+  text-shadow: none !important;
+}
+
+header.uedi-subpage-header:not(.smaller) #mainmenu>li:hover>a,
+header.uedi-subpage-header:not(.smaller) #mainmenu>li>a:hover,
+body.is-homepage header.uedi-subpage-header:not(.smaller):not(.menu-open) #mainmenu>li:hover>a,
+body.is-subpage header.uedi-subpage-header:not(.smaller):not(.menu-open) #mainmenu>li>a:hover {
+  color: #165369 !important;
+  text-shadow: none !important;
+}
+
+header.uedi-subpage-header:not(.smaller) #mainmenu>li.has-child:after,
+header.uedi-subpage-header:not(.smaller) #mainmenu li.has-child:after,
+body.is-homepage header.uedi-subpage-header:not(.smaller):not(.menu-open) #mainmenu>li.has-child:after,
+body.is-subpage header.uedi-subpage-header:not(.smaller):not(.menu-open) #mainmenu>li.has-child:after {
+  color: #1D2C36 !important;
+}
+
+header.uedi-subpage-header.transparent:not(.smaller),
+header.uedi-subpage-header:not(.smaller) {
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  padding-top: 0 !important;
 }
 
 /* --- Dark hamburger / extras --- */
@@ -99,14 +131,15 @@ header.uedi-subpage-header #mainmenu li ul:not(.mega) li a {
 }
 
 body.is-homepage header.uedi-subpage-header #mainmenu li ul:not(.mega) li a:hover,
-body.is-homepage header.uedi-subpage-header #mainmenu li ul:not(.mega) li:hover > a,
+body.is-homepage header.uedi-subpage-header #mainmenu li ul:not(.mega) li:hover>a,
 body.is-subpage header.uedi-subpage-header #mainmenu li ul:not(.mega) li a:hover,
-body.is-subpage header.uedi-subpage-header #mainmenu li ul:not(.mega) li:hover > a,
+body.is-subpage header.uedi-subpage-header #mainmenu li ul:not(.mega) li:hover>a,
 header.uedi-subpage-header #mainmenu li ul:not(.mega) li a:hover,
-header.uedi-subpage-header #mainmenu li ul:not(.mega) li:hover > a {
+header.uedi-subpage-header #mainmenu li ul:not(.mega) li:hover>a {
   color: #ffffff !important;
   background: #165369 !important;
 }
+
 body.is-homepage header.uedi-subpage-header:not(.menu-open) #btn-extra span::before,
 body.is-homepage header.uedi-subpage-header:not(.menu-open) #btn-extra span::after,
 body.is-subpage header.uedi-subpage-header:not(.menu-open) #btn-extra span::before,
@@ -252,7 +285,7 @@ body.is-homepage header:not(.smaller) #mainmenu>li>ul.mega::before {
   }
 
   #mainmenu>li>a {
-    font-size: 12px !important;
+    font-size: 11px !important;
   }
 }
 
@@ -1121,8 +1154,11 @@ body.is-homepage header.smaller:not(.uedi-subpage-header) {
 }
 
 /* Hide on touch devices */
-@media (hover: none), (pointer: coarse) {
-  .cursor-glow-dot { display: none !important; }
+@media (hover: none),
+(pointer: coarse) {
+  .cursor-glow-dot {
+    display: none !important;
+  }
 }
 
 /* ========================================== */
@@ -1293,6 +1329,7 @@ body.ai-widget-open #wrapper {
     width: calc(100% - 420px);
     margin-right: 420px;
   }
+
   body.ai-widget-open .bmp-backdrop {
     right: 420px !important;
   }
@@ -1389,8 +1426,8 @@ header {
   background-clip: padding-box;
 }
 
-/* On hero: solid teal bar (no glass effect) */
-header.transparent:not(.smaller) {
+/* On hero: solid teal bar (legacy transparent headers only) */
+header.transparent:not(.smaller):not(.uedi-subpage-header) {
   background: #165369 !important;
   background-color: #165369 !important;
   backdrop-filter: none !important;
@@ -1398,37 +1435,37 @@ header.transparent:not(.smaller) {
   border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
 }
 
-/* Force white nav menu text on transparent/hero header — TOP-LEVEL ONLY */
-header:not(.smaller) #mainmenu>li>a,
-header:not(.smaller) #mainmenu>li>a.menu-item,
-.header-light:not(.smaller) #mainmenu>li>a,
-header.header-light:not(.smaller) #mainmenu>li>a {
+/* Force white nav menu text on transparent/hero header — legacy headers only */
+header:not(.smaller):not(.uedi-subpage-header) #mainmenu>li>a,
+header:not(.smaller):not(.uedi-subpage-header) #mainmenu>li>a.menu-item,
+.header-light:not(.smaller):not(.uedi-subpage-header) #mainmenu>li>a,
+header.header-light:not(.smaller):not(.uedi-subpage-header) #mainmenu>li>a {
   color: #F4F7FC !important;
 }
 
-header:not(.smaller) #mainmenu>li>a:hover {
+header:not(.smaller):not(.uedi-subpage-header) #mainmenu>li>a:hover {
   color: #ffffff !important;
   text-shadow: 0 0 10px rgba(255, 255, 255, 0.4);
 }
 
-/* Dropdown sub-items: keep readable dark text on white bg */
-header:not(.smaller) #mainmenu li li a,
-header:not(.smaller) #mainmenu li ul a,
-header:not(.smaller) #mainmenu ul.mega a {
+/* Dropdown sub-items: keep readable dark text on white bg (legacy headers) */
+header:not(.smaller):not(.uedi-subpage-header) #mainmenu li li a,
+header:not(.smaller):not(.uedi-subpage-header) #mainmenu li ul a,
+header:not(.smaller):not(.uedi-subpage-header) #mainmenu ul.mega a {
   color: #606060 !important;
   text-shadow: none !important;
 }
 
-header:not(.smaller) #mainmenu li li a:hover,
-header:not(.smaller) #mainmenu li ul a:hover,
-header:not(.smaller) #mainmenu ul.mega a:hover {
+header:not(.smaller):not(.uedi-subpage-header) #mainmenu li li a:hover,
+header:not(.smaller):not(.uedi-subpage-header) #mainmenu li ul a:hover,
+header:not(.smaller):not(.uedi-subpage-header) #mainmenu ul.mega a:hover {
   color: #ffffff !important;
   background: var(--primary-color) !important;
 }
 
-/* has-child dropdown arrow also white on hero */
-header:not(.smaller) #mainmenu>li.has-child:after,
-.header-light:not(.smaller) #mainmenu>li.has-child:after {
+/* has-child dropdown arrow also white on hero (legacy headers only) */
+header:not(.smaller):not(.uedi-subpage-header) #mainmenu>li.has-child:after,
+.header-light:not(.smaller):not(.uedi-subpage-header) #mainmenu>li.has-child:after {
   color: rgba(255, 255, 255, 0.75) !important;
 }
 
@@ -1560,11 +1597,10 @@ header .de-flex-col {
 }
 
 header .de-flex-col.header-col-mid {
-  flex: 1;
+  flex: 0 0 auto;
   display: flex;
-  justify-content: center;
-  padding: 0 40px;
-  /* Balanced spacing between logo and button */
+  justify-content: flex-start;
+  padding: 0;
 }
 
 /* ========================================== */
@@ -1586,8 +1622,10 @@ header .de-flex-col.header-col-mid {
   left: 50% !important;
   transform: translateX(-50%) translateY(8px) !important;
   width: 95vw !important;
-  max-width: 1120px !important; /* Compact desktop width - WAS 1240px */
-  padding: 24px 20px !important; /* Shrunk padding vertically and horizontally - WAS 36px 24px */
+  max-width: 1120px !important;
+  /* Compact desktop width - WAS 1240px */
+  padding: 24px 20px !important;
+  /* Shrunk padding vertically and horizontally - WAS 36px 24px */
   border-radius: 16px !important;
   box-shadow: 0 30px 80px rgba(29, 44, 54, 0.18), 0 0 0 1px rgba(22, 83, 105, 0.06) !important;
   background: linear-gradient(180deg, #ffffff 0%, #fbfcfe 100%) !important;
@@ -1609,7 +1647,8 @@ header .de-flex-col.header-col-mid {
   content: '' !important;
   position: absolute !important;
   top: 0 !important;
-  left: 20px !important; /* Adjusted to match new horizontal padding */
+  left: 20px !important;
+  /* Adjusted to match new horizontal padding */
   right: 20px !important;
   height: 3px !important;
   background: linear-gradient(90deg, #C0C2C3 0%, #165369 50%, #1D2C36 100%) !important;
@@ -1664,26 +1703,27 @@ header.smaller #mainmenu li.mega-open>ul.mega {
    #mainmenu flex item, which is offset left by the logo / button columns.
    Regular (non-mega) dropdowns are unaffected because their parent <li>
    keeps position:relative from the theme stylesheet. */
-body.ai-widget-open #mainmenu,
-body.ai-widget-open #mainmenu > li:has(ul.mega) {
-  position: static !important;
-}
+/* AI-open mega positioning — only above 1280px (≤1280 uses shared block below) */
+@media (min-width: 1281px) {
+  body.ai-widget-open #mainmenu,
+  body.ai-widget-open #mainmenu>li:has(ul.mega) {
+    position: static !important;
+  }
 
-/* AI-OPEN base: viewport-unit width with aspect-ratio-locked scale() so the
-   mega menu renders at full desktop proportions, then shrinks proportionally. */
-body.ai-widget-open #mainmenu li ul.mega {
-  width: 95vw !important;
-  max-width: 1120px !important; /* Keep same wide max-width as closed state */
-  left: 50% !important;
-  transform: translateX(-50%) translateY(8px) scale(0.92) !important; /* Aspect ratio lock scale (hidden state) */
-  transform-origin: center top !important;
-  padding: 24px 20px !important; /* Keep same premium padding */
-}
+  body.ai-widget-open #mainmenu li ul.mega {
+    width: 95vw !important;
+    max-width: 1120px !important;
+    left: 50% !important;
+    transform: translateX(-50%) translateY(8px) scale(0.92) !important;
+    transform-origin: center top !important;
+    padding: 24px 20px !important;
+  }
 
-body.ai-widget-open #mainmenu li:hover>ul.mega,
-body.ai-widget-open #mainmenu li:focus-within>ul.mega,
-body.ai-widget-open #mainmenu li.mega-open>ul.mega {
-  transform: translateX(-50%) translateY(0) scale(0.92) !important; /* Aspect ratio lock scale (visible state) */
+  body.ai-widget-open #mainmenu li:hover>ul.mega,
+  body.ai-widget-open #mainmenu li:focus-within>ul.mega,
+  body.ai-widget-open #mainmenu li.mega-open>ul.mega {
+    transform: translateX(-50%) translateY(0) scale(0.92) !important;
+  }
 }
 
 @media (min-width: 1600px) {
@@ -1691,6 +1731,7 @@ body.ai-widget-open #mainmenu li.mega-open>ul.mega {
     max-width: 1120px !important;
     transform: translateX(-50%) translateY(8px) scale(1) !important;
   }
+
   body.ai-widget-open #mainmenu li:hover>ul.mega,
   body.ai-widget-open #mainmenu li:focus-within>ul.mega,
   body.ai-widget-open #mainmenu li.mega-open>ul.mega {
@@ -1703,52 +1744,37 @@ body.ai-widget-open #mainmenu li.mega-open>ul.mega {
 /* ================================================================ */
 
 @media (max-width: 1280px) {
-  /* Scale the navbar (menu links) to 90% */
-  #mainmenu {
-    zoom: 0.9 !important;
-  }
-  #mainmenu > li > a {
-    font-size: 13.5px !important; /* 90% of 15px */
-  }
-  #mainmenu > li {
-    margin-right: 18px !important; /* Reduced from 30px to scale down total width */
-  }
 
   /* Center the mega menu relative to the header in both states */
   #mainmenu,
-  #mainmenu > li:has(ul.mega),
+  #mainmenu>li:has(ul.mega),
   body.ai-widget-open #mainmenu,
-  body.ai-widget-open #mainmenu > li:has(ul.mega) {
+  body.ai-widget-open #mainmenu>li:has(ul.mega) {
     position: static !important;
   }
 
   #mainmenu li ul.mega,
   body.ai-widget-open #mainmenu li ul.mega {
-    zoom: 1.111 !important; /* 1 / 0.9 to prevent double scaling from #mainmenu zoom */
-    width: 95vw !important;
-    max-width: 1120px !important; /* Keep standard max-width so content doesn't wrap */
+    width: min(95vw, calc(100vw - 48px)) !important;
+    max-width: 1120px !important;
     left: 50% !important;
-    padding: 24px 20px !important;
+    padding: 20px 16px !important;
     transform-origin: center top !important;
   }
 
-  /* Scale factor: scale(0.78) when AI is closed, scale(0.68) when AI is open */
-  #mainmenu li ul.mega {
-    transform: translateX(-50%) translateY(8px) scale(0.78) !important;
-  }
+  /* Same mega scale with AI open or closed */
+  #mainmenu li ul.mega,
   body.ai-widget-open #mainmenu li ul.mega {
-    transform: translateX(-50%) translateY(8px) scale(0.68) !important;
+    transform: translateX(-50%) translateY(8px) scale(0.72) !important;
   }
 
   #mainmenu li:hover>ul.mega,
   #mainmenu li:focus-within>ul.mega,
-  #mainmenu li.mega-open>ul.mega {
-    transform: translateX(-50%) translateY(0) scale(0.78) !important;
-  }
+  #mainmenu li.mega-open>ul.mega,
   body.ai-widget-open #mainmenu li:hover>ul.mega,
   body.ai-widget-open #mainmenu li:focus-within>ul.mega,
   body.ai-widget-open #mainmenu li.mega-open>ul.mega {
-    transform: translateX(-50%) translateY(0) scale(0.68) !important;
+    transform: translateX(-50%) translateY(0) scale(0.72) !important;
   }
 
   /* Restore standard large spacing so scale() works correctly */
@@ -1759,6 +1785,7 @@ body.ai-widget-open #mainmenu li.mega-open>ul.mega {
     max-width: 25% !important;
     border-right: 1px solid rgba(22, 83, 105, 0.08) !important;
   }
+
   #mainmenu li ul.mega-services .col-lg-3:last-child,
   body.ai-widget-open #mainmenu li ul.mega-services .col-lg-3:last-child {
     border-right: none !important;
@@ -1783,25 +1810,33 @@ body.ai-widget-open #mainmenu li.mega-open>ul.mega {
   }
 }
 
-/* Viewport ≤1100px: Extra scale down for small viewports */
-@media (max-width: 1100px) {
-  /* Scale factor: scale(0.68) when AI is closed, scale(0.58) when AI is open */
-  #mainmenu li ul.mega {
-    transform: translateX(-50%) translateY(8px) scale(0.68) !important;
-  }
+/* Viewport ≤1100px: Extra scale down for small viewports (AI on = AI off) */
+@media (max-width: 1100px) and (min-width: 1025px) {
+
+  #mainmenu li ul.mega,
   body.ai-widget-open #mainmenu li ul.mega {
-    transform: translateX(-50%) translateY(8px) scale(0.58) !important;
+    width: min(95vw, calc(100vw - 48px)) !important;
+    padding: 20px 16px !important;
+    transform: translateX(-50%) translateY(8px) scale(0.64) !important;
   }
 
   #mainmenu li:hover>ul.mega,
   #mainmenu li:focus-within>ul.mega,
-  #mainmenu li.mega-open>ul.mega {
-    transform: translateX(-50%) translateY(0) scale(0.68) !important;
-  }
+  #mainmenu li.mega-open>ul.mega,
   body.ai-widget-open #mainmenu li:hover>ul.mega,
   body.ai-widget-open #mainmenu li:focus-within>ul.mega,
   body.ai-widget-open #mainmenu li.mega-open>ul.mega {
-    transform: translateX(-50%) translateY(0) scale(0.58) !important;
+    transform: translateX(-50%) translateY(0) scale(0.64) !important;
+  }
+
+  body.ai-widget-open #mainmenu li ul.mega li.title,
+  #mainmenu li ul.mega li.title {
+    font-size: 13px !important;
+  }
+
+  body.ai-widget-open #mainmenu li ul.mega ul li:not(.title) a,
+  #mainmenu li ul.mega ul li:not(.title) a {
+    font-size: 12.5px !important;
   }
 
   /* Keep standard 4-column layout and keep row from wrapping */
@@ -1809,6 +1844,7 @@ body.ai-widget-open #mainmenu li.mega-open>ul.mega {
   body.ai-widget-open #mainmenu li ul.mega-services .row {
     flex-wrap: nowrap !important;
   }
+
   #mainmenu li ul.mega-services .col-lg-3,
   body.ai-widget-open #mainmenu li ul.mega-services .col-lg-3 {
     flex: 1 1 25% !important;
@@ -1816,21 +1852,25 @@ body.ai-widget-open #mainmenu li.mega-open>ul.mega {
     padding: 0 16px !important;
     border-right: 1px solid rgba(22, 83, 105, 0.08) !important;
   }
+
   #mainmenu li ul.mega-services .col-lg-3:last-child,
   body.ai-widget-open #mainmenu li ul.mega-services .col-lg-3:last-child {
     border-right: none !important;
   }
+
   #mainmenu li ul.mega li.title,
   body.ai-widget-open #mainmenu li ul.mega li.title {
     font-size: 13px !important;
     padding: 8px 0 6px 22px !important;
     letter-spacing: 1.5px !important;
   }
+
   #mainmenu li ul.mega ul li:not(.title) a,
   body.ai-widget-open #mainmenu li ul.mega ul li:not(.title) a {
     font-size: 12.5px !important;
     padding: 4px 0 4px 22px !important;
   }
+
   #mainmenu li ul.mega ul,
   body.ai-widget-open #mainmenu li ul.mega ul {
     margin-bottom: 10px !important;
@@ -1854,7 +1894,8 @@ body.ai-widget-open #mainmenu li.mega-open>ul.mega {
 
 /* Mega menu columns get vertical dividers for definition */
 #mainmenu li ul.mega-services .col-lg-3 {
-  padding: 0 16px !important; /* Squeezed columns slightly - WAS 22px */
+  padding: 0 16px !important;
+  /* Squeezed columns slightly - WAS 22px */
   border-right: 1px solid rgba(22, 83, 105, 0.08) !important;
   /* Allow flex column to shrink below its content's min width so long
      category names like "Invisalign Teeth Straightening" don't push the
@@ -1886,7 +1927,7 @@ body.ai-widget-open #mainmenu li.mega-open>ul.mega {
   width: 100% !important;
 }
 
-#mainmenu li ul.mega .row > [class*="col-"] {
+#mainmenu li ul.mega .row>[class*="col-"] {
   min-width: 0 !important;
 }
 
@@ -1902,8 +1943,10 @@ body.ai-widget-open #mainmenu li.mega-open>ul.mega {
   font-weight: 800 !important;
   font-size: 13px !important;
   color: #1D2C36 !important;
-  padding: 8px 0 6px 22px !important; /* Shrunk padding vertically and left - WAS 14px 0 10px 26px */
-  margin-bottom: 2px !important; /* Shrunk margin-bottom - WAS 4px */
+  padding: 8px 0 6px 22px !important;
+  /* Shrunk padding vertically and left - WAS 14px 0 10px 26px */
+  margin-bottom: 2px !important;
+  /* Shrunk margin-bottom - WAS 4px */
   background: none !important;
   cursor: default !important;
   position: relative;
@@ -1917,7 +1960,8 @@ body.ai-widget-open #mainmenu li.mega-open>ul.mega {
 #mainmenu li ul.mega li.title::before {
   content: '' !important;
   display: block !important;
-  width: 12px !important; /* Slightly narrower line - WAS 14px */
+  width: 12px !important;
+  /* Slightly narrower line - WAS 14px */
   height: 3px !important;
   background: linear-gradient(90deg, #C0C2C3, #165369) !important;
   position: absolute !important;
@@ -1937,7 +1981,8 @@ body.ai-widget-open #mainmenu li.mega-open>ul.mega {
   visibility: visible !important;
   opacity: 1 !important;
   padding: 0 !important;
-  margin: 0 0 10px 0 !important; /* Tighter margins vertically - WAS 18px */
+  margin: 0 0 10px 0 !important;
+  /* Tighter margins vertically - WAS 18px */
   width: 100% !important;
   display: block !important;
   border: none !important;
@@ -1945,9 +1990,11 @@ body.ai-widget-open #mainmenu li.mega-open>ul.mega {
 }
 
 #mainmenu li ul.mega ul li:not(.title) a {
-  font-size: 12.5px !important; /* Compact font - WAS 13.5px */
+  font-size: 12.5px !important;
+  /* Compact font - WAS 13.5px */
   color: #56697c !important;
-  padding: 4px 0 4px 22px !important; /* Tighter vertical and horizontal padding - WAS 6px 0 6px 26px */
+  padding: 4px 0 4px 22px !important;
+  /* Tighter vertical and horizontal padding - WAS 6px 0 6px 26px */
   display: block;
   position: relative;
   transition: all 0.2s ease;
@@ -1959,7 +2006,8 @@ body.ai-widget-open #mainmenu li.mega-open>ul.mega {
 #mainmenu li ul.mega ul li:not(.title) a::before {
   content: '' !important;
   position: absolute !important;
-  left: 6px !important; /* Shifted left dot - WAS 8px */
+  left: 6px !important;
+  /* Shifted left dot - WAS 8px */
   top: 50% !important;
   transform: translateY(-50%) !important;
   width: 5px !important;
@@ -1974,7 +2022,8 @@ body.ai-widget-open #mainmenu li.mega-open>ul.mega {
 #mainmenu li ul.mega ul li:not(.title) a:hover {
   color: #165369 !important;
   background: rgba(22, 83, 105, 0.06) !important;
-  padding-left: 26px !important; /* Tighter hover padding - WAS 30px */
+  padding-left: 26px !important;
+  /* Tighter hover padding - WAS 30px */
 }
 
 #mainmenu li ul.mega ul li:not(.title) a:hover::before {
@@ -2242,116 +2291,317 @@ body.ai-widget-open #mainmenu li.mega-open>ul.mega {
 }
 
 /* ========================================== */
-/* AI Widget Open - Navbar Constraints        */
-/* ========================================== */
-body.ai-widget-open #mainmenu>li {
-  margin-right: 18px !important;
-}
-
-body.ai-widget-open #mainmenu>li>a {
-  font-size: 12px !important;
-}
-
-/* ========================================== */
 /* Responsive Breakpoints                     */
 /* ========================================== */
 
-/* Laptops (1024px to 1440px) */
-@media (max-width: 1440px) {
-  #mainmenu>li {
-    margin-right: 15px !important;
+/* Desktop nav (≥1025px) — grouped cluster: logo · menu · book · extra (no edge spread) */
+@media (min-width: 1025px) {
+  header {
+    padding-top: 14px !important;
   }
 
-  #mainmenu>li>a {
-    font-size: 11px !important;
+  header .container {
+    max-width: 100% !important;
+    padding-left: 20px !important;
+    padding-right: 20px !important;
   }
 
-  #logo img {
-    max-width: 160px;
-  }
-}
-
-/* Tight laptops (≤1280px) — center nav + shrink everything more */
-@media (max-width: 1280px) {
-  /* The header content row uses justify-content: space-between by default,
-     which leaves the nav floating wherever there happens to be room.
-     For laptop viewports we instead want: logo on the left, hamburger/CTA
-     on the right, and the nav genuinely centered in the leftover middle. */
-  header .de-flex {
-    gap: 10px !important;
-    align-items: center !important;
-  }
-
-  /* The middle column (containing #mainmenu) flexes to fill the space
-     between logo and CTA. justify-content centers the menu inside it,
-     so the menu sits at the visual middle of the available header width. */
-  header .de-flex-col.header-col-mid {
-    flex: 1 1 auto !important;
+  header .container .row > .col-md-12 {
     display: flex !important;
     justify-content: center !important;
-    padding: 0 14px !important;
   }
 
-  #mainmenu {
+  /* Shrink-wrap + center the whole bar as one unit */
+  header .de-flex {
+    position: relative !important;
+    display: inline-flex !important;
+    align-items: center !important;
     justify-content: center !important;
+    flex-wrap: nowrap !important;
+    gap: 14px !important;
+    width: auto !important;
+    max-width: 100% !important;
+    min-height: 52px !important;
+    margin: 0 auto !important;
+  }
+
+  header .de-flex-col {
+    flex: 0 0 auto !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  header .de-flex-col.header-col-mid {
+    position: static !important;
+    left: auto !important;
+    top: auto !important;
+    transform: none !important;
+    width: auto !important;
+    max-width: none !important;
+    overflow: visible !important;
+    pointer-events: auto !important;
+  }
+
+  header .de-flex > .de-flex-col:nth-child(3) {
+    margin-left: 0 !important;
+  }
+
+  header .de-flex > .de-flex-col:nth-child(4) {
+    margin-left: 0 !important;
+  }
+
+  #btn-extra {
+    margin-left: 0 !important;
+  }
+
+  .menu_side_area {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 10px !important;
+  }
+
+  #mainmenu,
+  body.ai-widget-open #mainmenu {
+    justify-content: flex-start !important;
     gap: 0 !important;
     display: flex !important;
     flex-wrap: nowrap !important;
+    zoom: 1 !important;
   }
 
-  #mainmenu>li {
-    margin-right: 14px !important;
-  }
-
-  #mainmenu>li:last-child {
+  #mainmenu>li:last-child,
+  body.ai-widget-open #mainmenu>li:last-child {
     margin-right: 0 !important;
   }
 
+  header.uedi-subpage-header #mainmenu>li>a,
+  header.uedi-subpage-header #mainmenu>li>a.menu-item,
+  body.ai-widget-open header.uedi-subpage-header #mainmenu>li>a {
+    color: #1D2C36 !important;
+    text-shadow: none !important;
+  }
+
+  header.uedi-subpage-header #mainmenu>li:hover>a,
+  body.ai-widget-open header.uedi-subpage-header #mainmenu>li:hover>a {
+    color: #165369 !important;
+  }
+
+  header.uedi-subpage-header #mainmenu>li.has-child:after,
+  header.uedi-subpage-header #mainmenu li.has-child:after {
+    color: #1D2C36 !important;
+  }
+}
+
+/* ≤1280px desktop — moderate size (AI panel closed) */
+@media (min-width: 1025px) and (max-width: 1280px) {
+  header .de-flex {
+    gap: 10px !important;
+  }
+
+  #mainmenu>li {
+    margin-right: 9px !important;
+  }
+
   #mainmenu>li>a {
-    font-size: 13px !important;
-    padding: 18px 0 !important;
-    letter-spacing: 0.3px !important;
+    font-size: 11.5px !important;
+    padding: 12px 0 !important;
+    letter-spacing: 0.15px !important;
+    font-weight: 600 !important;
   }
 
   #mainmenu>li.has-child:after,
   #mainmenu li.has-child:after {
-    margin-left: 3px !important;
+    margin-left: 2px !important;
   }
 
   #logo img {
-    max-width: 150px !important;
+    max-width: 132px !important;
   }
 
   .menu_side_area .btn-main {
-    padding: 9px 16px !important;
-    font-size: 12px !important;
+    padding: 8px 14px !important;
+    font-size: 11px !important;
   }
 }
 
-/* When the AI panel opens, the wrapper (and therefore the header) is
-   narrowed by 300px on the right. Re-center the header content so the
-   nav doesn't get pushed off the visible portion of the viewport. */
-@media (max-width: 1280px) {
+/* ≤1280px + AI open — slightly tighter than closed, still readable (not tiny) */
+@media (min-width: 1025px) and (max-width: 1280px) {
   body.ai-widget-open header .de-flex {
     gap: 8px !important;
   }
-  body.ai-widget-open header .de-flex-col.header-col-mid {
-    flex: 1 1 auto !important;
-    display: flex !important;
-    justify-content: center !important;
-    padding: 0 8px !important;
-  }
-  body.ai-widget-open #mainmenu {
-    justify-content: center !important;
-    gap: 0 !important;
-    display: flex !important;
-    flex-wrap: nowrap !important;
-  }
+
   body.ai-widget-open #mainmenu>li {
-    margin-right: 10px !important;
+    margin-right: 6px !important;
   }
-  body.ai-widget-open #mainmenu>li:last-child {
-    margin-right: 0 !important;
+
+  body.ai-widget-open #mainmenu>li>a {
+    font-size: 10.25px !important;
+    padding: 10px 0 !important;
+    letter-spacing: 0.1px !important;
+    font-weight: 600 !important;
+  }
+
+  body.ai-widget-open #mainmenu>li.has-child:after,
+  body.ai-widget-open #mainmenu li.has-child:after {
+    margin-left: 2px !important;
+  }
+
+  body.ai-widget-open #logo img {
+    max-width: 120px !important;
+  }
+
+  body.ai-widget-open .menu_side_area .btn-main {
+    padding: 7px 12px !important;
+    font-size: 10px !important;
+    white-space: nowrap !important;
+  }
+
+  body.ai-widget-open .menu_side_area {
+    gap: 8px !important;
+  }
+
+  body.ai-widget-open #btn-extra {
+    transform: none !important;
+  }
+
+  /* Services mega — identical to AI-closed at this viewport */
+  body.ai-widget-open #mainmenu,
+  body.ai-widget-open #mainmenu>li:has(ul.mega) {
+    position: static !important;
+  }
+
+  body.ai-widget-open #mainmenu li ul.mega {
+    width: min(95vw, calc(100vw - 48px)) !important;
+    max-width: 1120px !important;
+    left: 50% !important;
+    padding: 20px 16px !important;
+    transform-origin: center top !important;
+    transform: translateX(-50%) translateY(8px) scale(0.72) !important;
+  }
+
+  body.ai-widget-open #mainmenu li:hover>ul.mega,
+  body.ai-widget-open #mainmenu li:focus-within>ul.mega,
+  body.ai-widget-open #mainmenu li.mega-open>ul.mega {
+    transform: translateX(-50%) translateY(0) scale(0.72) !important;
+  }
+
+  body.ai-widget-open #mainmenu li ul.mega-services .col-lg-3 {
+    padding: 0 16px !important;
+    flex: 1 1 25% !important;
+    max-width: 25% !important;
+    border-right: 1px solid rgba(22, 83, 105, 0.08) !important;
+  }
+
+  body.ai-widget-open #mainmenu li ul.mega-services .col-lg-3:last-child {
+    border-right: none !important;
+  }
+
+  body.ai-widget-open #mainmenu li ul.mega li.title {
+    font-size: 13px !important;
+    padding: 8px 0 6px 22px !important;
+    letter-spacing: 1.5px !important;
+  }
+
+  body.ai-widget-open #mainmenu li ul.mega ul li:not(.title) a {
+    font-size: 12.5px !important;
+    padding: 4px 0 4px 22px !important;
+  }
+
+  body.ai-widget-open #mainmenu li ul.mega ul {
+    margin-bottom: 10px !important;
+  }
+}
+
+/* Large desktops (>1280px) — bigger, readable menu */
+@media (min-width: 1281px) {
+  header .de-flex {
+    gap: 18px !important;
+  }
+
+  #mainmenu>li {
+    margin-right: 16px !important;
+  }
+
+  #mainmenu>li>a {
+    font-size: 14px !important;
+    padding: 16px 0 !important;
+    letter-spacing: 0.25px !important;
+    font-weight: 600 !important;
+  }
+
+  #logo img {
+    max-width: 168px !important;
+  }
+
+  .menu_side_area .btn-main {
+    padding: 10px 20px !important;
+    font-size: 13px !important;
+  }
+}
+
+@media (min-width: 1440px) {
+  header .de-flex {
+    gap: 20px !important;
+  }
+
+  #mainmenu>li {
+    margin-right: 18px !important;
+  }
+
+  #mainmenu>li>a {
+    font-size: 15px !important;
+    padding: 18px 0 !important;
+  }
+
+  #logo img {
+    max-width: 180px !important;
+  }
+
+  .menu_side_area .btn-main {
+    padding: 11px 22px !important;
+    font-size: 14px !important;
+  }
+}
+
+@media (min-width: 1600px) {
+  header .de-flex {
+    gap: 22px !important;
+  }
+
+  #mainmenu>li {
+    margin-right: 20px !important;
+  }
+
+  #mainmenu>li>a {
+    font-size: 15.5px !important;
+    padding: 18px 0 !important;
+  }
+
+  #logo img {
+    max-width: 190px !important;
+  }
+}
+
+/* Large desktop + AI open: slight trim only (still grouped, rarely overlaps) */
+@media (min-width: 1281px) and (max-width: 1500px) {
+  body.ai-widget-open #mainmenu>li {
+    margin-right: 12px !important;
+  }
+
+  body.ai-widget-open #mainmenu>li>a {
+    font-size: 12.5px !important;
+    padding: 14px 0 !important;
+  }
+
+  body.ai-widget-open #logo img {
+    max-width: 150px !important;
+  }
+}
+
+/* ≤1280px shared mega-menu scaling */
+@media (max-width: 1280px) {
+  header .de-flex {
+    align-items: center !important;
   }
 }
 
@@ -2369,6 +2619,7 @@ body.ai-widget-open header:not(.smaller):not(.uedi-subpage-header) {
 }
 
 @media (min-width: 1600px) {
+
   body.ai-widget-open header.transparent:not(.smaller),
   body.ai-widget-open header:not(.smaller):not(.uedi-subpage-header) {
     width: calc(100% - 420px) !important;
@@ -2411,8 +2662,8 @@ body.ai-widget-open header:not(.smaller):not(.uedi-subpage-header) {
     right: 0 !important;
   }
 
-  /* Homepage mobile: header overlays hero image (transparent on top) */
-  body.is-homepage header:not(.menu-open):not(.smaller) {
+  /* Legacy homepage mobile hero overlay (not subpage-style header) */
+  body.is-homepage header:not(.uedi-subpage-header):not(.menu-open):not(.smaller) {
     position: absolute !important;
     top: 0 !important;
     left: 0 !important;
@@ -2424,6 +2675,21 @@ body.ai-widget-open header:not(.smaller):not(.uedi-subpage-header) {
     border-bottom: none !important;
     backdrop-filter: none !important;
     z-index: 1000 !important;
+  }
+
+  /* Subpage-style header on mobile: same solid white bar as desktop */
+  body.is-homepage header.uedi-subpage-header:not(.menu-open) {
+    position: sticky !important;
+    background: #ffffff !important;
+    background-color: #ffffff !important;
+    box-shadow: 0 2px 12px rgba(29, 44, 54, 0.06) !important;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06) !important;
+  }
+
+  body.is-homepage header.uedi-subpage-header:not(.menu-open) #mainmenu>li>a,
+  body.is-homepage header.uedi-subpage-header.menu-open #mainmenu>li>a {
+    color: #1D2C36 !important;
+    text-shadow: none !important;
   }
 
   /* Subpage mobile: header is a solid dark bar; content sits below it */
@@ -3547,27 +3813,10 @@ body.ai-widget-open #back-to-top {
 }
 
 /* ========================================== */
-/* Narrow viewports w/ AI open — shrink nav    */
+/* Narrow viewports w/ AI open — layout cards  */
+/* (Nav sizing for ≤1280px is in Responsive Breakpoints above) */
 /* ========================================== */
 @media (max-width: 1500px) {
-  body.ai-widget-open #mainmenu>li {
-    margin-right: 14px !important;
-  }
-
-  body.ai-widget-open #mainmenu>li>a {
-    font-size: 11.5px !important;
-    padding: 14px 0 !important;
-  }
-
-  body.ai-widget-open #logo img {
-    max-width: 140px !important;
-  }
-
-  body.ai-widget-open .menu_side_area .btn-main {
-    padding: 8px 12px !important;
-    font-size: 10px !important;
-  }
-
   /* CardSwap wrappers shrink too */
   body.ai-widget-open .cardswap-wrap {
     height: 540px !important;
@@ -3583,24 +3832,6 @@ body.ai-widget-open #back-to-top {
 }
 
 @media (max-width: 1280px) {
-  body.ai-widget-open #mainmenu>li {
-    margin-right: 10px !important;
-  }
-
-  body.ai-widget-open #mainmenu>li>a {
-    font-size: 12px !important;
-  }
-
-  body.ai-widget-open #logo img {
-    max-width: 130px !important;
-  }
-
-  body.ai-widget-open .menu_side_area .btn-main {
-    padding: 8px 14px !important;
-    font-size: 11px !important;
-    letter-spacing: 0.3px !important;
-  }
-
   body.ai-widget-open .cardswap-wrap {
     height: 470px !important;
   }
@@ -3777,36 +4008,33 @@ body.ai-widget-open #back-to-top {
   color: #ffffff !important;
 }
 
-/* On homepage hero (transparent, not scrolled, not menu-open) the navbar
-   sits inside a glassmorphic container — use white nav text for contrast */
-body.is-homepage header:not(.smaller):not(.menu-open) #mainmenu>li>a,
-body.is-homepage header:not(.smaller):not(.menu-open) #mainmenu>li>a.menu-item {
+/* Legacy homepage hero (non–subpage-style header): white nav on teal/glass hero */
+body.is-homepage header:not(.uedi-subpage-header):not(.smaller):not(.menu-open) #mainmenu>li>a,
+body.is-homepage header:not(.uedi-subpage-header):not(.smaller):not(.menu-open) #mainmenu>li>a.menu-item {
   color: #ffffff !important;
   font-weight: 700 !important;
   text-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
 }
 
-body.is-homepage header:not(.smaller):not(.menu-open) #mainmenu>li:hover>a,
-body.is-homepage header:not(.smaller):not(.menu-open) #mainmenu>li>a:hover,
-body.is-homepage header:not(.smaller):not(.menu-open) #mainmenu>li.has-child:hover:after {
+body.is-homepage header:not(.uedi-subpage-header):not(.smaller):not(.menu-open) #mainmenu>li:hover>a,
+body.is-homepage header:not(.uedi-subpage-header):not(.smaller):not(.menu-open) #mainmenu>li>a:hover,
+body.is-homepage header:not(.uedi-subpage-header):not(.smaller):not(.menu-open) #mainmenu>li.has-child:hover:after {
   color: #165369 !important;
   text-shadow: 0 0 12px rgba(22, 83, 105, 0.9), 0 0 24px rgba(22, 83, 105, 0.45) !important;
 }
 
-/* Dropdown arrows / chevrons next to items with submenus also white, with smooth transitions */
-body.is-homepage header:not(.smaller):not(.menu-open) #mainmenu>li.has-child:after {
+body.is-homepage header:not(.uedi-subpage-header):not(.smaller):not(.menu-open) #mainmenu>li.has-child:after {
   color: #ffffff !important;
   transition: color 0.3s ease, text-shadow 0.3s ease !important;
 }
 
-/* Dark hamburger bars on hero (top + bottom lines) */
-body.is-homepage header:not(.smaller):not(.menu-open) #btn-extra span,
-body.is-homepage header:not(.smaller):not(.menu-open) #menu-btn {
+body.is-homepage header:not(.uedi-subpage-header):not(.smaller):not(.menu-open) #btn-extra span,
+body.is-homepage header:not(.uedi-subpage-header):not(.smaller):not(.menu-open) #menu-btn {
   background: #1D2C36 !important;
 }
 
-body.is-homepage header:not(.smaller):not(.menu-open) #btn-extra span::before,
-body.is-homepage header:not(.smaller):not(.menu-open) #btn-extra span::after {
+body.is-homepage header:not(.uedi-subpage-header):not(.smaller):not(.menu-open) #btn-extra span::before,
+body.is-homepage header:not(.uedi-subpage-header):not(.smaller):not(.menu-open) #btn-extra span::after {
   background: #1D2C36 !important;
 }
 
@@ -5811,6 +6039,7 @@ footer.section-dark .subfooter a:hover {
 /* keep their dedicated layout.                                      */
 /* ================================================================ */
 @media (min-width: 1025px) and (max-width: 1280px) {
+
   /* --- Container width --- */
   .container,
   .container-lg,
@@ -5842,10 +6071,22 @@ footer.section-dark .subfooter a:hover {
     padding-top: 64px !important;
     padding-bottom: 64px !important;
   }
-  section.no-top { padding-top: 0 !important; }
-  section.no-bottom { padding-bottom: 0 !important; }
-  section.pt-60 { padding-top: 48px !important; }
-  section.pb-60 { padding-bottom: 48px !important; }
+
+  section.no-top {
+    padding-top: 0 !important;
+  }
+
+  section.no-bottom {
+    padding-bottom: 0 !important;
+  }
+
+  section.pt-60 {
+    padding-top: 48px !important;
+  }
+
+  section.pb-60 {
+    padding-bottom: 48px !important;
+  }
 
   .testi-video-section,
   .services-photo-section,
@@ -5853,8 +6094,13 @@ footer.section-dark .subfooter a:hover {
     padding: 64px 0 !important;
   }
 
-  .spacer-single { height: 36px !important; }
-  .spacer-double { height: 60px !important; }
+  .spacer-single {
+    height: 36px !important;
+  }
+
+  .spacer-double {
+    height: 60px !important;
+  }
 
   /* --- Buttons --- */
   .btn-main {
@@ -5862,6 +6108,7 @@ footer.section-dark .subfooter a:hover {
     font-size: 12px !important;
     letter-spacing: 1px !important;
   }
+
   .btn-main.fx-slide {
     padding: 11px 22px !important;
   }
@@ -5871,18 +6118,22 @@ footer.section-dark .subfooter a:hover {
     min-height: 550px !important;
     height: 550px !important;
   }
+
   .hero-glass-container {
     padding: 22px 26px !important;
     max-width: 480px !important;
   }
+
   .hero-glass-container h1 {
     font-size: 26px !important;
     margin-bottom: 8px !important;
   }
+
   .hero-glass-container .subtitle {
     font-size: 11px !important;
     margin-bottom: 6px !important;
   }
+
   .hero-glass-container .btn-main {
     padding: 8px 18px !important;
     font-size: 11px !important;
@@ -5892,13 +6143,16 @@ footer.section-dark .subfooter a:hover {
   .cta-glass-section .info-box-floating {
     padding: 14px 16px !important;
   }
+
   .cta-glass-section .info-box-floating h4 {
     font-size: 12px !important;
     margin-bottom: 2px !important;
   }
+
   .cta-glass-section .info-box-floating p {
     font-size: 11px !important;
   }
+
   .cta-glass-section .info-box-floating i.fs-60,
   .cta-glass-section .info-box-floating i {
     font-size: 26px !important;
@@ -5910,33 +6164,41 @@ footer.section-dark .subfooter a:hover {
     flex: 0 0 25% !important;
     max-width: 25% !important;
   }
+
   .svc-photo-wrap {
     height: 180px !important;
   }
+
   .svc-photo-body {
     padding: 18px 16px 22px !important;
   }
+
   .svc-photo-title {
     font-size: 15px !important;
     margin-bottom: 8px !important;
   }
+
   .svc-photo-desc {
     font-size: 13px !important;
     line-height: 1.55 !important;
     margin-bottom: 14px !important;
   }
+
   .svc-icon-wrap {
     width: 44px !important;
     height: 44px !important;
     margin-bottom: 12px !important;
   }
+
   .svc-icon-wrap img {
     width: 24px !important;
     height: 24px !important;
   }
+
   .svc-photo-btn {
     font-size: 12px !important;
   }
+
   .svc-badge {
     font-size: 10px !important;
     padding: 4px 9px !important;
@@ -5948,9 +6210,11 @@ footer.section-dark .subfooter a:hover {
   .cardswap-wrap {
     height: 500px !important;
   }
+
   .cardswap-wrap--video {
     height: 380px !important;
   }
+
   .card-swap-container {
     transform: scale(0.85) !important;
     transform-origin: center center !important;
@@ -5963,6 +6227,7 @@ footer.section-dark .subfooter a:hover {
   .stacked-cards-wrap {
     min-height: 620px !important;
   }
+
   .stacked-card-inner {
     min-height: 600px !important;
     padding: 32px 36px !important;
@@ -5977,6 +6242,7 @@ footer.section-dark .subfooter a:hover {
   .testi-video-meta {
     padding: 12px 14px !important;
   }
+
   .testi-video-tag {
     font-size: 11px !important;
   }
@@ -5991,16 +6257,26 @@ footer.section-dark .subfooter a:hover {
     padding-top: 56px !important;
     padding-bottom: 24px !important;
   }
-  footer h5 { font-size: 14px !important; }
-  footer p, footer a, footer li { font-size: 13px !important; }
+
+  footer h5 {
+    font-size: 14px !important;
+  }
+
+  footer p,
+  footer a,
+  footer li {
+    font-size: 13px !important;
+  }
 
   /* --- Page subheader (subpages hero) --- */
   .page-subheader {
     padding: 100px 0 70px 0 !important;
   }
+
   .page-subheader-title {
     font-size: 40px !important;
   }
+
   .page-subheader-eyebrow {
     font-size: 11px !important;
     letter-spacing: 3px !important;
@@ -6013,6 +6289,7 @@ footer.section-dark .subfooter a:hover {
 /* cards/sections stay in the same proportions as the AI-closed view.*/
 /* ================================================================ */
 @media (min-width: 1025px) and (max-width: 1280px) {
+
   /* Override the legacy 50%/2-per-row services rule */
   body.ai-widget-open .services-photo-section .col-xl-3,
   body.ai-widget-open .services-photo-section .col-xl-3.col-lg-6.col-md-6 {
@@ -6024,30 +6301,37 @@ footer.section-dark .subfooter a:hover {
   body.ai-widget-open .svc-photo-wrap {
     height: 140px !important;
   }
+
   body.ai-widget-open .svc-photo-body {
     padding: 14px 12px 16px !important;
   }
+
   body.ai-widget-open .svc-photo-title {
     font-size: 13px !important;
     margin-bottom: 6px !important;
   }
+
   body.ai-widget-open .svc-photo-desc {
     font-size: 12px !important;
     line-height: 1.5 !important;
     margin-bottom: 10px !important;
   }
+
   body.ai-widget-open .svc-icon-wrap {
     width: 34px !important;
     height: 34px !important;
     margin-bottom: 8px !important;
   }
+
   body.ai-widget-open .svc-icon-wrap img {
     width: 18px !important;
     height: 18px !important;
   }
+
   body.ai-widget-open .svc-photo-btn {
     font-size: 11px !important;
   }
+
   body.ai-widget-open .svc-badge {
     font-size: 9px !important;
     padding: 3px 7px !important;
@@ -6070,36 +6354,45 @@ footer.section-dark .subfooter a:hover {
     min-height: 430px !important;
     height: 430px !important;
   }
+
   body.ai-widget-open .hero-glass-container {
     max-width: 340px !important;
     padding: 14px 18px !important;
   }
+
   body.ai-widget-open .hero-glass-container h1 {
     font-size: 20px !important;
     line-height: 1.2 !important;
     margin-bottom: 6px !important;
   }
+
   body.ai-widget-open .hero-glass-container .subtitle {
     font-size: 10px !important;
     margin-bottom: 4px !important;
   }
+
   body.ai-widget-open .hero-glass-container .btn-main {
     padding: 6px 14px !important;
     font-size: 10px !important;
   }
+
   /* Center the hero text vertically inside the shorter hero */
   body.ai-widget-open #section-intro .spacer-single {
     height: 0 !important;
   }
+
   body.ai-widget-open .cta-glass-section .info-box-floating {
     padding: 10px 12px !important;
   }
+
   body.ai-widget-open .cta-glass-section .info-box-floating h4 {
     font-size: 11px !important;
   }
+
   body.ai-widget-open .cta-glass-section .info-box-floating p {
     font-size: 10px !important;
   }
+
   body.ai-widget-open .cta-glass-section .info-box-floating i.fs-60,
   body.ai-widget-open .cta-glass-section .info-box-floating i {
     font-size: 22px !important;
@@ -6110,6 +6403,7 @@ footer.section-dark .subfooter a:hover {
     padding-top: 52px !important;
     padding-bottom: 52px !important;
   }
+
   body.ai-widget-open .testi-video-section,
   body.ai-widget-open .services-photo-section,
   body.ai-widget-open .doctor-float-section {
@@ -6130,6 +6424,7 @@ footer.section-dark .subfooter a:hover {
   body.ai-widget-open .stacked-cards-wrap {
     min-height: 680px !important;
   }
+
   body.ai-widget-open .stacked-card-inner {
     min-height: 660px !important;
     padding: 26px 28px !important;
@@ -6177,7 +6472,7 @@ body.booking-modal-open .ai-widget-side-panel {
   background: #ffffff;
   color: #333333;
   border-radius: 14px;
-  box-shadow: 
+  box-shadow:
     0 40px 100px rgba(0, 0, 0, 0.45),
     0 0 0 1px rgba(0, 0, 0, 0.05);
   font-family: var(--body-font, system-ui, sans-serif);
@@ -6210,6 +6505,7 @@ body.booking-modal-open .ai-widget-side-panel {
   justify-content: center;
   transition: transform 0.2s ease, color 0.2s ease;
 }
+
 .bmp-close:hover {
   color: #111111;
   transform: scale(1.1);
@@ -6222,6 +6518,7 @@ body.booking-modal-open .ai-widget-side-panel {
   justify-content: center;
   margin: 6px 0 16px;
 }
+
 .bmp-step-node {
   width: 14px;
   height: 14px;
@@ -6235,25 +6532,30 @@ body.booking-modal-open .ai-widget-side-panel {
   transition: all 0.3s ease;
   flex-shrink: 0;
 }
+
 .bmp-step-node.is-active {
   background: #7cb83e;
   box-shadow: 0 0 0 4px rgba(124, 184, 62, 0.2);
 }
+
 .bmp-step-node.is-done {
   background: #7cb83e;
   color: #ffffff;
   font-size: 8px;
   font-weight: bold;
 }
+
 .bmp-step-line {
   height: 3px;
   width: 150px;
   background: #e0e0e0;
   transition: background 0.3s ease;
 }
+
 .bmp-step-line.is-done {
   background: #7cb83e;
 }
+
 .bmp-check {
   font-size: 9px;
   display: flex;
@@ -6300,6 +6602,7 @@ body.booking-modal-open .ai-widget-side-panel {
   grid-template-columns: repeat(12, 1fr);
   gap: 16px 20px;
 }
+
 .bmp-field {
   display: flex;
   flex-direction: column;
@@ -6310,15 +6613,19 @@ body.booking-modal-open .ai-widget-side-panel {
 .bmp-field.field-dob {
   grid-column: span 3;
 }
+
 .bmp-field.field-phone {
   grid-column: span 3;
 }
+
 .bmp-field.field-email {
   grid-column: span 4;
 }
+
 .bmp-field.field-sex {
   grid-column: span 2;
 }
+
 .bmp-field.field-reason {
   grid-column: span 6;
 }
@@ -6342,6 +6649,7 @@ body.booking-modal-open .ai-widget-side-panel {
   font-family: inherit;
   transition: box-shadow 0.15s ease;
 }
+
 .bmp-field input:focus {
   box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.35);
 }
@@ -6356,12 +6664,14 @@ body.booking-modal-open .ai-widget-side-panel {
   position: relative;
   overflow: visible;
 }
+
 .bmp-country-select-wrapper {
   position: relative;
   display: flex;
   align-items: center;
   height: 100%;
 }
+
 .bmp-country-select-btn {
   background: transparent;
   border: none;
@@ -6375,19 +6685,22 @@ body.booking-modal-open .ai-widget-side-panel {
   color: #333333;
   border-right: 1px solid #e8e8e8;
 }
+
 .bmp-flag-img {
   width: 24px;
   height: 16px;
   object-fit: cover;
   border-radius: 2px;
-  box-shadow: 0 0 0 0.5px rgba(0,0,0,0.1);
+  box-shadow: 0 0 0 0.5px rgba(0, 0, 0, 0.1);
   flex-shrink: 0;
 }
+
 .bmp-caret-icon {
   font-size: 7px;
   color: #999999;
   margin-left: 1px;
 }
+
 .bmp-country-dropdown-list {
   position: absolute;
   top: calc(100% + 6px);
@@ -6396,7 +6709,7 @@ body.booking-modal-open .ai-widget-side-panel {
   background: #ffffff;
   border: 1px solid #e0e0e0;
   border-radius: 10px;
-  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.18), 0 0 0 1px rgba(0,0,0,0.04);
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.18), 0 0 0 1px rgba(0, 0, 0, 0.04);
   padding: 6px 0;
   width: 280px;
   max-height: 260px;
@@ -6404,25 +6717,30 @@ body.booking-modal-open .ai-widget-side-panel {
   display: flex;
   flex-direction: column;
 }
+
 /* Beautiful custom scrollbar for country dropdown */
 .bmp-country-dropdown-list::-webkit-scrollbar {
   width: 6px;
 }
+
 .bmp-country-dropdown-list::-webkit-scrollbar-track {
   background: transparent;
   margin: 8px 0;
 }
+
 .bmp-country-dropdown-list::-webkit-scrollbar-thumb {
   background: #d0d0d0;
   border-radius: 10px;
   border: 1px solid transparent;
   background-clip: padding-box;
 }
+
 .bmp-country-dropdown-list::-webkit-scrollbar-thumb:hover {
   background: #aaaaaa;
   border: 1px solid transparent;
   background-clip: padding-box;
 }
+
 .bmp-country-option {
   background: transparent;
   border: none;
@@ -6437,20 +6755,24 @@ body.booking-modal-open .ai-widget-side-panel {
   color: #333333;
   transition: background 0.15s ease;
 }
+
 .bmp-country-option:hover {
   background: #f0f7eb;
 }
+
 .bmp-country-option.is-selected {
   background: #edf6e5;
   color: #2e7d32;
   font-weight: 600;
 }
+
 .bmp-country-name {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   flex: 1;
 }
+
 .bmp-dial-code {
   color: #888888;
   font-size: 12.5px;
@@ -6458,9 +6780,11 @@ body.booking-modal-open .ai-widget-side-panel {
   flex-shrink: 0;
   margin-left: auto;
 }
+
 .bmp-country-option.is-selected .bmp-dial-code {
   color: #4caf50;
 }
+
 .bmp-phone-number-input {
   flex: 1;
   background: transparent !important;
@@ -6482,6 +6806,7 @@ body.booking-modal-open .ai-widget-side-panel {
   padding: 2px;
   overflow: hidden;
 }
+
 .bmp-sex-btn {
   flex: 1;
   height: 100%;
@@ -6496,10 +6821,12 @@ body.booking-modal-open .ai-widget-side-panel {
   align-items: center;
   justify-content: center;
 }
+
 .bmp-sex-btn.is-active {
   color: #7cb83e;
   font-size: 16px;
 }
+
 .bmp-sex-divider {
   width: 1px;
   height: 60%;
@@ -6529,6 +6856,7 @@ body.booking-modal-open .ai-widget-side-panel {
   gap: 22px;
   align-items: start;
 }
+
 .bmp-cal-head {
   display: flex;
   align-items: center;
@@ -6536,11 +6864,13 @@ body.booking-modal-open .ai-widget-side-panel {
   gap: 12px;
   margin-bottom: 12px;
 }
+
 .bmp-cal-title {
   font-weight: 800;
   letter-spacing: 1px;
   font-size: 16px;
 }
+
 .bmp-cal-nav {
   width: 30px;
   height: 30px;
@@ -6555,7 +6885,10 @@ body.booking-modal-open .ai-widget-side-panel {
   align-items: center;
   justify-content: center;
 }
-.bmp-cal-nav:hover { background: rgba(255, 255, 255, 0.2); }
+
+.bmp-cal-nav:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
 
 .bmp-cal-weekdays {
   display: grid;
@@ -6563,6 +6896,7 @@ body.booking-modal-open .ai-widget-side-panel {
   gap: 4px;
   margin-bottom: 6px;
 }
+
 .bmp-cal-wd {
   font-size: 13px;
   font-weight: 700;
@@ -6570,11 +6904,13 @@ body.booking-modal-open .ai-widget-side-panel {
   padding: 6px 0;
   opacity: 0.85;
 }
+
 .bmp-cal-days {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   gap: 4px;
 }
+
 .bmp-cal-day {
   aspect-ratio: 1 / 1;
   border: none;
@@ -6589,14 +6925,24 @@ body.booking-modal-open .ai-widget-side-panel {
   justify-content: center;
   transition: all 0.15s ease;
 }
+
 .bmp-cal-day:not(.is-disabled):hover {
   background: rgba(255, 255, 255, 0.18);
 }
-.bmp-cal-day.is-other-month { opacity: 0.35; }
-.bmp-cal-day.is-disabled { opacity: 0.25; cursor: not-allowed; }
+
+.bmp-cal-day.is-other-month {
+  opacity: 0.35;
+}
+
+.bmp-cal-day.is-disabled {
+  opacity: 0.25;
+  cursor: not-allowed;
+}
+
 .bmp-cal-day.is-today {
   outline: 1px solid rgba(255, 255, 255, 0.7);
 }
+
 .bmp-cal-day.is-selected {
   background: #7cb83e;
   color: #ffffff;
@@ -6610,29 +6956,37 @@ body.booking-modal-open .ai-widget-side-panel {
   flex-direction: column;
   gap: 2px;
 }
+
 .bmp-times-sub {
   font-size: 18px;
   letter-spacing: 0.4px;
   text-transform: uppercase;
   font-weight: 800;
 }
+
 .bmp-times-tz {
   font-size: 12px;
   font-weight: 500;
   opacity: 0.75;
 }
-.bmp-times-group { margin-bottom: 16px; }
+
+.bmp-times-group {
+  margin-bottom: 16px;
+}
+
 .bmp-times-label {
   font-size: 13px;
   font-weight: 700;
   margin-bottom: 8px;
   opacity: 0.9;
 }
+
 .bmp-times-list {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 8px;
 }
+
 .bmp-time {
   padding: 8px 10px;
   border-radius: 8px;
@@ -6644,14 +6998,17 @@ body.booking-modal-open .ai-widget-side-panel {
   cursor: pointer;
   transition: all 0.15s ease;
 }
+
 .bmp-time:disabled {
   opacity: 0.45;
   cursor: not-allowed;
 }
+
 .bmp-time:not(:disabled):hover {
   background: #ffffff;
   transform: translateY(-1px);
 }
+
 .bmp-time.is-active {
   background: #7cb83e;
   color: #ffffff;
@@ -6668,6 +7025,7 @@ body.booking-modal-open .ai-widget-side-panel {
   padding: 8px 0 16px;
   gap: 0;
 }
+
 .bmp-confirm-icon {
   display: flex;
   align-items: center;
@@ -6675,6 +7033,7 @@ body.booking-modal-open .ai-widget-side-panel {
   margin-bottom: 12px;
   opacity: 0.9;
 }
+
 .bmp-confirm-datetime {
   display: flex;
   flex-direction: column;
@@ -6682,33 +7041,39 @@ body.booking-modal-open .ai-widget-side-panel {
   gap: 2px;
   margin-bottom: 4px;
 }
+
 .bmp-confirm-date {
   font-size: 26px;
   font-weight: 700;
   letter-spacing: 0.3px;
   line-height: 1.3;
 }
+
 .bmp-confirm-time {
   font-size: 22px;
   font-weight: 700;
   line-height: 1.3;
 }
+
 .bmp-confirm-divider {
   width: 60px;
   height: 1px;
   background: rgba(255, 255, 255, 0.25);
   margin: 14px 0;
 }
+
 .bmp-confirm-clinic {
   line-height: 1.55;
   font-size: 14px;
   opacity: 0.95;
 }
+
 .bmp-confirm-patient {
   font-size: 13px;
   opacity: 0.85;
   line-height: 1.65;
 }
+
 .bmp-confirm-patient-name {
   font-weight: 600;
   font-size: 14px;
@@ -6720,6 +7085,7 @@ body.booking-modal-open .ai-widget-side-panel {
   text-align: center;
   padding: 16px 0;
 }
+
 .bmp-success-icon {
   width: 70px;
   height: 70px;
@@ -6733,16 +7099,19 @@ body.booking-modal-open .ai-widget-side-panel {
   justify-content: center;
   box-shadow: 0 8px 24px rgba(124, 184, 62, 0.5);
 }
+
 .bmp-success h3 {
   font-size: 24px;
   font-weight: 700;
   margin: 0 0 8px;
 }
+
 .bmp-success p {
   font-size: 14px;
   opacity: 0.9;
   margin: 0 0 12px;
 }
+
 .bmp-btn-primary {
   display: inline-block;
   background: #7cb83e;
@@ -6758,6 +7127,7 @@ body.booking-modal-open .ai-widget-side-panel {
   margin-top: 14px;
   text-decoration: none;
 }
+
 .bmp-btn-primary:hover {
   background: #6ba430;
   transform: translateY(-1px);
@@ -6785,6 +7155,7 @@ body.booking-modal-open .ai-widget-side-panel {
   cursor: pointer;
   transition: color 0.2s ease;
 }
+
 .bmp-btn-back-left:hover {
   color: #111111;
 }
@@ -6801,13 +7172,16 @@ body.booking-modal-open .ai-widget-side-panel {
   letter-spacing: 0.5px;
   transition: all 0.2s ease;
 }
+
 .bmp-btn-next-centered:not(:disabled) {
   background: #7cb83e;
 }
+
 .bmp-btn-next-centered:hover:not(:disabled) {
   background: #6ba430;
   transform: translateY(-1px);
 }
+
 .bmp-btn-next-centered:disabled {
   background: #cccccc;
   opacity: 0.6;
@@ -6822,9 +7196,18 @@ body.booking-modal-open .ai-widget-side-panel {
     overflow-y: visible !important;
     width: min(880px, 100%);
   }
-  .bmp-title { font-size: 22px; }
-  .bmp-cal-grid { gap: 18px; }
-  .bmp-times-list { grid-template-columns: repeat(3, 1fr); }
+
+  .bmp-title {
+    font-size: 22px;
+  }
+
+  .bmp-cal-grid {
+    gap: 18px;
+  }
+
+  .bmp-times-list {
+    grid-template-columns: repeat(3, 1fr);
+  }
 }
 
 @media (max-width: 1100px) {
@@ -6836,52 +7219,315 @@ body.booking-modal-open .ai-widget-side-panel {
 }
 
 @media (max-width: 880px) {
-  .bmp-backdrop { padding: 12px; }
+  .bmp-backdrop {
+    padding: 12px;
+  }
+
   .bmp-modal {
-    zoom: 1 !important; /* Reset zoom on mobile/tablets for comfortable form input */
+    zoom: 1 !important;
+    /* Reset zoom on mobile/tablets for comfortable form input */
     max-height: none !important;
     overflow-y: visible !important;
     border-radius: 14px;
   }
-  .bmp-modal-header { padding: 20px 24px 12px; }
-  .bmp-modal-body { padding: 24px 24px; }
-  .bmp-modal-footer { padding: 16px 24px 20px; }
-  .bmp-btn-back-left { left: 24px; }
-  .bmp-title { font-size: 20px; }
-  .bmp-step-line { width: 60px; }
-  
+
+  .bmp-modal-header {
+    padding: 20px 24px 12px;
+  }
+
+  .bmp-modal-body {
+    padding: 24px 24px;
+  }
+
+  .bmp-modal-footer {
+    padding: 16px 24px 20px;
+  }
+
+  .bmp-btn-back-left {
+    left: 24px;
+  }
+
+  .bmp-title {
+    font-size: 20px;
+  }
+
+  .bmp-step-line {
+    width: 60px;
+  }
+
   /* Fallback grid to stack elements nicely on medium screens */
-  .bmp-grid { 
-    grid-template-columns: 1fr; 
+  .bmp-grid {
+    grid-template-columns: 1fr;
     gap: 14px;
   }
+
   .bmp-field {
     grid-column: span 12 !important;
   }
-  
-  .bmp-cal-grid { grid-template-columns: 1fr; }
-  .bmp-times-list { grid-template-columns: repeat(3, 1fr); }
-  .bmp-confirm-date { font-size: 24px; }
-  .bmp-confirm-time { font-size: 20px; }
+
+  .bmp-cal-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .bmp-times-list {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .bmp-confirm-date {
+    font-size: 24px;
+  }
+
+  .bmp-confirm-time {
+    font-size: 20px;
+  }
 }
 
 @media (max-width: 560px) {
-  .bmp-modal-header { padding: 16px 16px 10px; }
-  .bmp-modal-body { padding: 20px 16px; }
-  .bmp-modal-footer { 
+  .bmp-modal-header {
+    padding: 16px 16px 10px;
+  }
+
+  .bmp-modal-body {
+    padding: 20px 16px;
+  }
+
+  .bmp-modal-footer {
     padding: 16px 16px 20px;
     flex-direction: column;
     gap: 14px;
   }
+
   .bmp-btn-back-left {
     position: static;
     width: 100%;
     text-align: center;
   }
+
   .bmp-btn-next-centered {
     width: 100%;
   }
-  .bmp-step-node { width: 12px; height: 12px; font-size: 0; }
-  .bmp-step-line { width: 40px; }
-  .bmp-times-list { grid-template-columns: repeat(2, 1fr); }
-}
+
+  .bmp-step-node {
+    width: 12px;
+    height: 12px;
+    font-size: 0;
+  }
+
+  .bmp-step-line {
+    width: 40px;
+  }
+
+  .bmp-times-list {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Header nav layout: see "Desktop nav (≥1025px)" in Responsive Breakpoints */
+
+/* ==========================================================================
+   Patient Form Submit Centering & Beautiful Spacing Overrides
+   ========================================================================== */
+
+.patient-form-submit-wrap {
+  width: 100% !important;
+  margin-top: 40px !important;
+  margin-bottom: 20px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.patient-form-submit-actions {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  gap: 24px !important;
+  /* Premium horizontal spacing/gap */
+  flex-wrap: wrap !important;
+  width: 100% !important;
+  margin: 0 auto !important;
+}
+
+.patient-form-submit-actions button {
+  min-width: 200px !important;
+  /* Premium uniform size */
+  text-align: center !important;
+}
+
+.patient-form-feedback {
+  text-align: center !important;
+  max-width: 650px !important;
+  margin: 24px auto 0 !important;
+  padding: 16px 24px !important;
+  border-radius: 10px !important;
+  font-size: 15px !important;
+  line-height: 1.6 !important;
+}
+
+/* ==========================================================================
+   Legal Pages (Terms of Use & Privacy Policy) Premium Styles
+   ========================================================================== */
+
+.legal-page-section {
+  padding: 80px 0 !important;
+  background-color: #f7f9fa !important;
+  /* Sleek, very light warm gray background */
+}
+
+.legal-card {
+  background: #ffffff !important;
+  padding: 50px 60px !important;
+  border-radius: 16px !important;
+  box-shadow: 0 12px 40px rgba(29, 44, 54, 0.05) !important;
+  /* Extremely soft, premium shadow */
+  border: 1px solid rgba(22, 83, 105, 0.08) !important;
+  /* Sophisticated subtle border */
+  max-width: 1000px !important;
+  margin: 0 auto !important;
+  font-family: 'Outfit', 'Inter', sans-serif !important;
+  color: #3e4e56 !important;
+  /* Elegant charcoal color for ultimate readability */
+  line-height: 1.8 !important;
+}
+
+.legal-intro {
+  font-size: 18px !important;
+  font-weight: 500 !important;
+  color: #1d2c36 !important;
+  margin-bottom: 40px !important;
+  border-left: 4px solid #165369 !important;
+  /* Accent border on the left */
+  padding-left: 24px !important;
+  line-height: 1.7 !important;
+}
+
+.legal-heading {
+  font-family: 'Outfit', 'Inter', sans-serif !important;
+  font-size: 24px !important;
+  font-weight: 700 !important;
+  color: #1d2c36 !important;
+  /* Deep dark blue primary */
+  margin-top: 45px !important;
+  margin-bottom: 20px !important;
+  position: relative !important;
+  letter-spacing: -0.01em !important;
+}
+
+/* Subtle accent block behind headers */
+.legal-heading::after {
+  content: '' !important;
+  display: block !important;
+  width: 35px !important;
+  height: 3px !important;
+  background: #165369 !important;
+  /* Teal theme color */
+  margin-top: 8px !important;
+  border-radius: 2px !important;
+}
+
+.legal-card p {
+  font-size: 15px !important;
+  margin-bottom: 24px !important;
+  text-align: justify !important;
+}
+
+/* Beautiful custom dot bullets list */
+.legal-bullets {
+  list-style: none !important;
+  /* Turn off browser default bullet */
+  padding-left: 0 !important;
+  margin: 24px 0 35px 10px !important;
+}
+
+.legal-bullets li {
+  position: relative !important;
+  padding-left: 30px !important;
+  margin-bottom: 16px !important;
+  font-size: 15px !important;
+  line-height: 1.7 !important;
+}
+
+.legal-bullets li::before {
+  content: '•' !important;
+  color: #165369 !important;
+  /* Primary accent teal for bullets */
+  font-size: 24px !important;
+  position: absolute !important;
+  left: 8px !important;
+  top: -4px !important;
+}
+
+/* Premium custom points numbered list */
+.legal-points {
+  list-style: none !important;
+  /* Turn off browser default numbering */
+  padding-left: 0 !important;
+  margin: 24px 0 35px 10px !important;
+  counter-reset: legal-point-counter !important;
+}
+
+.legal-points li {
+  position: relative !important;
+  padding-left: 45px !important;
+  margin-bottom: 24px !important;
+  font-size: 15px !important;
+  line-height: 1.7 !important;
+  counter-increment: legal-point-counter !important;
+}
+
+.legal-points li::before {
+  content: counter(legal-point-counter) !important;
+  position: absolute !important;
+  left: 6px !important;
+  top: 2px !important;
+  width: 24px !important;
+  height: 24px !important;
+  background: rgba(22, 83, 105, 0.1) !important;
+  /* Soft teal background circle */
+  color: #165369 !important;
+  /* Dark teal number */
+  font-size: 12px !important;
+  font-weight: 700 !important;
+  border-radius: 50% !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+/* Legal anchor links */
+.legal-link {
+  color: #165369 !important;
+  text-decoration: underline !important;
+  font-weight: 600 !important;
+  transition: color 0.2s ease !important;
+}
+
+.legal-link:hover {
+  color: #1d2c36 !important;
+}
+
+/* Mobile responsive fixes for legal page */
+@media (max-width: 768px) {
+  .legal-page-section {
+    padding: 40px 0 !important;
+  }
+
+  .legal-card {
+    padding: 30px 24px !important;
+    border-radius: 12px !important;
+  }
+
+  .legal-heading {
+    font-size: 20px !important;
+    margin-top: 35px !important;
+  }
+
+  .legal-bullets li {
+    padding-left: 24px !important;
+  }
+
+  .legal-points li {
+    padding-left: 36px !important;
+  }
+}

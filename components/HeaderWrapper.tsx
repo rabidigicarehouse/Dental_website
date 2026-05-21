@@ -13,7 +13,7 @@ export default function HeaderWrapper() {
   /* Default: solid-white "subpage" navbar (same look on every page,
      including the main homepage). Variant homepage demos keep their
      own transparent treatment. */
-  let headerClass = "transparent scroll-light smaller uedi-subpage-header";
+  let headerClass = "scroll-light smaller uedi-subpage-header";
 
   if (pathname === '/homepage-2') {
     headerClass = "transparent header-light";
@@ -26,20 +26,30 @@ export default function HeaderWrapper() {
     useHeaderInner = true;
   }
 
-  /* on3step.js strips `autoshow` from header on ≤992px, so the theme's
-     scroll-handler never adds `smaller` on mobile. We force `.smaller`
-     unconditionally — every page (including the main homepage) uses the
-     solid white "subpage" header look. */
+  /* on3step.js removes `.smaller` at scrollY === 0; keep it always so the
+     navbar stays white-bg + dark links (same as subpages) at every scroll position. */
   useEffect(() => {
-    const onScroll = () => {
-      const header = document.querySelector('header');
-      if (!header) return;
-      header.classList.add('smaller');
+    const header = document.querySelector('header.uedi-subpage-header');
+    if (!header) return;
+
+    const lockSubpageHeader = () => {
+      if (!header.classList.contains('smaller')) {
+        header.classList.add('smaller');
+      }
     };
-    onScroll();
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
-  }, [pathname, isHomepage]);
+
+    lockSubpageHeader();
+
+    const observer = new MutationObserver(lockSubpageHeader);
+    observer.observe(header, { attributes: true, attributeFilter: ['class'] });
+
+    window.addEventListener('scroll', lockSubpageHeader, { passive: true });
+
+    return () => {
+      observer.disconnect();
+      window.removeEventListener('scroll', lockSubpageHeader);
+    };
+  }, [pathname]);
 
   /* Tag the body with `is-homepage` / `is-subpage` so CSS can style
      the header differently on subpages (dark on mobile, content pushed

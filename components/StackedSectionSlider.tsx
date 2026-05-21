@@ -6,9 +6,16 @@ import { motion, PanInfo } from 'framer-motion';
 interface StackedSectionSliderProps {
   children: ReactNode;
   labels: string[]; // tab/dot labels per card
+  hideTabs?: boolean;
+  hideBackgroundCards?: boolean;
 }
 
-export default function StackedSectionSlider({ children, labels }: StackedSectionSliderProps) {
+export default function StackedSectionSlider({ 
+  children, 
+  labels,
+  hideTabs = false,
+  hideBackgroundCards = false
+}: StackedSectionSliderProps) {
   const cards = React.Children.toArray(children);
   const count = cards.length;
   const [activeIdx, setActiveIdx] = useState(0);
@@ -78,20 +85,22 @@ export default function StackedSectionSlider({ children, labels }: StackedSectio
   return (
     <div className="stacked-slider">
       {/* Tabs */}
-      <div className="stacked-tabs">
-        {labels.map((label, idx) => (
-          <button
-            key={label}
-            className={`stacked-tab${idx === activeIdx ? ' active' : ''}`}
-            onClick={() => goTo(idx)}
-            type="button"
-          >
-            {label}
-          </button>
-        ))}
-      </div>
+      {!hideTabs && (
+        <div className="stacked-tabs">
+          {labels.map((label, idx) => (
+            <button
+              key={label}
+              className={`stacked-tab${idx === activeIdx ? ' active' : ''}`}
+              onClick={() => goTo(idx)}
+              type="button"
+            >
+              {label}
+            </button>
+          ))}
+        </div>
+      )}
 
-      <div className="stacked-stage" style={{ paddingTop: isMobile ? '28px' : '54px' }}>
+      <div className="stacked-stage" style={{ paddingTop: hideTabs ? '0px' : (isMobile ? '28px' : '54px') }}>
         <div className="stacked-cards-wrap">
           {cards.map((card, idx) => {
             const isActive = idx === activeIdx;
@@ -106,28 +115,32 @@ export default function StackedSectionSlider({ children, labels }: StackedSectio
             const scale = isActive ? 1 : 0.94;
             const rotate = isActive ? 0 : relativeOffset * angle;
 
-            const opacity = isActive ? 1 : 0.42;
+            const opacity = isActive ? 1 : (hideBackgroundCards ? 0 : 0.42);
             const zIndex = 10 - Math.abs(relativeOffset);
 
             return (
               <motion.div
                 key={idx}
                 className={`stacked-card${isActive ? ' is-active' : ''}`}
-                drag="x"
+                drag={hideBackgroundCards ? false : "x"}
                 dragConstraints={{ left: 0, right: 0 }}
                 dragElastic={0.14}
                 onDragStart={() => {
-                  if (!isActive) {
+                  if (!isActive && !hideBackgroundCards) {
                     goTo(idx);
                   }
                 }}
-                onDragEnd={(_, info) => handleDragEnd(idx, info)}
+                onDragEnd={(_, info) => {
+                  if (!hideBackgroundCards) {
+                    handleDragEnd(idx, info);
+                  }
+                }}
                 initial={false}
                 animate={{
-                  x: xOffset,
-                  y: yOffset,
+                  x: hideBackgroundCards ? 0 : xOffset,
+                  y: hideBackgroundCards ? 0 : yOffset,
                   scale,
-                  rotate,
+                  rotate: hideBackgroundCards ? 0 : rotate,
                   opacity,
                   zIndex,
                 }}
@@ -139,13 +152,13 @@ export default function StackedSectionSlider({ children, labels }: StackedSectio
                 }}
                 style={{ 
                   zIndex,
-                  pointerEvents: 'auto',
+                  pointerEvents: isActive ? 'auto' : (hideBackgroundCards ? 'none' : 'auto'),
                   position: 'absolute',
                   inset: 0,
                   transformOrigin: 'center center' 
                 }}
                 onClick={() => {
-                  if (!isActive) {
+                  if (!isActive && !hideBackgroundCards) {
                     goTo(idx);
                   }
                 }}

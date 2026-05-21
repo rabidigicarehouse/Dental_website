@@ -56,6 +56,7 @@ export default function Home() {
   const videoIds = ["t9qpsdYNPc0", "1grIDPK_6uE", "iCoNhlEWBjY"];
 
   const [currentBg, setCurrentBg] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
   const [activeFaq, setActiveFaq] = useState<number | null>(null);
   const [currentTesti, setCurrentTesti] = useState(0);
   const [portfolioPreview, setPortfolioPreview] = useState<number | null>(null);
@@ -94,11 +95,12 @@ export default function Home() {
   ];
 
   useEffect(() => {
+    if (isPaused) return;
     const timer = setTimeout(() => {
       setCurrentBg((prev) => (prev + 1) % bgImages.length);
     }, 10000);
     return () => clearTimeout(timer);
-  }, [currentBg, bgImages.length]);
+  }, [currentBg, bgImages.length, isPaused]);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -121,7 +123,13 @@ export default function Home() {
   return (
     <>
       {/* Hero Section */}
-      <section id="section-intro" className="text-light no-top no-bottom relative" style={{ zIndex: 10, overflow: 'visible' }}>
+      <section 
+        id="section-intro" 
+        className="text-light no-top no-bottom relative" 
+        style={{ zIndex: 10, overflow: 'visible' }}
+        onMouseEnter={() => setIsPaused(true)}
+        onMouseLeave={() => setIsPaused(false)}
+      >
         <div className="relative">
           <div className="abs abs-centered w-100 z-2">
             <div className="container">
@@ -140,7 +148,7 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="mh-950-hero relative">
+          <div className="mh-950-hero relative" style={{ overflow: 'hidden' }}>
             {bgImages.map((img, index) => (
               <div
                 key={index}
@@ -151,11 +159,15 @@ export default function Home() {
                   backgroundSize: 'cover',
                   backgroundRepeat: 'no-repeat',
                   opacity: currentBg === index ? 1 : 0,
-                  transition: 'opacity 1.5s ease-in-out',
+                  transform: currentBg === index ? 'scale(1.06)' : 'scale(1)',
+                  transition: currentBg === index 
+                    ? 'opacity 1.5s ease-in-out, transform 10s linear' 
+                    : 'opacity 1.5s ease-in-out, transform 1.5s ease-in-out',
                   zIndex: currentBg === index ? 1 : 0,
                   position: 'absolute',
                   top: 0,
-                  left: 0
+                  left: 0,
+                  transformOrigin: 'center center'
                 }}
               />
             ))}
@@ -240,7 +252,11 @@ export default function Home() {
             <h2 className="wow fadeInUp" data-wow-delay=".2s">Two Sides of the Same Smile</h2>
           </div>
 
-          <StackedSectionSlider labels={['Our Story', 'About The Doctor']}>
+          <StackedSectionSlider 
+            labels={['Our Story', 'About The Doctor']}
+            hideTabs={true}
+            hideBackgroundCards={true}
+          >
             {/* ── Card 1 — Our Story ─────────────────────────────────────── */}
             <div className="row g-5 align-items-center w-100 m-0">
               <div className="col-lg-6">

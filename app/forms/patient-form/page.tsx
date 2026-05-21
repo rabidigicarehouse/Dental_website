@@ -3,6 +3,7 @@
 import { useRef } from 'react';
 import Link from 'next/link';
 import Footer from '@/components/Footer';
+import PatientFormSubmit from '@/components/PatientFormSubmit';
 
 
 export default function PatientFormPage() {
@@ -372,11 +373,14 @@ export default function PatientFormPage() {
               </div>
             </div>
 
-            <div className="dental-form-actions">
-              <button type="submit" className="dental-btn-submit"><span>Submit</span></button>
-              <button type="button" className="dental-btn-download" onClick={handleDownload}><span>⬇ Download PDF</span></button>
-            </div>
           </form>
+
+          <PatientFormSubmit
+            formRef={formRef}
+            formType="patient-form"
+            onDownload={handleDownload}
+            downloadLabel="⬇ Download PDF"
+          />
         </div>
       </section>
 

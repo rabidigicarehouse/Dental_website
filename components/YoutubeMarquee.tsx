@@ -34,9 +34,9 @@ export default function YoutubeMarquee() {
         <span className="marquee-text-channel">Ask a Dentist</span>
       </div>
 
-      {/* Star Separator */}
+      {/* YouTube Logo Separator */}
       <div className="marquee-separator">
-        <span className="text-youtube font-bold">★</span>
+        <Image src="/social icons/youtube.png" alt="YouTube" width={18} height={18} />
       </div>
 
       {/* Item 3: Channel Handle */}
@@ -55,9 +55,9 @@ export default function YoutubeMarquee() {
         <span className="marquee-text font-bold">For Weekly Oral Health Tips</span>
       </div>
 
-      {/* Star Separator */}
+      {/* YouTube Logo Separator */}
       <div className="marquee-separator">
-        <span className="text-youtube font-bold">★</span>
+        <Image src="/social icons/youtube.png" alt="YouTube" width={18} height={18} />
       </div>
     </div>
   );

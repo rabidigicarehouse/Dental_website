@@ -251,9 +251,27 @@ export default function TeethCompareSlider() {
         }, 1200);
       };
 
+      // ── Hover events: pause the auto-sweep while cursor is over the
+      // slider, resume once the cursor leaves. ──
+      const onMouseEnter = () => {
+        userPausedRef.current = true;
+        cancelAll();
+      };
+
+      const onMouseLeave = () => {
+        userPausedRef.current = false;
+        // Brief delay so the resume doesn't feel jarring if the user just
+        // grazes the edge of the slider.
+        resumeTimerRef.current = setTimeout(() => {
+          if (!cleanedUp && !userPausedRef.current) runSweepSequence(host);
+        }, 250);
+      };
+
       control.addEventListener('pointerdown', onPointerDown);
       window.addEventListener('pointerup',    onPointerUp);
       window.addEventListener('touchend',     onPointerUp);
+      host.addEventListener('mouseenter',     onMouseEnter);
+      host.addEventListener('mouseleave',     onMouseLeave);
 
       // Kick off the first sweep
       runSweepSequence(host);
@@ -263,6 +281,8 @@ export default function TeethCompareSlider() {
         control.removeEventListener('pointerdown', onPointerDown);
         window.removeEventListener('pointerup',    onPointerUp);
         window.removeEventListener('touchend',     onPointerUp);
+        host.removeEventListener('mouseenter',     onMouseEnter);
+        host.removeEventListener('mouseleave',     onMouseLeave);
       };
     }, 80); // 80 ms is enough for the viewer to finish painting
 

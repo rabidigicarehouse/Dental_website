@@ -3,6 +3,7 @@
 import { useRef } from 'react';
 import Link from 'next/link';
 import Footer from '@/components/Footer';
+import PatientFormSubmit from '@/components/PatientFormSubmit';
 
 
 const questions: Array<{ q: string; type?: 'text'; options?: string[]; hint?: string }> = [
@@ -137,11 +138,14 @@ export default function PatientScreeningPage() {
               ))}
             </ol>
 
-            <div className="dental-form-actions">
-              <button type="submit" className="dental-btn-submit"><span>Submit</span></button>
-              <button type="button" className="dental-btn-download" onClick={handleDownload}><span>⬇ Download PDF</span></button>
-            </div>
           </form>
+
+          <PatientFormSubmit
+            formRef={formRef}
+            formType="patient-screening"
+            onDownload={handleDownload}
+            downloadLabel="⬇ Download PDF"
+          />
         </div>
       </section>
 

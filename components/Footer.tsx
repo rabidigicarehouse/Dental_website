@@ -82,8 +82,8 @@ export default function Footer() {
                   Copyright {new Date().getFullYear()} - UpperEastDentalInnovation
                 </div>
                 <ul className="menu-simple">
-                  <li><Link href="#">Terms &amp; Conditions</Link></li>
-                  <li><Link href="#">Privacy Policy</Link></li>
+                  <li><Link href="/terms">Terms &amp; Conditions</Link></li>
+                  <li><Link href="/privacy">Privacy Policy</Link></li>
                 </ul>
               </div>
             </div>
