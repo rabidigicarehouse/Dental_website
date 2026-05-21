@@ -69,10 +69,10 @@ const services = [
   },
   {
     title: 'Periodontal Care',
-    img: '/dental services/Periodontal Gum Disease.jpg',
+    img: '/lanap_&_pinhole/lanap banner.jpg',
     icon: 'tooth-4.png',
-    desc: 'LANAP® laser, Pinhole® technique, and gum recession surgery.',
-    href: '/services/periodontal-gum-disease',
+    desc: 'LANAP® laser therapy and Chao Pinhole® gum recession treatment.',
+    href: '/services/lanap-laser-treatment',
     badge: null,
   },
   {

@@ -10,33 +10,28 @@ export default function YoutubeMarquee() {
   // Standard scrolling sequence items
   const marqueeContent = (
     <div className="marquee-content-group">
-      {/* Item 1: Avatar + Name */}
-      <div className="marquee-item-bubble">
+      {/* Item 1: Avatar + Name only — no YouTube icon between photo and text */}
+      <div className="marquee-item-bubble marquee-doctor-group">
         <div className="avatar-wrapper">
-          <Image 
-            src="/Dr harvey.webp" 
-            alt="Dr. Harvey Profile" 
-            width={26} 
-            height={26} 
-            className="avatar-img" 
+          <Image
+            src="/Dr harvey.webp"
+            alt="Dr. Harvey Profile"
+            width={26}
+            height={26}
+            className="avatar-img"
           />
         </div>
         <span className="marquee-text font-bold">Dr. Sharde Harvey, DDS</span>
       </div>
 
-      {/* YouTube Logo Separator */}
-      <div className="marquee-separator">
-        <Image src="/social icons/youtube.png" alt="YouTube" width={18} height={18} />
-      </div>
-
-      {/* Item 2: Channel Name (Ask a Dentist) */}
+      {/* Item 2: Channel Name (Ask a Dentist) — separator only after this, not after doctor photo/name */}
       <div className="marquee-item-bubble">
         <span className="marquee-text-channel">Ask a Dentist</span>
       </div>
 
       {/* YouTube Logo Separator */}
-      <div className="marquee-separator">
-        <Image src="/social icons/youtube.png" alt="YouTube" width={18} height={18} />
+      <div className="marquee-separator" aria-hidden="true">
+        <Image src="/social icons/youtube.png" alt="" width={22} height={22} />
       </div>
 
       {/* Item 3: Channel Handle */}
@@ -45,8 +40,8 @@ export default function YoutubeMarquee() {
       </div>
 
       {/* YouTube Logo Separator */}
-      <div className="marquee-separator">
-        <Image src="/social icons/youtube.png" alt="YouTube" width={18} height={18} />
+      <div className="marquee-separator" aria-hidden="true">
+        <Image src="/social icons/youtube.png" alt="" width={22} height={22} />
       </div>
 
       {/* Item 4: Subscribe CTA Badge */}
@@ -56,8 +51,8 @@ export default function YoutubeMarquee() {
       </div>
 
       {/* YouTube Logo Separator */}
-      <div className="marquee-separator">
-        <Image src="/social icons/youtube.png" alt="YouTube" width={18} height={18} />
+      <div className="marquee-separator" aria-hidden="true">
+        <Image src="/social icons/youtube.png" alt="" width={22} height={22} />
       </div>
     </div>
   );

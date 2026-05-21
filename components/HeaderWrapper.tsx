@@ -91,14 +91,34 @@ export default function HeaderWrapper() {
     return () => document.removeEventListener('click', handleClick);
   }, []);
 
-  /* Desktop mega menu: keep open while cursor is over the Services <li>
-     OR the mega panel. Uses a 200ms close delay so the cursor can cross
-     the small gap between the navbar and the mega without losing hover. */
+  /* Close mega menu instantly on route change (e.g. clicking a service link). */
+  useEffect(() => {
+    document.querySelectorAll('#mainmenu > li.mega-open').forEach((el) => {
+      el.classList.remove('mega-open');
+    });
+  }, [pathname]);
+
+  /* Desktop mega menu — .mega-open only (no CSS :hover ghost after navigation). */
   useEffect(() => {
     if (typeof window === 'undefined') return;
-    if (window.innerWidth <= 1024) return;
+
+    const clearMegaOpen = () => {
+      document.querySelectorAll('#mainmenu > li.mega-open').forEach((el) => {
+        el.classList.remove('mega-open');
+      });
+    };
+
+    const isInsideMegaZone = (li: HTMLElement, mega: HTMLElement, node: Node | null) => {
+      if (!node) return false;
+      return li.contains(node) || mega.contains(node);
+    };
 
     const bind = () => {
+      if (window.innerWidth <= 1024) {
+        clearMegaOpen();
+        return () => undefined;
+      }
+
       const items = Array.from(
         document.querySelectorAll<HTMLElement>('#mainmenu > li')
       ).filter((li) => li.querySelector(':scope > ul.mega') !== null);
@@ -109,52 +129,81 @@ export default function HeaderWrapper() {
         const mega = li.querySelector<HTMLElement>(':scope > ul.mega');
         if (!mega) return;
 
-        let hideTimer: number | null = null;
-
         const show = () => {
-          if (hideTimer !== null) {
-            window.clearTimeout(hideTimer);
-            hideTimer = null;
-          }
           li.classList.add('mega-open');
         };
-        const scheduleHide = () => {
-          if (hideTimer !== null) window.clearTimeout(hideTimer);
-          hideTimer = window.setTimeout(() => {
-            li.classList.remove('mega-open');
-            hideTimer = null;
-          }, 200);
+
+        const hideNow = () => {
+          li.classList.remove('mega-open');
+        };
+
+        const onLiLeave = (e: MouseEvent) => {
+          if (isInsideMegaZone(li, mega, e.relatedTarget as Node | null)) return;
+          hideNow();
+        };
+
+        const onMegaLeave = (e: MouseEvent) => {
+          if (isInsideMegaZone(li, mega, e.relatedTarget as Node | null)) return;
+          hideNow();
         };
 
         li.addEventListener('mouseenter', show);
-        li.addEventListener('mouseleave', scheduleHide);
+        li.addEventListener('mouseleave', onLiLeave);
         mega.addEventListener('mouseenter', show);
-        mega.addEventListener('mouseleave', scheduleHide);
+        mega.addEventListener('mouseleave', onMegaLeave);
+
+        mega.querySelectorAll('a').forEach((anchor) => {
+          anchor.addEventListener('click', hideNow);
+        });
 
         cleanups.push(() => {
-          if (hideTimer !== null) window.clearTimeout(hideTimer);
           li.removeEventListener('mouseenter', show);
-          li.removeEventListener('mouseleave', scheduleHide);
+          li.removeEventListener('mouseleave', onLiLeave);
           mega.removeEventListener('mouseenter', show);
-          mega.removeEventListener('mouseleave', scheduleHide);
+          mega.removeEventListener('mouseleave', onMegaLeave);
+          mega.querySelectorAll('a').forEach((anchor) => {
+            anchor.removeEventListener('click', hideNow);
+          });
           li.classList.remove('mega-open');
         });
       });
 
-      return cleanups;
+      const onDocumentClick = (e: MouseEvent) => {
+        const target = e.target as Node | null;
+        const inside = items.some((li) => {
+          const mega = li.querySelector(':scope > ul.mega');
+          return mega && isInsideMegaZone(li, mega, target);
+        });
+        if (!inside) clearMegaOpen();
+      };
+
+      document.addEventListener('click', onDocumentClick, true);
+
+      return () => {
+        cleanups.forEach((fn) => fn());
+        document.removeEventListener('click', onDocumentClick, true);
+      };
     };
 
-    /* Rebind after the theme finishes mounting the menu (on3step.js
-       reshuffles the markup, which detaches our listeners). */
-    let cleanups = bind();
+    clearMegaOpen();
+
+    let cleanup = bind();
     const rebindTimer = window.setTimeout(() => {
-      cleanups.forEach((fn) => fn());
-      cleanups = bind();
+      cleanup?.();
+      cleanup = bind();
     }, 1100);
+
+    const onResize = () => {
+      cleanup?.();
+      cleanup = bind();
+    };
+    window.addEventListener('resize', onResize);
 
     return () => {
       window.clearTimeout(rebindTimer);
-      cleanups.forEach((fn) => fn());
+      window.removeEventListener('resize', onResize);
+      cleanup?.();
+      clearMegaOpen();
     };
   }, [pathname]);
 

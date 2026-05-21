@@ -213,7 +213,12 @@ export default function Home() {
                   </div>
 
                   <div className="col-lg-4 col-md-6">
-                    <Link href="https://square.site/book/8YN3X16T15M6W/upper-east-dental-innovations" target="_blank" rel="noopener noreferrer" className="info-box-floating">
+                    <Link
+                      href="/book-appointment"
+                      className="info-box-floating"
+                      data-tele-consult="true"
+                      prefetch
+                    >
                       <i className="fs-60 id-color icon_calendar"></i>
                       <div className="ms-3">
                         <h4 className="mb-0">BOOK A TELE-CONSULT</h4>
@@ -500,15 +505,15 @@ export default function Home() {
               <div className="row g-4 align-items-center">
                 <div className="col-6 text-end">
                   <div className="w-80 rounded-1 overflow-hidden mb-25 wow zoomIn d-inline-block">
-                    <img src="images/misc/s2.webp" className="w-100 wow scaleIn" alt="" />
+                    <img src="/whychooseus/image_087.jpg" className="w-100 wow scaleIn" alt="Dental care at Upper East Dental" />
                   </div>
                   <div className="w-100 rounded-1 overflow-hidden mb-25 wow zoomIn d-inline-block">
-                    <img src="images/misc/s3.webp" className="w-100 wow scaleIn" alt="" />
+                    <img src="/whychooseus/image_108.jpg" className="w-100 wow scaleIn" alt="Our dental team" />
                   </div>
                 </div>
                 <div className="col-6">
                   <div className="w-100 rounded-1 overflow-hidden mb-25 wow zoomIn d-inline-block">
-                    <img src="images/misc/p3.webp" className="w-100 wow scaleIn" alt="" />
+                    <img src="/whychooseus/image_013.jpg" className="w-100 wow scaleIn" alt="Happy patient at Upper East Dental" />
                   </div>
                 </div>
               </div>
@@ -551,19 +556,31 @@ export default function Home() {
           </div>
           <div className="row g-4">
             {[
-              { name: "Dr. Sarah Bennett", role: "Lead Dentist", img: "1.webp" },
-              { name: "Dr. Maya Lin", role: "Cosmetic Dentist", img: "2.webp" },
-              { name: "Dr. Michael Reyes", role: "Pediatric Specialist", img: "3.webp" },
-              { name: "Dr. James Carter", role: "Dental Hygienist", img: "4.webp" }
-            ].map((member, idx) => (
-              <div className="col-lg-3 col-md-6" key={idx}>
+              { name: 'Dr. Sharde Harvey', role: 'DDS, MS, FICOI', photo: '/Dr-harvey-1.jpg' },
+              { name: 'Dr. Pellegrini', role: 'LANAP and LAPIP Protocol', photo: '/Gretel Pellegrini Photo.jpg' },
+              { name: 'Michelle', role: 'Patient Care Coordinator', placeholder: true },
+              { name: 'Paola', role: 'Front Office Coordinator', placeholder: true },
+            ].map((member) => (
+              <div className="col-lg-3 col-md-6" key={member.name}>
                 <div className="relative rounded-1 overflow-hidden">
                   <div className="rounded-1 overflow-hidden wow fadeIn zoomIn">
-                    <img src={`images/team/${member.img}`} className="w-100 wow scaleIn" alt={member.name} />
+                    <div className="team-card-photo-wrap">
+                      {'placeholder' in member && member.placeholder ? (
+                        <div className="team-card-placeholder" aria-hidden="true">
+                          <i className="icofont-user-alt-3" />
+                        </div>
+                      ) : (
+                        <img
+                          src={member.photo}
+                          className="w-100 wow scaleIn"
+                          alt={member.name}
+                        />
+                      )}
+                    </div>
                   </div>
                   <div className="abs w-100 start-0 bottom-0 z-3">
                     <div className="p-2 rounded-10 m-3 text-center bg-white wow fadeInDown">
-                      <h4 className="mb-0">{member.name}</h4>
+                      <h4 className="mb-0 team-card-name">{member.name}</h4>
                       <p className="mb-2">{member.role}</p>
                     </div>
                   </div>

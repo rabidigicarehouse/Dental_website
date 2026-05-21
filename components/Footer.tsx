@@ -79,7 +79,10 @@ export default function Footer() {
             <div className="col-md-12">
               <div className="de-flex">
                 <div className="de-flex-col">
-                  Copyright {new Date().getFullYear()} - UpperEastDentalInnovation
+                  Powered By -{' '}
+                  <Link href="https://digicarehouse.com/" target="_blank" rel="noopener noreferrer">
+                    Digicarehouse.com
+                  </Link>
                 </div>
                 <ul className="menu-simple">
                   <li><Link href="/terms">Terms &amp; Conditions</Link></li>

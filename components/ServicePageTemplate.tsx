@@ -23,6 +23,12 @@ export type ServiceTestimonial = {
   source: string;
 };
 
+export type ServiceGalleryImage = {
+  src: string;
+  alt: string;
+  caption?: string;
+};
+
 export interface ServicePageProps {
   /** e.g. "Cosmetic Dentistry" */
   name: string;
@@ -34,6 +40,10 @@ export interface ServicePageProps {
   introQuote: string;
   /** Path of the main hero image (left side) */
   introImage: string;
+  /** Optional subheader background (defaults to introImage) */
+  heroImage?: string;
+  /** Optional extra images shown below the intro section */
+  galleryImages?: ServiceGalleryImage[];
   /** Bullet points under "Why Choose Our X Services?" */
   whyChooseBullets: string[];
   /** "Why Choose Our X Services?" headline */
@@ -44,6 +54,10 @@ export interface ServicePageProps {
   treatments: ServiceTreatment[];
   /** FAQ block items */
   faqs: ServiceFaq[];
+  /** Hero: full-width image only (no title overlay) */
+  imageOnlyHero?: boolean;
+  /** Intro: full-width image only (no quote box / side text) */
+  imageOnlyIntro?: boolean;
 }
 
 // Shared homepage-style testimonials (Premium Single Slide design)
@@ -78,12 +92,18 @@ export default function ServicePageTemplate(props: ServicePageProps) {
     introParagraph,
     introQuote,
     introImage,
+    heroImage,
+    galleryImages,
     whyChooseHeadline,
     whyChooseBullets,
     treatmentsHeadline,
     treatments,
     faqs,
+    imageOnlyHero = false,
+    imageOnlyIntro = false,
   } = props;
+
+  const subheaderBg = heroImage ?? introImage;
 
   const [activeFaq, setActiveFaq] = useState<number | null>(null);
   const [currentTesti, setCurrentTesti] = useState(0);
@@ -91,51 +111,87 @@ export default function ServicePageTemplate(props: ServicePageProps) {
   return (
     <>
       {/* Subheader */}
-      <section
-        id="subheader"
-        className="page-subheader page-subheader--service text-center"
-        style={{
-          backgroundImage: `url("${introImage}")`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-        }}
-      >
-        <div className="container relative z-2">
-          <div className="page-subheader-eyebrow" style={{ color: 'rgba(255,255,255,0.85)' }}>Our Services</div>
-          <h1 className="page-subheader-title" style={{ color: '#fff' }}>{name}</h1>
-          <ul className="crumb">
-            <li><Link href="/" style={{ color: 'rgba(255,255,255,0.8)' }}>Home</Link></li>
-            <li><Link href="/services" style={{ color: 'rgba(255,255,255,0.8)' }}>Services</Link></li>
-            <li className="active" style={{ color: '#fff' }}>{name}</li>
-          </ul>
-        </div>
-      </section>
+      {imageOnlyHero ? (
+        <section id="subheader" className="service-image-hero" aria-label={name}>
+          <img src={subheaderBg} className="service-image-hero__img" alt={name} />
+        </section>
+      ) : (
+        <section
+          id="subheader"
+          className="page-subheader page-subheader--service text-center"
+          style={{
+            backgroundImage: `url("${subheaderBg}")`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+          }}
+        >
+          <div className="container relative z-2">
+            <div className="page-subheader-eyebrow" style={{ color: 'rgba(255,255,255,0.85)' }}>Our Services</div>
+            <h1 className="page-subheader-title" style={{ color: '#fff' }}>{name}</h1>
+            <ul className="crumb">
+              <li><Link href="/" style={{ color: 'rgba(255,255,255,0.8)' }}>Home</Link></li>
+              <li><Link href="/services" style={{ color: 'rgba(255,255,255,0.8)' }}>Services</Link></li>
+              <li className="active" style={{ color: '#fff' }}>{name}</li>
+            </ul>
+          </div>
+        </section>
+      )}
 
       {/* Intro */}
-      <section>
-        <div className="container">
-          <div className="row g-4 align-items-center">
-            <div className="col-lg-7">
-              <div className="relative">
-                <div className="w-100 pe-5 pb-5 wow scaleIn">
-                  <img src={introImage} className="w-100 rounded-1" alt={name} />
-                </div>
-                <div className="bg-color rounded-1 text-light w-50 p-4 abs end-0 bottom-0 z-2 soft-shadow wow scaleIn" data-wow-delay=".2s">
-                  <i className="fa fa-quote-left fs-32 abs"></i>
-                  <h4 className="ps-50">{introQuote}</h4>
+      {imageOnlyIntro ? (
+        <section className="service-image-intro pt-60 pb-40">
+          <div className="container">
+            <div className="service-image-intro__frame wow fadeInUp">
+              <img src={introImage} className="service-image-intro__img" alt={name} />
+            </div>
+          </div>
+        </section>
+      ) : (
+        <section>
+          <div className="container">
+            <div className="row g-4 align-items-center">
+              <div className="col-lg-7">
+                <div className="relative">
+                  <div className="w-100 pe-5 pb-5 wow scaleIn">
+                    <img src={introImage} className="w-100 rounded-1" alt={name} />
+                  </div>
+                  <div className="bg-color rounded-1 text-light w-50 p-4 abs end-0 bottom-0 z-2 soft-shadow wow scaleIn" data-wow-delay=".2s">
+                    <i className="fa fa-quote-left fs-32 abs"></i>
+                    <h4 className="ps-50">{introQuote}</h4>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div className="col-lg-5">
-              <div className="ps-lg-3">
-                <div className="subtitle id-color wow fadeInUp" data-wow-delay=".2s">{name}</div>
-                <h2 className="wow fadeInUp" data-wow-delay=".4s">{introHeadline}</h2>
-                <p className="mb-0 wow fadeInUp" data-wow-delay=".6s">{introParagraph}</p>
+              <div className="col-lg-5">
+                <div className="ps-lg-3">
+                  <div className="subtitle id-color wow fadeInUp" data-wow-delay=".2s">{name}</div>
+                  <h2 className="wow fadeInUp" data-wow-delay=".4s">{introHeadline}</h2>
+                  <p className="mb-0 wow fadeInUp" data-wow-delay=".6s">{introParagraph}</p>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
+
+      {galleryImages && galleryImages.length > 0 && (
+        <section className="pt-0 pb-60">
+          <div className="container">
+            <div className="row g-4">
+              {galleryImages.map((img) => (
+                <div
+                  className={galleryImages.length === 1 ? 'col-12' : galleryImages.length === 2 ? 'col-md-6' : 'col-md-4'}
+                  key={img.src}
+                >
+                  <div className="overflow-hidden rounded-1 soft-shadow">
+                    <img src={img.src} className="w-100" alt={img.alt} style={{ objectFit: 'cover', minHeight: '220px' }} />
+                  </div>
+                  {img.caption && <p className="mt-2 mb-0 text-center fs-14 op-8">{img.caption}</p>}
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* Why Choose Us */}
       <section className="bg-dark text-light">

@@ -67,16 +67,16 @@ export default function Homepage2() {
               <div className="row g-4 align-items-center">
                 <div className="col-6 text-end">
                   <div className="w-80 rounded-1 overflow-hidden mb-25 wow zoomIn d-inline-block">
-                    <img src="/images/misc/s2.webp" className="w-100 wow scaleIn" alt="" />
+                    <img src="/whychooseus/image_087.jpg" className="w-100 wow scaleIn" alt="Dental care at Upper East Dental" />
                   </div>
                   <div className="w-100 rounded-1 overflow-hidden mb-25 wow zoomIn d-inline-block">
-                    <img src="/images/misc/s3.webp" className="w-100 wow scaleIn" alt="" />
+                    <img src="/whychooseus/image_108.jpg" className="w-100 wow scaleIn" alt="Our dental team" />
                   </div>
                 </div>
 
                 <div className="col-6">
                   <div className="w-100 rounded-1 overflow-hidden mb-25 wow zoomIn d-inline-block">
-                    <img src="/images/misc/p3.webp" className="w-100 wow scaleIn" alt="" />
+                    <img src="/whychooseus/image_013.jpg" className="w-100 wow scaleIn" alt="Happy patient at Upper East Dental" />
                   </div>
                 </div>
               </div>

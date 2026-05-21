@@ -90,8 +90,6 @@ export default function Header({
                                 <li className="title">Periodontal Care</li>
                                 <li><Link href="/services/lanap-laser-treatment">LANAP® Laser Treatment</Link></li>
                                 <li><Link href="/services/pinhole-surgical-technique">Pinhole® Surgical Technique</Link></li>
-                                <li><Link href="/services/gum-recession-surgery">Gum Recession Surgery</Link></li>
-                                <li><Link href="/services/periodontal-gum-disease">Periodontal Gum Disease</Link></li>
                               </ul>
                             </div>
 

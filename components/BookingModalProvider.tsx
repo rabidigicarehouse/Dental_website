@@ -747,6 +747,7 @@ export default function BookingModalProvider({ children }: { children: ReactNode
   // visible text is a booking call-to-action.
   useEffect(() => {
     const LEGACY_URL = 'scheduling.simplifeye.co';
+    const SQUARE_BOOK_URL = 'square.site/book/8YN3X16T15M6W';
     const BOOK_TEXT_RE =
       /^(book\s+(an\s+)?appointment|book\s+now|book\s+your\s+consultation|connect\s+us)\b/i;
 
@@ -769,6 +770,24 @@ export default function BookingModalProvider({ children }: { children: ReactNode
       const hrefAttr = el.getAttribute('href') || '';
       const hrefAbs = (el as HTMLAnchorElement).href || '';
       const text = (el.textContent || '').trim();
+
+      // Internal tele-consult / Square-style booking page — always navigate
+      if (
+        hrefAttr === '/book-appointment' ||
+        hrefAttr.startsWith('/book-appointment') ||
+        hrefAbs.includes('/book-appointment') ||
+        el.hasAttribute('data-tele-consult')
+      ) {
+        return;
+      }
+
+      // Legacy Square booking URL → our booking page
+      if (hrefAbs.includes(SQUARE_BOOK_URL) || hrefAttr.includes(SQUARE_BOOK_URL)) {
+        e.preventDefault();
+        e.stopPropagation();
+        window.location.assign('/book-appointment');
+        return;
+      }
 
       const isBookHash = hrefAttr === '#book' || hrefAttr.endsWith('#book');
       const isBookLegacy = hrefAbs.includes(LEGACY_URL) || hrefAttr.includes(LEGACY_URL);

@@ -1,37 +1,117 @@
-import ServicePageTemplate from '@/components/ServicePageTemplate';
+import Link from 'next/link';
+import MapContactSection from '@/components/MapContactSection';
+import Footer from '@/components/Footer';
+
+const ASSET = '/lanap_&_pinhole';
+const SERVICE_NAME = 'LANAP® Laser Treatment';
 
 export default function LANAPLaserTreatment() {
   return (
-    <ServicePageTemplate
-      name="LANAP® Laser Treatment"
-      introHeadline="Treat Gum Disease Without Cutting or Stitches"
-      introParagraph="LANAP® (Laser-Assisted New Attachment Procedure) is the only FDA-cleared laser treatment for advanced gum disease. It treats periodontitis without scalpels, sutures, or significant downtime — and is clinically proven to actually regenerate lost bone and tissue."
-      introQuote="Treat gum disease without cutting — a paradigm shift"
-      introImage="/dental services/Periodontal Gum Disease.jpg"
-      whyChooseHeadline="Why Choose LANAP® Laser Therapy?"
-      whyChooseBullets={[
-        'FDA-cleared protocol — the only laser approach proven for regeneration',
-        'No scalpel, no sutures, no gum-line reshaping',
-        'Same-day procedure with minimal downtime',
-        'Less post-op pain and faster healing than traditional surgery',
-        'Targets bacteria selectively while preserving healthy tissue',
-        'Clinically proven to regenerate bone around teeth',
-      ]}
-      treatmentsHeadline="The LANAP® Process"
-      treatments={[
-        { title: 'Initial Assessment', desc: 'Comprehensive periodontal exam with 3D imaging and pocket depth measurements.' },
-        { title: 'Laser Bacterial Removal', desc: 'PerioLase® MVP-7 selectively eliminates infected tissue and bacteria.' },
-        { title: 'Bone-Stimulating Phase', desc: 'A second laser pass stimulates new bone and tissue attachment.' },
-        { title: 'Blood-Clot Formation', desc: 'A natural clot forms over each tooth — your body\'s healing scaffold.' },
-        { title: 'Bite Adjustment', desc: 'Subtle bite refinement to remove forces that contribute to gum loss.' },
-        { title: 'Maintenance Visits', desc: 'Specialized periodontal cleanings to maintain your results long-term.' },
-      ]}
-      faqs={[
-        { q: 'Is LANAP® painful?', a: 'Most patients report significantly less pain than traditional gum surgery. Local anesthesia is used and recovery is much faster.' },
-        { q: 'How is LANAP® different from regular laser dentistry?', a: 'LANAP uses a specific FDA-cleared protocol with the PerioLase® MVP-7 — the only laser approach scientifically proven to regenerate periodontal tissue.' },
-        { q: 'Will I need stitches?', a: 'No. That\'s a major LANAP advantage — no scalpels, no sutures.' },
-        { q: 'How long is recovery?', a: 'Most patients return to normal activity the same or next day. Diet restrictions for 7–10 days while healing.' },
-      ]}
-    />
+    <>
+      {/* Full-width main heading — banner fits edge to edge, fully visible */}
+      <section className="lanap-banner-hero" aria-label={SERVICE_NAME}>
+        <img
+          src={`${ASSET}/lanap banner.jpg`}
+          className="lanap-banner-hero__img"
+          alt="LANAP Protocol — laser-assisted periodontal treatment"
+        />
+      </section>
+
+      {/* Intro — same structure as other service pages (image + information) */}
+      <section>
+        <div className="container">
+          <div className="row g-4 align-items-center">
+            <div className="col-lg-7">
+              <div className="w-100 wow scaleIn">
+                <img
+                  src={`${ASSET}/lanap.png`}
+                  className="w-100 rounded-1 lanap-intro-img"
+                  alt="LANAP laser-assisted new attachment procedure"
+                />
+              </div>
+            </div>
+            <div className="col-lg-5">
+              <div className="ps-lg-3">
+                <div className="subtitle id-color wow fadeInUp" data-wow-delay=".2s">
+                  {SERVICE_NAME}
+                </div>
+                <h2 className="wow fadeInUp" data-wow-delay=".4s">
+                  What Is LANAP® Laser Treatment?
+                </h2>
+                <p className="wow fadeInUp" data-wow-delay=".5s">
+                  LANAP® (Laser-Assisted New Attachment Procedure) is the only FDA-cleared laser
+                  protocol for treating moderate to severe periodontitis. It eliminates diseased
+                  tissue and bacteria without scalpels or sutures—while helping your body regenerate
+                  healthy attachment around your teeth.
+                </p>
+                <p className="mb-0 wow fadeInUp" data-wow-delay=".6s">
+                  At Upper East Dental Innovations, LANAP® offers a minimally invasive alternative to
+                  traditional gum surgery with less pain, faster healing, and clinically proven
+                  results for lasting periodontal health.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* PerioLase® MVP-7 machine */}
+      <section className="bg-color-op-1 pt-80 pb-80">
+        <div className="container">
+          <div className="row g-5 align-items-center flex-lg-row-reverse">
+            <div className="col-lg-6">
+              <div className="lanap-machine-img-wrap wow fadeInUp">
+                <img
+                  src={`${ASSET}/lanap machine.jpg`}
+                  className="lanap-machine-img"
+                  alt="PerioLase MVP-7 laser system for LANAP treatment"
+                />
+              </div>
+            </div>
+            <div className="col-lg-6">
+              <div className="subtitle id-color wow fadeInUp">Advanced Technology</div>
+              <h2 className="wow fadeInUp" data-wow-delay=".1s">
+                PerioLase® MVP-7 Laser System
+              </h2>
+              <p className="wow fadeInUp" data-wow-delay=".15s">
+                The LANAP® protocol is performed with the PerioLase® MVP-7—the dedicated laser
+                system designed specifically for periodontal regeneration. Its precise wavelength
+                targets infected tissue and bacteria while preserving healthy gum structure.
+              </p>
+              <ul className="ul-check fs-500 wow fadeInUp" data-wow-delay=".2s">
+                <li>FDA-cleared protocol for advanced gum disease</li>
+                <li>Selective removal of diseased tissue without cutting the gum line</li>
+                <li>Stimulates regeneration of bone and periodontal ligament</li>
+                <li>Less post-operative discomfort than traditional osseous surgery</li>
+                <li>No scalpel, no sutures, and minimal downtime for most patients</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* CTA — same as other service pages */}
+      <section className="bg-color text-light pt-50 pb-50">
+        <div className="container">
+          <div className="row g-4 align-items-center">
+            <div className="col-md-9">
+              <h3 className="mb-0 fs-32">Ready to Book Your Appointment?</h3>
+              <p className="mb-0">
+                Contact us today to schedule your visit and take the first step toward a healthier
+                smile.
+              </p>
+            </div>
+            <div className="col-lg-3 text-lg-end">
+              <Link className="btn-main fx-slide btn-line" href="#book" data-hover="Connect Us">
+                <span>Connect Us</span>
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <MapContactSection />
+      <Footer />
+    </>
   );
 }

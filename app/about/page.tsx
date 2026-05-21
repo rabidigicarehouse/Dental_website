@@ -64,19 +64,31 @@ export default function About() {
           </div>
           <div className="row g-4">
             {[
-              { name: "Dr. Sarah Bennett", role: "Lead Dentist", img: "1.webp" },
-              { name: "Dr. Maya Lin", role: "Cosmetic Dentist", img: "2.webp" },
-              { name: "Dr. Michael Reyes", role: "Pediatric Specialist", img: "3.webp" },
-              { name: "Dr. James Carter", role: "Dental Hygienist", img: "4.webp" },
-            ].map((member, idx) => (
-              <div className="col-lg-3 col-md-6" key={idx}>
+              { name: 'Dr. Sharde Harvey', role: 'DDS, MS, FICOI', photo: '/Dr-harvey-1.jpg' },
+              { name: 'Dr. Pellegrini', role: 'LANAP and LAPIP Protocol', photo: '/Gretel Pellegrini Photo.jpg' },
+              { name: 'Michelle', role: 'Patient Care Coordinator', placeholder: true },
+              { name: 'Paola', role: 'Front Office Coordinator', placeholder: true },
+            ].map((member) => (
+              <div className="col-lg-3 col-md-6" key={member.name}>
                 <div className="relative rounded-1 overflow-hidden">
                   <div className="rounded-1 overflow-hidden wow fadeIn zoomIn">
-                    <img src={`/images/team/${member.img}`} className="w-100 wow scaleIn" alt={member.name} />
+                    <div className="team-card-photo-wrap">
+                      {'placeholder' in member && member.placeholder ? (
+                        <div className="team-card-placeholder" aria-hidden="true">
+                          <i className="icofont-user-alt-3" />
+                        </div>
+                      ) : (
+                        <img
+                          src={member.photo}
+                          className="w-100 wow scaleIn"
+                          alt={member.name}
+                        />
+                      )}
+                    </div>
                   </div>
                   <div className="abs w-100 start-0 bottom-0 z-3">
                     <div className="p-2 rounded-10 m-3 text-center bg-white wow fadeInDown">
-                      <h4 className="mb-0">{member.name}</h4>
+                      <h4 className="mb-0 team-card-name">{member.name}</h4>
                       <p className="mb-2">{member.role}</p>
                     </div>
                   </div>
@@ -122,9 +134,7 @@ export default function About() {
             </p>
           </div>
 
-          <div className="border-bottom my-4"></div>
-
-          <div className="row g-4 wow fadeInUp" data-wow-delay=".8s">
+          <div className="row g-4 wow fadeInUp my-4" data-wow-delay=".75s">
             <div className="col-md-4">
               <h5>Professional Memberships</h5>
               <ul className="about-memberships" style={{ listStyle: 'none', padding: 0 }}>
@@ -148,6 +158,73 @@ export default function About() {
                 <li><i className="fa fa-globe id-color me-2"></i>English</li>
                 <li><i className="fa fa-globe id-color me-2"></i>French</li>
                 <li><i className="fa fa-globe id-color me-2"></i>Spanish</li>
+              </ul>
+            </div>
+          </div>
+
+          <div className="border-bottom my-5"></div>
+
+          <div className="subtitle id-color wow fadeInUp mb-3">Meet the Doctor</div>
+          <h2 className="wow fadeInUp" data-wow-delay=".2s">Dr. Pellegrini — Periodontist</h2>
+
+          <div className="doctor-float-section">
+            <img
+              src="/Gretel Pellegrini Photo-bg-r.png"
+              alt="Dr. Pellegrini, Periodontist"
+              className="doctor-float-img doctor-float-img--left wow fadeInLeft"
+            />
+
+            <p className="wow fadeInUp" data-wow-delay=".3s">
+              Dr. Pellegrini is a Diplomate of the American Board of Periodontology, a recognized specialty of the National Commission on Recognition of Dental Specialties and Certifying Boards. She holds a DDS from Columbia University College of Dental Medicine and completed her surgical training in Periodontics and Implant Surgery, obtaining a Master of Science Degree in Periodontics at Columbia University, where she served as Chief Resident.
+            </p>
+
+            <p className="wow fadeInUp" data-wow-delay=".4s">
+              In addition, Dr. Pellegrini is certified for LANAP and LAPIP (Laser Assisted New Attachment Procedure and Peri-Implantitis Procedure) protocols. She is also certified for the minimally invasive Pinhole Surgical Technique for treating gum recession.
+            </p>
+
+            <p className="wow fadeInUp" data-wow-delay=".5s">
+              Dr. Pellegrini holds a DDS degree and PhD degree with honors from the University of Buenos Aires, where she served as Vice-Director of the Dental Hospital as well as faculty for more than 16 years. She pursued postdoctoral training in Bone Biology at Indiana University, a world-renowned bone research center.
+            </p>
+
+            <p className="wow fadeInUp" data-wow-delay=".6s">
+              Dr. Pellegrini has published multiple peer-reviewed papers and serves as a reviewer for prestigious journals. She has received numerous awards including the Tenenbaum Award in Periodontal Research, the Divisional Excellence in Periodontics Award by the Columbia University College of Dental Medicine Association of Dental Alumni, the Lionel Abzug Scholarship Award, the Ralph and Jessica Kaslick Award, Columbia&apos;s Program for Diversity and Inclusion in Commercialization and Entrepreneurship Award, Omicron Kappa Upsilon Key (Columbia University Chapter), and the American Society for Bone and Mineral Research Young Investigator Award, among others.
+            </p>
+
+            <p className="wow fadeInUp" data-wow-delay=".7s">
+              Dr. Pellegrini is director and scientific advisor of multiple trials for bone regeneration devices for the approval of the U.S. Food and Drug Administration (FDA) and the Conformité Européenne (CE).
+            </p>
+          </div>
+
+          <div className="row g-4 wow fadeInUp my-4" data-wow-delay=".8s">
+            <div className="col-md-4">
+              <h5>Board &amp; Training</h5>
+              <ul className="about-memberships" style={{ listStyle: 'none', padding: 0 }}>
+                <li><i className="fa fa-check-circle id-color me-2"></i>Diplomate, American Board of Periodontology</li>
+                <li><i className="fa fa-check-circle id-color me-2"></i>DDS, Columbia University College of Dental Medicine</li>
+                <li><i className="fa fa-check-circle id-color me-2"></i>MS in Periodontics, Columbia University (Chief Resident)</li>
+                <li><i className="fa fa-check-circle id-color me-2"></i>DDS &amp; PhD with Honors, University of Buenos Aires</li>
+                <li><i className="fa fa-check-circle id-color me-2"></i>Postdoctoral Training, Bone Biology — Indiana University</li>
+              </ul>
+            </div>
+            <div className="col-md-4">
+              <h5>Awards &amp; Honors</h5>
+              <ul className="about-memberships" style={{ listStyle: 'none', padding: 0 }}>
+                <li><i className="fa fa-trophy id-color me-2"></i>Tenenbaum Award in Periodontal Research</li>
+                <li><i className="fa fa-trophy id-color me-2"></i>Divisional Excellence in Periodontics Award (Columbia Alumni)</li>
+                <li><i className="fa fa-trophy id-color me-2"></i>Lionel Abzug Scholarship Award</li>
+                <li><i className="fa fa-trophy id-color me-2"></i>Ralph and Jessica Kaslick Award</li>
+                <li><i className="fa fa-trophy id-color me-2"></i>Columbia Diversity &amp; Inclusion in Commercialization Award</li>
+                <li><i className="fa fa-trophy id-color me-2"></i>Omicron Kappa Upsilon Key, Columbia University Chapter</li>
+                <li><i className="fa fa-trophy id-color me-2"></i>ASBMR Young Investigator Award</li>
+              </ul>
+            </div>
+            <div className="col-md-4">
+              <h5>Certifications &amp; Research</h5>
+              <ul className="about-memberships" style={{ listStyle: 'none', padding: 0 }}>
+                <li><i className="fa fa-certificate id-color me-2"></i>LANAP &amp; LAPIP Protocol Certified</li>
+                <li><i className="fa fa-certificate id-color me-2"></i>Pinhole Surgical Technique Certified</li>
+                <li><i className="fa fa-certificate id-color me-2"></i>Peer-reviewed publications; journal reviewer</li>
+                <li><i className="fa fa-certificate id-color me-2"></i>FDA &amp; CE trials — Director &amp; Scientific Advisor</li>
               </ul>
             </div>
           </div>

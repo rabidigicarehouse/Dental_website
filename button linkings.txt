@@ -1,4 +1,4 @@
-book a tele consult (https://square.site/book/8YN3X16T15M6W/upper-east-dental-innovations)
+book a tele consult (/book-appointment — Square-style page; Book now links to https://square.site/book/8YN3X16T15M6W/upper-east-dental-innovations)
 
 pay my bill dropdown 
 -credit card 3% fee applied (https://payment.ipospays.com/api/v1/merchantPay?t=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0cmFuc2FjdGlvbl9pZCI6Ijk3NTAxOTQzNDk4OCIsInRwbiI6IjExODEyMzE1NzY1NyIsIm1lcmNoYW50SWQiOiI1ZmFkZjY2NS01YWNkLTQ3NWYtYWExOC0wYmEwYjA4OTFjMDkiLCJzdG9yZUlkIjoiOTFhZDk3OGMtNzM0My00MjVmLTk0OTYtMTdiODNlZTkyYmIyIn0.tEzAOjtDENZasUqeJXko18J60YjRuyO89g0vw3ZE88Y)
