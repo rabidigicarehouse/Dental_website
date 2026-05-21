@@ -171,7 +171,7 @@ export default function HeaderWrapper() {
       const onDocumentClick = (e: MouseEvent) => {
         const target = e.target as Node | null;
         const inside = items.some((li) => {
-          const mega = li.querySelector(':scope > ul.mega');
+          const mega = li.querySelector<HTMLElement>(':scope > ul.mega');
           return mega && isInsideMegaZone(li, mega, target);
         });
         if (!inside) clearMegaOpen();

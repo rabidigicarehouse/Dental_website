@@ -764,8 +764,17 @@ export default function BookingModalProvider({ children }: { children: ReactNode
         return;
       }
 
+      // Square-style /book-appointment flow — own pages, not the site booking modal
+      if (target.closest('.sq-booking')) {
+        return;
+      }
+
       const el = target.closest('a, button') as HTMLElement | null;
       if (!el) return;
+
+      if (el.hasAttribute('data-sq-book-flow') || el.closest('[data-sq-book-flow]')) {
+        return;
+      }
 
       const hrefAttr = el.getAttribute('href') || '';
       const hrefAbs = (el as HTMLAnchorElement).href || '';
