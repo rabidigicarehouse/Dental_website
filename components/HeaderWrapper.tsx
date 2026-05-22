@@ -65,32 +65,6 @@ export default function HeaderWrapper() {
     }
   }, [pathname, isHomepage]);
 
-  /* Mobile menu: tap a top-level item with a submenu to expand it inline.
-     Uses event delegation so it works regardless of when the menu is
-     mounted by on3step.js. */
-  useEffect(() => {
-    const handleClick = (e: MouseEvent) => {
-      if (window.innerWidth > 1024) return;
-
-      const target = e.target as HTMLElement;
-      const link = target.closest('#mainmenu > li > a');
-      if (!link) return;
-
-      const li = link.parentElement;
-      if (!li) return;
-
-      const submenu = li.querySelector(':scope > ul');
-      if (!submenu) return;
-
-      e.preventDefault();
-      e.stopPropagation();
-      li.classList.toggle('mobile-expanded');
-    };
-
-    document.addEventListener('click', handleClick);
-    return () => document.removeEventListener('click', handleClick);
-  }, []);
-
   /* Close mega menu instantly on route change (e.g. clicking a service link). */
   useEffect(() => {
     document.querySelectorAll('#mainmenu > li.mega-open').forEach((el) => {

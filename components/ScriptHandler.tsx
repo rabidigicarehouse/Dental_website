@@ -204,6 +204,55 @@ export default function ScriptHandler() {
       });
     };
 
+    let savedScrollY = 0;
+    let touchMoveBlocker: ((e: TouchEvent) => void) | null = null;
+    let wheelBlocker: ((e: WheelEvent) => void) | null = null;
+
+    const isMenuScrollTarget = (target: Element | null) =>
+      !!target?.closest(
+        'header.menu-open .header-col-mid, header.menu-open #mainmenu li.mobile-expanded > ul'
+      );
+
+    const lockPageScroll = () => {
+      if (window.innerWidth > 1024) return;
+      savedScrollY = window.scrollY;
+      document.documentElement.classList.add('mobile-nav-open', 'no-scroll');
+      document.body.classList.add('mobile-nav-open', 'no-scroll');
+      document.body.style.position = 'fixed';
+      document.body.style.top = `-${savedScrollY}px`;
+      document.body.style.left = '0';
+      document.body.style.right = '0';
+      document.body.style.width = '100%';
+
+      touchMoveBlocker = (e: TouchEvent) => {
+        if (!isMenuScrollTarget(e.target as Element | null)) e.preventDefault();
+      };
+      wheelBlocker = (e: WheelEvent) => {
+        if (!isMenuScrollTarget(e.target as Element | null)) e.preventDefault();
+      };
+      document.addEventListener('touchmove', touchMoveBlocker, { passive: false });
+      document.addEventListener('wheel', wheelBlocker, { passive: false });
+    };
+
+    const unlockPageScroll = () => {
+      document.documentElement.classList.remove('mobile-nav-open', 'no-scroll');
+      document.body.classList.remove('mobile-nav-open', 'no-scroll');
+      document.body.style.position = '';
+      document.body.style.top = '';
+      document.body.style.left = '';
+      document.body.style.right = '';
+      document.body.style.width = '';
+      if (touchMoveBlocker) {
+        document.removeEventListener('touchmove', touchMoveBlocker);
+        touchMoveBlocker = null;
+      }
+      if (wheelBlocker) {
+        document.removeEventListener('wheel', wheelBlocker);
+        wheelBlocker = null;
+      }
+      window.scrollTo(0, savedScrollY);
+    };
+
     const resetMobileHeaderState = () => {
       const header = document.querySelector('header');
       const isMenuOpen = header?.classList.contains('menu-open');
@@ -225,11 +274,16 @@ export default function ScriptHandler() {
         header.className = finalClasses.join(' ');
         
         if (isMenuOpen) {
-           (header as HTMLElement).style.height = `${window.innerHeight}px`;
+          /* Mobile layout uses CSS (100dvh + flex); inline height breaks control placement */
+          if (window.innerWidth <= 1024) {
+            (header as HTMLElement).style.height = '';
+          } else {
+            (header as HTMLElement).style.height = `${window.innerHeight}px`;
+          }
         } else {
-           (header as HTMLElement).style.height = 'auto';
-           (header as HTMLElement).style.top = '0px';
-           (header as HTMLElement).style.marginTop = '0px';
+          (header as HTMLElement).style.height = 'auto';
+          (header as HTMLElement).style.top = '0px';
+          (header as HTMLElement).style.marginTop = '0px';
         }
       }
 
@@ -239,7 +293,7 @@ export default function ScriptHandler() {
       }
 
       if (!isMenuOpen) {
-        document.body.classList.remove('no-scroll');
+        unlockPageScroll();
       }
 
       const $ = (window as any).jQuery;
@@ -272,8 +326,10 @@ export default function ScriptHandler() {
       $(document).off('click.mobileDentiaMenuArrow', '#mainmenu li > span');
 
       const closeMenu = () => {
-        if (window.innerWidth > 992) return;
+        if (window.innerWidth > 1024) return;
         $('header').removeClass('menu-open');
+        $('#menu-btn').removeClass('menu-open');
+        unlockPageScroll();
         resetMobileHeaderState();
       };
 
@@ -285,7 +341,7 @@ export default function ScriptHandler() {
 
         // Attach new handler via delegation (robust to re-renders)
         $(document).on('click.mobileDentiaMenuBtn', '#menu-btn', function (this: any, e: any) {
-          if (window.innerWidth > 992) return;
+          if (window.innerWidth > 1024) return;
           e.preventDefault();
           e.stopPropagation();
           e.stopImmediatePropagation();
@@ -296,8 +352,8 @@ export default function ScriptHandler() {
           } else {
             // Open menu
             $('header').addClass('menu-open');
-            $('body').addClass('no-scroll');
             $('#menu-btn').addClass('menu-open');
+            lockPageScroll();
             resetMobileHeaderState();
           }
         });
@@ -305,31 +361,39 @@ export default function ScriptHandler() {
 
       bindMenuButton();
 
-      $(document).on('click.mobileDentiaMenu', '#mainmenu a', () => {
+      $(document).on('click.mobileDentiaMenu', '#mainmenu a', function (this: any, e: any) {
+        if (window.innerWidth > 1024) return;
+
+        const $link = $(this);
+        const $topLi = $link.closest('#mainmenu > li');
+        const isTopLevel = $topLi.length && $link.is($topLi.children('a').first());
+        const $submenu = $topLi.children('ul').first();
+
+        if (isTopLevel && $submenu.length) {
+          e.preventDefault();
+          e.stopPropagation();
+          e.stopImmediatePropagation();
+          $topLi.toggleClass('mobile-expanded');
+          $topLi.find('> span').toggleClass('active', $topLi.hasClass('mobile-expanded'));
+          $submenu.removeAttr('style');
+          return false;
+        }
+
         closeMenu();
       });
 
       $(document).on('click.mobileDentiaMenuArrow', '#mainmenu li > span', function (this: any, e: any) {
-        if (window.innerWidth > 992) return;
+        if (window.innerWidth > 1024) return;
         e.preventDefault();
         e.stopPropagation();
         const $span = $(this);
-        const $submenu = $span.parent().children('ul').first();
+        const $li = $span.parent();
+        const $submenu = $li.children('ul').first();
         if (!$submenu.length) return;
 
-        if ($span.hasClass('active')) {
-          // Close menu
-          $span.removeClass('active');
-          $submenu.stop(true, true).animate({ height: '0' }, 300);
-        } else {
-          // Open menu
-          $span.addClass('active');
-          // Manual height animation (because CSS sets height: 0, not display: none)
-          $submenu.css('height', 'auto');
-          const targetHeight = $submenu.height();
-          $submenu.css('height', '0');
-          $submenu.stop(true, true).animate({ height: targetHeight }, 300);
-        }
+        $li.toggleClass('mobile-expanded');
+        $span.toggleClass('active', $li.hasClass('mobile-expanded'));
+        $submenu.removeAttr('style');
       });
 
       return () => {
@@ -420,6 +484,7 @@ export default function ScriptHandler() {
       clearTimeout(timerB);
       clearTimeout(timerC);
       window.removeEventListener('resize', resetMobileHeaderState);
+      unlockPageScroll();
       if (btnExtra) btnExtra.removeEventListener('click', handleMenuClick);
       if (btnClose) btnClose.removeEventListener('click', handleCloseClick);
       if (cleanupMobileMenu) cleanupMobileMenu();

@@ -57,6 +57,15 @@ export default function Home() {
 
   const [currentBg, setCurrentBg] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
+  const [isMobileViewport, setIsMobileViewport] = useState(false);
+
+  useEffect(() => {
+    const mq = window.matchMedia('(max-width: 1024px)');
+    const update = () => setIsMobileViewport(mq.matches);
+    update();
+    mq.addEventListener('change', update);
+    return () => mq.removeEventListener('change', update);
+  }, []);
   const [activeFaq, setActiveFaq] = useState<number | null>(null);
   const [currentTesti, setCurrentTesti] = useState(0);
   const [portfolioPreview, setPortfolioPreview] = useState<number | null>(null);
@@ -131,7 +140,7 @@ export default function Home() {
         onMouseLeave={() => setIsPaused(false)}
       >
         <div className="relative">
-          <div className="abs abs-centered w-100 z-2">
+          <div className="abs abs-centered w-100 z-2 hero-content-layer">
             <div className="container">
               <div className="row g-4 align-items-center">
                 <div className="col-lg-8">
@@ -155,11 +164,13 @@ export default function Home() {
                 className="abs w-100 h-100 swiper-inner"
                 style={{
                   backgroundImage: `url(${img})`,
-                  backgroundPosition: 'center',
+                  backgroundPosition: isMobileViewport ? 'center 32%' : 'center',
                   backgroundSize: 'cover',
                   backgroundRepeat: 'no-repeat',
                   opacity: currentBg === index ? 1 : 0,
-                  transform: currentBg === index ? 'scale(1.06)' : 'scale(1)',
+                  transform: currentBg === index
+                    ? (isMobileViewport ? 'scale(1.02)' : 'scale(1.06)')
+                    : 'scale(1)',
                   transition: currentBg === index 
                     ? 'opacity 1.5s ease-in-out, transform 10s linear' 
                     : 'opacity 1.5s ease-in-out, transform 1.5s ease-in-out',
@@ -174,10 +185,10 @@ export default function Home() {
           </div>
 
           {/* Dots and Buttons Container */}
-          <div className="abs w-100" style={{ bottom: '-25px', left: 0, zIndex: 999, overflow: 'visible', pointerEvents: 'auto' }}>
+          <div className="abs w-100 hero-bottom-ui" style={{ bottom: '-25px', left: 0, zIndex: 999, overflow: 'visible', pointerEvents: 'auto' }}>
             <div className="container">
               {/* Carousel Dots */}
-              <div className="d-flex justify-content-center gap-3 mb-4" style={{ pointerEvents: 'auto', position: 'relative', zIndex: 20 }}>
+              <div className="d-flex justify-content-center gap-3 mb-4 hero-carousel-dots" style={{ pointerEvents: 'auto', position: 'relative', zIndex: 20 }}>
                 {bgImages.map((_, index) => (
                   <div
                     key={index}
@@ -201,36 +212,37 @@ export default function Home() {
 
               {/* The Three Buttons Row */}
               <div className="cta-glass-section" style={{ background: 'none', backdropFilter: 'none', border: 'none', padding: 0, boxShadow: 'none', overflow: 'visible', pointerEvents: 'auto' }}>
-                <div className="row g-4 justify-content-center">
-                  <div className="col-lg-4 col-md-6">
-                    <Link href="tel:+12126971701" className="info-box-floating">
-                      <i className="fs-60 id-color icon_phone"></i>
-                      <div className="ms-3">
+                <div className="row g-4 justify-content-center hero-cta-row">
+                  <div className="col-lg-4 col-md-6 hero-cta-item">
+                    <Link href="tel:+12126971701" className="info-box-floating" aria-label="Call 212.697.1701">
+                      <i className="fs-60 id-color icon_phone" aria-hidden="true"></i>
+                      <div className="ms-3 hero-cta-text">
                         <h4 className="mb-0">Need Dental Services?</h4>
                         <p className="mb-0">Call: 212.697.1701</p>
                       </div>
                     </Link>
                   </div>
 
-                  <div className="col-lg-4 col-md-6">
+                  <div className="col-lg-4 col-md-6 hero-cta-item">
                     <Link
                       href="/book-appointment"
                       className="info-box-floating"
                       data-tele-consult="true"
                       prefetch
+                      aria-label="Book a tele-consult"
                     >
-                      <i className="fs-60 id-color icon_calendar"></i>
-                      <div className="ms-3">
+                      <i className="fs-60 id-color icon_calendar" aria-hidden="true"></i>
+                      <div className="ms-3 hero-cta-text">
                         <h4 className="mb-0">BOOK A TELE-CONSULT</h4>
                         <p className="mb-0">Virtual Consultation</p>
                       </div>
                     </Link>
                   </div>
 
-                  <div className="col-lg-4 col-md-6 dropdown-info-box">
-                    <div className="info-box-floating">
-                      <i className="fs-60 id-color icon_wallet"></i>
-                      <div className="ms-3">
+                  <div className="col-lg-4 col-md-6 hero-cta-item dropdown-info-box">
+                    <div className="info-box-floating" role="button" tabIndex={0} aria-label="Pay my bill">
+                      <i className="fs-60 id-color icon_wallet" aria-hidden="true"></i>
+                      <div className="ms-3 hero-cta-text">
                         <h4 className="mb-0">Pay my bill <i className="arrow_carrot-down fs-14 ms-1"></i></h4>
                         <p className="mb-0">Choose payment method</p>
                       </div>
@@ -325,7 +337,7 @@ export default function Home() {
                   </p>
                 </div>
 
-                <div className="row g-3 mt-1">
+                <div className="row g-3 mt-1 doctor-credentials-block">
                   <div className="col-md-6">
                     <h5 className="doctor-credentials-title">Memberships</h5>
                     <ul className="doctor-list">
@@ -396,7 +408,7 @@ export default function Home() {
                 img: "/dental services/Advanced & Specialized Treatments.jpeg",
                 icon: "tooth-3.png",
                 desc: "Endodontics, sedation, sleep apnea treatment, and stem cell dentistry.",
-                href: "/services/advanced-treatments",
+                href: "/services/lanap-laser-treatment",
                 badge: null
               }
             ].map((service, idx) => (

@@ -24,7 +24,7 @@ export default function StackedSectionSlider({
   // Detect mobile viewport
   useEffect(() => {
     const handleResize = () => {
-      setIsMobile(window.innerWidth < 992);
+      setIsMobile(window.innerWidth <= 1024);
     };
     handleResize();
     window.addEventListener('resize', handleResize);
@@ -115,14 +115,18 @@ export default function StackedSectionSlider({
             const scale = isActive ? 1 : 0.94;
             const rotate = isActive ? 0 : relativeOffset * angle;
 
-            const opacity = isActive ? 1 : (hideBackgroundCards ? 0 : 0.42);
+            const opacity = isActive ? 1 : (hideBackgroundCards || isMobile ? 0 : 0.42);
             const zIndex = 10 - Math.abs(relativeOffset);
+
+            if (isMobile && !isActive) {
+              return null;
+            }
 
             return (
               <motion.div
                 key={idx}
-                className={`stacked-card${isActive ? ' is-active' : ''}`}
-                drag={hideBackgroundCards ? false : "x"}
+                className={`stacked-card${isActive ? ' is-active' : ''}${isMobile ? ' stacked-card--mobile' : ''}`}
+                drag={isMobile || hideBackgroundCards ? false : "x"}
                 dragConstraints={{ left: 0, right: 0 }}
                 dragElastic={0.14}
                 onDragStart={() => {
@@ -137,10 +141,10 @@ export default function StackedSectionSlider({
                 }}
                 initial={false}
                 animate={{
-                  x: hideBackgroundCards ? 0 : xOffset,
-                  y: hideBackgroundCards ? 0 : yOffset,
-                  scale,
-                  rotate: hideBackgroundCards ? 0 : rotate,
+                  x: isMobile || hideBackgroundCards ? 0 : xOffset,
+                  y: isMobile || hideBackgroundCards ? 0 : yOffset,
+                  scale: isMobile ? 1 : scale,
+                  rotate: isMobile || hideBackgroundCards ? 0 : rotate,
                   opacity,
                   zIndex,
                 }}
@@ -152,9 +156,10 @@ export default function StackedSectionSlider({
                 }}
                 style={{ 
                   zIndex,
-                  pointerEvents: isActive ? 'auto' : (hideBackgroundCards ? 'none' : 'auto'),
-                  position: 'absolute',
-                  inset: 0,
+                  pointerEvents: isActive ? 'auto' : (hideBackgroundCards || isMobile ? 'none' : 'auto'),
+                  position: isMobile ? 'relative' : 'absolute',
+                  inset: isMobile ? undefined : 0,
+                  width: isMobile ? '100%' : undefined,
                   transformOrigin: 'center center' 
                 }}
                 onClick={() => {
