@@ -45,80 +45,80 @@ export default function RootLayout({
         <ScriptHandler />
         <CursorGlow />
         <BookingModalProvider>
-        <div id="wrapper">
-          <a href="#" id="back-to-top"></a>
+          <div id="wrapper">
+            <a href="#" id="back-to-top"></a>
 
-          {/* preloader begin */}
-          <Preloader />
-          {/* preloader end */}
+            {/* preloader begin */}
+            <Preloader />
+            {/* preloader end */}
 
-          <YoutubeMarquee />
-          <TopBanner />
-          <HeaderWrapper />
-          <AccessibilityWidget />
+            <YoutubeMarquee />
+            <TopBanner />
+            <HeaderWrapper />
+            <AccessibilityWidget />
 
-          {/* content begin */}
-          <div className="no-bottom no-top" id="content">
-            <div id="top"></div>
-            {children}
-          </div>
-          {/* content end */}
+            {/* content begin */}
+            <div className="no-bottom no-top" id="content">
+              <div id="top"></div>
+              {children}
+            </div>
+            {/* content end */}
 
-        </div>
-
-        {/* overlay content begin */}
-        <div id="extra-wrap" className="text-light">
-          <div id="btn-close">
-            <span></span>
-            <span></span>
           </div>
 
-          <div id="extra-content">
-            <img src="/main logo.png" className="w-150px" alt="Dentia Logo" />
+          {/* overlay content begin */}
+          <div id="extra-wrap" className="text-light">
+            <div id="btn-close">
+              <span></span>
+              <span></span>
+            </div>
 
-            <div className="spacer-30-line"></div>
+            <div id="extra-content">
+              <img src="/main logo.png" className="w-150px" alt="Dentia Logo" />
 
-            <h5>Our Services</h5>
-            <ul className="ul-check">
-              <li><Link href="/services/general-dentistry">General Dentistry</Link></li>
-              <li><Link href="/services/cosmetic-dentistry">Cosmetic Dentistry</Link></li>
-              <li><Link href="/services/pediatric-dentistry">Pediatric Dentistry</Link></li>
-              <li><Link href="/services/restorative-dentistry">Restorative Dentistry</Link></li>
-              <li><Link href="/services/preventive-dentistry">Preventive Dentistry</Link></li>
-              <li><Link href="/services/orthodontics">Orthodontics</Link></li>
-            </ul>
+              <div className="spacer-30-line"></div>
 
-            <div className="spacer-30-line"></div>
+              <h5>Our Services</h5>
+              <ul className="ul-check">
+                <li><Link href="/services/general-dentistry">General Dentistry</Link></li>
+                <li><Link href="/services/cosmetic-dentistry">Cosmetic Dentistry</Link></li>
+                <li><Link href="/services/pediatric-dentistry">Pediatric Dentistry</Link></li>
+                <li><Link href="/services/restorative-dentistry">Restorative Dentistry</Link></li>
+                <li><Link href="/services/preventive-dentistry">Preventive Dentistry</Link></li>
+                <li><Link href="/services/orthodontics">Orthodontics</Link></li>
+              </ul>
 
-            <h5>Contact Us</h5>
-            <div><i className="icofont-clock-time me-2 op-5"></i>Monday - Friday 08.00 - 18.00</div>
-            <div><i className="icofont-location-pin me-2 op-5"></i>100 S Main St, New York, </div>
-            <div><i className="icofont-envelope me-2 op-5"></i>info@uedi.nyc </div>
+              <div className="spacer-30-line"></div>
 
-            <div className="spacer-30-line"></div>
+              <h5>Contact Us</h5>
+              <div><i className="icofont-clock-time me-2 op-5"></i>Monday - Friday 08.00 - 18.00</div>
+              <div><i className="icofont-location-pin me-2 op-5"></i>100 S Main St, New York, </div>
+              <div><i className="icofont-envelope me-2 op-5"></i>info@uedi.nyc </div>
 
-            <h5>About Us</h5>
-            <p>At Dentia, we’re dedicated to providing high-quality, personalized dental care for patients of all ages. Our skilled team uses the latest technology to ensure comfortable, efficient treatments and beautiful, healthy smiles for life.</p>
+              <div className="spacer-30-line"></div>
 
-            <div className="social-icons">
-              <Link href="https://www.facebook.com/UpperEastDental/" target="_blank">
-                <Image src="/social icons/facebook.png" alt="Facebook" width={18} height={18} className="object-contain" />
-              </Link>
-              <Link href="https://www.instagram.com/uppereastdentalnyc/?hl=en" target="_blank">
-                <Image src="/social icons/instagram.png" alt="Instagram" width={18} height={18} className="object-contain" />
-              </Link>
-              <Link href="https://www.linkedin.com/in/shardeharvey/?_l=en_US" target="_blank">
-                <Image src="/social icons/linkedin.png" alt="LinkedIn" width={18} height={18} className="object-contain" />
-              </Link>
-              <Link href="https://x.com/uppereastdental" target="_blank">
-                <Image src="/social icons/twitter.png" alt="X (Twitter)" width={18} height={18} className="object-contain" />
-              </Link>
-              <Link href="https://www.youtube.com/@askadentistaskdr.harvey7701" target="_blank">
-                <Image src="/social icons/youtube.png" alt="YouTube" width={18} height={18} className="object-contain" />
-              </Link>
+              <h5>About Us</h5>
+              <p>At Dentia, we’re dedicated to providing high-quality, personalized dental care for patients of all ages. Our skilled team uses the latest technology to ensure comfortable, efficient treatments and beautiful, healthy smiles for life.</p>
+
+              <div className="social-icons">
+                <Link href="https://www.facebook.com/UpperEastDental/" target="_blank">
+                  <Image src="/social icons/facebook.png" alt="Facebook" width={18} height={18} className="object-contain" />
+                </Link>
+                <Link href="https://www.instagram.com/uppereastdentalnyc/?hl=en" target="_blank">
+                  <Image src="/social icons/instagram.png" alt="Instagram" width={18} height={18} className="object-contain" />
+                </Link>
+                <Link href="https://www.linkedin.com/in/shardeharvey/?_l=en_US" target="_blank">
+                  <Image src="/social icons/linkedin.png" alt="LinkedIn" width={18} height={18} className="object-contain" />
+                </Link>
+                <Link href="https://x.com/uppereastdental" target="_blank">
+                  <Image src="/social icons/twitter.png" alt="X (Twitter)" width={18} height={18} className="object-contain" />
+                </Link>
+                <Link href="https://www.youtube.com/@askadentistaskdr.harvey7701" target="_blank">
+                  <Image src="/social icons/youtube.png" alt="YouTube" width={18} height={18} className="object-contain" />
+                </Link>
+              </div>
             </div>
           </div>
-        </div>
 
         </BookingModalProvider>
 

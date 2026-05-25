@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useRef } from 'react';
+import { buildBackendUrl } from '@/lib/api-base-url';
 
 export default function ContactForm() {
   const form = useRef<HTMLFormElement>(null);
@@ -21,7 +22,7 @@ export default function ContactForm() {
       const phone = formData.get('phone') as string;
       const message = formData.get('message') as string;
 
-      const response = await fetch('/api/contact', {
+      const response = await fetch(buildBackendUrl('/api/contact'), {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

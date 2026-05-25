@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import type { RefObject } from 'react';
+import { buildBackendUrl } from '@/lib/api-base-url';
 
 type FormType =
   | 'patient-form'
@@ -155,7 +156,7 @@ export default function PatientFormSubmit({
     const patientEmail = find(/^(email|e-?mail)\b/i);
 
     try {
-      const response = await fetch('/api/forms/submit', {
+      const response = await fetch(buildBackendUrl('/api/forms/submit'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

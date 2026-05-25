@@ -1,6 +1,7 @@
 'use client';
 
 import { useRef, useState } from 'react';
+import { buildBackendUrl } from '@/lib/api-base-url';
 
 export default function MapContactSection() {
   const formRef = useRef<HTMLFormElement>(null);
@@ -21,7 +22,7 @@ export default function MapContactSection() {
       const phone = d.get('hcphone') as string;
       const message = d.get('hcmsg') as string;
 
-      const response = await fetch('/api/contact', {
+      const response = await fetch(buildBackendUrl('/api/contact'), {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

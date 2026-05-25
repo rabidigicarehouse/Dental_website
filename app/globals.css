@@ -1377,6 +1377,47 @@ body.is-homepage header.smaller:not(.uedi-subpage-header) {
   }
 }
 
+/* When the AI panel is open at 1281–1400px, the visible content area
+   shrinks to ~990–1100px and the default 28px gaps + 22px social icons
+   no longer fit on one row. Apply the same tightening we use at ≤1280px
+   so the banner stays single-line. */
+@media (min-width: 1281px) and (max-width: 1400px) {
+  body.ai-widget-open .top-banner {
+    font-size: 12px;
+  }
+
+  body.ai-widget-open .top-banner-inner {
+    gap: 14px;
+    padding: 8px 16px;
+    flex-wrap: nowrap;
+  }
+
+  body.ai-widget-open .tb-item {
+    min-width: 0;
+  }
+
+  body.ai-widget-open .tb-address {
+    /* Address is the longest item — let it shrink with ellipsis instead
+       of forcing a second row. */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  body.ai-widget-open .tb-socials {
+    gap: 8px;
+  }
+
+  body.ai-widget-open .tb-social img {
+    width: 18px;
+    height: 18px;
+  }
+
+  body.ai-widget-open .tb-icon {
+    font-size: 14px;
+  }
+}
+
 @media (max-width: 992px) {
   .top-banner {
     font-size: 11.5px;
@@ -2917,6 +2958,123 @@ header.smaller #mainmenu li.mega-open>ul.mega {
   }
 }
 
+/* ────────────────────────────────────────────────────────────────
+   1281–1400px — bridge breakpoint between the tight 1025–1500
+   laptop rule (11.5px, too small here) and the >1500 desktop rule
+   (14px). Without this the nav looks "underbaked" in this band.
+   Placed AFTER the 1025–1500 block so source order wins the cascade.
+   ──────────────────────────────────────────────────────────────── */
+@media (min-width: 1281px) and (max-width: 1400px) {
+  header .de-flex {
+    gap: 14px !important;
+  }
+
+  #mainmenu>li {
+    margin-right: 12px !important;
+  }
+
+  #mainmenu>li>a {
+    font-size: 12.75px !important;
+    padding: 14px 0 !important;
+    letter-spacing: 0.2px !important;
+    font-weight: 600 !important;
+  }
+
+  #mainmenu>li.has-child:after,
+  #mainmenu li.has-child:after {
+    margin-left: 3px !important;
+  }
+
+  #logo img {
+    max-width: 148px !important;
+  }
+
+  .menu_side_area .btn-main {
+    padding: 9px 16px !important;
+    font-size: 11.5px !important;
+  }
+
+  .menu_side_area {
+    gap: 12px !important;
+  }
+}
+
+/* 1281–1400px + AI panel open — wrapper is only ~980–1100px wide, so
+   every header element has to shrink another notch AND the inner
+   container padding has to drop near zero so the logo (left) and the
+   btn-extra icon (right) stop getting clipped by the AI drawer's edge. */
+@media (min-width: 1281px) and (max-width: 1400px) {
+  body.ai-widget-open header {
+    padding-top: 8px !important;
+  }
+
+  /* Give the navbar the entire content area minus a tiny visual gutter. */
+  body.ai-widget-open header .container {
+    padding-left: 6px !important;
+    padding-right: 6px !important;
+    max-width: 100% !important;
+  }
+
+  /* Keep the whole navbar locked to the visible content area — never
+     wider than 100% of the (narrowed) wrapper, so nothing can clip. */
+  body.ai-widget-open header .de-flex {
+    gap: 6px !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  body.ai-widget-open header .de-flex-col {
+    min-width: 0 !important;
+  }
+
+  body.ai-widget-open #mainmenu>li {
+    margin-right: 4px !important;
+  }
+
+  body.ai-widget-open #mainmenu>li>a {
+    font-size: 10px !important;
+    padding: 10px 0 !important;
+    letter-spacing: 0 !important;
+    font-weight: 600 !important;
+  }
+
+  body.ai-widget-open #mainmenu>li.has-child:after,
+  body.ai-widget-open #mainmenu li.has-child:after {
+    margin-left: 1px !important;
+    font-size: 9px !important;
+  }
+
+  body.ai-widget-open #logo {
+    flex-shrink: 0 !important;
+  }
+
+  body.ai-widget-open #logo img {
+    max-width: 108px !important;
+  }
+
+  body.ai-widget-open .menu_side_area {
+    gap: 6px !important;
+    flex-shrink: 0 !important;
+  }
+
+  body.ai-widget-open .menu_side_area .btn-main {
+    padding: 6px 10px !important;
+    font-size: 9.25px !important;
+    letter-spacing: 0.1px !important;
+    white-space: nowrap !important;
+  }
+
+  body.ai-widget-open #btn-extra {
+    margin-left: 0 !important;
+    flex-shrink: 0 !important;
+    width: 20px !important;
+  }
+
+  body.ai-widget-open #btn-extra span {
+    width: 100% !important;
+  }
+}
+
 /* Large desktop + AI open: slight trim only (still grouped, rarely overlaps) */
 @media (min-width: 1281px) and (max-width: 1500px) {
   body.ai-widget-open #mainmenu>li {
@@ -3966,19 +4124,19 @@ header.scrollOff {
   height: var(--rail-btn-size, 44px);
   min-width: var(--rail-btn-size, 44px);
   min-height: var(--rail-btn-size, 44px);
-  border-radius: 50%;
+  border-radius: 0;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  background: #ffffff;
-  box-shadow: 0 4px 14px rgba(29, 44, 54, 0.14);
+  background: transparent !important;
+  box-shadow: none !important;
   color: #1D2C36;
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  transition: transform 0.25s ease, filter 0.25s ease;
 }
 
 .social-icon-btn:hover {
-  transform: scale(1.3) translateY(-3px);
-  filter: brightness(1.2);
+  transform: scale(1.25) translateY(-2px);
+  filter: drop-shadow(0 6px 14px rgba(29, 44, 54, 0.25));
 }
 
 @media (min-width: 1024px) {
@@ -7225,6 +7383,10 @@ body.booking-modal-open .ai-widget-side-panel {
 .bmp-modal-body {
   flex: 1;
   overflow-y: auto;
+  /* Stop wheel events bubbling up to the page when the user has reached
+     the top/bottom of the modal body. Prevents the background scrolling
+     when the cursor is over the modal. */
+  overscroll-behavior: contain;
   padding: 32px 36px;
   background: linear-gradient(135deg, #103b74 0%, #367755 50%, #68ac35 100%);
   color: #ffffff;
@@ -7349,10 +7511,12 @@ body.booking-modal-open .ai-widget-side-panel {
 }
 
 .bmp-country-dropdown-list {
-  position: absolute;
-  top: calc(100% + 6px);
-  left: 0;
-  z-index: 1000;
+  /* Render the dropdown as a viewport-fixed flyout so it can extend past
+     the modal-body's bottom edge without being clipped by its overflow,
+     and stay above the modal stacking context. Coordinates are computed
+     in JS and applied via inline style on open. */
+  position: fixed;
+  z-index: 10020; /* above .bmp-modal (10000) and its backdrop */
   background: #ffffff;
   border: 1px solid #e0e0e0;
   border-radius: 10px;
@@ -7361,6 +7525,9 @@ body.booking-modal-open .ai-widget-side-panel {
   width: 280px;
   max-height: 260px;
   overflow-y: auto;
+  /* Keep wheel scroll contained within the dropdown when the cursor is
+     over it — don't bubble to the modal body. */
+  overscroll-behavior: contain;
   display: flex;
   flex-direction: column;
 }

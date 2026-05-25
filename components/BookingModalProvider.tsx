@@ -6,10 +6,12 @@ import React, {
   useContext,
   useEffect,
   useMemo,
+  useRef,
   useState,
   ReactNode,
 } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { buildBackendUrl } from '@/lib/api-base-url';
 
 /* ============================================================
    Context for opening/closing the booking modal from any page
@@ -191,6 +193,17 @@ function BookingModal({ onClose }: { onClose: () => void }) {
   const [form, setForm] = useState<FormData>(initialForm);
   const [selectedCountryCode, setSelectedCountryCode] = useState('US');
   const [countryDropdownOpen, setCountryDropdownOpen] = useState(false);
+  /* Inline-style coordinates for the country dropdown so it can render
+     as a viewport-fixed flyout outside the modal's clipped overflow. */
+  const countryBtnRef = useRef<HTMLButtonElement | null>(null);
+  const phoneFieldRef = useRef<HTMLDivElement | null>(null);
+  const [dropdownPos, setDropdownPos] = useState<{ top: number; left: number; width: number; maxHeight: number; openUpward: boolean }>({
+    top: 0,
+    left: 0,
+    width: 280,
+    maxHeight: 260,
+    openUpward: false,
+  });
 
   const today = useMemo(() => {
     const d = new Date();
@@ -232,6 +245,41 @@ function BookingModal({ onClose }: { onClose: () => void }) {
     const handleClose = () => setCountryDropdownOpen(false);
     document.addEventListener('click', handleClose);
     return () => document.removeEventListener('click', handleClose);
+  }, [countryDropdownOpen]);
+
+  /* Compute the dropdown's viewport coordinates whenever it opens, or
+     whenever the modal scrolls / window resizes while it's open. The
+     dropdown renders as `position: fixed` so it can extend past the
+     modal-body's bottom edge; we just feed it the right top/left here. */
+  useEffect(() => {
+    if (!countryDropdownOpen) return;
+
+    const reposition = () => {
+      const anchor = phoneFieldRef.current ?? countryBtnRef.current;
+      if (!anchor) return;
+      const rect = anchor.getBoundingClientRect();
+      const preferredHeight = 260;
+      const margin = 8;
+      const openUpward = false;
+      const top = rect.bottom + margin;
+      const width = Math.min(Math.max(rect.width, 280), window.innerWidth - 16);
+      const maxHeight = Math.max(140, window.innerHeight - top - 12);
+      const left = Math.min(
+        Math.max(8, rect.left),
+        window.innerWidth - width - 8
+      );
+      setDropdownPos({ top, left, width, maxHeight: Math.min(preferredHeight, maxHeight), openUpward });
+    };
+
+    reposition();
+    // Reposition on modal scroll, window resize, or page scroll.
+    const onUpdate = () => reposition();
+    window.addEventListener('resize', onUpdate);
+    window.addEventListener('scroll', onUpdate, true); // capture: catches inner scrolls too
+    return () => {
+      window.removeEventListener('resize', onUpdate);
+      window.removeEventListener('scroll', onUpdate, true);
+    };
   }, [countryDropdownOpen]);
 
   const selectedCountry = useMemo(() => {
@@ -284,7 +332,7 @@ function BookingModal({ onClose }: { onClose: () => void }) {
     setSubmitting(true);
     setSubmitError(null);
     try {
-      const response = await fetch('/api/book', {
+      const response = await fetch(buildBackendUrl('/api/book'), {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -449,21 +497,32 @@ function BookingModal({ onClose }: { onClose: () => void }) {
                     
                     <div className="bmp-field field-phone">
                       <span className="bmp-label">Phone*</span>
-                      <div className="bmp-phone-field-container">
+                      <div ref={phoneFieldRef} className="bmp-phone-field-container">
                         <div className="bmp-country-select-wrapper">
                           <button
-                            type="button"
-                            className="bmp-country-select-btn"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              setCountryDropdownOpen(!countryDropdownOpen);
+                            ref={countryBtnRef}
+                              type="button"
+                              className="bmp-country-select-btn"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setCountryDropdownOpen(!countryDropdownOpen);
                             }}
                           >
                             <img src={selectedCountry.flagUrl} alt={selectedCountry.name} className="bmp-flag-img" />
                             <span className="bmp-caret-icon">▼</span>
                           </button>
                           {countryDropdownOpen && (
-                            <div className="bmp-country-dropdown-list" onClick={(e) => e.stopPropagation()}>
+                            <div
+                              className="bmp-country-dropdown-list"
+                              style={{
+                                top: dropdownPos.top,
+                                left: dropdownPos.left,
+                                width: dropdownPos.width,
+                                maxHeight: dropdownPos.maxHeight,
+                              }}
+                              onClick={(e) => e.stopPropagation()}
+                              onWheel={(e) => e.stopPropagation()}
+                            >
                               {COUNTRIES.map((c) => (
                                 <button
                                   key={c.code}
