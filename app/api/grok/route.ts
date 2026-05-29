@@ -304,11 +304,17 @@ async function getKnowledgeDocument(scrapeKey: string): Promise<string> {
   return knowledgeBuildPromise;
 }
 
-function buildSystemPrompt(siteContext: string): string {
+function buildSystemPrompt(siteContext: string, userName?: string): string {
+  const patientInstructions = userName
+    ? `IMPORTANT: The patient's name is ${userName}. Address the patient directly by their name (${userName}) in your replies (e.g., "Certainly, ${userName}..." or "Yes, ${userName}..."), keeping the tone personal, warm, and highly professional.`
+    : '';
+
   return [
     'You are the official AI dental assistant for Upper East Dental Innovations',
     '(UEDI) — a cosmetic and restorative dental practice in New York City led',
     'by Dr. Sharde Harvey. The website below is your ONLY source of truth.',
+    '',
+    patientInstructions,
     '',
     `Website: ${SITE_URL}`,
     '',
@@ -374,7 +380,7 @@ function extractAssistantText(data: any): string {
 }
 
 export async function POST(request: NextRequest) {
-  let body: { message?: string; history?: ChatMessage[] } = {};
+  let body: { message?: string; history?: ChatMessage[]; userName?: string } = {};
   try {
     body = await request.json();
   } catch {
@@ -382,6 +388,7 @@ export async function POST(request: NextRequest) {
   }
 
   const message = (body.message || '').trim();
+  const userName = (body.userName || '').trim();
   if (!message) {
     return NextResponse.json({ error: 'Empty message.' }, { status: 400 });
   }
@@ -414,7 +421,7 @@ export async function POST(request: NextRequest) {
     siteContext = pickRelevantContext(sections, message);
   }
 
-  const systemPrompt = buildSystemPrompt(siteContext);
+  const systemPrompt = buildSystemPrompt(siteContext, userName);
 
   // Last ~6 turns of history → keep payload small.
   const history = Array.isArray(body.history) ? body.history.slice(-6) : [];

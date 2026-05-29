@@ -81,23 +81,23 @@ export default function Technology() {
 
           <StackedSectionSlider labels={techData.map(d => d.title)}>
             {techData.map((tech, idx) => (
-              <div className="row g-5 align-items-center w-100 m-0" key={idx}>
-                <div className="col-lg-6">
-                  <div className="about-img-container">
-                    <img src={tech.img} className="about-img-main rounded-20 shadow-lg" alt={tech.title} />
-                  </div>
+              <div className="tech-card" key={idx}>
+                {/* Top: landscape hero image */}
+                <div className="tech-card-photo">
+                  <img src={tech.img} alt={tech.title} />
                 </div>
 
-                <div className="col-lg-6">
-                  <div className="ps-lg-4">
-                    <div className="about-subtitle">Technology</div>
-                    <h2 className="about-title">{tech.title}</h2>
-                    <div className="about-text mt-4">
-                      {tech.content}
-                    </div>
-                    <div className="mt-4">
-                      <Link href="#book" className="btn-main fx-slide"><span>Book Appointment</span></Link>
-                    </div>
+                {/* Bottom: text content */}
+                <div className="tech-card-body">
+                  <div className="tech-card-eyebrow">Technology</div>
+                  <h2 className="tech-card-title">{tech.title}</h2>
+                  <div className="tech-card-text">
+                    {tech.content}
+                  </div>
+                  <div className="tech-card-actions">
+                    <Link href="#book" className="btn-main fx-slide">
+                      <span>Book Appointment</span>
+                    </Link>
                   </div>
                 </div>
               </div>

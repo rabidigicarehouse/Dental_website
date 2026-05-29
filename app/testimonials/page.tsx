@@ -73,8 +73,8 @@ export default function Testimonials() {
         }}
       >
         <div className="container relative z-2">
-          <div className="page-subheader-eyebrow" style={{ color: 'rgba(255,255,255,0.85)' }}>What Patients Say</div>
-          <h1 className="page-subheader-title" style={{ color: '#fff' }}>Testimonials</h1>
+          <div className="page-subheader-eyebrow" style={{ color: 'rgba(255,255,255,0.85)' }}>Testimonials</div>
+          <h1 className="page-subheader-title" style={{ color: '#fff' }}>Why Our Patient Love Us</h1>
           <ul className="crumb">
             <li><Link href="/" style={{ color: 'rgba(255,255,255,0.8)' }}>Home</Link></li>
             <li className="active" style={{ color: '#fff' }}>Testimonials</li>

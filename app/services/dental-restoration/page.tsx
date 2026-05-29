@@ -27,10 +27,8 @@ export default function DentalRestoration() {
         { title: 'Bite Restoration', desc: 'Comprehensive treatment for worn or collapsed bites.' },
       ]}
       faqs={[
-        { q: 'How long do tooth-colored fillings last?', a: 'High-quality composite fillings typically last 7–10 years with good oral hygiene.' },
-        { q: 'Will my filling match my tooth?', a: 'Yes — we color-match composite to your natural shade. Most patients can\'t even tell where the filling is.' },
-        { q: 'Are silver fillings safe?', a: 'Silver fillings are FDA-approved, but we offer mercury-free alternatives that are both healthier and more aesthetic.' },
-        { q: 'How long does a filling appointment take?', a: 'Typically 30–60 minutes per tooth, depending on size and location.' },
+        { q: 'Why are dental restorations a necessity?', a: 'Patients frequently need tooth repairs due to accidents like car wrecks, sports injuries, or falls. It is important to fix the tooth right away — otherwise, discomfort or other problems can develop.' },
+        { q: 'What are the various types of dental restorations?', a: 'We offer customized treatment plans based on individual patient needs rather than one-size-fits-all solutions. Common restorations include dental veneers, tooth-colored fillings, bondings, dental bridges, and dental implants.' },
       ]}
     />
   );

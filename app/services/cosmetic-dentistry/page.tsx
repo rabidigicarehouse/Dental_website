@@ -30,11 +30,16 @@ export default function CosmeticDentistry() {
         { title: 'Metal-Free Crowns', desc: 'Restore damaged teeth with all-ceramic crowns that blend seamlessly with your smile.' },
       ]}
       faqs={[
-        { q: 'How often should I visit the dentist?', a: 'It’s recommended to see your dentist every 6 months for a routine check-up and cleaning, unless advised otherwise.' },
-        { q: 'What should I do in a dental emergency?', a: 'Call our office immediately. We offer same-day emergency care for issues like severe pain, broken teeth, or swelling.' },
-        { q: 'Are veneers permanent?', a: 'Veneers require a small amount of enamel removal, so they are considered a permanent cosmetic change. With proper care, they last 10–15+ years.' },
-        { q: 'How long does teeth whitening last?', a: 'Professional whitening results typically last 1–3 years depending on your diet and oral hygiene habits.' },
-        { q: 'Is cosmetic dentistry painful?', a: 'Modern cosmetic procedures are very comfortable. We use gentle techniques and local anesthesia when needed for a pain-free experience.' },
+        { q: "I don't like my teeth or my smile, what can I do?", a: 'A wide variety of options are available to improve tooth function and how your smile looks. Ask us about what options are available.' },
+        { q: 'How much does it cost to get a great smile?', a: 'Like most services, cost varies based on the amount of time required and the difficulty of the procedure(s). Generally, improving a smile requires a combination of treatment options such as bleaching, reshaping gums, and using bonded materials (resin or porcelain) to improve the appearance of the teeth. A great way to start is by having a consultation with our dentist to determine how you can reach your goals.' },
+        { q: 'I have dental insurance. Will it pay for my new smile?', a: 'We will work to maximize your benefits, and may have suggestions for alternative methods of financing so that you can obtain the treatment of choice. Speak with us about dental insurance and financing.' },
+        { q: 'What are some benefits of cosmetic dentistry?', a: 'New techniques and materials are available for back teeth as well as those seen when you smile. A new study shows that a great smile can make you 20% more attractive and people with beautiful smiles make, on average, 12% more money each year.' },
+        { q: 'How many office visits will it take to fix my teeth and improve my smile?', a: 'This varies with each individual, depending on the need. Sometimes, you can dramatically improve your oral health and appearance in just a couple of visits. Discuss your goals and concerns so the best plan can be developed for your individual situation.' },
+        { q: 'What will my new smile look like?', a: 'Our dentists work with you to develop an attractive holistic look. A smile enhancement can look both dramatic and natural. We can use photographs (in a process called cosmetic imaging) and models to show you what to expect. Sometimes, trial materials can be placed directly on your teeth to help you visualize the change.' },
+        { q: 'Is my new smile permanent?', a: 'With good home care and regular visits, modern materials can last for many years, and possibly decades. Like most things, excellent maintenance will extend the life of your dental restorations.' },
+        { q: 'What is the cost of cosmetic dentistry in NYC?', a: "Pricing depends on the specific treatments you choose. We'll discuss your options and provide transparent estimates during your consultation." },
+        { q: 'How long does a smile makeover take?', a: 'Some treatments, such as whitening, can be completed in just one visit, while procedures like veneers or bonding may require multiple appointments to achieve optimal results.' },
+        { q: 'Are cosmetic dental procedures painful?', a: 'Most treatments are minimally invasive and designed for comfort. We use gentle techniques and local anesthesia when necessary to ensure a relaxed experience.' },
       ]}
     />
   );

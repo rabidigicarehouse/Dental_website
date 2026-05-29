@@ -25,10 +25,9 @@ export default function PorcelainVeneers() {
         { title: 'Single Veneer Repair', desc: 'Cosmetic correction for one or two teeth that don\'t match the rest.' },
       ]}
       faqs={[
-        { q: 'How long do porcelain veneers last?', a: 'With proper care, premium porcelain veneers typically last 10–20+ years.' },
-        { q: 'Are veneers reversible?', a: 'Traditional veneers require minor enamel removal, so they are considered permanent. No-prep veneers are fully reversible.' },
-        { q: 'How many appointments does it take?', a: 'Usually 2–3 visits: consultation/design, prep + temporaries, then placement of final veneers.' },
-        { q: 'Do veneers stain?', a: 'Porcelain is highly stain-resistant — far more than natural enamel. They maintain their color beautifully over time.' },
+        { q: 'How durable are porcelain veneers?', a: "Porcelain veneers are remarkably strong and can maintain their appearance and function for well over ten years with proper care. They're designed to resist stains and maintain their luster." },
+        { q: 'Do veneers ruin natural teeth?', a: 'No. Veneers require minimal enamel removal and do not damage natural teeth when properly placed by an experienced dentist.' },
+        { q: 'How much do veneers cost in NYC?', a: "Costs vary based on the number of veneers and individual needs. We'll provide a detailed estimate during your consultation." },
       ]}
     />
   );

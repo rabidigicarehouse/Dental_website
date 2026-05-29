@@ -37,10 +37,23 @@ export default function AIWidget() {
   const [isListening, setIsListening] = useState(false);
   const [isTyping, setIsTyping] = useState(false);
   const [stickyHidden, setStickyHidden] = useState(false);
-  const WELCOME_TEXT = "Hi, I'm your dental care AI advisor! How may I help you?";
+  const WELCOME_TEXT = "Hi! Welcome to our practice. To help you get started, may I please have your name and phone number?";
   const [messages, setMessages] = useState<Message[]>([
     { id: "1", text: WELCOME_TEXT, sender: "ai" },
   ]);
+
+  const [userName, setUserName] = useState<string>("");
+  const [userLastName, setUserLastName] = useState<string>("");
+  const [userPhone, setUserPhone] = useState<string>("");
+  const [isOnboarding, setIsOnboarding] = useState<boolean>(true);
+
+  const localExtractPhone = useCallback((text: string): string | null => {
+    const digits = text.replace(/\D/g, "");
+    if (digits.length >= 7 && digits.length <= 15) {
+      return digits;
+    }
+    return null;
+  }, []);
 
   const appendAiMessage = useCallback((text: string) => {
     const aiMsg: Message = {
@@ -533,12 +546,28 @@ export default function AIWidget() {
 
   const startBookingFlow = useCallback(() => {
     bookingPromptPendingRef.current = false;
-    bookingStepRef.current = 0;
-    bookingDataRef.current = {};
-    const firstAsk = BOOKING_STEPS[0].ask;
-    appendAiMessage(firstAsk);
-    speak(firstAsk);
-  }, [BOOKING_STEPS, appendAiMessage, speak]);
+    bookingDataRef.current = {
+      firstName: userName || undefined,
+      lastName: userLastName || undefined,
+      phone: userPhone || undefined,
+    };
+
+    let nextStepIndex = 0;
+    while (
+      nextStepIndex < BOOKING_STEPS.length &&
+      bookingDataRef.current[BOOKING_STEPS[nextStepIndex].key]
+    ) {
+      nextStepIndex += 1;
+    }
+
+    bookingStepRef.current = nextStepIndex;
+
+    if (bookingStepRef.current < BOOKING_STEPS.length) {
+      const nextAsk = BOOKING_STEPS[bookingStepRef.current].ask;
+      appendAiMessage(nextAsk);
+      speak(nextAsk);
+    }
+  }, [BOOKING_STEPS, userName, userLastName, userPhone, appendAiMessage, speak]);
 
   const submitBooking = useCallback(async (data: BookingForm): Promise<string> => {
     try {
@@ -631,6 +660,67 @@ export default function AIWidget() {
       setMessages((prev) => [...prev, userMsg]);
 
       const lowered = text.trim().toLowerCase();
+
+      if (isOnboarding) {
+        setIsTyping(true);
+        const extracted = await requestAiBookingAutofill(text, "firstName");
+        const localPhone = localExtractPhone(text);
+
+        const extractedName = extracted.firstName || "";
+        const extractedLastName = extracted.lastName || "";
+        const extractedPhone = extracted.phone || localPhone || "";
+
+        let newName = userName;
+        let newLastName = userLastName;
+        let newPhone = userPhone;
+
+        if (extractedName && !userName) {
+          newName = extractedName;
+        }
+        if (extractedLastName && !userLastName) {
+          newLastName = extractedLastName;
+        }
+        if (extractedPhone && !userPhone) {
+          newPhone = extractedPhone;
+        }
+
+        if (!newName) {
+          const localName = extractNameFields(text);
+          if (localName.firstName) {
+            newName = localName.firstName;
+            if (localName.lastName) {
+              newLastName = localName.lastName;
+            }
+          }
+        }
+
+        if (newName) setUserName(newName);
+        if (newLastName) setUserLastName(newLastName);
+        if (newPhone) setUserPhone(newPhone);
+
+        setIsTyping(false);
+
+        if (newName && newPhone) {
+          setIsOnboarding(false);
+          const reply = `Nice to meet you, ${newName}! How can I help you today?`;
+          appendAiMessage(reply);
+          speak(reply);
+        } else if (newName && !newPhone) {
+          const reply = `Nice to meet you, ${newName}! Could you please share your phone number as well?`;
+          appendAiMessage(reply);
+          speak(reply);
+        } else if (!newName && newPhone) {
+          const reply = `Thank you for the phone number. May I please have your name as well?`;
+          appendAiMessage(reply);
+          speak(reply);
+        } else {
+          const reply = `To help you get started, could you please provide your name and phone number?`;
+          appendAiMessage(reply);
+          speak(reply);
+        }
+        return;
+      }
+
       if (bookingStepRef.current >= 0 && /^(cancel|stop|nevermind|never mind|exit)\b/.test(lowered)) {
         bookingStepRef.current = -1;
         bookingDataRef.current = {};
@@ -679,7 +769,15 @@ export default function AIWidget() {
             return;
           }
           bookingDataRef.current[step.key] = result.clean;
-          bookingStepRef.current += 1;
+          
+          let nextStepIndex = bookingStepRef.current + 1;
+          while (
+            nextStepIndex < BOOKING_STEPS.length &&
+            bookingDataRef.current[BOOKING_STEPS[nextStepIndex].key]
+          ) {
+            nextStepIndex += 1;
+          }
+          bookingStepRef.current = nextStepIndex;
         }
 
         if (bookingStepRef.current < BOOKING_STEPS.length) {
@@ -701,7 +799,7 @@ export default function AIWidget() {
       }
 
       if (detectDirectBookingCommand(text)) {
-        const reply = "Yes, I can help with that.";
+        const reply = `Yes ${userName || ""}, I can help with that.`;
         appendAiMessage(reply);
         speak(reply);
         window.setTimeout(() => startBookingFlow(), 150);
@@ -711,14 +809,14 @@ export default function AIWidget() {
       if (detectGreetingOnly(text)) {
         const greetingReply =
           lowered.startsWith("good morning")
-            ? "Good morning. Do you want to book an appointment, or do you have another question for me?"
+            ? `Good morning, ${userName || "there"}. Do you want to book an appointment, or do you have another question for me?`
             : lowered.startsWith("good afternoon")
-              ? "Good afternoon. Do you want to book an appointment, or do you have another question for me?"
+              ? `Good afternoon, ${userName || "there"}. Do you want to book an appointment, or do you have another question for me?`
               : lowered.startsWith("good evening")
-                ? "Good evening. Do you want to book an appointment, or do you have another question for me?"
+                ? `Good evening, ${userName || "there"}. Do you want to book an appointment, or do you have another question for me?`
                 : lowered.includes("salam") || lowered.includes("assalam")
-                  ? "Wa alaikum assalam. Do you want to book an appointment, or do you have another question for me?"
-                  : "Hi. Do you want to book an appointment, or do you have another question for me?";
+                  ? `Wa alaikum assalam, ${userName || "there"}. Do you want to book an appointment, or do you have another question for me?`
+                  : `Hi ${userName || "there"}. Do you want to book an appointment, or do you have another question for me?`;
         appendAiMessage(greetingReply);
         speak(greetingReply);
         return;
@@ -726,7 +824,7 @@ export default function AIWidget() {
 
       if (detectBookingIntent(text)) {
         bookingPromptPendingRef.current = true;
-        const reply = "Yes, I can help with that. Do you want me to book an appointment for you?";
+        const reply = `Yes ${userName || ""}, I can help with that. Do you want me to book an appointment for you?`;
         appendAiMessage(reply);
         speak(reply);
         return;
@@ -748,7 +846,7 @@ export default function AIWidget() {
         const res = await fetch("/api/grok", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ message: text, history: historySnapshot }),
+          body: JSON.stringify({ message: text, history: historySnapshot, userName }),
           signal: controller.signal,
         });
 
@@ -800,6 +898,12 @@ export default function AIWidget() {
       speak,
       startBookingFlow,
       submitBooking,
+      isOnboarding,
+      userName,
+      userLastName,
+      userPhone,
+      localExtractPhone,
+      extractNameFields,
     ]
   );
 
@@ -971,20 +1075,23 @@ export default function AIWidget() {
                   className={`absolute inset-0 w-full h-full object-cover bg-black ${isSpeaking ? "opacity-100" : "opacity-0"}`}
                   style={{ backgroundColor: "black" }}
                 />
+              </div>
 
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent flex flex-col items-center justify-end pb-3 2xl:pb-6">
-                  <motion.button
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    onClick={toggleVoice}
-                    className={`px-4 2xl:px-8 py-2 2xl:py-3.5 rounded-full text-[9px] 2xl:text-[12px] font-black flex items-center gap-1.5 2xl:gap-2 shadow-2xl border transition-all z-10 ${
-                      isListening ? "bg-red-500 text-white border-red-400 animate-pulse" : "bg-white text-primary border-white/50"
-                    }`}
-                  >
-                    <Mic size={12} className={isListening ? "text-white" : "text-red-500"} />
-                    {isListening ? "Listening..." : "Speak with AI Advisor"}
-                  </motion.button>
-                </div>
+              {/* Speak with AI Advisor Button placed below the video container */}
+              <div className="w-full flex justify-center mt-3 2xl:mt-4">
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={toggleVoice}
+                  className={`px-5 2xl:px-8 py-2.5 2xl:py-3.5 rounded-full text-[10px] 2xl:text-[13px] font-black flex items-center justify-center gap-1.5 2xl:gap-2 shadow-md border transition-all z-10 w-full max-w-[280px] ${
+                    isListening
+                      ? "bg-red-500 text-white border-red-400 animate-pulse shadow-red-100"
+                      : "bg-[#165369] text-white border-[#165369] hover:bg-[#124557] hover:border-[#124557]"
+                  }`}
+                >
+                  <Mic size={14} className="text-white" />
+                  {isListening ? "Listening..." : "Speak with AI Advisor"}
+                </motion.button>
               </div>
             </div>
 

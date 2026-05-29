@@ -27,10 +27,10 @@ export default function DentalImplants() {
         { title: 'Bone Grafting', desc: 'Rebuild jawbone before implant placement when needed.' },
       ]}
       faqs={[
-        { q: 'How long do dental implants last?', a: 'With proper care, dental implants can last 25+ years — often a lifetime. They have a 95%+ success rate.' },
-        { q: 'Is implant surgery painful?', a: 'Surprisingly, most patients report less discomfort than a tooth extraction. Local anesthesia and sedation are both available.' },
-        { q: 'How long does the whole process take?', a: 'From placement to final crown: typically 3–6 months. Same-day options exist for some cases.' },
-        { q: 'Am I a candidate for implants?', a: 'Most adults with good oral health are candidates. A 3D scan during consultation tells us for sure.' },
+        { q: 'How much do dental implants cost in NYC?', a: "Costs depend on the number of implants, materials used, and your treatment plan. During your consultation, we'll provide a detailed estimate to help you make an informed decision." },
+        { q: 'Is the implant surgery painful?', a: 'No. The procedure is done under local anesthesia to minimize discomfort. Most patients experience only slight soreness afterward, which can be easily managed with over-the-counter medication.' },
+        { q: 'How long does it take to heal?', a: 'Healing typically takes several months, as the implant fuses with your jawbone before the crown placement. The exact duration depends on individual healing and oral health.' },
+        { q: 'Are there alternatives to implants?', a: 'Yes. While options such as dental bridges and dentures are available, implants provide the most durable, secure, and natural-looking outcome.' },
       ]}
     />
   );

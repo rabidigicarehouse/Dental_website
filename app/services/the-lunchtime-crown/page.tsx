@@ -25,10 +25,10 @@ export default function TheLunchtimeCrown() {
         { title: 'Same-Visit Bonding', desc: 'The finished crown is bonded permanently — you walk out finished.' },
       ]}
       faqs={[
-        { q: 'How quickly can I eat after?', a: 'Right away — the crown is permanently bonded before you leave the office.' },
-        { q: 'How do Lunchtime Crowns compare to lab-made crowns?', a: 'Clinically equivalent in durability. Many studies show comparable or better long-term outcomes.' },
-        { q: 'Are there cases where it\'s NOT recommended?', a: 'Most cases work perfectly. Complex aesthetic cases on front teeth may still benefit from custom lab work.' },
-        { q: 'Is the price different than a traditional crown?', a: 'Pricing is comparable, and most insurance plans cover it the same way as a traditional crown.' },
+        { q: 'What qualifies as a crown emergency?', a: 'A crown emergency includes a broken, loose, or missing crown that causes pain, sensitivity, or exposes your natural tooth.' },
+        { q: 'How quickly can you fix a broken crown?', a: 'In many cases, advanced CEREC technology allows us to repair or replace your crown in a single visit.' },
+        { q: 'Will I need a temporary crown?', a: 'Not usually — most patients leave with a permanent ceramic crown the same day. Temporary crowns are only used in specific cases.' },
+        { q: 'How much does emergency crown repair cost?', a: 'Costs vary depending on the damage and restoration type, but our team provides transparent estimates before treatment begins.' },
       ]}
     />
   );

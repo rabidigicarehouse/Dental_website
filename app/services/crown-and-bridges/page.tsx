@@ -27,10 +27,9 @@ export default function CrownAndBridges() {
         { title: 'Front Tooth Aesthetics', desc: 'Specialized highly-aesthetic crowns and bridges for visible teeth.' },
       ]}
       faqs={[
-        { q: 'How long do crowns and bridges last?', a: 'With good oral hygiene, 10–15+ years is typical. Many last 20+ years with proper care.' },
-        { q: 'Will it feel like a natural tooth?', a: 'Yes. Modern crowns feel completely natural — you\'ll forget which tooth it is within a few weeks.' },
-        { q: 'How long does the procedure take?', a: 'Same-day crowns: about 2 hours. Traditional crowns/bridges: typically 2 visits over 2–3 weeks.' },
-        { q: 'Does insurance cover them?', a: 'Most plans cover at least a portion. We verify benefits before treatment and offer flexible payment plans for any balance.' },
+        { q: 'What are dental crowns?', a: 'A dental crown is a cap that surrounds the tooth. Dr. Sharde Harvey, DDS typically uses a crown to restore a damaged tooth, though they can also enhance smile appearance cosmetically. Crowns come in three materials: all-metal, ceramic-on-metal, and all-ceramic. Front teeth work best with all-ceramic for natural appearance, while ceramic-on-metal crowns balance natural looks with durability.' },
+        { q: 'What is a single appointment dental crown or The Lunchtime Crown?', a: 'Most restorative dental methods need multiple visits, but Upper East Dental Innovations uses CEREC technology to complete crowns in one appointment. Your crown can often be done in a single appointment, start to finish — allowing patients to restore tooth functionality and smile without obvious dental work.' },
+        { q: 'What are dental bridges?', a: 'A dental bridge replaces a missing tooth without dentures or surgery. The new tooth is held by two crowns and made from ceramic or porcelain to match surrounding teeth. Dr. Sharde Harvey, DDS ensures the replacement looks and feels amazing, making this a popular patient option.' },
       ]}
     />
   );
