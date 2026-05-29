@@ -117,10 +117,9 @@ export default function Header({
                   </li>
                   <li><Link className="menu-item" href="/payments">Payments</Link></li>
                   <li><Link className="menu-item" href="/testimonials">Testimonials</Link></li>
-                  <li><Link className="menu-item" href="/smile-gallery">Smile Gallery</Link></li>
                   <li><Link className="menu-item" href="/technology">Technology</Link></li>
-                  <li><Link className="menu-item" href="/contact">Contact Us</Link></li>
                   <li><Link className="menu-item" href="/membership">Membership</Link></li>
+                  <li><Link className="menu-item" href="/contact">Contact Us</Link></li>
                   <li>
                     <Link className="menu-item" href="/patient-forms">Patient Form</Link>
                     <ul>
@@ -130,6 +129,7 @@ export default function Header({
                       <li><Link href="/forms/patient-screening">Patient Screening Form</Link></li>
                     </ul>
                   </li>
+                  <li><Link className="menu-item" href="/blog">Blogs</Link></li>
                 </ul>
                 {/* mainmenu end */}
               </div>

@@ -58,6 +58,10 @@ export interface ServicePageProps {
   imageOnlyHero?: boolean;
   /** Intro: full-width image only (no quote box / side text) */
   imageOnlyIntro?: boolean;
+  /** Custom sections inserted between the "Treatments" block and the
+   * testimonials carousel. Useful for service-specific extras (e.g. the
+   * bridal & graduation packages page injecting its own pricing tiers). */
+  extraSections?: import('react').ReactNode;
 }
 
 // Shared homepage-style testimonials (Premium Single Slide design)
@@ -101,6 +105,7 @@ export default function ServicePageTemplate(props: ServicePageProps) {
     faqs,
     imageOnlyHero = false,
     imageOnlyIntro = false,
+    extraSections,
   } = props;
 
   const subheaderBg = heroImage ?? introImage;

@@ -9500,3 +9500,739 @@ body.square-booking-active {
     height: clamp(380px, 58vh, 540px) !important;
   }
 }
+
+/* ================================================================ */
+/* In The News — vertical timeline                                   */
+/* ================================================================ */
+.news-timeline-section {
+  padding: 80px 0 100px;
+  background: #ffffff;
+}
+
+.news-timeline {
+  position: relative;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 20px 0 40px;
+}
+
+/* Center spine */
+.news-timeline-spine {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 2px;
+  background: linear-gradient(180deg, #c0c2c3 0%, #165369 50%, #c0c2c3 100%);
+}
+
+.news-timeline-row {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 60px 1fr;
+  align-items: start;
+  gap: 16px;
+  padding: 40px 0;
+}
+
+/* Left/right placement */
+.news-timeline-row--left .news-timeline-date { grid-column: 1 / 2; text-align: right; }
+.news-timeline-row--left .news-timeline-marker { grid-column: 2 / 3; }
+.news-timeline-row--left .news-timeline-card  { grid-column: 1 / 2; text-align: left; padding-right: 28px; }
+
+.news-timeline-row--right .news-timeline-date  { grid-column: 3 / 4; text-align: left; }
+.news-timeline-row--right .news-timeline-marker{ grid-column: 2 / 3; }
+.news-timeline-row--right .news-timeline-card  { grid-column: 3 / 4; text-align: left; padding-left: 28px; }
+
+.news-timeline-date {
+  font-size: 13.5px;
+  font-weight: 700;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+  color: #1d2c36;
+  padding-top: 4px;
+}
+
+.news-timeline-marker {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  padding-top: 6px;
+}
+
+.news-timeline-dot {
+  display: block;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #ffffff;
+  border: 4px solid #165369;
+  box-shadow: 0 0 0 6px rgba(22, 83, 105, 0.08), 0 6px 14px rgba(22, 83, 105, 0.18);
+  position: relative;
+  z-index: 2;
+}
+
+.news-timeline-card {
+  position: relative;
+}
+
+.news-timeline-pill {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #c0c2c3 0%, #165369 100%);
+  color: #ffffff;
+  font-size: 10.5px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+.news-timeline-heading {
+  font-family: var(--heading-font, var(--body-font));
+  font-size: 22px;
+  font-weight: 800;
+  color: #1d2c36;
+  line-height: 1.3;
+  margin: 0 0 8px;
+}
+
+.news-timeline-intro {
+  font-size: 14px;
+  color: #5c6c75;
+  font-style: italic;
+  margin: 0 0 10px;
+}
+
+.news-timeline-image-wrap {
+  margin-top: 12px;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 3px solid #165369;
+  box-shadow: 0 14px 36px rgba(29, 44, 54, 0.14);
+  max-width: 360px;
+  background: #f7f9fb;
+}
+
+.news-timeline-row--right .news-timeline-image-wrap {
+  margin-left: 0;
+}
+.news-timeline-row--left .news-timeline-image-wrap {
+  margin-left: auto;
+}
+
+.news-timeline-image {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.news-timeline-links {
+  list-style: none;
+  padding: 0;
+  margin: 8px 0 0;
+}
+
+.news-timeline-links li {
+  margin-bottom: 4px;
+  font-size: 12.5px;
+  word-break: break-all;
+  line-height: 1.45;
+}
+
+.news-timeline-links a,
+.news-timeline-sublink {
+  color: #5c6c75 !important;
+  text-decoration: none;
+  transition: color 0.2s ease;
+  word-break: break-all;
+}
+
+.news-timeline-links a:hover,
+.news-timeline-sublink:hover {
+  color: #165369 !important;
+  text-decoration: underline;
+}
+
+.news-timeline-subblocks {
+  margin-top: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.news-timeline-subblock {
+  padding: 10px 14px;
+  background: #f4f7fa;
+  border-left: 3px solid rgba(22, 83, 105, 0.4);
+  border-radius: 6px;
+}
+
+.news-timeline-subheading {
+  font-size: 14.5px;
+  font-weight: 700;
+  color: #1d2c36;
+  margin: 0 0 4px;
+  line-height: 1.35;
+}
+
+.news-timeline-sublink {
+  font-size: 12px;
+  display: inline-block;
+}
+
+/* Responsive — collapse to single column on mobile */
+@media (max-width: 768px) {
+  .news-timeline-section { padding: 60px 0 70px; }
+  .news-timeline-spine {
+    left: 26px;
+    transform: none;
+  }
+  .news-timeline-row,
+  .news-timeline-row--left,
+  .news-timeline-row--right {
+    grid-template-columns: 60px 1fr;
+    gap: 12px;
+    padding: 28px 0;
+  }
+  .news-timeline-row--left .news-timeline-date,
+  .news-timeline-row--right .news-timeline-date {
+    grid-column: 2 / 3;
+    text-align: left;
+    padding-top: 0;
+  }
+  .news-timeline-row--left .news-timeline-marker,
+  .news-timeline-row--right .news-timeline-marker {
+    grid-column: 1 / 2;
+    justify-content: flex-start;
+    padding-left: 18px;
+  }
+  .news-timeline-row--left .news-timeline-card,
+  .news-timeline-row--right .news-timeline-card {
+    grid-column: 2 / 3;
+    text-align: left;
+    padding-left: 0;
+    padding-right: 0;
+  }
+  .news-timeline-row--left .news-timeline-image-wrap,
+  .news-timeline-row--right .news-timeline-image-wrap {
+    margin-left: 0;
+    max-width: 100%;
+  }
+  .news-timeline-heading { font-size: 18px; }
+}
+
+/* ================================================================ */
+/* In The News — Dr. Harvey video feature                            */
+/* ================================================================ */
+.news-video-section {
+  padding: 70px 0 110px;
+  background: #f7f9fb;
+}
+
+.news-video-eyebrow {
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: #165369;
+  margin-bottom: 14px;
+}
+
+.news-video-copy {
+  font-size: 14.5px;
+  line-height: 1.7;
+  color: #495866;
+  margin-bottom: 16px;
+}
+
+.news-video-copy strong {
+  color: #1d2c36;
+  font-weight: 700;
+}
+
+.news-video-caption {
+  font-size: 13px;
+  color: #5c6c75;
+  font-style: italic;
+  margin: 0;
+}
+
+.news-video-frame {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 30px 60px rgba(29, 44, 54, 0.18), 0 0 0 1px rgba(22, 83, 105, 0.06);
+}
+
+.news-video-frame iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+@media (max-width: 991px) {
+  .news-video-section { padding: 50px 0 80px; }
+}
+
+/* ================================================================ */
+/* Bridal & Graduation Packages — "Picture Perfect" two-card section */
+/* ================================================================ */
+.bridal-perfect-section {
+  padding: 70px 0 60px;
+  background: #f4f8fb;
+}
+
+.bridal-perfect-title {
+  font-family: var(--heading-font, var(--body-font));
+  font-size: 36px;
+  font-weight: 800;
+  color: #1d2c36;
+  letter-spacing: -0.01em;
+  margin: 0 0 50px;
+}
+
+.bridal-perfect-grid {
+  display: grid;
+  grid-template-columns: 1fr 1px 1fr;
+  gap: 56px;
+  align-items: stretch;
+  max-width: 1180px;
+  margin: 0 auto;
+}
+
+.bridal-perfect-divider {
+  width: 1px;
+  background: repeating-linear-gradient(
+    180deg,
+    rgba(22, 83, 105, 0.18) 0,
+    rgba(22, 83, 105, 0.18) 5px,
+    transparent 5px,
+    transparent 11px
+  );
+}
+
+.bridal-perfect-card {
+  display: flex;
+  flex-direction: column;
+}
+
+.bridal-perfect-photo {
+  width: 100%;
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: 0 22px 50px rgba(29, 44, 54, 0.14);
+  margin-bottom: 28px;
+}
+
+.bridal-perfect-photo img {
+  width: 100%;
+  height: 320px;
+  object-fit: cover;
+  display: block;
+}
+
+.bridal-perfect-heading {
+  font-family: var(--heading-font, var(--body-font));
+  font-size: 32px;
+  font-weight: 800;
+  color: #1d2c36;
+  margin: 0 0 6px;
+  letter-spacing: -0.01em;
+}
+
+.bridal-perfect-subhead {
+  color: #5c8db8;
+  font-size: 15px;
+  font-weight: 500;
+  margin: 0 0 18px;
+}
+
+.bridal-perfect-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.bridal-perfect-list li {
+  position: relative;
+  padding: 14px 0 14px 28px;
+  font-size: 14.5px;
+  line-height: 1.65;
+  color: #495866;
+  border-bottom: 1px solid rgba(22, 83, 105, 0.08);
+}
+
+.bridal-perfect-list li:last-child { border-bottom: none; }
+
+.bridal-perfect-list li::before {
+  content: '"';
+  position: absolute;
+  left: 0;
+  top: 10px;
+  font-size: 26px;
+  font-weight: 700;
+  color: rgba(22, 83, 105, 0.35);
+  font-family: serif;
+  line-height: 1;
+}
+
+@media (max-width: 991px) {
+  .bridal-perfect-section { padding: 50px 0 30px; }
+  .bridal-perfect-title { font-size: 28px; margin-bottom: 36px; }
+  .bridal-perfect-grid { grid-template-columns: 1fr; gap: 40px; }
+  .bridal-perfect-divider { display: none; }
+  .bridal-perfect-photo img { height: 240px; }
+  .bridal-perfect-heading { font-size: 24px; }
+}
+
+/* ================================================================ */
+/* Bridal & Graduation Packages — Bronze / Silver / Gold tiers       */
+/* ================================================================ */
+.bridal-pricing-section {
+  padding: 60px 0 90px;
+  background: #ffffff;
+}
+
+.bridal-pricing-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+  max-width: 1180px;
+  margin: 0 auto;
+  border-radius: 22px;
+  overflow: hidden;
+  background: #ffffff;
+  box-shadow: 0 30px 80px rgba(29, 44, 54, 0.10);
+}
+
+.bridal-pricing-card {
+  display: flex;
+  flex-direction: column;
+  background: #ffffff;
+  border-right: 1px solid rgba(22, 83, 105, 0.08);
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.4s ease;
+}
+
+.bridal-pricing-card:last-child { border-right: none; }
+
+.bridal-pricing-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 26px 60px rgba(29, 44, 54, 0.18);
+  z-index: 2;
+}
+
+.bridal-pricing-card.is-featured {
+  background: linear-gradient(180deg, #ffffff 0%, #f7fbfb 100%);
+  position: relative;
+}
+
+.bridal-pricing-card.is-featured::before {
+  content: 'Most Popular';
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: linear-gradient(135deg, #c0c2c3 0%, #165369 100%);
+  color: #ffffff;
+  font-size: 10px;
+  font-weight: 800;
+  padding: 4px 12px;
+  border-radius: 999px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  z-index: 3;
+}
+
+.bridal-pricing-photo {
+  width: 100%;
+  height: 220px;
+  overflow: hidden;
+}
+
+.bridal-pricing-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.5s ease;
+}
+
+.bridal-pricing-card:hover .bridal-pricing-photo img {
+  transform: scale(1.08);
+}
+
+.bridal-pricing-body {
+  padding: 28px 30px 36px;
+  text-align: center;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.bridal-pricing-tier {
+  font-family: var(--heading-font, var(--body-font));
+  font-size: 28px;
+  font-weight: 800;
+  color: #165369;
+  margin: 0 0 12px;
+}
+
+.bridal-pricing-rec {
+  color: #5c8db8;
+  font-size: 13px;
+  line-height: 1.55;
+  margin: 0 0 18px;
+}
+
+.bridal-pricing-amount {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 4px;
+  margin: 0 0 24px;
+  color: #165369;
+}
+
+.bridal-pricing-currency {
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.bridal-pricing-figure {
+  font-size: 44px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+
+.bridal-pricing-suffix {
+  font-size: 14px;
+  color: #5c6c75;
+  font-weight: 500;
+}
+
+.bridal-pricing-includes {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 28px;
+  flex: 1;
+}
+
+.bridal-pricing-includes li {
+  font-size: 14px;
+  color: #495866;
+  padding: 8px 0;
+  border-bottom: 1px solid rgba(22, 83, 105, 0.06);
+}
+
+.bridal-pricing-includes li:last-child { border-bottom: none; }
+
+.bridal-pricing-cta {
+  display: inline-block;
+  padding: 11px 26px;
+  border-radius: 999px;
+  border: 2px solid #165369;
+  color: #165369 !important;
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  text-decoration: none !important;
+  transition: all 0.25s ease;
+  align-self: center;
+  margin-top: auto;
+}
+
+.bridal-pricing-cta:hover {
+  background: #165369;
+  color: #ffffff !important;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 22px rgba(22, 83, 105, 0.32);
+}
+
+@media (max-width: 991px) {
+  .bridal-pricing-section { padding: 40px 0 60px; }
+  .bridal-pricing-grid { grid-template-columns: 1fr; }
+  .bridal-pricing-card { border-right: none; border-bottom: 1px solid rgba(22, 83, 105, 0.08); }
+  .bridal-pricing-card:last-child { border-bottom: none; }
+  .bridal-pricing-photo { height: 200px; }
+}
+
+@media (max-width: 576px) {
+  .bridal-pricing-body { padding: 22px 22px 28px; }
+  .bridal-pricing-figure { font-size: 36px; }
+}
+
+/* ================================================================ */
+/* Blog listing — themed card grid                                   */
+/* ================================================================ */
+.uedi-blog-section {
+  padding: 80px 0 100px;
+  background: #f7f9fb;
+}
+
+.uedi-blog-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 32px;
+  max-width: 1240px;
+  margin: 0 auto;
+}
+
+.uedi-blog-card {
+  background: #ffffff;
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: 0 12px 32px rgba(29, 44, 54, 0.08);
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.35s ease;
+}
+
+.uedi-blog-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 24px 50px rgba(29, 44, 54, 0.16);
+}
+
+.uedi-blog-photo-link {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+}
+
+.uedi-blog-photo {
+  position: relative;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+}
+
+.uedi-blog-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.55s ease;
+}
+
+.uedi-blog-card:hover .uedi-blog-photo img {
+  transform: scale(1.06);
+}
+
+.uedi-blog-datebadge {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  background: linear-gradient(135deg, #1d2c36 0%, #165369 100%);
+  color: #ffffff;
+  padding: 10px 14px;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  line-height: 1;
+  box-shadow: 0 8px 20px rgba(22, 83, 105, 0.32);
+}
+
+.uedi-blog-date-day {
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.uedi-blog-date-month {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  margin-top: 2px;
+  opacity: 0.9;
+}
+
+.uedi-blog-body {
+  padding: 22px 24px 26px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.uedi-blog-category {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #165369;
+  margin-bottom: 12px;
+}
+
+.uedi-blog-title-link {
+  text-decoration: none;
+  color: inherit;
+}
+
+.uedi-blog-title {
+  font-family: var(--heading-font, var(--body-font));
+  font-size: 19px;
+  font-weight: 800;
+  line-height: 1.35;
+  color: #1d2c36;
+  margin: 0 0 12px;
+  transition: color 0.2s ease;
+}
+
+.uedi-blog-title-link:hover .uedi-blog-title {
+  color: #165369;
+}
+
+.uedi-blog-excerpt {
+  font-size: 14px;
+  line-height: 1.7;
+  color: #5c6c75;
+  margin: 0 0 18px;
+  flex: 1;
+}
+
+.uedi-blog-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 14px;
+  border-top: 1px solid rgba(22, 83, 105, 0.08);
+}
+
+.uedi-blog-author {
+  font-size: 12.5px;
+  color: #5c6c75;
+  font-weight: 600;
+}
+
+.uedi-blog-readmore {
+  font-size: 12.5px;
+  font-weight: 700;
+  color: #165369 !important;
+  text-decoration: none !important;
+  letter-spacing: 0.4px;
+  transition: gap 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.uedi-blog-readmore:hover {
+  gap: 8px;
+}
+
+@media (max-width: 991px) {
+  .uedi-blog-section { padding: 60px 0 80px; }
+  .uedi-blog-grid { grid-template-columns: repeat(2, 1fr); gap: 24px; }
+}
+
+@media (max-width: 576px) {
+  .uedi-blog-grid { grid-template-columns: 1fr; }
+  .uedi-blog-title { font-size: 17px; }
+}
