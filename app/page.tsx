@@ -8,6 +8,7 @@ import TeethCompareSlider from '@/components/TeethCompareSlider';
 import StackedSectionSlider from '@/components/StackedSectionSlider';
 import MapContactSection from '@/components/MapContactSection';
 import Footer from '@/components/Footer';
+import IconMarquee from '@/components/IconMarquee';
 
 export default function Home() {
   const storyVideoId = "WmNFiHfmM0o";
@@ -385,7 +386,7 @@ export default function Home() {
                 icon: "tooth-2.png",
                 desc: "Transform your smile with veneers, Invisalign, whitening and same-day crowns.",
                 href: "/services/cosmetic-dentistry",
-                badge: "Most Popular"
+                badge: null
               },
               {
                 title: "Restorative Dentistry",
@@ -443,38 +444,8 @@ export default function Home() {
           </div>
         </div>
       </section>
-
-      {/* Count Section */}
-      <section className="bg-dark text-light pt-60 pb-60">
-        <div className="container">
-          <div className="row g-4">
-            <div className="col-md-3 col-sm-6 text-center">
-              <div className="de_count wow fadeInRight" data-wow-delay=".0s">
-                <h3 className="fs-40 mb-0">10000+</h3>
-                Happy Patients
-              </div>
-            </div>
-            <div className="col-md-3 col-sm-6 text-center">
-              <div className="de_count wow fadeInRight" data-wow-delay=".2s">
-                <h3 className="fs-40 mb-0">2500+</h3>
-                Teeth Whitened
-              </div>
-            </div>
-            <div className="col-md-3 col-sm-6 text-center">
-              <div className="de_count wow fadeInRight" data-wow-delay=".4s">
-                <h3 className="fs-40 mb-0">800+</h3>
-                Dental Implants
-              </div>
-            </div>
-            <div className="col-md-3 col-sm-6 text-center">
-              <div className="de_count wow fadeInRight" data-wow-delay=".6s">
-                <h3 className="fs-40 mb-0">15+</h3>
-                Years of Experience
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* Brand Pillars Icon Marquee Section */}
+      <IconMarquee />
 
       {/* Why Choose Section */}
       <section>

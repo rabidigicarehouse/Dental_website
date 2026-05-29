@@ -10236,3 +10236,244 @@ body.square-booking-active {
   .uedi-blog-grid { grid-template-columns: 1fr; }
   .uedi-blog-title { font-size: 17px; }
 }
+
+/* ========================================== */
+/* Brand Core Pillars Icon Marquee            */
+/* ========================================== */
+.icon-marquee-section {
+  width: 100%;
+  background: #165369; /* Theme Teal background */
+  padding: 60px 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.icon-marquee-container {
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+}
+
+.icon-marquee-track {
+  display: flex;
+  align-items: center;
+  width: max-content;
+  animation: icon-marquee-scroll 55s linear infinite; /* Slower, luxury-pace smooth glide */
+}
+
+.icon-marquee-track:hover {
+  animation-play-state: paused;
+}
+
+@keyframes icon-marquee-scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-25%);
+  }
+}
+
+.icon-marquee-group {
+  display: flex;
+  align-items: center;
+  gap: 140px; /* Highly spacious gap to eliminate a crowded layout */
+  padding: 0 70px;
+}
+
+.icon-marquee-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  cursor: pointer;
+  transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.icon-circle {
+  width: 92px; /* Slightly smaller, highly delicate and sophisticated circles */
+  height: 92px;
+  border-radius: 50%;
+  background: #ffffff; /* Clean white circle base */
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+  transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+  position: relative;
+}
+
+/* Subtle background accent circle inside the white circle */
+.icon-circle::before {
+  content: '';
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  right: 4px;
+  bottom: 4px;
+  border-radius: 50%;
+  background: #f0f7f9; /* Extremely soft light blue tint */
+  z-index: 1;
+  transition: all 0.4s ease;
+}
+
+.marquee-icon-img {
+  width: 38px; /* Perfectly proportioned delicate sizing inside the circle */
+  height: 38px;
+  object-fit: contain;
+  z-index: 2;
+  transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.icon-label {
+  font-family: 'Outfit', 'Inter', sans-serif;
+  font-size: 13.5px; /* Delicate modern size */
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.95); /* Elegant crisp white text */
+  letter-spacing: 2px; /* Premium tracked-out letter spacing */
+  text-transform: uppercase; /* Sophisticated luxury uppercase look */
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+/* Elegant floating hover effects */
+.icon-marquee-item:hover {
+  transform: translateY(-6px); /* Clean slight lift */
+}
+
+.icon-marquee-item:hover .icon-circle {
+  border-color: rgba(255, 255, 255, 0.5);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.22);
+  background: #f0f7f9;
+}
+
+.icon-marquee-item:hover .icon-circle::before {
+  background: #ffffff;
+  transform: scale(0.96);
+}
+
+.icon-marquee-item:hover .marquee-icon-img {
+  transform: scale(1.1) rotate(3deg);
+}
+
+.icon-marquee-item:hover .icon-label {
+  color: #e0f2f1; /* Soft glowing mint/teal hover color */
+  letter-spacing: 2.5px; /* Slight breathing zoom */
+}
+
+/* Responsive adjustments */
+@media (max-width: 1280px) {
+  .icon-marquee-group {
+    gap: 100px; /* Spacious gap for small laptops */
+    padding: 0 50px;
+  }
+  .icon-circle {
+    width: 82px; /* Slightly smaller for laptops */
+    height: 82px;
+  }
+  .icon-circle::before {
+    top: 3.5px;
+    left: 3.5px;
+    right: 3.5px;
+    bottom: 3.5px;
+  }
+  .marquee-icon-img {
+    width: 34px;
+  }
+  .icon-label {
+    font-size: 12px;
+    letter-spacing: 1.5px;
+  }
+}
+
+@media (max-width: 991px) {
+  .icon-marquee-section {
+    padding: 45px 0;
+  }
+  .icon-marquee-group {
+    gap: 70px; /* Elegant gap for tablets */
+    padding: 0 35px;
+  }
+  .icon-circle {
+    width: 72px; /* Proportionate size for tablets */
+    height: 72px;
+  }
+  .icon-circle::before {
+    top: 3px;
+    left: 3px;
+    right: 3px;
+    bottom: 3px;
+  }
+  .marquee-icon-img {
+    width: 30px;
+  }
+  .icon-label {
+    font-size: 11px;
+    letter-spacing: 1.2px;
+  }
+}
+
+@media (max-width: 576px) {
+  .icon-marquee-section {
+    padding: 30px 0;
+  }
+  .icon-marquee-track {
+    animation-duration: 35s !important; /* Slightly brisker, responsive speed on mobile screens */
+  }
+  .icon-marquee-group {
+    gap: 50px; /* Perfectly proportioned gap for mobile screens */
+    padding: 0 25px;
+  }
+  .icon-circle {
+    width: 62px; /* Delicate, neat mobile circular frames */
+    height: 62px;
+  }
+  .icon-circle::before {
+    top: 2.5px;
+    left: 2.5px;
+    right: 2.5px;
+    bottom: 2.5px;
+  }
+  .marquee-icon-img {
+    width: 26px;
+  }
+  .icon-label {
+    font-size: 9.5px;
+    letter-spacing: 1px;
+  }
+}
+
+/* ========================================== */
+/* Services Section Desktop AI Layout Fix     */
+/* ========================================== */
+@media (min-width: 1025px) {
+  /* Keep service cards in a perfect 4-column row */
+  body.ai-widget-open .services-photo-section .col-xl-3 {
+    flex: 0 0 25% !important;
+    width: 25% !important;
+    max-width: 25% !important;
+  }
+
+  /* Expand intro header to full width to prevent text wrapping */
+  body.ai-widget-open .services-photo-section .col-lg-8 {
+    flex: 0 0 100% !important;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  /* Force header title and description to stay on one single line with fluid font sizing */
+  body.ai-widget-open .services-photo-section .col-lg-8 h2 {
+    font-size: clamp(26px, 2.3vw, 36px) !important;
+    white-space: nowrap !important;
+  }
+
+  body.ai-widget-open .services-photo-section .col-lg-8 p {
+    font-size: clamp(13.5px, 1.1vw, 16px) !important;
+    white-space: nowrap !important;
+  }
+}
