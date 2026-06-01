@@ -185,6 +185,9 @@ function pickRelevantContext(sections: Section[], question: string): string {
 const CLINIC_FACTS = `
 PRACTICE NAME : Upper East Dental Innovations (UEDI)
 LEAD DOCTOR   : Dr. Sharde Harvey, DDS
+SPECIALIST    : Dr. Pellegrini - Periodontist, LANAP and LAPIP Protocol
+TEAM MEMBER   : Paola Cruz - Front Office Coordinator
+TEAM MEMBER   : Michelle - Patient Care Coordinator
 ADDRESS       : 121 East 60th Street, Suite 1B, New York, NY 10022
 PHONE         : 212.697.1701  (also written as +1 212-697-1701)
 EMAIL         : info@uedi.nyc

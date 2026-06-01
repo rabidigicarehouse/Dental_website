@@ -518,35 +518,37 @@ export default function Home() {
           </div>
           <div className="row g-4">
             {[
-              { name: 'Dr. Sharde Harvey', role: 'DDS, MS, FICOI', photo: '/Dr-harvey-1.jpg' },
-              { name: 'Dr. Pellegrini', role: 'LANAP and LAPIP Protocol', photo: '/Gretel Pellegrini Photo.jpg' },
-              { name: 'Michelle', role: 'Patient Care Coordinator', placeholder: true },
-              { name: 'Paola', role: 'Front Office Coordinator', placeholder: true },
+              { name: 'Dr. Sharde Harvey', role: 'DDS, MS, FICOI', photo: '/Dr-harvey-1.jpg', href: '/about#dr-sharde-harvey' },
+              { name: 'Dr. Pellegrini', role: 'LANAP and LAPIP Protocol', photo: '/Gretel Pellegrini Photo.jpg', href: '/about#dr-pellegrini' },
+              { name: 'Paola Cruz', role: 'Front Office Coordinator', photo: '/Paola-Image.jpg', href: '/about#paola-cruz' },
+              { name: 'Michelle', role: 'Patient Care Coordinator', placeholder: true, href: '/about#team-directory' },
             ].map((member) => (
               <div className="col-lg-3 col-md-6" key={member.name}>
-                <div className="relative rounded-1 overflow-hidden">
-                  <div className="rounded-1 overflow-hidden wow fadeIn zoomIn">
-                    <div className="team-card-photo-wrap">
-                      {'placeholder' in member && member.placeholder ? (
-                        <div className="team-card-placeholder" aria-hidden="true">
-                          <i className="icofont-user-alt-3" />
-                        </div>
-                      ) : (
-                        <img
-                          src={member.photo}
-                          className="w-100 wow scaleIn"
-                          alt={member.name}
-                        />
-                      )}
+                <Link href={member.href} className="team-member-link">
+                  <div className="relative rounded-1 overflow-hidden team-member-card">
+                    <div className="rounded-1 overflow-hidden wow fadeIn zoomIn">
+                      <div className="team-card-photo-wrap">
+                        {'placeholder' in member && member.placeholder ? (
+                          <div className="team-card-placeholder" aria-hidden="true">
+                            <i className="icofont-user-alt-3" />
+                          </div>
+                        ) : (
+                          <img
+                            src={member.photo}
+                            className="w-100 wow scaleIn"
+                            alt={member.name}
+                          />
+                        )}
+                      </div>
+                    </div>
+                    <div className="abs w-100 start-0 bottom-0 z-3">
+                      <div className="p-2 rounded-10 m-3 text-center bg-white wow fadeInDown team-card-info">
+                        <h4 className="mb-0 team-card-name">{member.name}</h4>
+                        <p className="mb-2">{member.role}</p>
+                      </div>
                     </div>
                   </div>
-                  <div className="abs w-100 start-0 bottom-0 z-3">
-                    <div className="p-2 rounded-10 m-3 text-center bg-white wow fadeInDown">
-                      <h4 className="mb-0 team-card-name">{member.name}</h4>
-                      <p className="mb-2">{member.role}</p>
-                    </div>
-                  </div>
-                </div>
+                </Link>
               </div>
             ))}
           </div>

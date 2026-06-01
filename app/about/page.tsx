@@ -1,10 +1,12 @@
 import Link from 'next/link';
 import MapContactSection from '@/components/MapContactSection';
 import Footer from '@/components/Footer';
+import HashAnchorScroller from '@/components/HashAnchorScroller';
 
 export default function About() {
   return (
     <>
+      <HashAnchorScroller />
       {/* Subheader with office tour background */}
       <section
         id="subheader"
@@ -51,59 +53,13 @@ export default function About() {
         </div>
       </section>
 
-      {/* Meet the Team Section (same as homepage) */}
-      <section className="bg-color-op-1">
-        <div className="container">
-          <div className="row">
-            <div className="col-lg-6 offset-lg-3 text-center">
-              <div className="subtitle wow fadeInUp mb-3">Meet Our Dental Team</div>
-              <h2 className="wow fadeInUp" data-wow-delay=".2s">Committed to Your Smile</h2>
-              <p className="wow fadeInUp">Our experienced dental team is here to make every visit positive and personalized. With gentle hands and caring hearts.</p>
-              <div className="spacer-single"></div>
-            </div>
-          </div>
-          <div className="row g-4">
-            {[
-              { name: 'Dr. Sharde Harvey', role: 'DDS, MS, FICOI', photo: '/Dr-harvey-1.jpg' },
-              { name: 'Dr. Pellegrini', role: 'LANAP and LAPIP Protocol', photo: '/Gretel Pellegrini Photo.jpg' },
-              { name: 'Michelle', role: 'Patient Care Coordinator', placeholder: true },
-              { name: 'Paola', role: 'Front Office Coordinator', placeholder: true },
-            ].map((member) => (
-              <div className="col-lg-3 col-md-6" key={member.name}>
-                <div className="relative rounded-1 overflow-hidden">
-                  <div className="rounded-1 overflow-hidden wow fadeIn zoomIn">
-                    <div className="team-card-photo-wrap">
-                      {'placeholder' in member && member.placeholder ? (
-                        <div className="team-card-placeholder" aria-hidden="true">
-                          <i className="icofont-user-alt-3" />
-                        </div>
-                      ) : (
-                        <img
-                          src={member.photo}
-                          className="w-100 wow scaleIn"
-                          alt={member.name}
-                        />
-                      )}
-                    </div>
-                  </div>
-                  <div className="abs w-100 start-0 bottom-0 z-3">
-                    <div className="p-2 rounded-10 m-3 text-center bg-white wow fadeInDown">
-                      <h4 className="mb-0 team-card-name">{member.name}</h4>
-                      <p className="mb-2">{member.role}</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* About the Doctor Section — float layout */}
-      <section>
+      <section id="team-directory">
         <div className="container">
-          <div className="subtitle id-color wow fadeInUp mb-3">Meet the Doctor</div>
-          <h2 className="wow fadeInUp" data-wow-delay=".2s">Dr. Sharde Harvey, DDS, MS, FICOI</h2>
+          <div id="dr-sharde-harvey" className="anchor-scroll-offset">
+            <div className="subtitle id-color wow fadeInUp mb-3">Meet the Doctor</div>
+            <h2 className="wow fadeInUp" data-wow-delay=".2s">Dr. Sharde Harvey, DDS, MS, FICOI</h2>
+          </div>
 
           <div className="doctor-float-section">
             {/* Floated image — text wraps around it like in a book */}
@@ -164,8 +120,10 @@ export default function About() {
 
           <div className="border-bottom my-5"></div>
 
-          <div className="subtitle id-color wow fadeInUp mb-3">Meet the Doctor</div>
-          <h2 className="wow fadeInUp" data-wow-delay=".2s">Dr. Pellegrini — Periodontist</h2>
+          <div id="dr-pellegrini" className="anchor-scroll-offset">
+            <div className="subtitle id-color wow fadeInUp mb-3">Meet the Doctor</div>
+            <h2 className="wow fadeInUp" data-wow-delay=".2s">Dr. Pellegrini — Periodontist</h2>
+          </div>
 
           <div className="doctor-float-section">
             <img
@@ -225,6 +183,63 @@ export default function About() {
                 <li><i className="fa fa-certificate id-color me-2"></i>Pinhole Surgical Technique Certified</li>
                 <li><i className="fa fa-certificate id-color me-2"></i>Peer-reviewed publications; journal reviewer</li>
                 <li><i className="fa fa-certificate id-color me-2"></i>FDA &amp; CE trials — Director &amp; Scientific Advisor</li>
+              </ul>
+            </div>
+          </div>
+
+          <div className="border-bottom my-5"></div>
+
+          <div id="paola-cruz" className="anchor-scroll-offset">
+            <div className="subtitle id-color wow fadeInUp mb-3">Meet the Team</div>
+            <h2 className="wow fadeInUp" data-wow-delay=".2s">Paola Cruz</h2>
+            <p className="wow fadeInUp mb-4" data-wow-delay=".25s">
+              Dental Assistant &amp; Front Office Coordinator
+            </p>
+          </div>
+
+          <div className="doctor-float-section">
+            <img
+              src="/Png-Paola-bg-r.png"
+              alt="Paola Cruz"
+              className="doctor-float-img wow fadeInRight"
+            />
+
+            <p className="wow fadeInUp" data-wow-delay=".3s">
+              Paola Cruz is a dedicated Dental Assistant and Front Office Coordinator with a passion for patient care and healthcare administration. Before moving to the United States in 2019, she completed her first year of Medical Technology studies at Centro Escolar University (CEU) Las Piñas, where she developed a strong foundation in biology, laboratory sciences, and healthcare practices.
+            </p>
+
+            <p className="wow fadeInUp" data-wow-delay=".4s">
+              After relocating to the U.S., she continued pursuing her healthcare career by completing the Medical and Dental Assistant Program at The School for Medical and Dental Assistants. Through her education and professional experience, she gained expertise in dental assisting, patient care, scheduling, insurance verification, treatment coordination, and front office management.
+            </p>
+
+            <p className="wow fadeInUp" data-wow-delay=".5s">
+              Currently working as a Dental Assistant and Front Office Coordinator, Paola is committed to providing compassionate care and creating positive patient experiences. She is also working toward her long-term goal of becoming a Registered Dental Hygienist, with aspirations to further her education and expand her role in preventive oral healthcare and patient education.
+            </p>
+          </div>
+
+          <div className="row g-4 wow fadeInUp my-4" data-wow-delay=".6s">
+            <div className="col-md-4">
+              <h5>Clinical Foundation</h5>
+              <ul className="about-memberships" style={{ listStyle: 'none', padding: 0 }}>
+                <li><i className="fa fa-check-circle id-color me-2"></i>Medical Technology studies at CEU Las Piñas</li>
+                <li><i className="fa fa-check-circle id-color me-2"></i>Strong background in biology and laboratory sciences</li>
+                <li><i className="fa fa-check-circle id-color me-2"></i>Healthcare practices rooted in patient-first care</li>
+              </ul>
+            </div>
+            <div className="col-md-4">
+              <h5>Professional Expertise</h5>
+              <ul className="about-memberships" style={{ listStyle: 'none', padding: 0 }}>
+                <li><i className="fa fa-check-circle id-color me-2"></i>Dental assisting and chairside support</li>
+                <li><i className="fa fa-check-circle id-color me-2"></i>Scheduling and treatment coordination</li>
+                <li><i className="fa fa-check-circle id-color me-2"></i>Insurance verification and front office management</li>
+              </ul>
+            </div>
+            <div className="col-md-4">
+              <h5>Future Goals</h5>
+              <ul className="about-memberships" style={{ listStyle: 'none', padding: 0 }}>
+                <li><i className="fa fa-globe id-color me-2"></i>Becoming a Registered Dental Hygienist</li>
+                <li><i className="fa fa-globe id-color me-2"></i>Expanding into preventive oral healthcare</li>
+                <li><i className="fa fa-globe id-color me-2"></i>Growing her role in patient education</li>
               </ul>
             </div>
           </div>
