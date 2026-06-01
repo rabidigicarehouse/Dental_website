@@ -172,4 +172,4 @@ export function getBookingItem(id: string): BookingService | undefined {
 export const SQUARE_BOOK_URL =
   'https://square.site/book/8YN3X16T15M6W/upper-east-dental-innovations';
 
-export const BUSINESS_NAME = 'upper East Dental Innovations PLLC';
+export const BUSINESS_NAME = 'Upper East Dental Innovations PLLC';

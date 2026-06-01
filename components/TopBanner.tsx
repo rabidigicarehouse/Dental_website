@@ -8,7 +8,7 @@ export default function TopBanner() {
         {/* Hours */}
         <div className="tb-item tb-hours">
           <i className="icofont-clock-time tb-icon"></i>
-          <span>Mon – Fri ( 09 am – 06 pm )</span>
+          <span>Mon – Fri ( 9:00 AM – 06:00 PM )</span>
         </div>
 
         {/* Phone */}
