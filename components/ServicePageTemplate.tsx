@@ -4,6 +4,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import MapContactSection from './MapContactSection';
 import Footer from './Footer';
+import { TEXT_TESTIMONIALS } from '@/lib/testimonials';
 
 export type ServiceTreatment = {
   title: string;
@@ -64,30 +65,10 @@ export interface ServicePageProps {
   extraSections?: import('react').ReactNode;
 }
 
-// Shared homepage-style testimonials (Premium Single Slide design)
-const TESTIMONIALS: ServiceTestimonial[] = [
-  {
-    name: 'Stefania',
-    img: '1.webp',
-    stars: 5,
-    text: "Dr. Harvey wants your smile to be perfect so get ready! She is precise and very attentive to details. She will work with your schedule and your needs. Friendly and patient oriented. Highly recommended!",
-    source: 'Google',
-  },
-  {
-    name: 'Michael S.',
-    img: '2.webp',
-    stars: 5,
-    text: "I've always been nervous about dental visits, but the staff made me feel completely comfortable. Their gentle care and attention to detail truly stand out.",
-    source: 'Google',
-  },
-  {
-    name: 'Robert L.',
-    img: '3.webp',
-    stars: 5,
-    text: 'My family and I have been coming here for years. The service is exceptional, and the team always goes the extra mile to make sure we’re happy.',
-    source: 'Google',
-  },
-];
+// Real patient testimonials sourced verbatim from the live client site —
+// see lib/testimonials.ts. Same data is used on the homepage and the
+// /testimonials page so the carousel reads identically everywhere.
+const TESTIMONIALS = TEXT_TESTIMONIALS;
 
 export default function ServicePageTemplate(props: ServicePageProps) {
   const {
@@ -256,11 +237,17 @@ export default function ServicePageTemplate(props: ServicePageProps) {
 
             <div className="testimonial-content-area">
               <div className="d-flex align-items-center justify-content-center mb-4">
-                <img
-                  src={`/images/testimonial/${TESTIMONIALS[currentTesti].img}`}
-                  className="testi-avatar-premium"
-                  alt={TESTIMONIALS[currentTesti].name}
-                />
+                {['mathew', 'matthew', 'katie', 'eric sofia', 'erica sofia', 'david'].includes(TESTIMONIALS[currentTesti].name.toLowerCase().trim()) ? (
+                  <div className="testi-avatar-premium-placeholder">
+                    {TESTIMONIALS[currentTesti].name.trim().charAt(0).toUpperCase()}
+                  </div>
+                ) : (
+                  <img
+                    src={`/images/testimonial/${TESTIMONIALS[currentTesti].img}`}
+                    className="testi-avatar-premium"
+                    alt={TESTIMONIALS[currentTesti].name}
+                  />
+                )}
                 <div className="text-start ms-3">
                   <h4 className="mb-1">{TESTIMONIALS[currentTesti].name}</h4>
                   <div className="stars-rating">
@@ -273,7 +260,12 @@ export default function ServicePageTemplate(props: ServicePageProps) {
               <p className="testi-text-premium mb-4">{TESTIMONIALS[currentTesti].text}</p>
               <div className="testi-source-premium">
                 Posted On{' '}
-                <Link href="https://google.com" target="_blank" className="id-color fw-bold">
+                <Link
+                  href={TESTIMONIALS[currentTesti].sourceUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="id-color fw-bold"
+                >
                   {TESTIMONIALS[currentTesti].source}
                 </Link>
               </div>

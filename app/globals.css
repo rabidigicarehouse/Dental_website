@@ -3984,6 +3984,23 @@ header.menu-open #mainmenu li ul.mega ul li:not(.title) a:hover {
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 }
 
+.testi-avatar-premium-placeholder {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  border: 3px solid white;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  background: linear-gradient(135deg, #165369 0%, #113f50 100%);
+  color: white;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32px;
+  font-weight: 800;
+  text-transform: uppercase;
+  user-select: none;
+}
+
 .testi-text-premium {
   font-size: 22px;
   line-height: 1.7;
@@ -10762,10 +10779,11 @@ body.square-booking-active {
 
 .tech-card-photo {
   width: 100%;
-  aspect-ratio: 16 / 7;
-  background: linear-gradient(135deg, #eaf1f5 0%, #ffffff 100%);
+  aspect-ratio: 16 / 9;
+  background: linear-gradient(135deg, #f0f4f7 0%, #ffffff 100%);
   overflow: hidden;
   position: relative;
+  border-bottom: 1px solid rgba(22, 83, 105, 0.05);
 }
 
 .tech-card-photo img {
@@ -10774,15 +10792,15 @@ body.square-booking-active {
   object-fit: cover;
   object-position: center;
   display: block;
-  transition: transform 0.5s ease;
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .tech-card:hover .tech-card-photo img {
-  transform: scale(1.04);
+  transform: scale(1.03);
 }
 
 .tech-card-body {
-  padding: 36px 48px 40px;
+  padding: 40px 48px 44px;
   text-align: left;
 }
 
@@ -10831,15 +10849,113 @@ body.square-booking-active {
 }
 
 @media (max-width: 991px) {
-  .tech-card-photo { aspect-ratio: 16 / 8; }
-  .tech-card-body { padding: 28px 28px 32px; }
+  .tech-card-photo { aspect-ratio: 16 / 9; }
+  .tech-card-body { padding: 32px 32px 36px; }
   .tech-card-title { font-size: 28px; }
 }
 
 @media (max-width: 576px) {
-  .tech-card { border-radius: 16px; }
-  .tech-card-photo { aspect-ratio: 4 / 3; }
-  .tech-card-body { padding: 22px 20px 26px; }
+  .tech-card { border-radius: 18px; }
+  .tech-card-photo { aspect-ratio: 16 / 10; }
+  .tech-card-body { padding: 24px 20px 28px; }
   .tech-card-title { font-size: 22px; }
   .tech-card-text { font-size: 14.5px; }
+}
+
+/* ================================================================ */
+/* Technology page — Stacking Sticky Card Deck Layout                */
+/* ================================================================ */
+
+.tech-stack-container {
+  display: flex;
+  flex-direction: column;
+  gap: 50px;
+  position: relative;
+  padding-bottom: 80px;
+}
+
+.tech-sticky-card {
+  position: sticky;
+  width: 100%;
+  max-width: 1080px;
+  margin: 0 auto;
+  background: #ffffff;
+  border-radius: 24px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-shadow:
+    0 30px 70px rgba(29, 44, 54, 0.16),
+    0 0 0 1px rgba(22, 83, 105, 0.05);
+  transition: transform 0.3s ease;
+}
+
+/* Incremental Sticky Top Offsets for Card deck stacking */
+.tech-sticky-card:nth-child(1) {
+  top: 100px;
+  z-index: 1;
+}
+.tech-sticky-card:nth-child(2) {
+  top: 140px;
+  z-index: 2;
+}
+.tech-sticky-card:nth-child(3) {
+  top: 180px;
+  z-index: 3;
+}
+
+/* When the AI screen is open, adjust top offset to compensate for layout shift */
+body.ai-widget-open .tech-sticky-card:nth-child(1) {
+  top: 110px;
+}
+body.ai-widget-open .tech-sticky-card:nth-child(2) {
+  top: 150px;
+}
+body.ai-widget-open .tech-sticky-card:nth-child(3) {
+  top: 190px;
+}
+
+.tech-card-counter {
+  position: absolute;
+  top: 30px;
+  left: 36px;
+  font-size: 56px;
+  font-weight: 900;
+  color: #ffffff;
+  text-shadow: 0 4px 14px rgba(0, 0, 0, 0.55);
+  letter-spacing: -2px;
+  line-height: 1;
+  user-select: none;
+  z-index: 10;
+}
+
+@media (max-width: 768px) {
+  .tech-stack-container {
+    gap: 30px;
+  }
+  .tech-sticky-card {
+    position: relative !important;
+    top: auto !important;
+    margin-bottom: 20px;
+  }
+  .tech-card-counter {
+    top: 20px;
+    left: 24px;
+    font-size: 40px;
+  }
+}
+
+@media (min-width: 769px) {
+  .tech-stack-container {
+    width: 125% !important;
+    max-width: 125% !important;
+    margin-left: -12.5% !important;
+    margin-right: -12.5% !important;
+    transform: scale(0.75);
+    transform-origin: top center;
+    margin-bottom: -680px !important;
+  }
+  .tech-sticky-card {
+    max-width: 100% !important;
+  }
 }

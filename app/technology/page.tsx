@@ -1,7 +1,6 @@
 'use client';
 
 import Link from 'next/link';
-import StackedSectionSlider from '@/components/StackedSectionSlider';
 import MapContactSection from '@/components/MapContactSection';
 import Footer from '@/components/Footer';
 
@@ -68,23 +67,25 @@ export default function Technology() {
         </div>
       </section>
 
-      {/* Technology Carousel Section */}
-      <section className="bg-light pb-100">
+      {/* Technology Stacking Cards Section */}
+      <section className="bg-light pb-100 pt-60">
         <div className="container">
-          <div className="row">
+          {/* <div className="row">
             <div className="col-lg-12 text-center">
-              <div className="subtitle wow fadeInUp mb-3">Our Advanced Equipment</div>
-              <h2 className="wow fadeInUp" data-wow-delay=".2s">Cutting-Edge Technology for Your Comfort</h2>
-              <div className="spacer-single"></div>
+              <div className="subtitle wow fadeInUp mb-3">Advanced Care</div>
+              <h2 className="wow fadeInUp mb-5" data-wow-delay=".2s">Dental Technology</h2>
             </div>
-          </div>
+          </div> */}
 
-          <StackedSectionSlider labels={techData.map(d => d.title)}>
+          <div className="tech-stack-container">
             {techData.map((tech, idx) => (
-              <div className="tech-card" key={idx}>
-                {/* Top: landscape hero image */}
-                <div className="tech-card-photo">
+              <div className="tech-sticky-card" key={idx}>
+                {/* Top: landscape hero image with counter overlay */}
+                <div className="tech-card-photo relative">
                   <img src={tech.img} alt={tech.title} />
+                  <div className="tech-card-counter">
+                    {idx + 1} —
+                  </div>
                 </div>
 
                 {/* Bottom: text content */}
@@ -102,7 +103,7 @@ export default function Technology() {
                 </div>
               </div>
             ))}
-          </StackedSectionSlider>
+          </div>
         </div>
       </section>
 
