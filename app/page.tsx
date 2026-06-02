@@ -205,10 +205,11 @@ export default function Home() {
 
                   <div className="col-lg-4 col-md-6 hero-cta-item">
                     <Link
-                      href="/book-appointment"
+                      href="https://square.site/book/AEPT1H3R93QVE/upper-east-dental-innovations-pllc-new-york-ny"
                       className="info-box-floating"
                       data-tele-consult="true"
-                      prefetch
+                      target="_blank"
+                      rel="noopener noreferrer"
                       aria-label="Book a tele-consult"
                     >
                       <i className="fs-60 id-color icon_calendar" aria-hidden="true"></i>
@@ -524,7 +525,7 @@ export default function Home() {
               { name: 'Michelle', role: 'Patient Care Coordinator', placeholder: true, href: '/about#team-directory' },
             ].map((member) => (
               <div className="col-lg-3 col-md-6" key={member.name}>
-                <Link href={member.href} className="team-member-link">
+                <Link href={member.href} scroll={false} className="team-member-link">
                   <div className="relative rounded-1 overflow-hidden team-member-card">
                     <div className="rounded-1 overflow-hidden wow fadeIn zoomIn">
                       <div className="team-card-photo-wrap">

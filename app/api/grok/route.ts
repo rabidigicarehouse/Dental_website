@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import fs from 'fs/promises';
 import path from 'path';
 
-const SITE_URL = 'https://uppereastdentalinnovations.vercel.app/';
+const DEFAULT_SITE_URL = 'https://uppereastdentalinnovations.vercel.app/';
 const SITE_PAGES = [
   '/',
   '/about',
@@ -25,6 +25,21 @@ const GROQ_MODEL = 'llama-3.3-70b-versatile';
 const OFF_TOPIC_REPLY =
   "This question isn't about Upper East Dental. Sorry, I can't help with that — feel free to ask me anything about our services, doctors, location, hours, or how to book an appointment.";
 
+function getSiteUrl(): string {
+  const envCandidates = [
+    process.env.SITE_URL,
+    process.env.NEXT_PUBLIC_FRONTEND_URL,
+    process.env.FRONTEND_URL,
+    process.env.VERCEL_PROJECT_PRODUCTION_URL,
+  ].filter((value): value is string => Boolean(value));
+  const selected =
+    envCandidates.find((value) => !/localhost|127\.0\.0\.1/i.test(value)) ||
+    envCandidates[0] ||
+    DEFAULT_SITE_URL;
+  const normalized = /^https?:\/\//i.test(selected) ? selected : `https://${selected}`;
+  return normalized.endsWith('/') ? normalized : `${normalized}/`;
+}
+
 /** Pull a clean `gsk_…` Groq key out of an env value (the .env may have
  *  trailing comments/labels like "gsk_xxx Rabi"). */
 function cleanKey(raw: string | undefined | null): string | null {
@@ -39,24 +54,23 @@ function cleanKey(raw: string | undefined | null): string | null {
  *  Splitting the workload across two keys doubles the effective TPM
  *  budget on Groq's free tier. If only one key is set, the same key is
  *  used for both roles. */
-async function readApiKeys(): Promise<{ scrape: string | null; chat: string | null }> {
-  let scrape = cleanKey(process.env.GROQ_API_KEY);
-  let chat = cleanKey(process.env.GROQ_API_KEY_2) || cleanKey(process.env.GROQ_API_KEY);
+async function readApiKeys(): Promise<string[]> {
+  const keys = [
+    cleanKey(process.env.GROQ_API_KEY),
+    cleanKey(process.env.GROQ_API_KEY_2),
+  ].filter((value): value is string => Boolean(value));
 
-  // Fallback: pull from apikey.txt if env not set
-  if (!scrape || !chat) {
+  if (keys.length < 2) {
     try {
       const filePath = path.join(process.cwd(), 'apikey.txt');
       const raw = await fs.readFile(filePath, 'utf-8');
-      const all = raw.match(/gsk_[A-Za-z0-9_-]+/g) || [];
-      if (!scrape && all[0]) scrape = all[0];
-      if (!chat) chat = all[1] || all[0] || null;
+      keys.push(...(raw.match(/gsk_[A-Za-z0-9_-]+/g) || []));
     } catch {
       /* file missing — ignore */
     }
   }
 
-  return { scrape, chat };
+  return [...new Set(keys)];
 }
 
 /** Strip HTML to a compact plain-text representation. */
@@ -99,11 +113,12 @@ async function getSiteSections(): Promise<Section[]> {
     return cachedSections;
   }
 
+  const siteUrl = getSiteUrl().replace(/\/$/, '');
   const sections: Section[] = [];
   await Promise.allSettled(
     SITE_PAGES.map(async (p) => {
       try {
-        const res = await fetch(SITE_URL.replace(/\/$/, '') + p, {
+        const res = await fetch(siteUrl + p, {
           headers: { 'User-Agent': 'UEDI-Groq-Context/1.0' },
           signal: AbortSignal.timeout(8000),
         });
@@ -218,7 +233,66 @@ let knowledgeBuiltAt = 0;
 const KNOWLEDGE_TTL_MS = 1000 * 60 * 60; // 1 hour
 let knowledgeBuildPromise: Promise<string> | null = null;
 
-async function buildKnowledgeDocument(scrapeKey: string): Promise<string> {
+function isRetryableGroqError(status: number, message: string): boolean {
+  return (
+    status === 429 ||
+    status >= 500 ||
+    /rate|quota|limit|capacity|overloaded|temporarily unavailable|timeout/i.test(message)
+  );
+}
+
+async function requestGroqCompletion(options: {
+  apiKeys: string[];
+  messages: Array<{ role: 'system' | 'user' | 'assistant'; content: string }>;
+  temperature: number;
+  max_tokens: number;
+  timeoutMs: number;
+}): Promise<any> {
+  let lastErrorMessage = 'Could not reach Groq.';
+
+  for (const apiKey of options.apiKeys) {
+    try {
+      const res = await fetch(GROQ_ENDPOINT, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${apiKey}`,
+        },
+        body: JSON.stringify({
+          model: GROQ_MODEL,
+          messages: options.messages,
+          temperature: options.temperature,
+          max_tokens: options.max_tokens,
+        }),
+        signal: AbortSignal.timeout(options.timeoutMs),
+      });
+
+      const data = await res.json().catch(() => null);
+      if (res.ok) {
+        return data;
+      }
+
+      const message =
+        data?.error?.message ||
+        data?.error ||
+        `Groq returned HTTP ${res.status}`;
+
+      lastErrorMessage = String(message);
+      if (!isRetryableGroqError(res.status, lastErrorMessage)) {
+        throw new Error(lastErrorMessage);
+      }
+    } catch (error: any) {
+      lastErrorMessage = error?.message || 'Could not reach Groq.';
+      if (!isRetryableGroqError(502, lastErrorMessage)) {
+        throw error;
+      }
+    }
+  }
+
+  throw new Error(lastErrorMessage);
+}
+
+async function buildKnowledgeDocument(apiKeys: string[]): Promise<string> {
   const sections = await getSiteSections();
   const allText = sections
     .map((s) => `### Page: ${s.path}\n${s.text}`)
@@ -251,46 +325,33 @@ RAW SITE PAGES:
 ${allText}
 `.trim();
 
-  const res = await fetch(GROQ_ENDPOINT, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${scrapeKey}`,
-    },
-    body: JSON.stringify({
-      model: GROQ_MODEL,
-      messages: [
-        {
-          role: 'system',
-          content:
-            'You compress raw HTML-derived dental-website text into a clean factual reference document. Output plain text only. Never invent facts.',
-        },
-        { role: 'user', content: summarizationPrompt },
-      ],
-      temperature: 0.2,
-      max_tokens: 2000,
-    }),
-    signal: AbortSignal.timeout(45000),
+  const data = await requestGroqCompletion({
+    apiKeys,
+    messages: [
+      {
+        role: 'system',
+        content:
+          'You compress raw HTML-derived dental-website text into a clean factual reference document. Output plain text only. Never invent facts.',
+      },
+      { role: 'user', content: summarizationPrompt },
+    ],
+    temperature: 0.2,
+    max_tokens: 2000,
+    timeoutMs: 45000,
   });
-
-  if (!res.ok) {
-    const body = await res.text().catch(() => '');
-    throw new Error(`Knowledge build failed (HTTP ${res.status}): ${body.slice(0, 200)}`);
-  }
-  const data = await res.json();
   const text = extractAssistantText(data);
   if (!text) throw new Error('Knowledge build returned empty content.');
   return text;
 }
 
-async function getKnowledgeDocument(scrapeKey: string): Promise<string> {
+async function getKnowledgeDocument(apiKeys: string[]): Promise<string> {
   if (cachedKnowledge && Date.now() - knowledgeBuiltAt < KNOWLEDGE_TTL_MS) {
     return cachedKnowledge;
   }
   // De-duplicate concurrent builds (first user request triggers it; any
   // requests that arrive during the build await the same promise).
   if (!knowledgeBuildPromise) {
-    knowledgeBuildPromise = buildKnowledgeDocument(scrapeKey)
+    knowledgeBuildPromise = buildKnowledgeDocument(apiKeys)
       .then((doc) => {
         cachedKnowledge = doc;
         knowledgeBuiltAt = Date.now();
@@ -319,7 +380,7 @@ function buildSystemPrompt(siteContext: string, userName?: string): string {
     '',
     patientInstructions,
     '',
-    `Website: ${SITE_URL}`,
+    `Website: ${getSiteUrl()}`,
     '',
     '═══════════════════════════════════════════════════════════════════════',
     'STRICT TOPIC GUARD — this is the most important instruction.',
@@ -350,8 +411,8 @@ function buildSystemPrompt(siteContext: string, userName?: string): string {
     '  • If a fact (price, time, policy) isn\'t in the website content',
     '    below, say: "I would need to check with the clinic — you can call',
     '    212.697.1701" instead of guessing.',
-    '  • For booking, tell the user to click the "Book Appointment" button',
-    '    on the page to open the booking form.',
+    '  • For booking questions, explain that patients can use the website',
+    '    booking flow or ask you to help schedule an appointment for them.',
     '',
     '═════════════════════ CLINIC FACTS (always reliable) ═════════════════════',
     CLINIC_FACTS,
@@ -396,8 +457,8 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'Empty message.' }, { status: 400 });
   }
 
-  const { scrape: scrapeKey, chat: chatKey } = await readApiKeys();
-  if (!scrapeKey && !chatKey) {
+  const apiKeys = await readApiKeys();
+  if (apiKeys.length === 0) {
     return NextResponse.json(
       {
         error:
@@ -412,8 +473,8 @@ export async function POST(request: NextRequest) {
      If KEY A is missing we fall through to per-question retrieval. */
   let siteContext = '';
   try {
-    if (scrapeKey) {
-      siteContext = await getKnowledgeDocument(scrapeKey);
+    if (apiKeys.length > 0) {
+      siteContext = await getKnowledgeDocument(apiKeys);
     } else {
       const sections = await getSiteSections();
       siteContext = pickRelevantContext(sections, message);
@@ -428,39 +489,34 @@ export async function POST(request: NextRequest) {
 
   // Last ~6 turns of history → keep payload small.
   const history = Array.isArray(body.history) ? body.history.slice(-6) : [];
-  const messages = [
+  const historyMessages: Array<{ role: 'user' | 'assistant'; content: string }> = history.map((m) => ({
+    role: m.role === 'assistant' ? 'assistant' : 'user',
+    content: String(m.content || ''),
+  }));
+  const messages: Array<{ role: 'system' | 'user' | 'assistant'; content: string }> = [
     { role: 'system', content: systemPrompt },
-    ...history.map((m) => ({
-      role: m.role === 'assistant' ? 'assistant' : 'user',
-      content: String(m.content || ''),
-    })),
+    ...historyMessages,
     { role: 'user', content: message },
   ];
 
-  // KEY B handles the actual chat reply. Falls back to KEY A if KEY B
-  // isn't configured (single-key setup).
-  const answerKey = chatKey || scrapeKey || '';
-
-  let groqResponse: Response;
   try {
-    groqResponse = await fetch(GROQ_ENDPOINT, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${answerKey}`,
-      },
-      body: JSON.stringify({
-        model: GROQ_MODEL,
-        messages,
-        // Low temperature so the off-topic guard stays consistent and
-        // factual answers don't drift away from the website content.
-        temperature: 0.3,
-        // Trimmed from 400 → 280 so each request lands well under Groq's
-        // free-tier 12k TPM limit even with multi-turn conversations.
-        max_tokens: 280,
-      }),
-      signal: AbortSignal.timeout(30000),
+    const data = await requestGroqCompletion({
+      apiKeys,
+      messages,
+      temperature: 0.3,
+      max_tokens: 280,
+      timeoutMs: 30000,
     });
+
+    const text = extractAssistantText(data);
+    if (!text) {
+      return NextResponse.json(
+        { error: 'Groq returned an empty response.' },
+        { status: 502 }
+      );
+    }
+
+    return NextResponse.json({ text });
   } catch (err: any) {
     console.error('[api/grok] network error:', err?.message || err);
     return NextResponse.json(
@@ -468,30 +524,4 @@ export async function POST(request: NextRequest) {
       { status: 502 }
     );
   }
-
-  let data: any = null;
-  try {
-    data = await groqResponse.json();
-  } catch {
-    /* non-JSON */
-  }
-
-  if (!groqResponse.ok) {
-    const msg =
-      data?.error?.message ||
-      data?.error ||
-      `Groq returned HTTP ${groqResponse.status}`;
-    console.error('[api/grok] upstream error:', msg);
-    return NextResponse.json({ error: String(msg) }, { status: groqResponse.status });
-  }
-
-  const text = extractAssistantText(data);
-  if (!text) {
-    return NextResponse.json(
-      { error: 'Groq returned an empty response.' },
-      { status: 502 }
-    );
-  }
-
-  return NextResponse.json({ text });
 }

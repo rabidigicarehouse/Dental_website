@@ -11,18 +11,31 @@ function cleanKey(raw: string | undefined | null): string | null {
   return m ? m[0] : null;
 }
 
-async function readApiKey(): Promise<string | null> {
-  let key = cleanKey(process.env.GROQ_API_KEY_2) || cleanKey(process.env.GROQ_API_KEY);
-  if (key) return key;
+async function readApiKeys(): Promise<string[]> {
+  const keys = [
+    cleanKey(process.env.GROQ_API_KEY_2),
+    cleanKey(process.env.GROQ_API_KEY),
+  ].filter((value): value is string => Boolean(value));
+
+  if (keys.length > 0) {
+    return [...new Set(keys)];
+  }
 
   try {
     const filePath = path.join(process.cwd(), 'apikey.txt');
     const raw = await fs.readFile(filePath, 'utf-8');
-    const match = raw.match(/gsk_[A-Za-z0-9_-]+/);
-    return match ? match[0] : null;
+    return [...new Set(raw.match(/gsk_[A-Za-z0-9_-]+/g) || [])];
   } catch {
-    return null;
+    return [];
   }
+}
+
+function isRetryableGroqError(status: number, message: string): boolean {
+  return (
+    status === 429 ||
+    status >= 500 ||
+    /rate|quota|limit|capacity|overloaded|temporarily unavailable|timeout/i.test(message)
+  );
 }
 
 function extractJsonObject(text: string): Record<string, string> | null {
@@ -52,8 +65,8 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'Missing utterance.' }, { status: 400 });
   }
 
-  const apiKey = await readApiKey();
-  if (!apiKey) {
+  const apiKeys = await readApiKeys();
+  if (apiKeys.length === 0) {
     return NextResponse.json({ error: 'Groq API key not configured.' }, { status: 500 });
   }
 
@@ -82,42 +95,49 @@ Rules:
   });
 
   try {
-    const res = await fetch(GROQ_ENDPOINT, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${apiKey}`,
-      },
-      body: JSON.stringify({
-        model: GROQ_MODEL,
-        temperature: 0,
-        max_tokens: 180,
-        messages: [
-          { role: 'system', content: systemPrompt },
-          { role: 'user', content: userPrompt },
-        ],
-      }),
-      signal: AbortSignal.timeout(20000),
-    });
+    let lastError = 'Could not extract booking fields.';
 
-    const data = await res.json().catch(() => null);
-    if (!res.ok) {
-      return NextResponse.json(
-        { error: data?.error?.message || data?.error || `Groq returned HTTP ${res.status}` },
-        { status: res.status }
-      );
+    for (const apiKey of apiKeys) {
+      const res = await fetch(GROQ_ENDPOINT, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${apiKey}`,
+        },
+        body: JSON.stringify({
+          model: GROQ_MODEL,
+          temperature: 0,
+          max_tokens: 180,
+          messages: [
+            { role: 'system', content: systemPrompt },
+            { role: 'user', content: userPrompt },
+          ],
+        }),
+        signal: AbortSignal.timeout(20000),
+      });
+
+      const data = await res.json().catch(() => null);
+      if (!res.ok) {
+        lastError = data?.error?.message || data?.error || `Groq returned HTTP ${res.status}`;
+        if (isRetryableGroqError(res.status, String(lastError))) {
+          continue;
+        }
+        return NextResponse.json({ error: lastError }, { status: res.status });
+      }
+
+      const content = data?.choices?.[0]?.message?.content;
+      const text =
+        typeof content === 'string'
+          ? content
+          : Array.isArray(content)
+            ? content.map((part: any) => (typeof part === 'string' ? part : part?.text || '')).join('')
+            : '';
+
+      const fields = extractJsonObject(text) || {};
+      return NextResponse.json({ fields });
     }
 
-    const content = data?.choices?.[0]?.message?.content;
-    const text =
-      typeof content === 'string'
-        ? content
-        : Array.isArray(content)
-          ? content.map((part: any) => (typeof part === 'string' ? part : part?.text || '')).join('')
-          : '';
-
-    const fields = extractJsonObject(text) || {};
-    return NextResponse.json({ fields });
+    return NextResponse.json({ error: lastError }, { status: 502 });
   } catch (error: any) {
     return NextResponse.json(
       { error: error?.message || 'Could not extract booking fields.' },

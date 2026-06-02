@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Mic, Send } from "lucide-react";
+import { X, Mic, Send, Volume2, VolumeX } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import ChatBox from "./ChatBox";
@@ -37,7 +37,8 @@ export default function AIWidget() {
   const [isListening, setIsListening] = useState(false);
   const [isTyping, setIsTyping] = useState(false);
   const [stickyHidden, setStickyHidden] = useState(false);
-  const WELCOME_TEXT = "Hi! Welcome to our practice. To help you get started, may I please have your name and phone number?";
+  const [isVoiceMuted, setIsVoiceMuted] = useState(false);
+  const WELCOME_TEXT = "Hi! Welcome to our practice facility. To help you get started, may I please have your name and phone number?";
   const [messages, setMessages] = useState<Message[]>([
     { id: "1", text: WELCOME_TEXT, sender: "ai" },
   ]);
@@ -46,14 +47,6 @@ export default function AIWidget() {
   const [userLastName, setUserLastName] = useState<string>("");
   const [userPhone, setUserPhone] = useState<string>("");
   const [isOnboarding, setIsOnboarding] = useState<boolean>(true);
-
-  const localExtractPhone = useCallback((text: string): string | null => {
-    const digits = text.replace(/\D/g, "");
-    if (digits.length >= 7 && digits.length <= 15) {
-      return digits;
-    }
-    return null;
-  }, []);
 
   const appendAiMessage = useCallback((text: string) => {
     const aiMsg: Message = {
@@ -74,6 +67,7 @@ export default function AIWidget() {
   const bookingDataRef = useRef<BookingForm>({});
   const bookingStepRef = useRef<number>(-1);
   const bookingPromptPendingRef = useRef(false);
+  const tomorrowOfferPendingRef = useRef(false);
   const speechSessionRef = useRef<{ transcript: string; silenceTimer: number | null }>({
     transcript: "",
     silenceTimer: null,
@@ -105,7 +99,10 @@ export default function AIWidget() {
 
   const speak = useCallback(
     (text: string) => {
-      if (!window.speechSynthesis) return;
+      if (!window.speechSynthesis || isVoiceMuted) {
+        setIsSpeaking(false);
+        return;
+      }
       window.speechSynthesis.cancel();
 
       const restoreListeningVideo = () => {
@@ -157,7 +154,7 @@ export default function AIWidget() {
       window.speechSynthesis.addEventListener("voiceschanged", onVoicesReady);
       void window.speechSynthesis.getVoices();
     },
-    [femaleVoice]
+    [femaleVoice, isVoiceMuted]
   );
 
   useEffect(() => {
@@ -244,12 +241,126 @@ export default function AIWidget() {
     };
   }, []);
 
+  useEffect(() => {
+    if (!mounted || !window.speechSynthesis) return;
+    if (isVoiceMuted) {
+      window.speechSynthesis.cancel();
+      setIsSpeaking(false);
+      talkingVideoRef.current?.pause();
+      if (listeningVideoRef.current) {
+        listeningVideoRef.current.play().catch(() => {});
+      }
+    }
+  }, [isVoiceMuted, mounted]);
+
   const clearSpeechSilenceTimer = useCallback(() => {
     if (speechSessionRef.current.silenceTimer !== null) {
       window.clearTimeout(speechSessionRef.current.silenceTimer);
       speechSessionRef.current.silenceTimer = null;
     }
   }, []);
+
+  const COUNTRY_PHONE_RULES: Array<{ code: string; lengths: number[] }> = [
+    { code: "1", lengths: [10] },
+    { code: "20", lengths: [10] },
+    { code: "27", lengths: [9] },
+    { code: "33", lengths: [9] },
+    { code: "34", lengths: [9] },
+    { code: "39", lengths: [9, 10] },
+    { code: "44", lengths: [10] },
+    { code: "49", lengths: [10, 11] },
+    { code: "52", lengths: [10] },
+    { code: "55", lengths: [10, 11] },
+    { code: "61", lengths: [9] },
+    { code: "62", lengths: [9, 10, 11, 12] },
+    { code: "63", lengths: [10] },
+    { code: "64", lengths: [8, 9, 10] },
+    { code: "65", lengths: [8] },
+    { code: "66", lengths: [9] },
+    { code: "81", lengths: [10] },
+    { code: "82", lengths: [9, 10] },
+    { code: "86", lengths: [11] },
+    { code: "90", lengths: [10] },
+    { code: "91", lengths: [10] },
+    { code: "92", lengths: [10] },
+    { code: "93", lengths: [9] },
+    { code: "94", lengths: [9] },
+    { code: "95", lengths: [8, 9, 10] },
+    { code: "971", lengths: [9] },
+    { code: "972", lengths: [9] },
+    { code: "973", lengths: [8] },
+    { code: "974", lengths: [8] },
+    { code: "975", lengths: [8] },
+    { code: "976", lengths: [8] },
+    { code: "977", lengths: [10] },
+    { code: "966", lengths: [9] },
+    { code: "968", lengths: [8] },
+  ];
+
+  const getNextBusinessDay = useCallback((baseDate: Date) => {
+    const next = new Date(baseDate);
+    next.setDate(next.getDate() + 1);
+    while (next.getDay() === 0 || next.getDay() === 6) {
+      next.setDate(next.getDate() + 1);
+    }
+    return next;
+  }, []);
+
+  const validatePhoneNumberByLocale = useCallback((text: string): { ok: true; clean: string } | { ok: false } => {
+    const cleaned = text.trim().replace(/[^\d+()\-\s.]/g, "");
+    const plusCount = (cleaned.match(/\+/g) || []).length;
+    if (!cleaned || plusCount > 1 || (plusCount === 1 && !cleaned.startsWith("+"))) {
+      return { ok: false };
+    }
+
+    const digits = cleaned.replace(/\D/g, "");
+    if (digits.length < 7 || digits.length > 15) {
+      return { ok: false };
+    }
+
+    if (cleaned.startsWith("+")) {
+      const rule = COUNTRY_PHONE_RULES
+        .slice()
+        .sort((a, b) => b.code.length - a.code.length)
+        .find((candidate) => digits.startsWith(candidate.code));
+
+      if (rule) {
+        const nationalLength = digits.slice(rule.code.length).length;
+        if (!rule.lengths.includes(nationalLength)) {
+          return { ok: false };
+        }
+      }
+
+      return { ok: true, clean: `+${digits}` };
+    }
+
+    if (/^03\d{9}$/.test(digits)) {
+      return { ok: true, clean: `+92${digits.slice(1)}` };
+    }
+    if (/^0?7\d{9}$/.test(digits)) {
+      const national = digits.startsWith("0") ? digits.slice(1) : digits;
+      return { ok: true, clean: `+44${national}` };
+    }
+    if (/^(?:0|\+?91)?[6-9]\d{9}$/.test(digits)) {
+      const national = digits.slice(-10);
+      return { ok: true, clean: `+91${national}` };
+    }
+    if (/^(?:1)?\d{10}$/.test(digits)) {
+      return { ok: true, clean: `+1${digits.slice(-10)}` };
+    }
+
+    return { ok: false };
+  }, []);
+
+  const normalizePhoneNumber = useCallback((text: string): string | null => {
+    const validated = validatePhoneNumberByLocale(text);
+    return validated.ok ? validated.clean : null;
+  }, [validatePhoneNumberByLocale]);
+
+  const localExtractPhone = useCallback((text: string): string | null => {
+    const match = text.match(/(\+?\d[\d()\-\s.]{5,}\d)/);
+    return match ? normalizePhoneNumber(match[1]) : null;
+  }, [normalizePhoneNumber]);
 
   const stopListeningSession = useCallback(
     (shouldStopRecognition: boolean) => {
@@ -265,6 +376,132 @@ export default function AIWidget() {
     },
     [clearSpeechSilenceTimer]
   );
+
+  const isWeekendDate = useCallback((date: Date) => {
+    const day = date.getDay();
+    return day === 0 || day === 6;
+  }, []);
+
+  const isSameCalendarDay = useCallback((left: Date, right: Date) => {
+    return (
+      left.getFullYear() === right.getFullYear() &&
+      left.getMonth() === right.getMonth() &&
+      left.getDate() === right.getDate()
+    );
+  }, []);
+
+  const parseTimeTo24Hour = useCallback((value: string) => {
+    const match = value.trim().match(/(\d{1,2})(?::(\d{2}))?\s*(am|pm)?/i);
+    if (!match) return null;
+
+    let hour = Number(match[1]);
+    const minute = match[2] ? Number(match[2]) : 0;
+    const suffix = (match[3] || "").toLowerCase();
+
+    if (suffix === "pm" && hour < 12) hour += 12;
+    if (suffix === "am" && hour === 12) hour = 0;
+
+    if (hour < 0 || hour > 23 || minute < 0 || minute > 59) {
+      return null;
+    }
+
+    return { hour, minute };
+  }, []);
+
+  const validateAppointmentDateSelection = useCallback((value: string) => {
+    const t = value.trim();
+    const d = new Date(t);
+    if (Number.isNaN(d.getTime())) {
+      tomorrowOfferPendingRef.current = false;
+      return { ok: false as const, reason: 'I could not read that date. Try a format like "May 22, 2026".' };
+    }
+
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    if (d.getTime() < today.getTime()) {
+      tomorrowOfferPendingRef.current = false;
+      return { ok: false as const, reason: "That date is in the past. Could you pick a future date?" };
+    }
+
+    if (isWeekendDate(d)) {
+      tomorrowOfferPendingRef.current = false;
+      return {
+        ok: false as const,
+        reason: "We would not book an appointment for Saturday or Sunday. Please try to book between Monday and Friday, 9:00 AM to 6:00 PM.",
+      };
+    }
+
+    const now = new Date();
+    if (isSameCalendarDay(d, now)) {
+      const currentMinutes = now.getHours() * 60 + now.getMinutes();
+      if (currentMinutes >= 17 * 60 + 30) {
+        tomorrowOfferPendingRef.current = true;
+        return {
+          ok: false as const,
+          reason: "Sorry, today's booking time for appointment is about to over. Can I book the appointment for tomorrow instead?",
+        };
+      }
+    }
+
+    tomorrowOfferPendingRef.current = false;
+    return { ok: true as const, clean: d.toISOString() };
+  }, [isSameCalendarDay, isWeekendDate]);
+
+  const validateAppointmentTimeWindow = useCallback((dateValue: string | undefined, timeValue: string) => {
+    const parsedTime = parseTimeTo24Hour(timeValue);
+    if (!parsedTime) {
+      return { ok: false as const, reason: 'I could not read that time. Try "10:00 AM" or "2:30 PM".' };
+    }
+
+    const { hour, minute } = parsedTime;
+    const totalMinutes = hour * 60 + minute;
+    const openingMinutes = 9 * 60;
+    const closingMinutes = 18 * 60;
+    const latestStartMinutes = 17 * 60 + 30;
+
+    if (totalMinutes < openingMinutes || totalMinutes > latestStartMinutes) {
+      return {
+        ok: false as const,
+        reason: "We only book appointments Monday through Friday during office hours, and the latest available appointment time is 5:30 PM.",
+      };
+    }
+
+    if (dateValue) {
+      const appointmentDate = new Date(dateValue);
+      if (!Number.isNaN(appointmentDate.getTime())) {
+        if (isWeekendDate(appointmentDate)) {
+          return {
+            ok: false as const,
+            reason: "We would not book an appointment for Saturday or Sunday. Please try to book between Monday and Friday, 9:00 AM to 6:00 PM.",
+          };
+        }
+
+        const now = new Date();
+        if (isSameCalendarDay(appointmentDate, now)) {
+          const currentMinutes = now.getHours() * 60 + now.getMinutes();
+          if (currentMinutes >= closingMinutes) {
+            return {
+              ok: false as const,
+              reason: "Today's booking window has already ended. Please choose another weekday between 9:00 AM and 6:00 PM.",
+            };
+          }
+          if (totalMinutes < currentMinutes) {
+            return {
+              ok: false as const,
+              reason: "For today, please choose a time from the current time up to 6:00 PM.",
+            };
+          }
+        }
+      }
+    }
+
+    const hh12 = ((hour + 11) % 12) + 1;
+    const suffix = hour >= 12 ? "PM" : "AM";
+    return {
+      ok: true as const,
+      clean: `${hh12}:${String(minute).padStart(2, "0")} ${suffix}`,
+    };
+  }, [isSameCalendarDay, isWeekendDate, parseTimeTo24Hour]);
 
   const BOOKING_STEPS: Array<{
     key: BookingFieldKey;
@@ -315,12 +552,11 @@ export default function AIWidget() {
       key: "phone",
       ask: "What's the best phone number to reach you?",
       validate: (v) => {
-        const digits = v.replace(/\D/g, "");
-        if (digits.length < 7) {
-          return { ok: false, reason: "That phone number looks too short - could you re-share it?" };
+        const normalized = normalizePhoneNumber(v);
+        if (!normalized) {
+          return { ok: false, reason: "Please enter a relevant valid phone number for your country." };
         }
-        const clean = v.trim().startsWith("+") ? v.trim() : `+1 ${v.trim()}`;
-        return { ok: true, clean };
+        return { ok: true, clean: normalized };
       },
     },
     {
@@ -357,38 +593,14 @@ export default function AIWidget() {
     {
       key: "date",
       ask: "What date works for you? Please use a format like May 22, 2026.",
-      validate: (v) => {
-        const t = v.trim();
-        const d = new Date(t);
-        if (Number.isNaN(d.getTime())) {
-          return { ok: false, reason: 'I could not read that date. Try a format like "May 22, 2026".' };
-        }
-        const today = new Date();
-        today.setHours(0, 0, 0, 0);
-        if (d.getTime() < today.getTime()) {
-          return { ok: false, reason: "That date is in the past. Could you pick a future date?" };
-        }
-        return { ok: true, clean: d.toISOString() };
-      },
+      validate: (v) => validateAppointmentDateSelection(v),
     },
     {
       key: "time",
-      ask: "And what time? For example 10:00 AM or 2:30 PM, between 9 AM and 5 PM.",
+      ask: "And what time? For example 10:00 AM or 2:30 PM. We book Monday through Friday between 9:00 AM and 6:00 PM.",
       validate: (v) => {
         const t = v.trim();
-        const m = t.match(/(\d{1,2})(?::(\d{2}))?\s*(am|pm)?/i);
-        if (!m) return { ok: false, reason: 'I could not read that time. Try "10:00 AM" or "2:30 PM".' };
-        let hour = Number(m[1]);
-        const min = m[2] ? Number(m[2]) : 0;
-        const ampm = (m[3] || "").toLowerCase();
-        if (ampm === "pm" && hour < 12) hour += 12;
-        if (ampm === "am" && hour === 12) hour = 0;
-        if (hour < 8 || hour > 18) {
-          return { ok: false, reason: "Please pick a time between 9 AM and 5 PM." };
-        }
-        const hh12 = ((hour + 11) % 12) + 1;
-        const suffix = hour >= 12 ? "PM" : "AM";
-        return { ok: true, clean: `${hh12}:${String(min).padStart(2, "0")} ${suffix}` };
+        return validateAppointmentTimeWindow(bookingDataRef.current.date, t);
       },
     },
   ];
@@ -652,6 +864,46 @@ export default function AIWidget() {
     );
   }, []);
 
+  const looksLikeQuestionOrRequest = useCallback((text: string): boolean => {
+    const t = text.trim().toLowerCase();
+    return (
+      /\?$/.test(t) ||
+      /\b(tell|about|what|who|how|why|when|where|do you|can you|could you|would you|i want|i need|help|book|appointment|doctor|dr\.?|services|team|paola|michelle|harvey|pellegrini)\b/.test(
+        t
+      )
+    );
+  }, []);
+
+  const extractOnboardingName = useCallback((text: string): Partial<BookingForm> => {
+    const trimmed = text.trim();
+    if (!trimmed || looksLikeQuestionOrRequest(trimmed)) {
+      return {};
+    }
+
+    const explicitMatch = trimmed.match(
+      /\b(?:my name is|i am|i'm|this is)\s+([a-z][a-z'-]*)(?:\s+([a-z][a-z'\-]+(?:\s+[a-z][a-z'\-]+)*))?\b/i
+    );
+    if (explicitMatch) {
+      return {
+        firstName: explicitMatch[1].trim(),
+        lastName: explicitMatch[2]?.trim() || "",
+      };
+    }
+
+    const cleaned = trimmed.replace(/[^a-zA-Z\s'-]/g, " ").replace(/\s+/g, " ").trim();
+    const parts = cleaned.split(" ").filter(Boolean);
+    if (parts.length >= 1 && parts.length <= 3 && cleaned.length <= 32) {
+      if (parts.every((part) => /^[a-zA-Z][a-zA-Z'-]+$/.test(part))) {
+        return {
+          firstName: parts[0],
+          lastName: parts.slice(1).join(" "),
+        };
+      }
+    }
+
+    return {};
+  }, [looksLikeQuestionOrRequest]);
+
   const handleSendMessage = useCallback(
     async (text: string) => {
       if (!text.trim()) return;
@@ -665,14 +917,22 @@ export default function AIWidget() {
         setIsTyping(true);
         const extracted = await requestAiBookingAutofill(text, "firstName");
         const localPhone = localExtractPhone(text);
+        const aiPhoneCandidate = typeof extracted.phone === "string" ? normalizePhoneNumber(extracted.phone) : null;
+        const localName = extractOnboardingName(text);
+        const aiNameAllowed =
+          !looksLikeQuestionOrRequest(text) &&
+          Boolean(text.match(/\b(my name is|i am|i'm|this is)\b/i) || localPhone);
 
-        const extractedName = extracted.firstName || "";
-        const extractedLastName = extracted.lastName || "";
-        const extractedPhone = extracted.phone || localPhone || "";
+        const extractedName = aiNameAllowed ? extracted.firstName || "" : "";
+        const extractedLastName = aiNameAllowed ? extracted.lastName || "" : "";
+        const extractedPhone = aiPhoneCandidate || localPhone || "";
 
         let newName = userName;
         let newLastName = userLastName;
         let newPhone = userPhone;
+        const hasValidPhone = Boolean(extractedPhone);
+        const askedAQuestion = looksLikeQuestionOrRequest(text);
+        const looksLikePhoneAttempt = /\d/.test(text);
 
         if (extractedName && !userName) {
           newName = extractedName;
@@ -684,13 +944,10 @@ export default function AIWidget() {
           newPhone = extractedPhone;
         }
 
-        if (!newName) {
-          const localName = extractNameFields(text);
-          if (localName.firstName) {
-            newName = localName.firstName;
-            if (localName.lastName) {
-              newLastName = localName.lastName;
-            }
+        if (!newName && localName.firstName) {
+          newName = localName.firstName;
+          if (localName.lastName) {
+            newLastName = localName.lastName;
           }
         }
 
@@ -703,6 +960,18 @@ export default function AIWidget() {
         if (newName && newPhone) {
           setIsOnboarding(false);
           const reply = `Nice to meet you, ${newName}! How can I help you today?`;
+          appendAiMessage(reply);
+          speak(reply);
+        } else if (askedAQuestion && !newName && !newPhone) {
+          const reply = `Before we continue, please provide your name and phone number so I can assist you properly.`;
+          appendAiMessage(reply);
+          speak(reply);
+        } else if (!hasValidPhone && looksLikePhoneAttempt && newName) {
+          const reply = `${newName}, please enter a relevant valid phone number so I can continue.`;
+          appendAiMessage(reply);
+          speak(reply);
+        } else if (!hasValidPhone && looksLikePhoneAttempt && !newName) {
+          const reply = `Please enter a relevant valid phone number with your name so I can continue.`;
           appendAiMessage(reply);
           speak(reply);
         } else if (newName && !newPhone) {
@@ -725,6 +994,7 @@ export default function AIWidget() {
         bookingStepRef.current = -1;
         bookingDataRef.current = {};
         bookingPromptPendingRef.current = false;
+        tomorrowOfferPendingRef.current = false;
         const reply = "No problem - I've cancelled the booking. Let me know whenever you're ready, or ask me anything else.";
         appendAiMessage(reply);
         speak(reply);
@@ -745,11 +1015,47 @@ export default function AIWidget() {
         }
       }
 
+      if (tomorrowOfferPendingRef.current) {
+        if (detectYesResponse(text)) {
+          const nextBusinessDay = getNextBusinessDay(new Date());
+          bookingDataRef.current.date = nextBusinessDay.toISOString();
+          tomorrowOfferPendingRef.current = false;
+          bookingStepRef.current = bookingStepIndexByKey.time;
+          const reply = `Perfect. I can book ${nextBusinessDay.toLocaleDateString("en-US", {
+            weekday: "long",
+            month: "long",
+            day: "numeric",
+          })}. What time would you like? The latest available appointment time is 5:30 PM.`;
+          appendAiMessage(reply);
+          speak(reply);
+          return;
+        }
+        if (detectNoResponse(text)) {
+          tomorrowOfferPendingRef.current = false;
+          const reply = "No problem. Please choose another weekday date between Monday and Friday, and I will help you continue.";
+          appendAiMessage(reply);
+          speak(reply);
+          return;
+        }
+      }
+
       if (bookingStepRef.current >= 0) {
         const step = BOOKING_STEPS[bookingStepRef.current];
         const localAutofill = extractBookingAutofill(text, step.key);
         const aiAutofill = await requestAiBookingAutofill(text, step.key);
         const autofill = { ...localAutofill, ...aiAutofill };
+        const candidateDate = autofill.date || bookingDataRef.current.date;
+        const candidateTime = autofill.time;
+
+        if (candidateDate && candidateTime) {
+          const timeWindowResult = validateAppointmentTimeWindow(candidateDate, candidateTime);
+          if (!timeWindowResult.ok) {
+            appendAiMessage(timeWindowResult.reason);
+            speak(timeWindowResult.reason);
+            return;
+          }
+          autofill.time = timeWindowResult.clean;
+        }
 
         if (Object.keys(autofill).length > 0) {
           Object.assign(bookingDataRef.current, autofill);
@@ -859,8 +1165,6 @@ export default function AIWidget() {
 
         if (res.ok && payload.text) {
           responseText = payload.text;
-        } else if (payload.error) {
-          responseText = `Sorry - ${payload.error}`;
         }
       } catch (err: any) {
         if (err?.name === "AbortError") {
@@ -892,6 +1196,8 @@ export default function AIWidget() {
       detectDirectBookingCommand,
       extractBookingAutofill,
       requestAiBookingAutofill,
+      validateAppointmentTimeWindow,
+      validateAppointmentDateSelection,
       detectGreetingOnly,
       detectNoResponse,
       detectYesResponse,
@@ -902,8 +1208,11 @@ export default function AIWidget() {
       userName,
       userLastName,
       userPhone,
+      normalizePhoneNumber,
+      getNextBusinessDay,
       localExtractPhone,
-      extractNameFields,
+      looksLikeQuestionOrRequest,
+      extractOnboardingName,
     ]
   );
 
@@ -974,6 +1283,10 @@ export default function AIWidget() {
       recognitionRef.current.start();
       setIsListening(true);
     }
+  };
+
+  const toggleMute = () => {
+    setIsVoiceMuted((prev) => !prev);
   };
 
   const onSendClick = () => {
@@ -1075,6 +1388,15 @@ export default function AIWidget() {
                   className={`absolute inset-0 w-full h-full object-cover bg-black ${isSpeaking ? "opacity-100" : "opacity-0"}`}
                   style={{ backgroundColor: "black" }}
                 />
+
+                <button
+                  type="button"
+                  onClick={toggleMute}
+                  aria-label={isVoiceMuted ? "Unmute AI voice" : "Mute AI voice"}
+                  className="absolute bottom-3 left-3 z-10 inline-flex h-10 w-10 items-center justify-center rounded-full bg-white/88 text-[#165369] shadow-lg ring-1 ring-[#165369]/15 backdrop-blur-sm transition hover:bg-white"
+                >
+                  {isVoiceMuted ? <VolumeX size={18} /> : <Volume2 size={18} />}
+                </button>
               </div>
 
               {/* Speak with AI Advisor Button placed below the video container */}
