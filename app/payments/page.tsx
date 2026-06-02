@@ -4,6 +4,14 @@ import Footer from '@/components/Footer';
 
 const methods = [
   {
+    title: 'Bill Payment',
+    icon: 'fa fa-wallet',
+    desc: 'Pay a custom bill amount securely through a Square-hosted checkout page.',
+    note: 'Sandbox checkout',
+    href: '/payments/bill-payment',
+    color: '#165369',
+  },
+  {
     title: 'Credit Card',
     icon: 'fa fa-credit-card',
     desc: 'Visa, Mastercard, American Express and Discover accepted.',

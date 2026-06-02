@@ -229,6 +229,7 @@ export default function Home() {
                       </div>
                     </div>
                     <div className="dropdown-content">
+                      <Link href="/payments/bill-payment">Bill payment</Link>
                       <Link href="https://payment.ipospays.com/api/v1/merchantPay?t=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0cmFuc2FjdGlvbl9pZCI6Ijk3NTAxOTQzNDk4OCIsInRwbiI6IjExODEyMzE1NzY1NyIsIm1lcmNoYW50SWQiOiI1ZmFkZjY2NS01YWNkLTQ3NWYtYWExOC0wYmEwYjA4OTFjMDkiLCJzdG9yZUlkIjoiOTFhZDk3OGMtNzM0My00MjVmLTk0OTYtMTdiODNlZTkyYmIyIn0.tEzAOjtDENZasUqeJXko18J60YjRuyO89g0vw3ZE88Y" target="_blank" rel="noopener noreferrer">Credit Card (3% fee applies)</Link>
                       <Link href="/zelle">Pay by Zelle (no fee)</Link>
                       <Link href="https://pay.withcherry.com/upper-east-dental-innovations-?utm_source=practice&utm_medium=website&m=39005" target="_blank" rel="noopener noreferrer">Cherry Financing</Link>
