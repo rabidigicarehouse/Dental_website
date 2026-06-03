@@ -23,6 +23,158 @@ interface CollectedField {
   value: string;
 }
 
+async function buildRenderedPdfBase64(form: HTMLFormElement, title: string): Promise<string> {
+  const [{ default: html2canvas }, { jsPDF }] = await Promise.all([
+    import('html2canvas'),
+    import('jspdf'),
+  ]);
+
+  const cloneHost = document.createElement('div');
+  cloneHost.style.position = 'fixed';
+  cloneHost.style.left = '-10000px';
+  cloneHost.style.top = '0';
+  cloneHost.style.width = `${Math.ceil(form.getBoundingClientRect().width)}px`;
+  cloneHost.style.padding = '0';
+  cloneHost.style.margin = '0';
+  cloneHost.style.background = '#ffffff';
+  cloneHost.style.zIndex = '-1';
+
+  const clone = form.cloneNode(true) as HTMLFormElement;
+  clone.style.margin = '0';
+  clone.style.boxShadow = 'none';
+
+  const originalControls = form.querySelectorAll<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>('input, textarea, select');
+  const clonedControls = clone.querySelectorAll<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>('input, textarea, select');
+
+  const buildTextReplacement = (
+    source: HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement,
+    cloned: HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+  ) => {
+    const replacement = document.createElement(source instanceof HTMLTextAreaElement ? 'div' : 'span');
+    const computed = window.getComputedStyle(source);
+    const value =
+      source instanceof HTMLSelectElement
+        ? source.options[source.selectedIndex]?.text || source.value
+        : source.value || source.getAttribute('placeholder') || '';
+
+    replacement.textContent = value || ' ';
+    replacement.style.display = computed.display === 'block' || source instanceof HTMLTextAreaElement ? 'block' : 'inline-flex';
+    replacement.style.verticalAlign = computed.verticalAlign || 'middle';
+    replacement.style.alignItems = 'center';
+    replacement.style.boxSizing = 'border-box';
+    replacement.style.width = computed.width;
+    replacement.style.minWidth = computed.width;
+    replacement.style.maxWidth = computed.width;
+    replacement.style.minHeight = computed.height;
+    replacement.style.height = computed.height === 'auto' ? 'auto' : computed.height;
+    replacement.style.padding = computed.padding;
+    replacement.style.margin = computed.margin;
+    replacement.style.border = 'none';
+    replacement.style.borderRadius = '0';
+    replacement.style.background = 'transparent';
+    replacement.style.color = computed.color;
+    replacement.style.font = computed.font;
+    replacement.style.fontSize = computed.fontSize;
+    replacement.style.fontWeight = computed.fontWeight;
+    replacement.style.fontFamily = computed.fontFamily;
+    replacement.style.lineHeight = computed.lineHeight === 'normal' ? '1.35' : computed.lineHeight;
+    replacement.style.letterSpacing = computed.letterSpacing;
+    replacement.style.textAlign = 'center';
+    replacement.style.whiteSpace = source instanceof HTMLTextAreaElement ? 'pre-wrap' : 'nowrap';
+    replacement.style.overflow = 'visible';
+    replacement.style.textOverflow = 'clip';
+    replacement.style.justifyContent = 'center';
+    replacement.style.textDecoration = 'none';
+    replacement.style.boxShadow = 'none';
+
+    if (source instanceof HTMLTextAreaElement) {
+      replacement.style.height = 'auto';
+      replacement.style.minHeight = computed.height;
+      replacement.style.wordBreak = 'break-word';
+      replacement.style.textAlign = 'left';
+      replacement.style.justifyContent = 'flex-start';
+    }
+
+    cloned.replaceWith(replacement);
+  };
+
+  originalControls.forEach((original, index) => {
+    const cloned = clonedControls[index];
+    if (!cloned) return;
+
+    if (cloned instanceof HTMLInputElement) {
+      cloned.value = original instanceof HTMLInputElement ? original.value : original.value;
+      if (original instanceof HTMLInputElement) {
+        cloned.checked = original.checked;
+        if (original.type === 'checkbox' || original.type === 'radio') {
+          cloned.setAttribute('checked', original.checked ? 'checked' : '');
+        } else {
+          cloned.setAttribute('value', original.value);
+        }
+      }
+    } else if (cloned instanceof HTMLTextAreaElement) {
+      cloned.value = original.value;
+      cloned.textContent = original.value;
+    } else if (cloned instanceof HTMLSelectElement && original instanceof HTMLSelectElement) {
+      cloned.value = original.value;
+      Array.from(cloned.options).forEach((option, optionIndex) => {
+        option.selected = optionIndex === original.selectedIndex;
+      });
+    }
+
+    if (
+      (original instanceof HTMLInputElement && !['checkbox', 'radio', 'button', 'submit', 'reset', 'hidden'].includes(original.type)) ||
+      original instanceof HTMLTextAreaElement ||
+      original instanceof HTMLSelectElement
+    ) {
+      buildTextReplacement(original, cloned);
+    }
+  });
+
+  cloneHost.appendChild(clone);
+  document.body.appendChild(cloneHost);
+
+  try {
+    const scale = Math.min(window.devicePixelRatio || 1, 1.35);
+    const canvas = await html2canvas(cloneHost, {
+      backgroundColor: '#ffffff',
+      scale,
+      useCORS: true,
+      logging: false,
+      scrollX: 0,
+      scrollY: 0,
+      windowWidth: clone.scrollWidth,
+      windowHeight: clone.scrollHeight,
+    });
+
+    const imageData = canvas.toDataURL('image/jpeg', 0.82);
+    const pdf = new jsPDF('p', 'pt', 'a4');
+    const pageWidth = pdf.internal.pageSize.getWidth();
+    const pageHeight = pdf.internal.pageSize.getHeight();
+    const imgWidth = pageWidth;
+    const imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+    let remainingHeight = imgHeight;
+    let position = 0;
+
+    pdf.setProperties({ title });
+    pdf.addImage(imageData, 'JPEG', 0, position, imgWidth, imgHeight, undefined, 'FAST');
+    remainingHeight -= pageHeight;
+
+    while (remainingHeight > 0) {
+      position -= pageHeight;
+      pdf.addPage();
+      pdf.addImage(imageData, 'JPEG', 0, position, imgWidth, imgHeight, undefined, 'FAST');
+      remainingHeight -= pageHeight;
+    }
+
+    const dataUri = pdf.output('datauristring');
+    return dataUri.split(',')[1] || '';
+  } finally {
+    document.body.removeChild(cloneHost);
+  }
+}
+
 /**
  * Walks every input/select/textarea inside the form, derives a human-readable
  * label (from <label for="...">, the closest <label> ancestor, or a nearby
@@ -154,8 +306,11 @@ export default function PatientFormSubmit({
       find(/^(full ?name|patient ?name|name)\b/i) ||
       `${firstName} ${lastName}`.trim();
     const patientEmail = find(/^(email|e-?mail)\b/i);
+    let renderedPdfBase64 = '';
 
     try {
+      renderedPdfBase64 = await buildRenderedPdfBase64(formRef.current, formType);
+
       const response = await fetch(buildBackendUrl('/api/forms/submit'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -164,6 +319,7 @@ export default function PatientFormSubmit({
           patientName: fullName,
           patientEmail,
           fields,
+          renderedPdfBase64,
         }),
       });
 

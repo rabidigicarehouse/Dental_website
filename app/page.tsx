@@ -6,6 +6,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import CardSwap, { Card } from '@/components/CardSwap';
 import TeethCompareSlider from '@/components/TeethCompareSlider';
 import StackedSectionSlider from '@/components/StackedSectionSlider';
+import CorporatePlansSection from '@/components/CorporatePlansSection';
 import MapContactSection from '@/components/MapContactSection';
 import Footer from '@/components/Footer';
 import IconMarquee from '@/components/IconMarquee';
@@ -230,7 +231,7 @@ export default function Home() {
                     </div>
                     <div className="dropdown-content">
                       <Link href="/payments/bill-payment">Bill payment</Link>
-                      <Link href="https://payment.ipospays.com/api/v1/merchantPay?t=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0cmFuc2FjdGlvbl9pZCI6Ijk3NTAxOTQzNDk4OCIsInRwbiI6IjExODEyMzE1NzY1NyIsIm1lcmNoYW50SWQiOiI1ZmFkZjY2NS01YWNkLTQ3NWYtYWExOC0wYmEwYjA4OTFjMDkiLCJzdG9yZUlkIjoiOTFhZDk3OGMtNzM0My00MjVmLTk0OTYtMTdiODNlZTkyYmIyIn0.tEzAOjtDENZasUqeJXko18J60YjRuyO89g0vw3ZE88Y" target="_blank" rel="noopener noreferrer">Credit Card (3% fee applies)</Link>
+                      <Link href="https://api.ipospays.com/v1/sl/j4856y154I80n00x2" target="_blank" rel="noopener noreferrer">Credit Card (3% fee applies)</Link>
                       <Link href="/zelle">Pay by Zelle (no fee)</Link>
                       <Link href="https://pay.withcherry.com/upper-east-dental-innovations-?utm_source=practice&utm_medium=website&m=39005" target="_blank" rel="noopener noreferrer">Cherry Financing</Link>
                       <Link href="https://www.carecredit.com/apply/?utm_source=SA360&utm_medium=paidsearch&utm_campaign=SR_HW_CCD2C_G_G_BR-LF-General-Restructure_AQ_MY_25-27_RRDT&utm_content=care+credit&sitecode=HDLSGOIGBN&gclsrc=aw.ds&gad_source=1&gad_campaignid=207722066&gbraid=0AAAAADrq0Z6Cz4G4uXTCm0nOfNT5ElpYH&gclid=Cj0KCQjwvajDBhCNARIsAEE29Wo6jMR5wHQs2RDEcMgzCOkY6EA3xyd2pBgeDnNvVW1j3GTLDnWMEE8aAlhtEALw_wcB" target="_blank" rel="noopener noreferrer">Care Credit</Link>
@@ -486,6 +487,8 @@ export default function Home() {
         </div>
       </section>
 
+      <CorporatePlansSection />
+
       {/* Portfolio Section */}
       <section className="portfolio-section bg-white">
         <div className="container">
@@ -597,15 +600,14 @@ export default function Home() {
       </section>
 
       {/* Final CTA Section - Now positioned after FAQ */}
-      <section className="bg-color text-light pt-40 pb-40">
+      <section className="main-home-cta-section text-light pt-40 pb-40">
         <div className="container">
-          <div className="row g-4 align-items-center">
-            <div className="col-md-9">
+          <div className="main-home-cta-band">
+            <div className="main-home-cta-copy">
+              <span className="main-home-cta-label">Plan Your Visit</span>
               <h3 className="mb-0 fs-32 text-white">Ready to book your dental care session?</h3>
             </div>
-            <div className="col-lg-3 text-lg-end">
-              <Link className="btn-main btn-line fx-slide" href="#book" data-hover="Connect Us"><span>Connect Us</span></Link>
-            </div>
+            <Link className="main-home-cta-button" href="#book" data-hover="Connect Us"><span>Connect Us</span></Link>
           </div>
         </div>
       </section>

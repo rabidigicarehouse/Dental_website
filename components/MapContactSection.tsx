@@ -2,12 +2,16 @@
 
 import { useRef, useState } from 'react';
 import { buildBackendUrl } from '@/lib/api-base-url';
+import CountryPhoneInput from '@/components/CountryPhoneInput';
+import { isPhoneValidForCountry, toInternationalPhone } from '@/lib/phone-countries';
 
 export default function MapContactSection() {
   const formRef = useRef<HTMLFormElement>(null);
   const [sent, setSent] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
+  const [phoneCountryCode, setPhoneCountryCode] = useState('US');
+  const [phoneValue, setPhoneValue] = useState('');
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -19,15 +23,28 @@ export default function MapContactSection() {
       const d = new FormData(formRef.current);
       const name = d.get('hcname') as string;
       const email = d.get('hcemail') as string;
-      const phone = d.get('hcphone') as string;
+      const phone = phoneValue.trim();
       const message = d.get('hcmsg') as string;
+
+      if (!phone) {
+        throw new Error('Please enter your phone number so we can contact you.');
+      }
+
+      if (!isPhoneValidForCountry(phoneCountryCode, phone)) {
+        throw new Error('Please enter a valid phone number for the selected country.');
+      }
 
       const response = await fetch(buildBackendUrl('/api/contact'), {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ name, email, phone, message }),
+        body: JSON.stringify({
+          name,
+          email,
+          phone: toInternationalPhone(phoneCountryCode, phone),
+          message,
+        }),
       });
 
       if (!response.ok) {
@@ -36,6 +53,8 @@ export default function MapContactSection() {
 
       setSent(true);
       formRef.current.reset();
+      setPhoneValue('');
+      setPhoneCountryCode('US');
     } catch (err: any) {
       console.error('Map contact form submission error:', err);
       setErrorMsg(err.message || 'Failed to send message. Please try again later.');
@@ -94,7 +113,13 @@ export default function MapContactSection() {
                       </div>
                     </div>
                     <div className="mcf-group">
-                      <input type="tel" name="hcphone" placeholder="Phone Number" className="mcf-input" />
+                      <CountryPhoneInput
+                        value={phoneValue}
+                        onChange={setPhoneValue}
+                        countryCode={phoneCountryCode}
+                        onCountryChange={setPhoneCountryCode}
+                        inputClassName="mcf-input"
+                      />
                     </div>
                     <div className="mcf-group">
                       <textarea name="hcmsg" placeholder="Write your Message" rows={4} className="mcf-input mcf-textarea" />

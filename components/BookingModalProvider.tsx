@@ -45,6 +45,22 @@ type FormData = {
   reason: string;
 };
 
+type Step1FieldKey = 'firstName' | 'lastName' | 'dob' | 'phone' | 'email' | 'reason';
+
+function dobToNativeDateValue(dob: string): string {
+  const match = dob.match(/^(\d{2})\/(\d{2})\/(\d{4})$/);
+  if (!match) return '';
+  const [, month, day, year] = match;
+  return `${year}-${month}-${day}`;
+}
+
+function nativeDateToDob(value: string): string {
+  const match = value.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+  if (!match) return '';
+  const [, year, month, day] = match;
+  return `${month}/${day}/${year}`;
+}
+
 const initialForm: FormData = {
   firstName: '',
   lastName: '',
@@ -191,12 +207,23 @@ const formatPhone = (value: string, mask: string): string => {
 function BookingModal({ onClose }: { onClose: () => void }) {
   const [step, setStep] = useState<1 | 2 | 3>(1);
   const [form, setForm] = useState<FormData>(initialForm);
+  const [reasonChoice, setReasonChoice] = useState('');
+  const [step1Touched, setStep1Touched] = useState<Record<Step1FieldKey, boolean>>({
+    firstName: false,
+    lastName: false,
+    dob: false,
+    phone: false,
+    email: false,
+    reason: false,
+  });
+  const [step1Attempted, setStep1Attempted] = useState(false);
   const [selectedCountryCode, setSelectedCountryCode] = useState('US');
   const [countryDropdownOpen, setCountryDropdownOpen] = useState(false);
   /* Inline-style coordinates for the country dropdown so it can render
      as a viewport-fixed flyout outside the modal's clipped overflow. */
   const countryBtnRef = useRef<HTMLButtonElement | null>(null);
   const phoneFieldRef = useRef<HTMLDivElement | null>(null);
+  const dobPickerRef = useRef<HTMLInputElement | null>(null);
   const [dropdownPos, setDropdownPos] = useState<{ top: number; left: number; width: number; maxHeight: number; openUpward: boolean }>({
     top: 0,
     left: 0,
@@ -297,10 +324,47 @@ function BookingModal({ onClose }: { onClose: () => void }) {
     );
   }, [form, selectedCountry]);
 
+  const step1Errors = useMemo<Record<Step1FieldKey, string>>(() => ({
+    firstName: form.firstName.trim() ? '' : 'Please enter your first name.',
+    lastName: form.lastName.trim() ? '' : 'Please enter your last name.',
+    dob: !form.dob.trim()
+      ? 'Please enter your date of birth.'
+      : validateDOB(form.dob)
+        ? ''
+        : 'Please enter a valid date in MM/DD/YYYY format.',
+    phone: !form.phone.trim()
+      ? 'Please enter your phone number.'
+      : selectedCountry.regex.test(form.phone)
+        ? ''
+        : 'Please enter a valid phone number for the selected country.',
+    email: !form.email.trim()
+      ? 'Please enter your email address.'
+      : /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email.trim())
+        ? ''
+        : 'Please enter a valid email address.',
+    reason: !reasonChoice
+      ? 'Please select a reason for your appointment.'
+      : form.reason.trim()
+        ? ''
+        : 'Please enter your appointment reason.',
+  }), [form, reasonChoice, selectedCountry]);
+
   const step2Valid = selectedDate !== null && selectedTime !== null;
 
   const setField = <K extends keyof FormData>(k: K, v: FormData[K]) =>
     setForm((f) => ({ ...f, [k]: v }));
+
+  const touchField = (field: Step1FieldKey) =>
+    setStep1Touched((prev) => ({ ...prev, [field]: true }));
+
+  const shouldShowFieldError = (field: Step1FieldKey) =>
+    (step1Attempted || step1Touched[field]) && !!step1Errors[field];
+
+  const goToStep2 = () => {
+    setStep1Attempted(true);
+    if (!step1Valid) return;
+    setStep(2);
+  };
 
   const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const inputVal = e.target.value;
@@ -315,6 +379,19 @@ function BookingModal({ onClose }: { onClose: () => void }) {
     const inputVal = e.target.value;
     const formatted = formatDOB(inputVal);
     setField('dob', formatted);
+  };
+
+  const openDobPicker = () => {
+    const input = dobPickerRef.current;
+    if (!input) return;
+
+    if (typeof input.showPicker === 'function') {
+      input.showPicker();
+      return;
+    }
+
+    input.focus();
+    input.click();
   };
 
   const monthCells = useMemo(
@@ -464,38 +541,69 @@ function BookingModal({ onClose }: { onClose: () => void }) {
                 <div className="bmp-step1">
                   <p className="bmp-step-intro">Please provide the following information</p>
                   <div className="bmp-grid">
-                    <label className="bmp-field">
+                    <label className={`bmp-field${shouldShowFieldError('firstName') ? ' has-error' : ''}`}>
                       <span className="bmp-label">First Name*</span>
                       <input
                         type="text"
                         value={form.firstName}
                         onChange={(e) => setField('firstName', e.target.value)}
+                        onBlur={() => touchField('firstName')}
                         autoComplete="given-name"
                       />
+                      {shouldShowFieldError('firstName') && <span className="bmp-field-error">{step1Errors.firstName}</span>}
                     </label>
-                    <label className="bmp-field">
+                    <label className={`bmp-field${shouldShowFieldError('lastName') ? ' has-error' : ''}`}>
                       <span className="bmp-label">Last Name*</span>
                       <input
                         type="text"
                         value={form.lastName}
                         onChange={(e) => setField('lastName', e.target.value)}
+                        onBlur={() => touchField('lastName')}
                         autoComplete="family-name"
                       />
+                      {shouldShowFieldError('lastName') && <span className="bmp-field-error">{step1Errors.lastName}</span>}
                     </label>
                     
                     {/* Row 2 starts */}
-                    <label className="bmp-field field-dob">
+                    <label className={`bmp-field field-dob${shouldShowFieldError('dob') ? ' has-error' : ''}`}>
                       <span className="bmp-label">Date of Birth*</span>
-                      <input
-                        type="text"
-                        value={form.dob}
-                        onChange={handleDOBChange}
-                        placeholder="MM/DD/YYYY"
-                        autoComplete="bday"
-                      />
+                      <div className="bmp-date-input-wrap">
+                        <input
+                          type="text"
+                          value={form.dob}
+                          onChange={handleDOBChange}
+                          onBlur={() => touchField('dob')}
+                          placeholder="MM/DD/YYYY"
+                          autoComplete="bday"
+                          className="bmp-dob-visible-input"
+                        />
+                        <button
+                          type="button"
+                          className="bmp-date-trigger"
+                          onClick={openDobPicker}
+                          aria-label="Open date picker"
+                        >
+                          <svg viewBox="0 0 24 24" aria-hidden="true" className="bmp-date-icon">
+                            <path d="M7 2a1 1 0 0 1 1 1v1h8V3a1 1 0 1 1 2 0v1h1a3 3 0 0 1 3 3v11a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V7a3 3 0 0 1 3-3h1V3a1 1 0 0 1 1-1Zm13 8H4v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8ZM6 6a1 1 0 0 0-1 1v1h15V7a1 1 0 0 0-1-1H6Zm2 6h2v2H8v-2Zm4 0h2v2h-2v-2Z" />
+                          </svg>
+                        </button>
+                        <input
+                          ref={dobPickerRef}
+                          type="date"
+                          tabIndex={-1}
+                          aria-hidden="true"
+                          className="bmp-date-picker-native"
+                          value={dobToNativeDateValue(form.dob)}
+                          onChange={(e) => {
+                            setField('dob', nativeDateToDob(e.target.value));
+                            touchField('dob');
+                          }}
+                        />
+                      </div>
+                      {shouldShowFieldError('dob') && <span className="bmp-field-error">{step1Errors.dob}</span>}
                     </label>
                     
-                    <div className="bmp-field field-phone">
+                    <div className={`bmp-field field-phone${shouldShowFieldError('phone') ? ' has-error' : ''}`}>
                       <span className="bmp-label">Phone*</span>
                       <div ref={phoneFieldRef} className="bmp-phone-field-container">
                         <div className="bmp-country-select-wrapper">
@@ -546,21 +654,25 @@ function BookingModal({ onClose }: { onClose: () => void }) {
                           type="tel"
                           value={form.phone}
                           onChange={handlePhoneChange}
+                          onBlur={() => touchField('phone')}
                           placeholder={selectedCountry.mask.replace(/9/g, 'X')}
                           autoComplete="tel"
                           className="bmp-phone-number-input"
                         />
                       </div>
+                      {shouldShowFieldError('phone') && <span className="bmp-field-error">{step1Errors.phone}</span>}
                     </div>
                     
-                    <label className="bmp-field field-email">
+                    <label className={`bmp-field field-email${shouldShowFieldError('email') ? ' has-error' : ''}`}>
                       <span className="bmp-label">Email Address*</span>
                       <input
                         type="email"
                         value={form.email}
                         onChange={(e) => setField('email', e.target.value)}
+                        onBlur={() => touchField('email')}
                         autoComplete="email"
                       />
+                      {shouldShowFieldError('email') && <span className="bmp-field-error">{step1Errors.email}</span>}
                     </label>
                     
                     <div className="bmp-field field-sex">
@@ -586,11 +698,16 @@ function BookingModal({ onClose }: { onClose: () => void }) {
                     {/* Row 2 ends */}
                     
                     {/* Row 3 starts */}
-                    <label className="bmp-field field-reason">
+                    <label className={`bmp-field field-reason${shouldShowFieldError('reason') ? ' has-error' : ''}`}>
                       <span className="bmp-label">Reason for Appointment*</span>
                       <select
-                        value={form.reason}
-                        onChange={(e) => setField('reason', e.target.value)}
+                        value={reasonChoice}
+                        onBlur={() => touchField('reason')}
+                        onChange={(e) => {
+                          const value = e.target.value;
+                          setReasonChoice(value);
+                          setField('reason', value === 'Other' ? '' : value);
+                        }}
                       >
                         <option value="">Select Reason for Appointment</option>
                         {REASONS.map((r) => (
@@ -599,6 +716,17 @@ function BookingModal({ onClose }: { onClose: () => void }) {
                           </option>
                         ))}
                       </select>
+                      {reasonChoice === 'Other' && (
+                        <input
+                          type="text"
+                          value={form.reason}
+                          onChange={(e) => setField('reason', e.target.value)}
+                          onBlur={() => touchField('reason')}
+                          placeholder="Please type your appointment reason"
+                          className="bmp-other-reason-input"
+                        />
+                      )}
+                      {shouldShowFieldError('reason') && <span className="bmp-field-error">{step1Errors.reason}</span>}
                     </label>
                   </div>
                 </div>
@@ -778,8 +906,8 @@ function BookingModal({ onClose }: { onClose: () => void }) {
               <button
                 type="button"
                 className="bmp-btn bmp-btn-next-centered"
-                disabled={step === 1 ? !step1Valid : step === 2 ? !step2Valid : submitting}
-                onClick={step === 3 ? handleBook : () => setStep((s) => (s + 1) as 1 | 2 | 3)}
+                disabled={step === 2 ? !step2Valid : step === 3 ? submitting : false}
+                onClick={step === 3 ? handleBook : step === 1 ? goToStep2 : () => setStep((s) => (s + 1) as 1 | 2 | 3)}
               >
                 {step === 3 ? (submitting ? 'Booking…' : 'BOOK APPOINTMENT ›') : 'NEXT ›'}
               </button>

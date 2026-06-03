@@ -3,6 +3,7 @@
 import { useRef } from 'react';
 import Link from 'next/link';
 import Footer from '@/components/Footer';
+import DateInputWithIcon from '@/components/DateInputWithIcon';
 import PatientFormSubmit from '@/components/PatientFormSubmit';
 
 
@@ -139,7 +140,7 @@ export default function PatientFormPage() {
             <div className="dental-form-row">
               <div>
                 <label className="dental-form-label">Date of Birth</label>
-                <input type="date" className="dental-form-input" />
+                <DateInputWithIcon type="date" className="dental-form-input" />
               </div>
               <div>
                 <label className="dental-form-label">Age</label>
@@ -205,11 +206,11 @@ export default function PatientFormPage() {
             <div className="dental-form-row">
               <div>
                 <label className="dental-form-label">Date of Last Dental Examination</label>
-                <input type="date" className="dental-form-input" />
+                <DateInputWithIcon type="date" className="dental-form-input" />
               </div>
               <div>
                 <label className="dental-form-label">Date of Last Series of Full Mouth X-Rays</label>
-                <input type="date" className="dental-form-input" />
+                <DateInputWithIcon type="date" className="dental-form-input" />
               </div>
             </div>
 
@@ -244,7 +245,7 @@ export default function PatientFormPage() {
               </div>
               <div>
                 <label className="dental-form-label">Date</label>
-                <input type="date" className="dental-form-input" />
+                <DateInputWithIcon type="date" className="dental-form-input" />
               </div>
             </div>
 
@@ -369,7 +370,7 @@ export default function PatientFormPage() {
               </div>
               <div>
                 <label className="dental-form-label">Date</label>
-                <input type="date" className="dental-form-input" />
+                <DateInputWithIcon type="date" className="dental-form-input" />
               </div>
             </div>
 

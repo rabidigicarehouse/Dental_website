@@ -3,6 +3,7 @@
 import { useRef } from 'react';
 import Link from 'next/link';
 import Footer from '@/components/Footer';
+import DateInputWithIcon from '@/components/DateInputWithIcon';
 import PatientFormSubmit from '@/components/PatientFormSubmit';
 
 
@@ -118,7 +119,7 @@ export default function MedicalHistoryPage() {
             <div className="dental-form-row">
               <div>
                 <label className="dental-form-label">Birth Date</label>
-                <input type="date" className="dental-form-input" />
+                <DateInputWithIcon type="date" className="dental-form-input" />
               </div>
               <div>
                 <label className="dental-form-label">Home Phone / Work Phone</label>
