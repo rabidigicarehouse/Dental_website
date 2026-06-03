@@ -64,7 +64,7 @@ export default function About() {
           <div className="doctor-float-section">
             {/* Floated image — text wraps around it like in a book */}
             <img
-              src="/Dr harvey 2.jpg"
+              src="/Dr-harvey-1.jpg"
               alt="Dr. Sharde Harvey, DDS"
               className="doctor-float-img wow fadeInRight"
             />
@@ -127,7 +127,7 @@ export default function About() {
 
           <div className="doctor-float-section">
             <img
-              src="/Gretel Pellegrini Photo-bg-r.png"
+              src="/Gretel Pellegrini Photo.jpg"
               alt="Dr. Pellegrini, Periodontist"
               className="doctor-float-img doctor-float-img--left wow fadeInLeft"
             />
@@ -199,7 +199,7 @@ export default function About() {
 
           <div className="doctor-float-section">
             <img
-              src="/Png-Paola-bg-r.png"
+              src="/Paola-Image.jpg"
               alt="Paola Cruz"
               className="doctor-float-img wow fadeInRight"
             />

@@ -303,7 +303,7 @@ export default function Home() {
                   <div className="doctor-photo-decor doctor-photo-decor-1" />
                   <div className="doctor-photo-decor doctor-photo-decor-2" />
                   <div className="doctor-photo-frame">
-                    <img src="/Dr harvey.webp" alt="Dr. Sharde Harvey" />
+                    <img src="/Dr harvey2.webp" alt="Dr. Sharde Harvey" />
                     <div className="doctor-photo-glow" />
                   </div>
                 </div>
