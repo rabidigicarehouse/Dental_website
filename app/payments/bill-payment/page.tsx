@@ -65,14 +65,14 @@ function BillPaymentPageContent() {
         <div className="row justify-content-center">
           <div className="col-xl-8 col-lg-10">
             <div className="text-center mb-5">
-              <div className="subtitle wow fadeInUp mb-3">Square Hosted Checkout</div>
-              <h2 className="wow fadeInUp" data-wow-delay=".2s">Pay Your Bill Securely</h2>
-              <p className="wow fadeInUp mb-0" data-wow-delay=".3s">
+              <div className="subtitle mb-3">Square Hosted Checkout</div>
+              <h2>Pay Your Bill Securely</h2>
+              <p className="mb-0">
                 Enter the amount you would like to pay. You will be redirected to Square&apos;s secure checkout page to complete your payment.
               </p>
             </div>
 
-            <div className="bill-payment-panel bill-payment-panel--compact wow fadeInUp">
+            <div className="bill-payment-panel bill-payment-panel--compact">
               {statusMessage ? (
                 <div className="bill-payment-alert bill-payment-alert--info">{statusMessage}</div>
               ) : null}
@@ -120,8 +120,8 @@ function BillPaymentPageFallback() {
         <div className="row justify-content-center">
           <div className="col-xl-8 col-lg-10">
             <div className="text-center mb-5">
-              <div className="subtitle wow fadeInUp mb-3">Square Hosted Checkout</div>
-              <h2 className="wow fadeInUp" data-wow-delay=".2s">Pay Your Bill Securely</h2>
+              <div className="subtitle mb-3">Square Hosted Checkout</div>
+              <h2>Pay Your Bill Securely</h2>
             </div>
           </div>
         </div>

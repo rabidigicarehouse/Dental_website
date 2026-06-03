@@ -1,8 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { formatLongDate, getLogoAttachment, getTransporter } from '@/lib/server/clinic-utils';
+
+export const runtime = 'nodejs';
 
 export async function POST(request: NextRequest) {
-  const backendUrl = process.env.BACKEND_URL || 'http://localhost:5000';
-  let body: unknown;
+  let body: any;
   try {
     body = await request.json();
   } catch {
@@ -12,44 +14,72 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  console.log('[Next API /api/book] Forwarding to', `${backendUrl}/api/book`);
-
-  let response: Response;
   try {
-    response = await fetch(`${backendUrl}/api/book`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(body),
+    const { firstName, lastName, dob, phone, email, sex, reason, date, time } = body || {};
+    if (!firstName || !lastName || !email || !date || !time) {
+      return NextResponse.json({ error: 'Required fields are missing.' }, { status: 400 });
+    }
+
+    const patientName = `${firstName} ${lastName}`;
+    const formattedDate = formatLongDate(date);
+    const clinicEmail = process.env.CLINIC_EMAIL || 'info@uedi.nyc';
+
+    const patientHtml = `
+      <!DOCTYPE html><html><head><meta charset="utf-8"><title>Appointment Confirmed</title>
+      <style>body{font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;background-color:#f7f9fa;color:#2e3e4a;margin:0;padding:0;-webkit-font-smoothing:antialiased}.container{max-width:600px;margin:40px auto;background-color:#fff;border-radius:16px;overflow:hidden;box-shadow:0 10px 30px rgba(0,0,0,.05);border:1px solid #eef1f2}.header{background:linear-gradient(135deg,#1d2c36 0%,#165369 100%);padding:35px 20px;text-align:center}.header img{max-width:200px;height:auto}.content{padding:40px 35px}.welcome{font-size:24px;font-weight:700;color:#1d2c36;margin-top:0;margin-bottom:12px}.intro{font-size:16px;line-height:1.6;color:#5c6c75;margin-bottom:28px}.card{background-color:#f3f7f9;border-radius:12px;padding:24px;border-left:5px solid #4CB85C;margin-bottom:28px}.card-row{display:flex;margin-bottom:14px}.card-row:last-child{margin-bottom:0}.card-label{width:120px;font-weight:700;color:#165369;font-size:14px;text-transform:uppercase;letter-spacing:.5px}.card-value{flex:1;font-size:15px;color:#2e3e4a;font-weight:600}.clinic-info{font-size:14px;color:#7d8a93;line-height:1.5;margin-top:15px;border-top:1px dashed #dbe3e6;padding-top:15px}.footer{background-color:#f7f9fa;padding:25px;text-align:center;font-size:13px;color:#9aa7b0;border-top:1px solid #eef1f2}.footer a{color:#165369;text-decoration:none;font-weight:bold}</style></head>
+      <body><div class="container"><div class="header"><img src="cid:logo" alt="Upper East Dental Innovations"></div><div class="content">
+      <h1 class="welcome">Appointment Confirmed!</h1>
+      <p class="intro">Dear ${firstName}, your appointment at Upper East Dental Innovations has been successfully scheduled. We look forward to providing you with exceptional dental care.</p>
+      <div class="card">
+      <div class="card-row"><div class="card-label">Date</div><div class="card-value">${formattedDate}</div></div>
+      <div class="card-row"><div class="card-label">Time Slot</div><div class="card-value">${time}</div></div>
+      <div class="card-row"><div class="card-label">Provider</div><div class="card-value">Dr. Harvey</div></div>
+      <div class="card-row"><div class="card-label">Reason</div><div class="card-value">${reason}</div></div>
+      </div>
+      <div class="clinic-info"><strong>Location Details:</strong><br>Upper East Dental Innovations<br>121 East 60th Street, Suite 1B (Between Park & Lexington)<br>New York, NY 10022<br>Phone: +1 (212) 697-1701 | Email: info@uedi.nyc</div>
+      <p class="intro" style="margin-top:20px;font-size:14px;"><em>If you need to reschedule or cancel your appointment, please contact us at least 24 hours in advance.</em></p>
+      </div><div class="footer">© ${new Date().getFullYear()} Upper East Dental Innovations. All rights reserved.<br>Visit us at <a href="https://uedi.nyc">uedi.nyc</a></div></div></body></html>`;
+
+    const clinicHtml = `
+      <!DOCTYPE html><html><head><meta charset="utf-8"><title>New Appointment Booked</title>
+      <style>body{font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;background-color:#f7f9fa;color:#2e3e4a;margin:0;padding:0}.container{max-width:600px;margin:40px auto;background-color:#fff;border-radius:16px;overflow:hidden;box-shadow:0 10px 30px rgba(0,0,0,.05);border:1px solid #eef1f2}.header{background:#1d2c36;padding:25px 20px;text-align:center}.header img{max-width:180px;height:auto}.content{padding:40px 35px}.title{font-size:22px;font-weight:700;color:#1d2c36;margin-top:0;margin-bottom:20px;border-bottom:2px solid #eef1f2;padding-bottom:12px}.grid{width:100%;border-collapse:collapse;margin-bottom:25px}.grid th{background-color:#f3f7f9;text-align:left;padding:12px 16px;font-size:13px;font-weight:700;color:#165369;text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid #eef1f2}.grid td{padding:14px 16px;font-size:15px;color:#2e3e4a;border-bottom:1px solid #eef1f2}.grid tr:last-child td{border-bottom:none}.footer{background-color:#f7f9fa;padding:20px;text-align:center;font-size:13px;color:#9aa7b0;border-top:1px solid #eef1f2}</style></head>
+      <body><div class="container"><div class="header"><img src="cid:logo" alt="Upper East Dental Innovations"></div><div class="content"><h1 class="title">New Appointment Request</h1>
+      <p style="font-size:15px;color:#5c6c75;margin-bottom:25px;">A new appointment has been scheduled through the website. Here are the details:</p>
+      <table class="grid"><thead><tr><th colspan="2">Patient Information</th></tr></thead><tbody>
+      <tr><td style="width:140px;font-weight:bold;">Full Name</td><td>${patientName}</td></tr>
+      <tr><td style="font-weight:bold;">Date of Birth</td><td>${dob || 'Not provided'}</td></tr>
+      <tr><td style="font-weight:bold;">Sex</td><td>${sex || 'Not provided'}</td></tr>
+      <tr><td style="font-weight:bold;">Phone</td><td>${phone}</td></tr>
+      <tr><td style="font-weight:bold;">Email</td><td><a href="mailto:${email}">${email}</a></td></tr>
+      <tr><td style="font-weight:bold;">Reason</td><td>${reason}</td></tr>
+      </tbody></table>
+      <table class="grid"><thead><tr><th colspan="2">Schedule Details</th></tr></thead><tbody><tr><td style="width:140px;font-weight:bold;">Requested Slot</td><td style="font-weight:bold;color:#4CB85C;">${formattedDate} at ${time}</td></tr></tbody></table>
+      </div><div class="footer">Website Booking Engine Notification</div></div></body></html>`;
+
+    const transporter = getTransporter();
+    const logoAttachment = getLogoAttachment(true);
+
+    await transporter.sendMail({
+      from: `"Upper East Dental Innovations" <${process.env.SMTP_USER || 'info@uedi.nyc'}>`,
+      to: email,
+      subject: 'Your Appointment is Confirmed! - Upper East Dental Innovations',
+      text: `Dear ${firstName}, your appointment has been scheduled for ${formattedDate} at ${time} for ${reason}. We look forward to seeing you!`,
+      html: patientHtml,
+      attachments: logoAttachment,
     });
-  } catch (error: any) {
-    // Network-level failure — almost always means the Express backend
-    // isn't running on backendUrl. Make the message explicit so the
-    // frontend can show actionable text.
-    const code = error?.cause?.code || error?.code;
-    const isConnRefused = code === 'ECONNREFUSED' || code === 'ENOTFOUND';
-    console.error(
-      '[Next API /api/book] Cannot reach backend:',
-      code || error?.message,
-    );
-    return NextResponse.json(
-      {
-        error: isConnRefused
-          ? `Booking backend is not reachable at ${backendUrl}. Start the Express server (cd backend && npm start) and try again.`
-          : 'Failed to connect to booking service. Please try again.',
-      },
-      { status: 502 } // 502 = Bad Gateway, semantically correct for a broken upstream
-    );
-  }
 
-  // Mirror whatever the backend returned, verbatim, so the frontend can show
-  // the real success/failure message.
-  let data: unknown;
-  try {
-    data = await response.json();
-  } catch {
-    data = { error: `Backend returned non-JSON response (HTTP ${response.status}).` };
-  }
-  console.log('[Next API /api/book] Backend responded:', response.status, data);
+    await transporter.sendMail({
+      from: `"UEDI Web Engine" <${process.env.SMTP_USER || 'info@uedi.nyc'}>`,
+      to: clinicEmail,
+      subject: `New Appt: ${patientName} - ${formattedDate} @ ${time}`,
+      text: `New appointment request from ${patientName} (${phone}, ${email}) on ${formattedDate} at ${time} for ${reason}.`,
+      html: clinicHtml,
+      attachments: logoAttachment,
+    });
 
-  return NextResponse.json(data, { status: response.status });
+    return NextResponse.json({ success: true, message: 'Emails sent successfully.' });
+  } catch (error) {
+    console.error('❌ [API] Error processing booking emails:', error);
+    return NextResponse.json({ error: 'Failed to process booking emails.' }, { status: 500 });
+  }
 }

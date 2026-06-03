@@ -1,7 +1,5 @@
-const DEFAULT_BACKEND_URL = "http://localhost:5000";
-
 function normalizeBaseUrl(url: string | undefined): string {
-  return (url || DEFAULT_BACKEND_URL).replace(/\/+$/, "");
+  return (url || '').replace(/\/+$/, "");
 }
 
 export function getApiBaseUrl(): string {
@@ -10,5 +8,6 @@ export function getApiBaseUrl(): string {
 
 export function buildBackendUrl(path: string): string {
   const normalizedPath = path.startsWith("/") ? path : `/${path}`;
-  return `${getApiBaseUrl()}${normalizedPath}`;
+  const baseUrl = getApiBaseUrl();
+  return baseUrl ? `${baseUrl}${normalizedPath}` : normalizedPath;
 }

@@ -462,7 +462,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(
       {
         error:
-          'Groq API key not configured. Set GROQ_API_KEY (+ optional GROQ_API_KEY_2) in .env.local or place a gsk_… key in apikey.txt.',
+          'Groq API key not configured. Set GROQ_API_KEY (+ optional GROQ_API_KEY_2) in .env or place a gsk_… key in apikey.txt.',
       },
       { status: 500 }
     );
