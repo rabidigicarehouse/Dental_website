@@ -1084,6 +1084,46 @@ body.ai-widget-open .payment-method-desc {
   box-shadow: 0 0 14px rgba(22, 83, 105, 0.6);
 }
 
+.stacked-slider--sticky .stacked-dots,
+.stacked-slider--sticky .stacked-tabs {
+  display: none;
+}
+
+.stacked-story-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  position: relative;
+  padding: 8px 0 28px;
+}
+
+.stacked-story-sticky-card {
+  position: sticky;
+  top: 96px;
+}
+
+.stacked-story-sticky-card:nth-child(1) {
+  z-index: 1;
+}
+
+.stacked-story-sticky-card:nth-child(2) {
+  top: 136px;
+  z-index: 2;
+}
+
+.stacked-card--sticky {
+  position: relative;
+  inset: auto;
+  width: 100%;
+  cursor: default;
+}
+
+@media (min-width: 993px) {
+  .stacked-slider--sticky {
+    margin-bottom: -180px;
+  }
+}
+
 .stacked-hint {
   text-align: center;
   margin-top: 24px;
@@ -1102,6 +1142,17 @@ body.ai-widget-open .payment-method-desc {
 }
 
 @media (max-width: 992px) {
+  .stacked-story-stack {
+    gap: 28px;
+    padding-bottom: 12px;
+  }
+
+  .stacked-story-sticky-card,
+  .stacked-story-sticky-card:nth-child(2) {
+    position: relative;
+    top: auto;
+  }
+
   .stacked-card-inner {
     padding: 36px 28px;
     min-height: 480px;
@@ -4786,6 +4837,32 @@ body.ai-widget-open #back-to-top {
   }
 }
 
+@media (max-width: 420px) {
+  .mcf-country-trigger {
+    flex-basis: 76px;
+    width: 76px;
+    padding: 0 7px;
+  }
+
+  .mcf-country-flag {
+    width: 18px;
+    height: 12px;
+  }
+
+  .mcf-country-dial {
+    font-size: 11px;
+  }
+
+  .mcf-country-caret {
+    font-size: 9px;
+  }
+
+  .mcf-phone-number {
+    padding: 10px 10px 10px 8px;
+    font-size: 12px;
+  }
+}
+
 /* ========================================== */
 /* Narrow viewports w/ AI open — layout cards  */
 /* (Nav sizing for ≤1280px is in Responsive Breakpoints above) */
@@ -5407,17 +5484,20 @@ body.ai-widget-open .svc-photo-wrap {
 
 .mcf-phone-shell {
   position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0;
+  padding: 0 !important;
+  overflow: hidden;
 }
 
 .mcf-country-trigger {
-  position: absolute;
-  left: 6px;
-  top: 50%;
-  transform: translateY(-50%);
-  height: calc(100% - 12px);
-  min-width: 112px;
+  position: relative;
+  flex: 0 0 112px;
+  width: 112px;
+  align-self: stretch;
   border: 0;
-  border-radius: 8px;
+  border-radius: 0;
   background: linear-gradient(135deg, rgba(22, 83, 105, 0.12), rgba(192, 194, 195, 0.12));
   color: #165369;
   display: inline-flex;
@@ -5428,6 +5508,7 @@ body.ai-widget-open .svc-photo-wrap {
   font-weight: 700;
   cursor: pointer;
   z-index: 2;
+  border-right: 1px solid rgba(22, 83, 105, 0.12);
 }
 
 .mcf-country-trigger:hover {
@@ -5455,7 +5536,19 @@ body.ai-widget-open .svc-photo-wrap {
 }
 
 .mcf-phone-number {
-  padding-left: 130px;
+  flex: 1 1 auto;
+  min-width: 0;
+  border: 0;
+  outline: none;
+  background: transparent;
+  color: #1D2C36;
+  padding: 11px 15px 11px 12px;
+  font-size: 13px;
+  box-shadow: none !important;
+}
+
+.mcf-phone-number::placeholder {
+  color: #c0cdd8;
 }
 
 .mcf-country-dropdown {
@@ -5978,12 +6071,14 @@ body.ai-widget-open .svc-photo-wrap {
   }
 
   .mcf-country-trigger {
-    min-width: 98px;
-    padding: 0 10px;
+    flex-basis: 84px;
+    width: 84px;
+    gap: 4px;
+    padding: 0 8px;
   }
 
   .mcf-phone-number {
-    padding-left: 114px;
+    padding: 10px 12px 10px 10px;
   }
 
   /* Typography scale */
@@ -7899,6 +7994,36 @@ footer.section-dark .subfooter a:hover {
   body.ai-widget-open .stacked-card-inner {
     min-height: 660px !important;
     padding: 26px 28px !important;
+  }
+}
+
+@media (min-width: 993px) and (max-width: 1280px) {
+  .stacked-slider--sticky {
+    width: 133.333% !important;
+    max-width: 133.333% !important;
+    margin-left: -16.6665% !important;
+    margin-right: -16.6665% !important;
+    transform: scale(0.75);
+    transform-origin: top center;
+    margin-bottom: -420px !important;
+  }
+
+  .stacked-slider--sticky .stacked-story-stack {
+    padding-bottom: 0 !important;
+  }
+
+  body.ai-widget-open .stacked-slider--sticky {
+    width: 133.333% !important;
+    max-width: 133.333% !important;
+    margin-left: -16.6665% !important;
+    margin-right: -16.6665% !important;
+    transform: scale(0.75);
+    transform-origin: top center;
+    margin-bottom: -420px !important;
+  }
+
+  body.ai-widget-open .stacked-slider--sticky .stacked-story-stack {
+    padding-bottom: 32px;
   }
 }
 

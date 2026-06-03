@@ -26,6 +26,7 @@ export default function CountryPhoneInput({
   const [open, setOpen] = useState(false);
   const rootRef = useRef<HTMLDivElement | null>(null);
   const selectedCountry = useMemo(() => getPhoneCountry(countryCode), [countryCode]);
+  const shellClassName = inputClassName || 'mcf-input';
 
   useEffect(() => {
     if (!open) return;
@@ -42,7 +43,7 @@ export default function CountryPhoneInput({
 
   return (
     <div ref={rootRef} className="mcf-phone-wrap">
-      <div className="mcf-phone-shell">
+      <div className={`${shellClassName} mcf-phone-shell`.trim()}>
         <button
           type="button"
           className="mcf-country-trigger"
@@ -61,7 +62,7 @@ export default function CountryPhoneInput({
           onChange={(event) => onChange(formatPhoneForMask(event.target.value, selectedCountry.mask))}
           placeholder={getPhoneMaskPlaceholder(selectedCountry.mask)}
           autoComplete="tel-national"
-          className={`${inputClassName} mcf-phone-number`.trim()}
+          className="mcf-phone-number"
         />
       </div>
 

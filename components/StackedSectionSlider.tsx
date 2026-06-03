@@ -20,6 +20,7 @@ export default function StackedSectionSlider({
   const count = cards.length;
   const [activeIdx, setActiveIdx] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
+  const [isInteracting, setIsInteracting] = useState(false);
 
   // Detect mobile viewport
   useEffect(() => {
@@ -34,13 +35,14 @@ export default function StackedSectionSlider({
   // Handle automatic swapping
   useEffect(() => {
     if (count <= 1) return;
+    if (isInteracting) return;
     
     const timer = setInterval(() => {
       moveToNext();
     }, 5000);
 
     return () => clearInterval(timer);
-  }, [activeIdx, count]);
+  }, [activeIdx, count, isInteracting]);
 
   const goTo = (idx: number) => {
     setActiveIdx(idx);
@@ -82,6 +84,24 @@ export default function StackedSectionSlider({
     return diff;
   };
 
+  if (hideBackgroundCards) {
+    return (
+      <div className="stacked-slider stacked-slider--sticky">
+        <div className="stacked-story-stack">
+          {cards.map((card, idx) => (
+            <section key={idx} className="stacked-story-sticky-card">
+              <div className="stacked-card is-active stacked-card--sticky">
+                <div className="stacked-card-inner">
+                  {card}
+                </div>
+              </div>
+            </section>
+          ))}
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="stacked-slider">
       {/* Tabs */}
@@ -100,7 +120,12 @@ export default function StackedSectionSlider({
         </div>
       )}
 
-      <div className="stacked-stage" style={{ paddingTop: hideTabs ? '0px' : (isMobile ? '28px' : '54px') }}>
+      <div
+        className="stacked-stage"
+        style={{ paddingTop: hideTabs ? '0px' : (isMobile ? '28px' : '54px') }}
+        onMouseEnter={() => setIsInteracting(true)}
+        onMouseLeave={() => setIsInteracting(false)}
+      >
         <div className="stacked-cards-wrap">
           {cards.map((card, idx) => {
             const isActive = idx === activeIdx;
