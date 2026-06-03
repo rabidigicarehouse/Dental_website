@@ -1,6 +1,6 @@
 'use client';
 
-import { FormEvent, useState } from 'react';
+import { FormEvent, Suspense, useState } from 'react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import MapContactSection from '@/components/MapContactSection';
@@ -15,7 +15,7 @@ const initialState: FormState = {
   amount: '',
 };
 
-export default function BillPaymentPage() {
+function BillPaymentPageContent() {
   const searchParams = useSearchParams();
   const [form, setForm] = useState<FormState>(initialState);
   const [error, setError] = useState('');
@@ -60,6 +60,78 @@ export default function BillPaymentPage() {
   };
 
   return (
+    <section>
+      <div className="container">
+        <div className="row justify-content-center">
+          <div className="col-xl-8 col-lg-10">
+            <div className="text-center mb-5">
+              <div className="subtitle wow fadeInUp mb-3">Square Hosted Checkout</div>
+              <h2 className="wow fadeInUp" data-wow-delay=".2s">Pay Your Bill Securely</h2>
+              <p className="wow fadeInUp mb-0" data-wow-delay=".3s">
+                Enter the amount you would like to pay. You will be redirected to Square&apos;s secure checkout page to complete your payment.
+              </p>
+            </div>
+
+            <div className="bill-payment-panel bill-payment-panel--compact wow fadeInUp">
+              {statusMessage ? (
+                <div className="bill-payment-alert bill-payment-alert--info">{statusMessage}</div>
+              ) : null}
+              {error ? (
+                <div className="bill-payment-alert bill-payment-alert--error">{error}</div>
+              ) : null}
+
+              <form className="bill-payment-form" onSubmit={handleSubmit}>
+                <div className="bill-payment-amount-wrap">
+                  <label className="bill-payment-label" htmlFor="bill-amount">Amount (USD)</label>
+                  <div className="bill-payment-money-field">
+                    <span className="bill-payment-money-prefix">$</span>
+                    <input
+                      id="bill-amount"
+                      className="bill-payment-input bill-payment-input--money"
+                      type="number"
+                      min="0.01"
+                      step="0.01"
+                      placeholder="0.00"
+                      value={form.amount}
+                      onChange={(event) => setForm((prev) => ({ ...prev, amount: event.target.value }))}
+                      required
+                    />
+                  </div>
+                </div>
+
+                <div className="bill-payment-actions">
+                  <button type="submit" className="btn-main fx-slide" disabled={isSubmitting}>
+                    <span>{isSubmitting ? 'Redirecting...' : 'Continue to Square Checkout'}</span>
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function BillPaymentPageFallback() {
+  return (
+    <section>
+      <div className="container">
+        <div className="row justify-content-center">
+          <div className="col-xl-8 col-lg-10">
+            <div className="text-center mb-5">
+              <div className="subtitle wow fadeInUp mb-3">Square Hosted Checkout</div>
+              <h2 className="wow fadeInUp" data-wow-delay=".2s">Pay Your Bill Securely</h2>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+export default function BillPaymentPage() {
+  return (
     <>
       <section
         id="subheader"
@@ -81,56 +153,9 @@ export default function BillPaymentPage() {
         </div>
       </section>
 
-      <section>
-        <div className="container">
-          <div className="row justify-content-center">
-            <div className="col-xl-8 col-lg-10">
-              <div className="text-center mb-5">
-                <div className="subtitle wow fadeInUp mb-3">Square Hosted Checkout</div>
-                <h2 className="wow fadeInUp" data-wow-delay=".2s">Pay Your Bill Securely</h2>
-                <p className="wow fadeInUp mb-0" data-wow-delay=".3s">
-                  Enter the amount you would like to pay. You will be redirected to Square&apos;s secure checkout page to complete your payment.
-                </p>
-              </div>
-
-              <div className="bill-payment-panel bill-payment-panel--compact wow fadeInUp">
-                {statusMessage ? (
-                  <div className="bill-payment-alert bill-payment-alert--info">{statusMessage}</div>
-                ) : null}
-                {error ? (
-                  <div className="bill-payment-alert bill-payment-alert--error">{error}</div>
-                ) : null}
-
-                <form className="bill-payment-form" onSubmit={handleSubmit}>
-                  <div className="bill-payment-amount-wrap">
-                    <label className="bill-payment-label" htmlFor="bill-amount">Amount (USD)</label>
-                    <div className="bill-payment-money-field">
-                      <span className="bill-payment-money-prefix">$</span>
-                      <input
-                        id="bill-amount"
-                        className="bill-payment-input bill-payment-input--money"
-                        type="number"
-                        min="0.01"
-                        step="0.01"
-                        placeholder="0.00"
-                        value={form.amount}
-                        onChange={(event) => setForm((prev) => ({ ...prev, amount: event.target.value }))}
-                        required
-                      />
-                    </div>
-                  </div>
-
-                  <div className="bill-payment-actions">
-                    <button type="submit" className="btn-main fx-slide" disabled={isSubmitting}>
-                      <span>{isSubmitting ? 'Redirecting...' : 'Continue to Square Checkout'}</span>
-                    </button>
-                  </div>
-                </form>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      <Suspense fallback={<BillPaymentPageFallback />}>
+        <BillPaymentPageContent />
+      </Suspense>
 
       <MapContactSection />
       <Footer />
