@@ -142,13 +142,13 @@ export const BOOKING_SERVICES: BookingService[] = [
 export const BOOKING_STAFF = [
   {
     id: 'dr-harvey',
-    title: 'Dr Sharde Harvey',
+    title: 'Dr Sharda Harvey',
     shortDescription: 'General Dentist — DDS, MS, FICOI',
     duration: '30 min',
     durationMinutes: 30,
     price: 'Free',
     intro:
-      'Schedule with Dr. Sharde Harvey for comprehensive general dentistry, cosmetic care, and personalized treatment planning.',
+      'Schedule with Dr. Sharda Harvey for comprehensive general dentistry, cosmetic care, and personalized treatment planning.',
   },
   {
     id: 'dr-pellegrini',

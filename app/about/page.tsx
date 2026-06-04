@@ -45,7 +45,7 @@ export default function About() {
               <div className="subtitle id-color wow fadeInUp mb-3">Our Practice</div>
               <h2 className="wow fadeInUp" data-wow-delay=".2s">Welcome to Upper East Dental Innovations</h2>
               <p className="wow fadeInUp" data-wow-delay=".4s">
-                Upper East Dental Innovations is very pleased to provide clients with a full range of cosmetic, restorative, as well as family and general dental services. Dr. Sharde Harvey, DDS, leads our team to assure that you receive the most advanced, evidence based, caring and aesthetic oral healthcare possible.
+                Upper East Dental Innovations is very pleased to provide clients with a full range of cosmetic, restorative, as well as family and general dental services. Dr. Sharda Harvey, DDS, leads our team to assure that you receive the most advanced, evidence based, caring and aesthetic oral healthcare possible.
               </p>
               <Link className="btn-main fx-slide wow fadeInUp" data-wow-delay=".6s" href="#book"><span>Book Appointment</span></Link>
             </div>
@@ -58,14 +58,14 @@ export default function About() {
         <div className="container">
           <div id="dr-sharde-harvey" className="anchor-scroll-offset">
             <div className="subtitle id-color wow fadeInUp mb-3">Meet the Doctor</div>
-            <h2 className="wow fadeInUp" data-wow-delay=".2s">Dr. Sharde Harvey, DDS, MS, FICOI</h2>
+            <h2 className="wow fadeInUp" data-wow-delay=".2s">Dr. Sharda Harvey, DDS, MS, FICOI</h2>
           </div>
 
           <div className="doctor-float-section">
             {/* Floated image — text wraps around it like in a book */}
             <img
               src="/Dr-harvey-1.jpg"
-              alt="Dr. Sharde Harvey, DDS"
+              alt="Dr. Sharda Harvey, DDS"
               className="doctor-float-img wow fadeInRight"
             />
 

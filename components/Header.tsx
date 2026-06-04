@@ -129,7 +129,13 @@ export default function Header({
                       <li><Link href="/forms/patient-screening">Patient Screening Form</Link></li>
                     </ul>
                   </li>
-                  <li><Link className="menu-item" href="/blog">Blogs</Link></li>
+                  <li>
+                    <Link className="menu-item" href="/doctors-blog">Blogs</Link>
+                    <ul>
+                      <li><Link href="/doctors-blog">Blogs</Link></li>
+                      <li><Link href="/in-the-news">In the News</Link></li>
+                    </ul>
+                  </li>
                 </ul>
                 {/* mainmenu end */}
               </div>

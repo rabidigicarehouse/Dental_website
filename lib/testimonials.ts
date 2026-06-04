@@ -62,7 +62,7 @@ export const TEXT_TESTIMONIALS: Testimonial[] = [
     name: 'Ruah',
     img: '5.png',
     stars: 5,
-    text: "Dr. Sharde Harvey is not only an expert dentist, she is efficient, thoughtful, patient, kind and a delightful person to know. Dr Harvey and her team are clearly committed to helping the patient have the best experience possible while also expressing the facts and recommendations that they see for reaching your fullest dental health potential. My only issue is that I wish I had come to her office sooner in my life!",
+    text: "Dr. Sharda Harvey is not only an expert dentist, she is efficient, thoughtful, patient, kind and a delightful person to know. Dr Harvey and her team are clearly committed to helping the patient have the best experience possible while also expressing the facts and recommendations that they see for reaching your fullest dental health potential. My only issue is that I wish I had come to her office sooner in my life!",
     source: 'Google',
     sourceUrl: GOOGLE_REVIEWS_URL,
   },

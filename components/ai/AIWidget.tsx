@@ -64,6 +64,7 @@ export default function AIWidget() {
   const listeningVideoRef = useRef<HTMLVideoElement>(null);
   const talkingVideoRef = useRef<HTMLVideoElement>(null);
   const inflightRef = useRef<AbortController | null>(null);
+  const scrollPositionRef = useRef<{ x: number; y: number } | null>(null);
   const bookingDataRef = useRef<BookingForm>({});
   const bookingStepRef = useRef<number>(-1);
   const bookingPromptPendingRef = useRef(false);
@@ -89,12 +90,28 @@ export default function AIWidget() {
 
   useEffect(() => {
     if (!mounted) return;
+    scrollPositionRef.current = {
+      x: window.scrollX,
+      y: window.scrollY,
+    };
     if (isOpen) {
       document.body.classList.add("ai-widget-open");
     } else {
       document.body.classList.remove("ai-widget-open");
     }
-    window.dispatchEvent(new Event("resize"));
+    requestAnimationFrame(() => {
+      const lastScroll = scrollPositionRef.current;
+      if (lastScroll) {
+        window.scrollTo(lastScroll.x, lastScroll.y);
+      }
+      window.dispatchEvent(new Event("resize"));
+      requestAnimationFrame(() => {
+        const settledScroll = scrollPositionRef.current;
+        if (settledScroll) {
+          window.scrollTo(settledScroll.x, settledScroll.y);
+        }
+      });
+    });
   }, [isOpen, mounted]);
 
   const speak = useCallback(

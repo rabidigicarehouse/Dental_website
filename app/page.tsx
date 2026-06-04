@@ -253,7 +253,7 @@ export default function Home() {
           </div>
 
           <StackedSectionSlider 
-            labels={['Our Story', 'About The Doctor']}
+            labels={['Our Story', 'About The Doctor', 'Royal Versailles Ball', 'White Cross Ball']}
             hideTabs={true}
             hideBackgroundCards={true}
           >
@@ -303,7 +303,7 @@ export default function Home() {
                   <div className="doctor-photo-decor doctor-photo-decor-1" />
                   <div className="doctor-photo-decor doctor-photo-decor-2" />
                   <div className="doctor-photo-frame">
-                    <img src="/Dr harvey2.webp" alt="Dr. Sharde Harvey" />
+                    <img src="/Dr harvey2.webp" alt="Dr. Sharda Harvey" />
                     <div className="doctor-photo-glow" />
                   </div>
                 </div>
@@ -311,7 +311,7 @@ export default function Home() {
 
               <div className="col-lg-7">
                 <div className="about-subtitle">About The Doctor</div>
-                <h3 className="doctor-name mb-1">Dr. Sharde Harvey, D.D.S M.S F.I.C.O.I</h3>
+                <h3 className="doctor-name mb-1">Dr. Sharda Harvey, D.D.S M.S F.I.C.O.I</h3>
                 <p className="doctor-role mb-3"><em>is a skilled New York City General Dentist</em></p>
 
                 <div className="doctor-bio">
@@ -341,6 +341,85 @@ export default function Home() {
 
                 <div className="mt-3 text-center">
                   <Link href="/dentists" className="btn-main fx-slide"><span>Read more</span></Link>
+                </div>
+              </div>
+            </div>
+
+            <div className="row g-5 align-items-center w-100 m-0">
+              <div className="col-lg-5">
+                <div className="story-event-collage">
+                  <div className="story-event-collage__hero">
+                    <img src="/images/events/image (4).png" alt="Dr. Sharda Harvey at the Royal Versailles Ball 2026" />
+                  </div>
+                  <div className="story-event-collage__side">
+                    <div className="story-event-collage__tile">
+                      <img src="/images/events/image (5).png" alt="Dr. Sharda Harvey at the Royal Versailles Ball portrait setting" />
+                    </div>
+                    <div className="story-event-collage__tile">
+                      <img src="/images/events/image (3).png" alt="Dr. Sharda Harvey at the Royal Versailles Ball event wall" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="col-lg-7">
+                <div className="about-subtitle">Cultural Presence</div>
+                <h3 className="doctor-name mb-2">Dr. Sharda Harvey at the Royal Versailles Ball 2026</h3>
+                <p className="doctor-role mb-3"><em>Presenting an elite, globally minded image of modern dental leadership</em></p>
+
+                <div className="doctor-bio">
+                  <p>
+                    Dr. Sharda Harvey’s appearance at the Royal Versailles Ball 2026 reflects a polished, high-profile
+                    expression of the Upper East Dental Innovations brand. It positions her not only as a skilled New
+                    York dentist, but also as a sophisticated public figure whose work connects healthcare, elegance,
+                    philanthropy, and cultural presence.
+                  </p>
+                  <p>
+                    For a clientele that values discretion, refinement, and premium service, this kind of visibility
+                    reinforces trust. It communicates that Dr. Harvey represents more than clinical care alone. She
+                    represents confidence, taste, leadership, and a modern standard of success that resonates with
+                    executive patients, international travelers, and image-conscious professionals.
+                  </p>
+                </div>
+
+                <div className="mt-3 text-center text-lg-start">
+                  <Link href="/in-the-news#royal-versailles-ball-2026" className="btn-main fx-slide"><span>Learn More</span></Link>
+                </div>
+              </div>
+            </div>
+
+            <div className="row g-5 align-items-center w-100 m-0">
+              <div className="col-lg-5">
+                <div className="doctor-photo-wrap story-event-single" style={{ padding: 0, maxWidth: 420, margin: '0 auto' }}>
+                  <div className="doctor-photo-frame">
+                    <img src="/images/events/white cross ball.png" alt="Dr. Sharda Harvey at the White Cross Ball" />
+                    <div className="doctor-photo-glow" />
+                  </div>
+                </div>
+              </div>
+
+              <div className="col-lg-7">
+                <div className="about-subtitle">Philanthropy & Community</div>
+                <h3 className="doctor-name mb-2">Dr. Sharda Harvey at the White Cross Ball</h3>
+                <p className="doctor-role mb-3"><em>Supporting children’s wellbeing, public-health awareness, and meaningful community impact</em></p>
+
+                <div className="doctor-bio">
+                  <p>
+                    Dr. Harvey was honored to attend the White Cross Ball, a distinguished event that brings together
+                    professionals, philanthropists, and healthcare advocates committed to making a positive social
+                    impact. Her participation reflects a corporate yet compassionate image that aligns beautifully with
+                    the elevated positioning of her practice.
+                  </p>
+                  <p>
+                    As a dentist and fundraiser with a strong interest in children’s wellbeing, she continues to use
+                    her platform to promote preventive dental care, family education, and the importance of lifelong
+                    oral-health habits. The event underscores her dedication to combining clinical excellence with
+                    public service and social responsibility.
+                  </p>
+                </div>
+
+                <div className="mt-3 text-center text-lg-start">
+                  <Link href="/in-the-news#white-cross-ball" className="btn-main fx-slide"><span>Learn More</span></Link>
                 </div>
               </div>
             </div>
@@ -523,7 +602,7 @@ export default function Home() {
           </div>
           <div className="row g-4">
             {[
-              { name: 'Dr. Sharde Harvey', role: 'DDS, MS, FICOI', photo: '/Dr-harvey-1.jpg', href: '/about#dr-sharde-harvey' },
+              { name: 'Dr. Sharda Harvey', role: 'DDS, MS, FICOI', photo: '/Dr-harvey-1.jpg', href: '/about#dr-sharde-harvey' },
               { name: 'Dr. Pellegrini', role: 'LANAP and LAPIP Protocol', photo: '/Gretel Pellegrini Photo.jpg', href: '/about#dr-pellegrini' },
               { name: 'Paola Cruz', role: 'Front Office Coordinator', photo: '/Paola-Image.jpg', href: '/about#paola-cruz' },
               { name: 'Michelle', role: 'Patient Care Coordinator', placeholder: true, href: '/about#team-directory' },

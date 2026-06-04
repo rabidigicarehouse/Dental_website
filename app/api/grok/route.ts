@@ -199,7 +199,7 @@ function pickRelevantContext(sections: Section[], question: string): string {
    ============================================================ */
 const CLINIC_FACTS = `
 PRACTICE NAME : Upper East Dental Innovations (UEDI)
-LEAD DOCTOR   : Dr. Sharde Harvey, DDS
+LEAD DOCTOR   : Dr. Sharda Harvey, DDS
 SPECIALIST    : Dr. Pellegrini - Periodontist, LANAP and LAPIP Protocol
 TEAM MEMBER   : Paola Cruz - Front Office Coordinator
 TEAM MEMBER   : Michelle - Patient Care Coordinator
@@ -376,7 +376,7 @@ function buildSystemPrompt(siteContext: string, userName?: string): string {
   return [
     'You are the official AI dental assistant for Upper East Dental Innovations',
     '(UEDI) — a cosmetic and restorative dental practice in New York City led',
-    'by Dr. Sharde Harvey. The website below is your ONLY source of truth.',
+    'by Dr. Sharda Harvey. The website below is your ONLY source of truth.',
     '',
     patientInstructions,
     '',

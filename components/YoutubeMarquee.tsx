@@ -14,14 +14,14 @@ export default function YoutubeMarquee() {
       <div className="marquee-item-bubble marquee-doctor-group">
         <div className="avatar-wrapper">
           <Image
-            src="/Dr harvey.webp"
-            alt="Dr. Harvey Profile"
+            src="/Dr harvey2.webp"
+            alt="AI Avatar"
             width={26}
             height={26}
             className="avatar-img"
           />
         </div>
-        <span className="marquee-text font-bold">Dr. Sharde Harvey, DDS</span>
+        <span className="marquee-text font-bold">Dr. Sharda Harvey, DDS</span>
       </div>
 
       {/* Item 2: Channel Name (Ask a Dentist) — separator only after this, not after doctor photo/name */}

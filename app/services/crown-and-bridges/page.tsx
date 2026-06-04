@@ -27,9 +27,9 @@ export default function CrownAndBridges() {
         { title: 'Front Tooth Aesthetics', desc: 'Specialized highly-aesthetic crowns and bridges for visible teeth.' },
       ]}
       faqs={[
-        { q: 'What are dental crowns?', a: 'A dental crown is a cap that surrounds the tooth. Dr. Sharde Harvey, DDS typically uses a crown to restore a damaged tooth, though they can also enhance smile appearance cosmetically. Crowns come in three materials: all-metal, ceramic-on-metal, and all-ceramic. Front teeth work best with all-ceramic for natural appearance, while ceramic-on-metal crowns balance natural looks with durability.' },
+        { q: 'What are dental crowns?', a: 'A dental crown is a cap that surrounds the tooth. Dr. Sharda Harvey, DDS typically uses a crown to restore a damaged tooth, though they can also enhance smile appearance cosmetically. Crowns come in three materials: all-metal, ceramic-on-metal, and all-ceramic. Front teeth work best with all-ceramic for natural appearance, while ceramic-on-metal crowns balance natural looks with durability.' },
         { q: 'What is a single appointment dental crown or The Lunchtime Crown?', a: 'Most restorative dental methods need multiple visits, but Upper East Dental Innovations uses CEREC technology to complete crowns in one appointment. Your crown can often be done in a single appointment, start to finish — allowing patients to restore tooth functionality and smile without obvious dental work.' },
-        { q: 'What are dental bridges?', a: 'A dental bridge replaces a missing tooth without dentures or surgery. The new tooth is held by two crowns and made from ceramic or porcelain to match surrounding teeth. Dr. Sharde Harvey, DDS ensures the replacement looks and feels amazing, making this a popular patient option.' },
+        { q: 'What are dental bridges?', a: 'A dental bridge replaces a missing tooth without dentures or surgery. The new tooth is held by two crowns and made from ceramic or porcelain to match surrounding teeth. Dr. Sharda Harvey, DDS ensures the replacement looks and feels amazing, making this a popular patient option.' },
       ]}
     />
   );
