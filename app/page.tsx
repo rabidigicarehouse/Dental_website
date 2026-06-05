@@ -248,8 +248,8 @@ export default function Home() {
       <section className="bg-light">
         <div className="container">
           <div className="text-center mb-2">
-            <div className="subtitle id-color wow fadeInUp">Get to Know Us</div>
-            <h2 className="wow fadeInUp" data-wow-delay=".2s">Two Sides of the Same Smile</h2>
+            <div className="subtitle id-color wow fadeInUp">Meet the Practice</div>
+            <h2 className="wow fadeInUp" data-wow-delay=".2s">Mission, Doctor, and Public Presence</h2>
           </div>
 
           <StackedSectionSlider 
