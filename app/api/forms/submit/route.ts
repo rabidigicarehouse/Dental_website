@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import fs from 'fs';
 import path from 'path';
-import { escapeHtml, getTransporter } from '@/lib/server/clinic-utils';
+import { escapeHtml, getAdditionalClinicNotificationEmails, getPrimaryClinicEmail, getTransporter } from '@/lib/server/clinic-utils';
 
 export const runtime = 'nodejs';
 
@@ -117,7 +117,8 @@ export async function POST(request: NextRequest) {
       'patient-screening': 'Patient Screening Form',
     };
     const formTitle = FORM_TITLES[formType] || 'Patient Form';
-    const clinicEmail = process.env.CLINIC_EMAIL || 'info@uedi.nyc';
+    const clinicEmail = getPrimaryClinicEmail();
+    const additionalNotificationEmails = getAdditionalClinicNotificationEmails();
     const fromAddress = `"UEDI Patient Forms" <${process.env.SMTP_USER || 'info@uedi.nyc'}>`;
 
     let pdfBuffer: Buffer | null = null;
@@ -173,6 +174,7 @@ export async function POST(request: NextRequest) {
     await transporter.sendMail({
       from: fromAddress,
       to: clinicEmail,
+      replyTo: patientEmail || clinicEmail,
       subject: `[${formTitle}] ${patientName || 'New submission'}`,
       text: textLines,
       html: clinicHtml,
@@ -180,6 +182,20 @@ export async function POST(request: NextRequest) {
         ? [{ filename: `${formType}-${Date.now()}.pdf`, content: pdfBuffer, contentType: 'application/pdf' }]
         : [],
     });
+
+    for (const notifyEmail of additionalNotificationEmails) {
+      await transporter.sendMail({
+        from: fromAddress,
+        to: notifyEmail,
+        replyTo: patientEmail || clinicEmail,
+        subject: `[${formTitle}] ${patientName || 'New submission'}`,
+        text: textLines,
+        html: clinicHtml,
+        attachments: pdfBuffer
+          ? [{ filename: `${formType}-${Date.now()}.pdf`, content: pdfBuffer, contentType: 'application/pdf' }]
+          : [],
+      });
+    }
 
     if (patientEmail && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(patientEmail)) {
       const ackHtml = `
@@ -199,6 +215,7 @@ export async function POST(request: NextRequest) {
       await transporter.sendMail({
         from: fromAddress,
         to: patientEmail,
+        replyTo: clinicEmail,
         subject: `We received your ${formTitle} – Upper East Dental Innovations`,
         text: `Hello ${patientName || 'Patient'},\n\nWe have received your ${formTitle} submission. We will follow up with you shortly.\n\n— Upper East Dental Innovations`,
         html: ackHtml,

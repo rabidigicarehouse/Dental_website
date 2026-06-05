@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { formatLongDate, getLogoAttachment, getTransporter } from '@/lib/server/clinic-utils';
+import { formatLongDate, getAdditionalClinicNotificationEmails, getLogoAttachment, getPrimaryClinicEmail, getTransporter } from '@/lib/server/clinic-utils';
 
 export const runtime = 'nodejs';
 
@@ -22,7 +22,8 @@ export async function POST(request: NextRequest) {
 
     const patientName = `${firstName} ${lastName}`;
     const formattedDate = formatLongDate(date);
-    const clinicEmail = process.env.CLINIC_EMAIL || 'info@uedi.nyc';
+    const clinicEmail = getPrimaryClinicEmail();
+    const additionalNotificationEmails = getAdditionalClinicNotificationEmails();
 
     const patientHtml = `
       <!DOCTYPE html><html><head><meta charset="utf-8"><title>Appointment Confirmed</title>
@@ -62,6 +63,7 @@ export async function POST(request: NextRequest) {
     await transporter.sendMail({
       from: `"Upper East Dental Innovations" <${process.env.SMTP_USER || 'info@uedi.nyc'}>`,
       to: email,
+      replyTo: clinicEmail,
       subject: 'Your Appointment is Confirmed! - Upper East Dental Innovations',
       text: `Dear ${firstName}, your appointment has been scheduled for ${formattedDate} at ${time} for ${reason}. We look forward to seeing you!`,
       html: patientHtml,
@@ -71,11 +73,24 @@ export async function POST(request: NextRequest) {
     await transporter.sendMail({
       from: `"UEDI Web Engine" <${process.env.SMTP_USER || 'info@uedi.nyc'}>`,
       to: clinicEmail,
+      replyTo: email,
       subject: `New Appt: ${patientName} - ${formattedDate} @ ${time}`,
       text: `New appointment request from ${patientName} (${phone}, ${email}) on ${formattedDate} at ${time} for ${reason}.`,
       html: clinicHtml,
       attachments: logoAttachment,
     });
+
+    for (const notifyEmail of additionalNotificationEmails) {
+      await transporter.sendMail({
+        from: `"UEDI Web Engine" <${process.env.SMTP_USER || 'info@uedi.nyc'}>`,
+        to: notifyEmail,
+        replyTo: email,
+        subject: `New Appt: ${patientName} - ${formattedDate} @ ${time}`,
+        text: `New appointment request from ${patientName} (${phone}, ${email}) on ${formattedDate} at ${time} for ${reason}.`,
+        html: clinicHtml,
+        attachments: logoAttachment,
+      });
+    }
 
     return NextResponse.json({ success: true, message: 'Emails sent successfully.' });
   } catch (error) {

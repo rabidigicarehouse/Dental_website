@@ -38,6 +38,39 @@ export function getFrontendBaseUrl() {
   ).replace(/\/+$/, '');
 }
 
+export function getClinicNotificationRecipients() {
+  const primary = process.env.CLINIC_EMAIL || 'info@uedi.nyc';
+  const configured = process.env.CLINIC_NOTIFICATION_EMAILS || primary;
+  const extras = ['Ibrahim@digicarehouse.com'];
+
+  return Array.from(
+    new Set(
+      [...configured.split(','), ...extras]
+        .map((value) => value.trim())
+        .filter(Boolean)
+    )
+  ).join(', ');
+}
+
+export function getPrimaryClinicEmail() {
+  return (process.env.CLINIC_EMAIL || 'info@uedi.nyc').trim();
+}
+
+export function getAdditionalClinicNotificationEmails() {
+  const primary = getPrimaryClinicEmail().toLowerCase();
+  const configured = getClinicNotificationRecipients();
+
+  return Array.from(
+    new Set(
+      configured
+        .split(',')
+        .map((value) => value.trim())
+        .filter(Boolean)
+        .filter((value) => value.toLowerCase() !== primary)
+    )
+  );
+}
+
 export function getSquareBaseUrl() {
   return process.env.SQUARE_ENVIRONMENT === 'production'
     ? 'https://connect.squareup.com'
