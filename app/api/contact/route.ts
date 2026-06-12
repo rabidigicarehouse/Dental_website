@@ -15,11 +15,14 @@ export async function POST(request: NextRequest) {
   }
 
   try {
-    const { name, email, phone, message } = body || {};
+    const { name, email, phone, message, source } = body || {};
     if (!name || !email || !message) {
       return NextResponse.json({ error: 'Required fields are missing.' }, { status: 400 });
     }
 
+    const sourceLabel = typeof source === 'string' && source.trim()
+      ? source.trim().replace(/[\r\n]+/g, ' ').slice(0, 80)
+      : 'Website Inquiry';
     const clinicEmail = getPrimaryClinicEmail();
     const additionalNotificationEmails = getAdditionalClinicNotificationEmails();
     const contactHtml = `<!DOCTYPE html><html><head><meta charset="utf-8"><title>New Website Inquiry</title><style>body{font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;background-color:#f7f9fa;color:#2e3e4a;margin:0;padding:0}.container{max-width:600px;margin:40px auto;background-color:#fff;border-radius:16px;overflow:hidden;box-shadow:0 10px 30px rgba(0,0,0,.05);border:1px solid #eef1f2}.header{background:#1d2c36;padding:25px 20px;text-align:center}.header img{max-width:180px;height:auto}.content{padding:40px 35px}.title{font-size:22px;font-weight:700;color:#1d2c36;margin-top:0;margin-bottom:20px;border-bottom:2px solid #eef1f2;padding-bottom:12px}.info-block{margin-bottom:20px}.info-label{font-size:13px;font-weight:700;color:#165369;text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px}.info-value{font-size:15px;color:#2e3e4a;font-weight:600}.msg-card{background-color:#f3f7f9;border-radius:8px;padding:18px;border-left:4px solid #165369;margin-top:20px}.msg-text{font-size:15px;color:#2e3e4a;line-height:1.6;white-space:pre-wrap;margin:0}.footer{background-color:#f7f9fa;padding:20px;text-align:center;font-size:13px;color:#9aa7b0;border-top:1px solid #eef1f2}</style></head><body><div class="container"><div class="header"><img src="cid:logo" alt="Upper East Dental Innovations"></div><div class="content"><h1 class="title">New Website Inquiry</h1><div class="info-block"><div class="info-label">Name</div><div class="info-value">${name}</div></div><div class="info-block"><div class="info-label">Email</div><div class="info-value"><a href="mailto:${email}">${email}</a></div></div><div class="info-block"><div class="info-label">Phone</div><div class="info-value">${phone || 'Not provided'}</div></div><div class="info-block" style="margin-bottom:0;"><div class="info-label">Message</div><div class="msg-card"><p class="msg-text">${message}</p></div></div></div><div class="footer">Website Contact Form Submission</div></div></body></html>`;
@@ -32,7 +35,7 @@ export async function POST(request: NextRequest) {
       from: `"UEDI Contact Form" <${process.env.SMTP_USER || 'info@uedi.nyc'}>`,
       to: clinicEmail,
       replyTo: email,
-      subject: `New Web Inquiry: ${name}`,
+      subject: `${sourceLabel}: ${name}`,
       text: `New message from ${name} (${phone || 'N/A'}, ${email}):\n\n${message}`,
       html: contactHtml,
       attachments: logoAttachment,
@@ -43,7 +46,7 @@ export async function POST(request: NextRequest) {
         from: `"UEDI Contact Form" <${process.env.SMTP_USER || 'info@uedi.nyc'}>`,
         to: notifyEmail,
         replyTo: email,
-        subject: `New Web Inquiry: ${name}`,
+        subject: `${sourceLabel}: ${name}`,
         text: `New message from ${name} (${phone || 'N/A'}, ${email}):\n\n${message}`,
         html: contactHtml,
         attachments: logoAttachment,

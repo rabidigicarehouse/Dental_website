@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import ImageCompare from 'image-compare-viewer';
 import 'image-compare-viewer/dist/image-compare-viewer.min.css';
@@ -335,8 +336,8 @@ export default function TeethCompareSlider() {
               className="teeth-compare-slide"
             >
               <div ref={containerRef} className="image-compare-viewer-container">
-                <img src={cases[currentIdx].before} alt="Before Treatment" />
-                <img src={cases[currentIdx].after}  alt="After Treatment"  />
+                <Image src={cases[currentIdx].before} alt="Before Treatment" width={1200} height={800} />
+                <Image src={cases[currentIdx].after}  alt="After Treatment" width={1200} height={800} />
               </div>
             </motion.div>
           </AnimatePresence>

@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import { useState } from 'react';
 import Link from 'next/link';
 import MapContactSection from './MapContactSection';
@@ -99,7 +100,7 @@ export default function ServicePageTemplate(props: ServicePageProps) {
       {/* Subheader */}
       {imageOnlyHero ? (
         <section id="subheader" className="service-image-hero" aria-label={name}>
-          <img src={subheaderBg} className="service-image-hero__img" alt={name} />
+          <Image src={subheaderBg} className="service-image-hero__img" alt={name} width={1200} height={800} />
         </section>
       ) : (
         <section
@@ -128,7 +129,7 @@ export default function ServicePageTemplate(props: ServicePageProps) {
         <section className="service-image-intro pt-60 pb-40">
           <div className="container">
             <div className="service-image-intro__frame wow fadeInUp">
-              <img src={introImage} className="service-image-intro__img" alt={name} />
+              <Image src={introImage} className="service-image-intro__img" alt={name} width={1200} height={800} />
             </div>
           </div>
         </section>
@@ -139,7 +140,7 @@ export default function ServicePageTemplate(props: ServicePageProps) {
               <div className="col-lg-7">
                 <div className="relative">
                   <div className="w-100 pe-5 pb-5 wow scaleIn">
-                    <img src={introImage} className="w-100 rounded-1" alt={name} />
+                    <Image src={introImage} className="w-100 rounded-1" alt={name} width={1200} height={800} />
                   </div>
                   <div className="bg-color rounded-1 text-light w-50 p-4 abs end-0 bottom-0 z-2 soft-shadow wow scaleIn" data-wow-delay=".2s">
                     <i className="fa fa-quote-left fs-32 abs"></i>
@@ -169,7 +170,7 @@ export default function ServicePageTemplate(props: ServicePageProps) {
                   key={img.src}
                 >
                   <div className="overflow-hidden rounded-1 soft-shadow">
-                    <img src={img.src} className="w-100" alt={img.alt} style={{ objectFit: 'cover', minHeight: '220px' }} />
+                    <Image src={img.src} className="w-100" alt={img.alt} style={{ objectFit: 'cover', minHeight: '220px' }} width={1200} height={800} />
                   </div>
                   {img.caption && <p className="mt-2 mb-0 text-center fs-14 op-8">{img.caption}</p>}
                 </div>
@@ -242,11 +243,10 @@ export default function ServicePageTemplate(props: ServicePageProps) {
                     {TESTIMONIALS[currentTesti].name.trim().charAt(0).toUpperCase()}
                   </div>
                 ) : (
-                  <img
+                  <Image
                     src={`/images/testimonial/${TESTIMONIALS[currentTesti].img}`}
                     className="testi-avatar-premium"
-                    alt={TESTIMONIALS[currentTesti].name}
-                  />
+                    alt={TESTIMONIALS[currentTesti].name} width={160} height={160} />
                 )}
                 <div className="text-start ms-3">
                   <h4 className="mb-1">{TESTIMONIALS[currentTesti].name}</h4>

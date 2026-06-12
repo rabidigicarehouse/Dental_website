@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import { useState } from 'react';
 import Link from 'next/link';
 import MapContactSection from '@/components/MapContactSection';
@@ -85,7 +86,7 @@ export default function PinholeSurgicalTechnique() {
           <div className="row g-4 align-items-center">
             <div className="col-lg-7">
               <div className="w-100 wow scaleIn">
-                <img src={`${ASSET}/pinhole.jpg`} className="w-100 rounded-1" alt={SERVICE_NAME} />
+                <Image src={`${ASSET}/pinhole.jpg`} className="w-100 rounded-1" alt={SERVICE_NAME} width={1200} height={800} />
               </div>
             </div>
             <div className="col-lg-5">
@@ -114,7 +115,7 @@ export default function PinholeSurgicalTechnique() {
               </div>
               <div className="col-lg-6">
                 <div className="pinhole-content-img-wrap wow fadeInUp" data-wow-delay=".15s">
-                  <img src={block.image} className="pinhole-content-img" alt={block.imageAlt} />
+                  <Image src={block.image} className="pinhole-content-img" alt={block.imageAlt} width={1200} height={800} />
                 </div>
               </div>
             </div>
@@ -162,7 +163,7 @@ export default function PinholeSurgicalTechnique() {
               <div className="col-md-4 pinhole-ba-col" key={img.src}>
                 <div className="pinhole-ba-card wow fadeInUp">
                   <div className="pinhole-ba-img-wrap">
-                    <img src={img.src} className="pinhole-ba-img" alt={img.alt} />
+                    <Image src={img.src} className="pinhole-ba-img" alt={img.alt} width={1200} height={800} />
                   </div>
                 </div>
               </div>

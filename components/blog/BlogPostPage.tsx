@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import MapContactSection from '@/components/MapContactSection';
@@ -62,7 +63,7 @@ export default function BlogPostPage({
           <div className="blog-post-grid">
             <article className="blog-post-article">
               <div className="blog-post-hero">
-                <img src={post.hero} alt={post.title} />
+                <Image src={post.hero} alt={post.title} width={1200} height={800} />
               </div>
 
               <h2 className="blog-post-headline">{post.title}</h2>
@@ -99,7 +100,7 @@ export default function BlogPostPage({
                       >
                         <Link href={buildPostHref(item.slug)} className="blog-post-sidebar-link">
                           <div className="blog-post-sidebar-thumb">
-                            <img src={item.thumb} alt={item.title} loading="lazy" />
+                            <Image src={item.thumb} alt={item.title} loading="lazy" width={1200} height={800} />
                           </div>
                           <div className="blog-post-sidebar-meta">
                             <span className="blog-post-sidebar-headline">{item.title}</span>

@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import Link from 'next/link';
 
 export default function Header({
@@ -20,10 +21,10 @@ export default function Header({
                 {/* logo begin */}
                 <div id="logo">
                   <Link href="/">
-                    <img className="logo-main logo" src="/main logo.png" alt="UpperEast Logo" />
-                    <img className="logo-scroll logo-2" src="/main logo dark.png" alt="UpperEast Logo" />
-                    <img className="logo-mobile" src="/main logo.png" alt="UpperEast Logo" />
-                    <img className="logo-mobile-dark" src="/main logo dark.png" alt="UpperEast Logo" />
+                    <Image className="logo-main logo" src="/main logo.png" alt="UpperEast Logo" width={420} height={160} />
+                    <Image className="logo-scroll logo-2" src="/main logo dark.png" alt="UpperEast Logo" width={420} height={160} />
+                    <Image className="logo-mobile" src="/main logo.png" alt="UpperEast Logo" width={420} height={160} />
+                    <Image className="logo-mobile-dark" src="/main logo dark.png" alt="UpperEast Logo" width={420} height={160} />
                   </Link>
                 </div>
                 {/* logo end */}

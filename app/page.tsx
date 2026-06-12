@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { AnimatePresence, motion } from 'framer-motion';
@@ -10,6 +11,7 @@ import CorporatePlansSection from '@/components/CorporatePlansSection';
 import MapContactSection from '@/components/MapContactSection';
 import Footer from '@/components/Footer';
 import IconMarquee from '@/components/IconMarquee';
+import ConsultationOfferSection from '@/components/ConsultationOfferSection';
 import { TEXT_TESTIMONIALS } from '@/lib/testimonials';
 
 export default function Home() {
@@ -25,7 +27,7 @@ export default function Home() {
   const heroContent = [
     {
       subtitle: "Leading Midtown Dentist",
-      title: "UEDI is the leading dental office in Midtown for Invisalign and veneers"
+      title: "Transform Your Smile With Veneers, Dental Implants & Cosmetic Dentistry"
     },
     {
       subtitle: "New York City Dental",
@@ -113,9 +115,9 @@ export default function Home() {
   return (
     <>
       {/* Hero Section */}
-      <section 
-        id="section-intro" 
-        className="text-light no-top no-bottom relative" 
+      <section
+        id="section-intro"
+        className="text-light no-top no-bottom relative"
         style={{ zIndex: 10, overflow: 'visible' }}
         onMouseEnter={() => setIsPaused(true)}
         onMouseLeave={() => setIsPaused(false)}
@@ -152,8 +154,8 @@ export default function Home() {
                   transform: currentBg === index
                     ? (isMobileViewport ? 'scale(1.02)' : 'scale(1.06)')
                     : 'scale(1)',
-                  transition: currentBg === index 
-                    ? 'opacity 1.5s ease-in-out, transform 10s linear' 
+                  transition: currentBg === index
+                    ? 'opacity 1.5s ease-in-out, transform 10s linear'
                     : 'opacity 1.5s ease-in-out, transform 1.5s ease-in-out',
                   zIndex: currentBg === index ? 1 : 0,
                   position: 'absolute',
@@ -252,7 +254,7 @@ export default function Home() {
             <h2 className="wow fadeInUp" data-wow-delay=".2s">Mission, Doctor, and Public Presence</h2>
           </div>
 
-          <StackedSectionSlider 
+          <StackedSectionSlider
             labels={['Our Story', 'About The Doctor', 'Royal Versailles Ball', 'White Cross Ball']}
             hideTabs={true}
             hideBackgroundCards={true}
@@ -261,9 +263,9 @@ export default function Home() {
             <div className="row g-5 align-items-center w-100 m-0">
               <div className="col-lg-6">
                 <div className="about-img-container">
-                  <img src="/about us section main.jpg" className="about-img-main" alt="About Main" />
+                  <Image src="/about us section main.jpg" className="about-img-main" alt="About Main" width={1200} height={800} />
                   <div className="about-img-small-wrap">
-                    <img src="/about us section small.webp" className="about-img-small" alt="About Small" />
+                    <Image src="/about us section small.webp" className="about-img-small" alt="About Small" width={1200} height={800} />
                   </div>
                 </div>
               </div>
@@ -303,7 +305,7 @@ export default function Home() {
                   <div className="doctor-photo-decor doctor-photo-decor-1" />
                   <div className="doctor-photo-decor doctor-photo-decor-2" />
                   <div className="doctor-photo-frame">
-                    <img src="/Dr harvey2.webp" alt="Dr. Sharda Harvey" />
+                    <Image src="/Dr harvey2.webp" alt="Dr. Sharda Harvey" width={1200} height={800} />
                     <div className="doctor-photo-glow" />
                   </div>
                 </div>
@@ -349,14 +351,14 @@ export default function Home() {
               <div className="col-lg-5">
                 <div className="story-event-collage">
                   <div className="story-event-collage__hero">
-                    <img src="/images/events/image (4).png" alt="Dr. Sharda Harvey at the Royal Versailles Ball 2026" />
+                    <Image src="/images/events/image (4).png" alt="Dr. Sharda Harvey at the Royal Versailles Ball 2026" width={1200} height={800} />
                   </div>
                   <div className="story-event-collage__side">
                     <div className="story-event-collage__tile">
-                      <img src="/images/events/image (5).png" alt="Dr. Sharda Harvey at the Royal Versailles Ball portrait setting" />
+                      <Image src="/images/events/image (5).png" alt="Dr. Sharda Harvey at the Royal Versailles Ball portrait setting" width={1200} height={800} />
                     </div>
                     <div className="story-event-collage__tile">
-                      <img src="/images/events/image (3).png" alt="Dr. Sharda Harvey at the Royal Versailles Ball event wall" />
+                      <Image src="/images/events/image (3).png" alt="Dr. Sharda Harvey at the Royal Versailles Ball event wall" width={1200} height={800} />
                     </div>
                   </div>
                 </div>
@@ -392,7 +394,7 @@ export default function Home() {
               <div className="col-lg-5">
                 <div className="doctor-photo-wrap story-event-single" style={{ padding: 0, maxWidth: 420, margin: '0 auto' }}>
                   <div className="doctor-photo-frame">
-                    <img src="/images/events/white cross ball.png" alt="Dr. Sharda Harvey at the White Cross Ball" />
+                    <Image src="/images/events/white cross ball.png" alt="Dr. Sharda Harvey at the White Cross Ball" width={1200} height={800} />
                     <div className="doctor-photo-glow" />
                   </div>
                 </div>
@@ -478,7 +480,7 @@ export default function Home() {
                 <div className="svc-photo-card w-100 wow fadeInUp" data-wow-delay={`${idx * 0.1}s`}>
                   {/* Photo */}
                   <div className="svc-photo-wrap">
-                    <img src={service.img} alt={service.title} className="svc-photo-img" />
+                    <Image src={service.img} alt={service.title} className="svc-photo-img" width={1200} height={800} />
                     <div className="svc-photo-overlay" />
                     {service.badge && (
                       <div className="svc-badge">{service.badge}</div>
@@ -487,7 +489,7 @@ export default function Home() {
                   {/* Body */}
                   <div className="svc-photo-body">
                     <div className="svc-icon-wrap">
-                      <img src={`images/icons/${service.icon}`} alt="" />
+                      <Image src={`/images/icons/${service.icon}`} alt="" width={160} height={160} />
                     </div>
                     <h4 className="svc-photo-title">{service.title}</h4>
                     <p className="svc-photo-desc">{service.desc}</p>
@@ -507,6 +509,29 @@ export default function Home() {
       </section>
       {/* Brand Pillars Icon Marquee Section */}
       <IconMarquee />
+
+      {/* Portfolio Section */}
+      <section className="portfolio-section portfolio-section--home">
+        <div className="container">
+          <div className="row align-items-center">
+            <div className="col-lg-5 order-2 order-lg-1">
+              <div className="portfolio-subtitle wow fadeInUp">Our Portfolio</div>
+              <h2 className="portfolio-title text-start wow fadeInUp" data-wow-delay=".2s" style={{ color: '#1D2C36' }}>Real People, Real Results</h2>
+              <p className="text-dark op-7 mb-4 wow fadeInUp" data-wow-delay=".3s">
+                Experience the life-changing impact of our dental expertise. Our portfolio showcases the dedication and precision we bring to every smile transformation.
+              </p>
+              <div className="wow fadeInUp portfolio-cta-wrap" data-wow-delay=".4s">
+                <Link href="/smile-gallery" className="btn-main fx-slide portfolio-btn-custom" data-hover="Visit Smile Gallery"><span>Visit Smile Gallery</span></Link>
+              </div>
+            </div>
+            <div className="col-lg-7 order-1 order-lg-2">
+              <TeethCompareSlider />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <ConsultationOfferSection />
 
       {/* Why Choose Section */}
       <section>
@@ -549,15 +574,15 @@ export default function Home() {
               <div className="row g-4 align-items-center">
                 <div className="col-6 text-end">
                   <div className="w-80 rounded-1 overflow-hidden mb-25 wow zoomIn d-inline-block">
-                    <img src="/whychooseus/image_087.jpg" className="w-100 wow scaleIn" alt="Dental care at Upper East Dental" />
+                    <Image src="/whychooseus/image_087.jpg" className="w-100 wow scaleIn" alt="Dental care at Upper East Dental" width={1200} height={800} />
                   </div>
                   <div className="w-100 rounded-1 overflow-hidden mb-25 wow zoomIn d-inline-block">
-                    <img src="/whychooseus/image_108.jpg" className="w-100 wow scaleIn" alt="Our dental team" />
+                    <Image src="/whychooseus/image_108.jpg" className="w-100 wow scaleIn" alt="Our dental team" width={1200} height={800} />
                   </div>
                 </div>
                 <div className="col-6">
                   <div className="w-100 rounded-1 overflow-hidden mb-25 wow zoomIn d-inline-block">
-                    <img src="/whychooseus/image_013.jpg" className="w-100 wow scaleIn" alt="Happy patient at Upper East Dental" />
+                    <Image src="/whychooseus/image_013.jpg" className="w-100 wow scaleIn" alt="Happy patient at Upper East Dental" width={1200} height={800} />
                   </div>
                 </div>
               </div>
@@ -567,27 +592,6 @@ export default function Home() {
       </section>
 
       <CorporatePlansSection />
-
-      {/* Portfolio Section */}
-      <section className="portfolio-section bg-white">
-        <div className="container">
-          <div className="row align-items-center">
-            <div className="col-lg-5 order-2 order-lg-1">
-              <div className="portfolio-subtitle wow fadeInUp">Our Portfolio</div>
-              <h2 className="portfolio-title text-start wow fadeInUp" data-wow-delay=".2s" style={{ color: '#1D2C36' }}>Real People, Real Results</h2>
-              <p className="text-dark op-7 mb-4 wow fadeInUp" data-wow-delay=".3s">
-                Experience the life-changing impact of our dental expertise. Our portfolio showcases the dedication and precision we bring to every smile transformation.
-              </p>
-              <div className="wow fadeInUp portfolio-cta-wrap" data-wow-delay=".4s">
-                <Link href="/smile-gallery" className="btn-main fx-slide portfolio-btn-custom" data-hover="Visit Smile Gallery"><span>Visit Smile Gallery</span></Link>
-              </div>
-            </div>
-            <div className="col-lg-7 order-1 order-lg-2">
-              <TeethCompareSlider />
-            </div>
-          </div>
-        </div>
-      </section>
 
       {/* Team Section */}
       <section className="bg-color-op-1">
@@ -602,27 +606,23 @@ export default function Home() {
           </div>
           <div className="row g-4">
             {[
-              { name: 'Dr. Sharda Harvey', role: 'DDS, MS, FICOI', photo: '/Dr-harvey-1.jpg', href: '/about#dr-sharde-harvey' },
-              { name: 'Dr. Pellegrini', role: 'LANAP and LAPIP Protocol', photo: '/Gretel Pellegrini Photo.jpg', href: '/about#dr-pellegrini' },
-              { name: 'Paola Cruz', role: 'Front Office Coordinator', photo: '/Paola-Image.jpg', href: '/about#paola-cruz' },
-              { name: 'Michelle', role: 'Patient Care Coordinator', placeholder: true, href: '/about#team-directory' },
+              { name: 'Dr. Sharda Harvey', role: 'DDS, MS, FICOI', photo: '/Dr-harvey-1.jpg', width: 956, height: 1295, href: '/about#dr-sharde-harvey' },
+              { name: 'Dr. Pellegrini', role: 'LANAP and LAPIP Protocol', photo: '/Gretel Pellegrini Photo.jpg', width: 956, height: 1295, href: '/about#dr-pellegrini' },
+              { name: 'Paola Cruz', role: 'Front Office Coordinator', photo: '/Paola-Image.jpg', width: 956, height: 1295, href: '/about#paola-cruz' },
+              { name: 'Michelle', role: 'Patient Care Coordinator', photo: '/Michelle.png', width: 1920, height: 2084, href: '/about#team-directory' },
             ].map((member) => (
               <div className="col-lg-3 col-md-6" key={member.name}>
                 <Link href={member.href} scroll={false} className="team-member-link">
                   <div className="relative rounded-1 overflow-hidden team-member-card">
                     <div className="rounded-1 overflow-hidden wow fadeIn zoomIn">
                       <div className="team-card-photo-wrap">
-                        {'placeholder' in member && member.placeholder ? (
-                          <div className="team-card-placeholder" aria-hidden="true">
-                            <i className="icofont-user-alt-3" />
-                          </div>
-                        ) : (
-                          <img
-                            src={member.photo}
-                            className="w-100 wow scaleIn"
-                            alt={member.name}
-                          />
-                        )}
+                        <Image
+                          src={member.photo}
+                          className="w-100 wow scaleIn"
+                          alt={member.name}
+                          width={member.width}
+                          height={member.height}
+                        />
                       </div>
                     </div>
                     <div className="abs w-100 start-0 bottom-0 z-3">
@@ -678,19 +678,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Final CTA Section - Now positioned after FAQ */}
-      <section className="main-home-cta-section text-light pt-40 pb-40">
-        <div className="container">
-          <div className="main-home-cta-band">
-            <div className="main-home-cta-copy">
-              <span className="main-home-cta-label">Plan Your Visit</span>
-              <h3 className="mb-0 fs-32 text-white">Ready to book your dental care session?</h3>
-            </div>
-            <Link className="main-home-cta-button" href="#book" data-hover="Connect Us"><span>Connect Us</span></Link>
-          </div>
-        </div>
-      </section>
-
       {/* Testimonials (Premium Single Slide) */}
       <section className="bg-color-op-1 pt-100 pb-100">
         <div className="container text-center">
@@ -709,7 +696,7 @@ export default function Home() {
                     {testimonials[currentTesti].name.trim().charAt(0).toUpperCase()}
                   </div>
                 ) : (
-                  <img src={`images/testimonial/${testimonials[currentTesti].img}`} className="testi-avatar-premium" alt={testimonials[currentTesti].name} />
+                  <Image src={`/images/testimonial/${testimonials[currentTesti].img}`} className="testi-avatar-premium" alt={testimonials[currentTesti].name} width={160} height={160} />
                 )}
                 <div className="text-start ms-3">
                   <h4 className="mb-1">{testimonials[currentTesti].name}</h4>
@@ -777,10 +764,12 @@ export default function Home() {
                       cursor: 'pointer',
                     }}>
                       <div style={{ position: 'relative', width: '100%', height: '100%' }}>
-                        <img
+                        <Image
                           src={`https://img.youtube.com/vi/${id}/hqdefault.jpg`}
                           alt="Patient Testimonial"
                           style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+                          width={480}
+                          height={360}
                         />
                         <div style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.28)' }} />
                         <div style={{
@@ -851,7 +840,7 @@ export default function Home() {
                 width: 'clamp(260px, min(52vw, 520px), 92vw)',
               }}>
                 <div style={{ borderRadius: '22px', overflow: 'hidden', position: 'relative', background: '#1D2C36', lineHeight: 0 }}>
-                  <img
+                  <Image
                     src={portfolioImages[portfolioPreview]}
                     alt={`Smile Transformation ${portfolioPreview + 1}`}
                     style={{
@@ -860,8 +849,7 @@ export default function Home() {
                       height: 'auto',
                       maxHeight: '78vh',
                       objectFit: 'cover',
-                    }}
-                  />
+                    }} width={1200} height={800} />
                 </div>
               </div>
 

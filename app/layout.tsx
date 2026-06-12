@@ -13,6 +13,8 @@ import Image from "next/image";
 import AccessibilityWidget from "@/components/AccessibilityWidget";
 import CursorGlow from "@/components/CursorGlow";
 import BookingModalProvider from "@/components/BookingModalProvider";
+import MobileConversionBar from "@/components/MobileConversionBar";
+import SmileAssessmentPopup from "@/components/SmileAssessmentPopup";
 
 export const metadata: Metadata = {
   title: "Upper East Dental — Dentist & Dental Clinic",
@@ -74,7 +76,7 @@ export default function RootLayout({
             </div>
 
             <div id="extra-content">
-              <img src="/main logo.png" className="w-150px" alt="Dentia Logo" />
+              <Image src="/main logo.png" className="w-150px" alt="Upper East Dental Innovations" width={420} height={160} />
 
               <div className="spacer-30-line"></div>
 
@@ -91,14 +93,14 @@ export default function RootLayout({
               <div className="spacer-30-line"></div>
 
               <h5>Contact Us</h5>
-              <div><i className="icofont-clock-time me-2 op-5"></i>Monday - Friday 08.00 - 18.00</div>
-              <div><i className="icofont-location-pin me-2 op-5"></i>100 S Main St, New York, </div>
+              <div><i className="icofont-clock-time me-2 op-5"></i>Monday - Friday 9:00 AM - 6:00 PM</div>
+              <div><i className="icofont-location-pin me-2 op-5"></i>121 East 60th Street, Suite 1B, New York, NY 10022</div>
               <div><i className="icofont-envelope me-2 op-5"></i>info@uedi.nyc </div>
 
               <div className="spacer-30-line"></div>
 
               <h5>About Us</h5>
-              <p>At Dentia, we’re dedicated to providing high-quality, personalized dental care for patients of all ages. Our skilled team uses the latest technology to ensure comfortable, efficient treatments and beautiful, healthy smiles for life.</p>
+              <p>At Upper East Dental Innovations, we provide personalized dental care supported by advanced technology, thoughtful service, and a commitment to healthy, confident smiles.</p>
 
               <div className="social-icons">
                 <Link href="https://www.facebook.com/UpperEastDental/" target="_blank">
@@ -119,7 +121,8 @@ export default function RootLayout({
               </div>
             </div>
           </div>
-
+          <MobileConversionBar />
+          <SmileAssessmentPopup />
         </BookingModalProvider>
 
         <Script src="/js/plugins.js" strategy="beforeInteractive" />

@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import Link from 'next/link';
 import MapContactSection from '@/components/MapContactSection';
 import Footer from '@/components/Footer';
@@ -82,7 +83,7 @@ export default function Technology() {
               <div className="tech-sticky-card" key={idx}>
                 {/* Top: landscape hero image with counter overlay */}
                 <div className="tech-card-photo relative">
-                  <img src={tech.img} alt={tech.title} />
+                  <Image src={tech.img} alt={tech.title} width={1200} height={800} />
                   <div className="tech-card-counter">
                     {idx + 1} —
                   </div>

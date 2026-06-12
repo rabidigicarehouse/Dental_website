@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import Link from 'next/link';
 import MapContactSection from '@/components/MapContactSection';
 import Footer from '@/components/Footer';
@@ -145,13 +146,13 @@ export default function Services() {
                   data-wow-delay={`${(idx % 4) * 0.1}s`}
                 >
                   <div className="svc-photo-wrap">
-                    <img src={service.img} alt={service.title} className="svc-photo-img" />
+                    <Image src={service.img} alt={service.title} className="svc-photo-img" width={1200} height={800} />
                     <div className="svc-photo-overlay" />
                     {service.badge && <div className="svc-badge">{service.badge}</div>}
                   </div>
                   <div className="svc-photo-body">
                     <div className="svc-icon-wrap">
-                      <img src={`/images/icons/${service.icon}`} alt="" />
+                      <Image src={`/images/icons/${service.icon}`} alt="" width={160} height={160} />
                     </div>
                     <h4 className="svc-photo-title">{service.title}</h4>
                     <p className="svc-photo-desc">{service.desc}</p>

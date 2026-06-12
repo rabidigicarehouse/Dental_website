@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import {
   PHONE_COUNTRIES,
@@ -51,9 +52,9 @@ export default function CountryPhoneInput({
           aria-haspopup="listbox"
           aria-expanded={open}
         >
-          <img src={selectedCountry.flagUrl} alt={selectedCountry.name} className="mcf-country-flag" />
+          <Image src={selectedCountry.flagUrl} alt={selectedCountry.name} className="mcf-country-flag" width={32} height={24} />
           <span className="mcf-country-dial">{selectedCountry.dialCode}</span>
-          <span className="mcf-country-caret">▼</span>
+          <span className="mcf-country-caret">&#9662;</span>
         </button>
 
         <input
@@ -67,7 +68,11 @@ export default function CountryPhoneInput({
       </div>
 
       {open && (
-        <div className="mcf-country-dropdown" role="listbox">
+        <div
+          className="mcf-country-dropdown"
+          role="listbox"
+          onWheel={(event) => event.stopPropagation()}
+        >
           {PHONE_COUNTRIES.map((country) => (
             <button
               key={country.code}
@@ -79,7 +84,7 @@ export default function CountryPhoneInput({
                 setOpen(false);
               }}
             >
-              <img src={country.flagUrl} alt={country.name} className="mcf-country-flag" />
+              <Image src={country.flagUrl} alt={country.name} className="mcf-country-flag" width={32} height={24} />
               <span className="mcf-country-name">{country.name}</span>
               <span className="mcf-country-code">{country.dialCode}</span>
             </button>

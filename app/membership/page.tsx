@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import MapContactSection from '@/components/MapContactSection';
@@ -64,7 +65,7 @@ export default function Membership() {
                 className="membership-card bg-white p-5 rounded-30 shadow-2xl"
               >
                 <div className="mb-4">
-                  <img src="/dental services/Holistic Dentistry.webp" alt="Dental Plan Icon" style={{ width: '80px', height: '80px', objectFit: 'contain' }} />
+                  <Image src="/dental services/Holistic Dentistry.webp" alt="Dental Plan Icon" style={{ width: '80px', height: '80px', objectFit: 'contain' }} width={160} height={160} />
                 </div>
                 <h2 className="fs-40 fw-800 mb-2" style={{ color: '#1D2C36' }}>Dental Plan</h2>
                 <div className="d-flex align-items-baseline mb-4">
@@ -96,7 +97,7 @@ export default function Membership() {
                 transition={{ duration: 0.8 }}
                 className="rounded-30 overflow-hidden shadow-2xl"
               >
-                <img src="/membership.webp" className="w-100" alt="Membership Plan" />
+                <Image src="/membership.webp" className="w-100" alt="Membership Plan" width={1200} height={800} />
               </motion.div>
             </div>
           </div>

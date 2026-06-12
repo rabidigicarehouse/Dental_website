@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import Link from 'next/link';
 import MapContactSection from '@/components/MapContactSection';
 import Footer from '@/components/Footer';
@@ -58,7 +59,7 @@ export default function BlogListingPage({
               <article key={post.slug} className="uedi-blog-card">
                 <Link href={buildPostHref(post.slug)} className="uedi-blog-photo-link">
                   <div className="uedi-blog-photo">
-                    <img src={post.hero} alt={post.title} loading="lazy" />
+                    <Image src={post.hero} alt={post.title} loading="lazy" width={1200} height={800} />
                     <div className="uedi-blog-datebadge">
                       <span className="uedi-blog-date-day">{post.dateBadge.day}</span>
                       <span className="uedi-blog-date-month">{post.dateBadge.month}</span>

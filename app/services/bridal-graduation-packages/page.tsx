@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import { useState } from 'react';
 import Link from 'next/link';
 import MapContactSection from '@/components/MapContactSection';
@@ -107,11 +108,10 @@ export default function BridalGraduationPackages() {
                   boxShadow: '0 24px 60px rgba(29, 44, 54, 0.18)',
                 }}
               >
-                <img
+                <Image
                   src="/dental services/Bridal & Graduation Packages.jpg"
                   alt="Bridal and graduation packages"
-                  style={{ width: '100%', display: 'block' }}
-                />
+                  style={{ width: '100%', display: 'block' }} width={1200} height={800} />
               </div>
             </div>
           </div>
@@ -128,7 +128,7 @@ export default function BridalGraduationPackages() {
           <div className="bridal-perfect-grid wow fadeInUp">
             <article className="bridal-perfect-card">
               <div className="bridal-perfect-photo">
-                <img src="/graduation and bridal/1.webp" alt="For Bridal Parties" />
+                <Image src="/graduation and bridal/1.webp" alt="For Bridal Parties" width={1200} height={800} />
               </div>
               <h3 className="bridal-perfect-heading">For Bridal Parties</h3>
               <p className="bridal-perfect-subhead">Purchase For The Whole Bridal Party</p>
@@ -144,7 +144,7 @@ export default function BridalGraduationPackages() {
 
             <article className="bridal-perfect-card">
               <div className="bridal-perfect-photo">
-                <img src="/graduation and bridal/2.webp" alt="Gift For Grads" />
+                <Image src="/graduation and bridal/2.webp" alt="Gift For Grads" width={1200} height={800} />
               </div>
               <h3 className="bridal-perfect-heading">Gift For Grads</h3>
               <p className="bridal-perfect-subhead">Make Your Mark &amp; Keep The Memory Forever</p>
@@ -169,7 +169,7 @@ export default function BridalGraduationPackages() {
                 className={'bridal-pricing-card' + (pkg.featured ? ' is-featured' : '')}
               >
                 <div className="bridal-pricing-photo">
-                  <img src={pkg.image} alt={`${pkg.tier} package`} />
+                  <Image src={pkg.image} alt={`${pkg.tier} package`} width={1200} height={800} />
                 </div>
                 <div className="bridal-pricing-body">
                   <h3 className="bridal-pricing-tier">{pkg.tier}</h3>

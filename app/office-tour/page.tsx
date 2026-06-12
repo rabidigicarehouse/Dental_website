@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import Link from 'next/link';
 import MapContactSection from '@/components/MapContactSection';
 import Footer from '@/components/Footer';
@@ -62,11 +63,10 @@ export default function OfficeTour() {
                   className="office-tour-card rounded-1 overflow-hidden wow fadeInUp"
                   data-wow-delay={`${(i % 4) * 0.1}s`}
                 >
-                  <img
+                  <Image
                     src={img.src}
                     alt={img.alt}
-                    className="office-tour-img"
-                  />
+                    className="office-tour-img" width={1200} height={800} />
                   <div className="office-tour-overlay">
                     <span className="office-tour-label">{img.alt}</span>
                   </div>
@@ -97,7 +97,7 @@ export default function OfficeTour() {
             </div>
             <div className="col-lg-6">
               <div className="rounded-1 overflow-hidden wow zoomIn">
-                <img src="/office tour/3.png" className="w-100" alt="Treatment Room" />
+                <Image src="/office tour/3.png" className="w-100" alt="Treatment Room" width={1200} height={800} />
               </div>
             </div>
           </div>

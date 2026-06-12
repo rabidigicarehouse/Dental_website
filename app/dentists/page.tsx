@@ -34,7 +34,7 @@ export default function Dentists() {
                 </div>
                 <div className="row g-0 align-items-center">
                   <div className="col-md-4">
-                    <img src="/images/team/1.webp" className="w-100 rounded" alt="" />
+                    <Image src="/images/team/1.webp" className="w-100 rounded" alt="" width={1200} height={800} />
                   </div>
                   <div className="col-md-8">
                     <div className="h-100 p-40">
@@ -74,7 +74,7 @@ export default function Dentists() {
                 </div>
                 <div className="row g-0 align-items-center">
                   <div className="col-md-4">
-                    <img src="/images/team/2.webp" className="w-100 rounded" alt="" />
+                    <Image src="/images/team/2.webp" className="w-100 rounded" alt="" width={1200} height={800} />
                   </div>
                   <div className="col-md-8">
                     <div className="h-100 p-40">
@@ -114,7 +114,7 @@ export default function Dentists() {
                 </div>
                 <div className="row g-0 align-items-center">
                   <div className="col-md-4">
-                    <img src="/images/team/3.webp" className="w-100 rounded" alt="" />
+                    <Image src="/images/team/3.webp" className="w-100 rounded" alt="" width={1200} height={800} />
                   </div>
                   <div className="col-md-8">
                     <div className="h-100 p-40">
@@ -154,7 +154,7 @@ export default function Dentists() {
                 </div>
                 <div className="row g-0 align-items-center">
                   <div className="col-md-4">
-                    <img src="/images/team/4.webp" className="w-100 rounded" alt="" />
+                    <Image src="/images/team/4.webp" className="w-100 rounded" alt="" width={1200} height={800} />
                   </div>
                   <div className="col-md-8">
                     <div className="h-100 p-40">

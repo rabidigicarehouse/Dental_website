@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { AnimatePresence, motion } from 'framer-motion';
@@ -82,9 +83,11 @@ export default function Testimonials() {
                   onClick={() => setVideoPreview(id)}
                 >
                   <div className="testi-video-thumb">
-                    <img
+                    <Image
                       src={`https://img.youtube.com/vi/${id}/hqdefault.jpg`}
                       alt={`Patient Testimonial ${i + 1}`}
+                      width={480}
+                      height={360}
                     />
                     <div className="testi-video-overlay" />
                     <div className="testi-video-play">
@@ -123,11 +126,10 @@ export default function Testimonials() {
                     {textTestimonials[currentTesti].name.trim().charAt(0).toUpperCase()}
                   </div>
                 ) : (
-                  <img
+                  <Image
                     src={`/images/testimonial/${textTestimonials[currentTesti].img}`}
                     className="testi-avatar-premium"
-                    alt={textTestimonials[currentTesti].name}
-                  />
+                    alt={textTestimonials[currentTesti].name} width={160} height={160} />
                 )}
                 <div className="text-start ms-3">
                   <h4 className="mb-1">{textTestimonials[currentTesti].name}</h4>

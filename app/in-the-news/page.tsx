@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import Link from 'next/link';
 import MapContactSection from '@/components/MapContactSection';
 import Footer from '@/components/Footer';
@@ -194,7 +195,7 @@ export default function InTheNewsPage() {
 
                   {entry.image ? (
                     <div className="news-timeline-image-wrap">
-                      <img src={entry.image} alt={entry.heading} className="news-timeline-image" loading="lazy" />
+                      <Image src={entry.image} alt={entry.heading} className="news-timeline-image" loading="lazy" width={1200} height={800} />
                     </div>
                   ) : null}
 
@@ -227,13 +228,13 @@ export default function InTheNewsPage() {
               {/* Floated Gallery Collage on the Right */}
               <div className="news-spotlight-gallery-float">
                 <div className="news-spotlight-tile news-spotlight-tile--top-left">
-                  <img src={EVENT_GALLERY[1]} alt="Dr. Sharda Harvey at a Royal Versailles Ball portrait setting" />
+                  <Image src={EVENT_GALLERY[1]} alt="Dr. Sharda Harvey at a Royal Versailles Ball portrait setting" width={1200} height={800} />
                 </div>
                 <div className="news-spotlight-tile news-spotlight-tile--top-right">
-                  <img src={EVENT_GALLERY[0]} alt="Dr. Sharda Harvey at the Royal Versailles Ball 2026" />
+                  <Image src={EVENT_GALLERY[0]} alt="Dr. Sharda Harvey at the Royal Versailles Ball 2026" width={1200} height={800} />
                 </div>
                 <div className="news-spotlight-tile news-spotlight-tile--bottom-right">
-                  <img src={EVENT_GALLERY[2]} alt="Dr. Sharda Harvey attending the Royal Versailles Ball with a guest" />
+                  <Image src={EVENT_GALLERY[2]} alt="Dr. Sharda Harvey attending the Royal Versailles Ball with a guest" width={1200} height={800} />
                 </div>
               </div>
 
@@ -281,11 +282,10 @@ export default function InTheNewsPage() {
             <div className="news-spotlight-editorial">
               {/* Floated Single Image on the Right */}
               <div className="news-spotlight-single-float">
-                <img
+                <Image
                   src={WHITE_CROSS_IMAGE}
                   alt="Dr. Sharda Harvey at the White Cross Ball"
-                  className="news-single-img"
-                />
+                  className="news-single-img" width={1200} height={800} />
               </div>
 
               {/* Text Content */}

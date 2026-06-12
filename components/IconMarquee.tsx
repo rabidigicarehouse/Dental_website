@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import React from 'react';
 
 interface IconItem {
@@ -24,11 +25,10 @@ export default function IconMarquee() {
       {items.map((item, idx) => (
         <div className="icon-marquee-item" key={idx}>
           <div className="icon-circle">
-            <img 
+            <Image
               src={`/images/icons/${item.icon}`} 
               alt={item.label} 
-              className="marquee-icon-img" 
-            />
+              className="marquee-icon-img" width={160} height={160} />
           </div>
           <span className="icon-label">{item.label}</span>
         </div>

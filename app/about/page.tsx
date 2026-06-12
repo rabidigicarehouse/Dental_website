@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import Link from 'next/link';
 import MapContactSection from '@/components/MapContactSection';
 import Footer from '@/components/Footer';
@@ -63,11 +64,10 @@ export default function About() {
 
           <div className="doctor-float-section">
             {/* Floated image — text wraps around it like in a book */}
-            <img
+            <Image
               src="/Dr-harvey-1.jpg"
               alt="Dr. Sharda Harvey, DDS"
-              className="doctor-float-img wow fadeInRight"
-            />
+              className="doctor-float-img wow fadeInRight" width={1200} height={800} />
 
             <p className="wow fadeInUp" data-wow-delay=".3s">
               DR. SHARDE HARVEY, DDS, MS, FICOI is a skilled New York City General Dentist with extensive training in full mouth cosmetic rehabilitation and dental implants.
@@ -126,11 +126,10 @@ export default function About() {
           </div>
 
           <div className="doctor-float-section">
-            <img
+            <Image
               src="/Gretel Pellegrini Photo.jpg"
               alt="Dr. Pellegrini, Periodontist"
-              className="doctor-float-img doctor-float-img--left wow fadeInLeft"
-            />
+              className="doctor-float-img doctor-float-img--left wow fadeInLeft" width={1200} height={800} />
 
             <p className="wow fadeInUp" data-wow-delay=".3s">
               Dr. Pellegrini is a Diplomate of the American Board of Periodontology, a recognized specialty of the National Commission on Recognition of Dental Specialties and Certifying Boards. She holds a DDS from Columbia University College of Dental Medicine and completed her surgical training in Periodontics and Implant Surgery, obtaining a Master of Science Degree in Periodontics at Columbia University, where she served as Chief Resident.
@@ -198,11 +197,10 @@ export default function About() {
           </div>
 
           <div className="doctor-float-section">
-            <img
+            <Image
               src="/Paola-Image.jpg"
               alt="Paola Cruz"
-              className="doctor-float-img wow fadeInRight"
-            />
+              className="doctor-float-img wow fadeInRight" width={1200} height={800} />
 
             <p className="wow fadeInUp" data-wow-delay=".3s">
               Paola Cruz is a dedicated Dental Assistant and Front Office Coordinator with a passion for patient care and healthcare administration. Before moving to the United States in 2019, she completed her first year of Medical Technology studies at Centro Escolar University (CEU) Las Piñas, where she developed a strong foundation in biology, laboratory sciences, and healthcare practices.

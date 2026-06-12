@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
 import MapContactSection from '@/components/MapContactSection';
@@ -100,7 +101,7 @@ export default function Gallery() {
             {portfolioImages.map((img, idx) => (
               <div className="col-lg-3 col-md-6" key={idx}>
                 <div className="relative overflow-hidden rounded-10 shadow-sm wow zoomIn" data-wow-delay={`${idx * 0.1}s`}>
-                  <img src={img} className="w-100 hover-scale-1-2" alt={`Transformation ${idx + 1}`} />
+                  <Image src={img} className="w-100 hover-scale-1-2" alt={`Transformation ${idx + 1}`} width={1200} height={800} />
                   <div className="absolute bottom-0 start-0 w-100 p-3 text-white text-center" style={{ background: 'linear-gradient(transparent, rgba(0,0,0,0.8))' }}>
                     <span className="fs-12 fw-bold text-uppercase ls-2">Result {idx + 1}</span>
                   </div>
@@ -141,7 +142,7 @@ export default function Gallery() {
                       View
                     </div>
                     <div className="absolute start-0 w-100 h-100 overlay-black-5 hover-op-1 z-2"></div>
-                    <img src={item.image} className="w-100 hover-scale-1-2" alt="" />
+                    <Image src={item.image} className="w-100 hover-scale-1-2" alt="" width={1200} height={800} />
                   </div>
                 </a>
               </div>

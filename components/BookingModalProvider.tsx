@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import React, {
   createContext,
   useCallback,
@@ -616,7 +617,7 @@ function BookingModal({ onClose }: { onClose: () => void }) {
                                 setCountryDropdownOpen(!countryDropdownOpen);
                             }}
                           >
-                            <img src={selectedCountry.flagUrl} alt={selectedCountry.name} className="bmp-flag-img" />
+                            <Image src={selectedCountry.flagUrl} alt={selectedCountry.name} className="bmp-flag-img" width={32} height={24} />
                             <span className="bmp-caret-icon">▼</span>
                           </button>
                           {countryDropdownOpen && (
@@ -642,7 +643,7 @@ function BookingModal({ onClose }: { onClose: () => void }) {
                                     setField('phone', ''); // Reset on change
                                   }}
                                 >
-                                  <img src={c.flagUrl} alt={c.name} className="bmp-flag-img" />
+                                  <Image src={c.flagUrl} alt={c.name} className="bmp-flag-img" width={32} height={24} />
                                   <span className="bmp-country-name">{c.name}</span>
                                   <span className="bmp-dial-code">{c.dialCode}</span>
                                 </button>

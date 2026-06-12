@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import Link from 'next/link';
 import MapContactSection from '@/components/MapContactSection';
 import Footer from '@/components/Footer';
@@ -10,11 +11,10 @@ export default function LANAPLaserTreatment() {
     <>
       {/* Full-width main heading — banner fits edge to edge, fully visible */}
       <section className="lanap-banner-hero" aria-label={SERVICE_NAME}>
-        <img
+        <Image
           src={`${ASSET}/lanap banner.jpg`}
           className="lanap-banner-hero__img"
-          alt="LANAP Protocol — laser-assisted periodontal treatment"
-        />
+          alt="LANAP Protocol — laser-assisted periodontal treatment" width={1200} height={800} />
       </section>
 
       {/* Intro — same structure as other service pages (image + information) */}
@@ -23,11 +23,10 @@ export default function LANAPLaserTreatment() {
           <div className="row g-4 align-items-center">
             <div className="col-lg-7">
               <div className="w-100 wow scaleIn">
-                <img
+                <Image
                   src={`${ASSET}/lanap.png`}
                   className="w-100 rounded-1 lanap-intro-img"
-                  alt="LANAP laser-assisted new attachment procedure"
-                />
+                  alt="LANAP laser-assisted new attachment procedure" width={1200} height={800} />
               </div>
             </div>
             <div className="col-lg-5">
@@ -61,11 +60,10 @@ export default function LANAPLaserTreatment() {
           <div className="row g-5 align-items-center flex-lg-row-reverse">
             <div className="col-lg-6">
               <div className="lanap-machine-img-wrap wow fadeInUp">
-                <img
+                <Image
                   src={`${ASSET}/lanap machine.jpg`}
                   className="lanap-machine-img"
-                  alt="PerioLase MVP-7 laser system for LANAP treatment"
-                />
+                  alt="PerioLase MVP-7 laser system for LANAP treatment" width={1200} height={800} />
               </div>
             </div>
             <div className="col-lg-6">

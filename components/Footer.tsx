@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import Link from 'next/link';
 
 export default function Footer() {
@@ -6,16 +7,16 @@ export default function Footer() {
       <div className="container">
         <div className="row gx-5">
           <div className="col-lg-4 col-sm-6">
-            <img src="/main logo dark.png" className="logo-footer" alt="Dentia Logo" />
+            <Image src="/main logo dark.png" className="logo-footer" alt="Upper East Dental Innovations" width={420} height={160} />
             <div className="spacer-20"></div>
             <p>At Upper East, we’re dedicated to providing high-quality, personalized dental care for patients of all ages. Our skilled team uses the latest technology to ensure comfortable, efficient treatments and beautiful, healthy smiles for life.</p>
 
             <div className="social-icons mb-sm-30">
-              <Link href="https://www.facebook.com/UpperEastDental/" target="_blank"><i style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}><img src="/social icons/facebook.png" alt="Facebook" style={{ width: '18px', height: '18px', objectFit: 'contain' }} /></i></Link>
-              <Link href="https://x.com/uppereastdental" target="_blank"><i style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}><img src="/social icons/twitter.png" alt="X (Twitter)" style={{ width: '18px', height: '18px', objectFit: 'contain' }} /></i></Link>
-              <Link href="https://www.linkedin.com/in/shardeharvey/?_l=en_US" target="_blank"><i style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}><img src="/social icons/linkedin.png" alt="LinkedIn" style={{ width: '18px', height: '18px', objectFit: 'contain' }} /></i></Link>
-              <Link href="https://www.instagram.com/uppereastdentalnyc/?hl=en" target="_blank"><i style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}><img src="/social icons/instagram.png" alt="Instagram" style={{ width: '18px', height: '18px', objectFit: 'contain' }} /></i></Link>
-              <Link href="https://www.youtube.com/@askadentistaskdr.harvey7701" target="_blank"><i style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}><img src="/social icons/youtube.png" alt="YouTube" style={{ width: '18px', height: '18px', objectFit: 'contain' }} /></i></Link>
+              <Link href="https://www.facebook.com/UpperEastDental/" target="_blank"><i style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}><Image src="/social icons/facebook.png" alt="Facebook" style={{ width: '18px', height: '18px', objectFit: 'contain' }} width={24} height={24} /></i></Link>
+              <Link href="https://x.com/uppereastdental" target="_blank"><i style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}><Image src="/social icons/twitter.png" alt="X (Twitter)" style={{ width: '18px', height: '18px', objectFit: 'contain' }} width={24} height={24} /></i></Link>
+              <Link href="https://www.linkedin.com/in/shardeharvey/?_l=en_US" target="_blank"><i style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}><Image src="/social icons/linkedin.png" alt="LinkedIn" style={{ width: '18px', height: '18px', objectFit: 'contain' }} width={24} height={24} /></i></Link>
+              <Link href="https://www.instagram.com/uppereastdentalnyc/?hl=en" target="_blank"><i style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}><Image src="/social icons/instagram.png" alt="Instagram" style={{ width: '18px', height: '18px', objectFit: 'contain' }} width={24} height={24} /></i></Link>
+              <Link href="https://www.youtube.com/@askadentistaskdr.harvey7701" target="_blank"><i style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}><Image src="/social icons/youtube.png" alt="YouTube" style={{ width: '18px', height: '18px', objectFit: 'contain' }} width={24} height={24} /></i></Link>
             </div>
           </div>
           <div className="col-lg-4 col-sm-12 order-lg-1 order-sm-2">

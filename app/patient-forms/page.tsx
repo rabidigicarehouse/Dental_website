@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import Link from 'next/link';
 import MapContactSection from '@/components/MapContactSection';
 import Footer from '@/components/Footer';
@@ -72,7 +73,7 @@ export default function PatientForms() {
               <div className="col-lg-3 col-md-6" key={idx}>
                 <div className="contact-info-card wow fadeInUp" data-wow-delay={`${idx * 0.1}s`}>
                   <div className="rounded-20 overflow-hidden mb-4 shadow-sm w-100" style={{ height: '180px' }}>
-                    <img src={form.image} className="w-100 h-100 object-cover" alt={form.name} />
+                    <Image src={form.image} className="w-100 h-100 object-cover" alt={form.name} width={1200} height={800} />
                   </div>
                   <h4 className="fw-700 mb-2">{form.name}</h4>
                   <p className="fs-14 text-muted mb-4 px-3">{form.description}</p>
