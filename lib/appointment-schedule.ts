@@ -34,6 +34,11 @@ export function getClinicTodayKey(now = new Date()) {
   return `${parts.year}-${String(parts.month).padStart(2, '0')}-${String(parts.day).padStart(2, '0')}`;
 }
 
+export function getClinicCurrentMinutes(now = new Date()) {
+  const parts = clinicDateParts(now);
+  return parts.hour * 60 + parts.minute;
+}
+
 export function normalizeAppointmentDateKey(value: string) {
   const trimmed = value.trim();
   const isoMatch = trimmed.match(/^(\d{4})-(\d{2})-(\d{2})/);
@@ -92,7 +97,7 @@ export function validateAppointmentSlot(dateValue: string, timeValue: string, no
 
   const parsedTime = parseAppointmentTime(timeValue);
   if (!parsedTime) {
-    return { ok: false, reason: 'I could not read that time. Please try a time such as 10:00 AM or 2:30 PM.' };
+    return { ok: false, reason: 'I could not read that time. Could you say it again?' };
   }
 
   if (
@@ -106,8 +111,7 @@ export function validateAppointmentSlot(dateValue: string, timeValue: string, no
   }
 
   if (dateKey === clinicToday) {
-    const clinicNow = clinicDateParts(now);
-    const currentMinutes = clinicNow.hour * 60 + clinicNow.minute;
+    const currentMinutes = getClinicCurrentMinutes(now);
     if (parsedTime.totalMinutes <= currentMinutes) {
       return { ok: false, reason: 'That time has already passed today. Please choose a later available time.' };
     }
@@ -120,4 +124,3 @@ export function validateAppointmentSlot(dateValue: string, timeValue: string, no
     slotKey: `${dateKey}|${parsedTime.display}`,
   };
 }
-

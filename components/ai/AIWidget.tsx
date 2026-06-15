@@ -8,7 +8,9 @@ import Link from "next/link";
 import ChatBox from "./ChatBox";
 import { buildBackendUrl } from "@/lib/api-base-url";
 import {
+  getClinicCurrentMinutes,
   getClinicTodayKey,
+  LATEST_APPOINTMENT_START_MINUTES,
   normalizeAppointmentDateKey,
   validateAppointmentSlot,
 } from "@/lib/appointment-schedule";
@@ -537,11 +539,10 @@ export default function AIWidget() {
 
   const validateAppointmentDateSelection = useCallback((value: string) => {
     const t = value.trim();
-    const d = new Date(t);
     const dateKey = normalizeAppointmentDateKey(t);
-    if (Number.isNaN(d.getTime()) || !dateKey) {
+    if (!dateKey) {
       tomorrowOfferPendingRef.current = false;
-      return { ok: false as const, reason: 'I could not read that date. Try a format like "May 22, 2026".' };
+      return { ok: false as const, reason: "I could not read that date. Could you say it again?" };
     }
 
     if (dateKey < getClinicTodayKey()) {
@@ -549,7 +550,9 @@ export default function AIWidget() {
       return { ok: false as const, reason: "That date has already passed. Please choose a current or future weekday." };
     }
 
-    if (isWeekendDate(d)) {
+    const dateAtNoonUtc = new Date(`${dateKey}T12:00:00Z`);
+    const weekday = dateAtNoonUtc.getUTCDay();
+    if (weekday === 0 || weekday === 6) {
       tomorrowOfferPendingRef.current = false;
       return {
         ok: false as const,
@@ -557,21 +560,17 @@ export default function AIWidget() {
       };
     }
 
-    const now = new Date();
-    if (isSameCalendarDay(d, now)) {
-      const currentMinutes = now.getHours() * 60 + now.getMinutes();
-      if (currentMinutes >= 17 * 60 + 30) {
-        tomorrowOfferPendingRef.current = true;
-        return {
-          ok: false as const,
-          reason: "Sorry, today's booking time for appointment is about to over. Can I book the appointment for tomorrow instead?",
-        };
-      }
+    if (dateKey === getClinicTodayKey() && getClinicCurrentMinutes() >= LATEST_APPOINTMENT_START_MINUTES) {
+      tomorrowOfferPendingRef.current = true;
+      return {
+        ok: false as const,
+        reason: "Sorry, today's appointment window is already over, so today cannot be selected. Would you like me to book the next available weekday instead?",
+      };
     }
 
     tomorrowOfferPendingRef.current = false;
-    return { ok: true as const, clean: d.toISOString() };
-  }, [isSameCalendarDay, isWeekendDate]);
+    return { ok: true as const, clean: dateAtNoonUtc.toISOString() };
+  }, []);
 
   const validateAppointmentTimeWindow = useCallback((dateValue: string | undefined, timeValue: string) => {
     if (dateValue) {
@@ -582,7 +581,7 @@ export default function AIWidget() {
 
     const parsedTime = parseTimeTo24Hour(timeValue);
     if (!parsedTime) {
-      return { ok: false as const, reason: 'I could not read that time. Try "10:00 AM" or "2:30 PM".' };
+      return { ok: false as const, reason: "I could not read that time. Could you say it again?" };
     }
 
     const { hour, minute } = parsedTime;
@@ -662,17 +661,17 @@ export default function AIWidget() {
     },
     {
       key: "dob",
-      ask: "What's your date of birth? Please use MM/DD/YYYY.",
+      ask: "What's your date of birth?",
       validate: (v) => {
         const t = v.trim();
         const m = t.match(/^(\d{1,2})[\/\-.](\d{1,2})[\/\-.](\d{2,4})$/);
-        if (!m) return { ok: false, reason: "Please use MM/DD/YYYY - for example 05/14/1990." };
+        if (!m) return { ok: false, reason: "I couldn't read your date of birth. Could you say it again?" };
         const [, mm, dd, yy] = m;
         const year = yy.length === 2 ? Number(yy) + (Number(yy) > 30 ? 1900 : 2000) : Number(yy);
         const month = Number(mm);
         const day = Number(dd);
         if (month < 1 || month > 12 || day < 1 || day > 31 || year < 1900) {
-          return { ok: false, reason: "That date doesn't look right. Try MM/DD/YYYY, for example 05/14/1990." };
+          return { ok: false, reason: "That date of birth doesn't look right. Could you say it again?" };
         }
         return {
           ok: true,
@@ -724,12 +723,12 @@ export default function AIWidget() {
     },
     {
       key: "date",
-      ask: "What date works for you? Please use a format like May 22, 2026.",
+      ask: "What date works for you?",
       validate: (v) => validateAppointmentDateSelection(v),
     },
     {
       key: "time",
-      ask: "And what time? For example 10:00 AM or 2:30 PM. We book Monday through Friday between 9:00 AM and 6:00 PM.",
+      ask: "And what time works best for you?",
       validate: (v) => {
         const t = v.trim();
         return validateAppointmentTimeWindow(bookingDataRef.current.date, t);
@@ -1118,6 +1117,21 @@ export default function AIWidget() {
     return explicit?.[1] || explicit?.[2] || "";
   }, []);
 
+  const detectBookingFieldCorrection = useCallback((text: string): BookingFieldKey | null => {
+    if (!/\b(?:actually|change|correct|correction|instead|not|sorry|update|wrong)\b/i.test(text)) {
+      return null;
+    }
+
+    if (/\b(?:email|e-mail)\b/i.test(text)) return "email";
+    if (/\b(?:date of birth|birth date|dob)\b/i.test(text)) return "dob";
+    if (/\b(?:appointment date|booking date)\b/i.test(text)) return "date";
+    if (/\b(?:appointment time|booking time|time slot)\b/i.test(text)) return "time";
+    if (/\b(?:reason|visit reason)\b/i.test(text)) return "reason";
+    if (/\b(?:sex|gender)\b/i.test(text)) return "sex";
+    if (/\b(?:last name|surname)\b/i.test(text)) return "lastName";
+    return null;
+  }, []);
+
   const titleCaseName = useCallback((value: string) => {
     return value
       .trim()
@@ -1135,6 +1149,7 @@ export default function AIWidget() {
 
       const lowered = text.trim().toLowerCase();
       const correctedName = detectNameCorrection(text);
+      const correctedBookingField = detectBookingFieldCorrection(text);
       const isPhoneCorrection =
         /\b(?:correct|change|update|actually|sorry|not)\b.*\b(?:phone|number)\b|\b(?:phone|number)\b.*\b(?:correct|change|update|actually|sorry|not)\b/i.test(text) ||
         Boolean(userPhone && /\b(?:correct|change|update|actually|sorry|not)\b/i.test(text) && /\d/.test(text));
@@ -1163,6 +1178,42 @@ export default function AIWidget() {
           speak(reply);
           return;
         }
+      }
+
+      if (correctedBookingField && (bookingStepRef.current >= 0 || Object.keys(bookingDataRef.current).length > 0)) {
+        const extracted = await requestAiBookingAutofill(text, correctedBookingField);
+        const correctedValue = extracted[correctedBookingField];
+
+        if (correctedValue) {
+          bookingDataRef.current[correctedBookingField] = correctedValue;
+
+          if (correctedBookingField === "date" && bookingDataRef.current.time) {
+            const existingTimeResult = validateAppointmentTimeWindow(correctedValue, bookingDataRef.current.time);
+            if (!existingTimeResult.ok) {
+              delete bookingDataRef.current.time;
+            }
+          }
+
+          const fieldLabels: Partial<Record<BookingFieldKey, string>> = {
+            lastName: "last name",
+            dob: "date of birth",
+            email: "email address",
+            sex: "sex",
+            reason: "reason for the visit",
+            date: "appointment date",
+            time: "appointment time",
+          };
+          const label = fieldLabels[correctedBookingField] || "information";
+          const reply = `Thank you for correcting me. I've updated your ${label}.`;
+          appendAiMessage(reply);
+          speak(reply);
+          return;
+        }
+
+        const reply = `I understand you want to correct that. Could you tell me the correct ${correctedBookingField === "dob" ? "date of birth" : correctedBookingField === "date" ? "appointment date" : correctedBookingField === "time" ? "appointment time" : correctedBookingField}?`;
+        appendAiMessage(reply);
+        speak(reply);
+        return;
       }
 
       if (isOnboarding) {
@@ -1477,6 +1528,7 @@ export default function AIWidget() {
       looksLikeQuestionOrRequest,
       extractOnboardingName,
       detectNameCorrection,
+      detectBookingFieldCorrection,
       normalizeDentalSpeech,
       titleCaseName,
     ]
