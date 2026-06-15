@@ -275,8 +275,20 @@ export default function ScriptHandler() {
       document.body.appendChild(header);
       header.style.setProperty('position', 'fixed', 'important');
       header.style.setProperty('top', '0', 'important');
+      header.style.setProperty('right', 'auto', 'important');
+      header.style.setProperty('bottom', '0', 'important');
       header.style.setProperty('left', '0', 'important');
       header.style.setProperty('margin', '0', 'important');
+      header.style.setProperty('z-index', '2147483600', 'important');
+    };
+
+    const forceCloseMobileMenu = () => {
+      const header = document.querySelector<HTMLElement>('header');
+      header?.classList.remove('menu-open', 'menu-closing');
+      document.getElementById('menu-btn')?.classList.remove('menu-open');
+      document.body.classList.remove('mobile-nav-closing');
+      unlockPageScroll();
+      restoreMobileDrawerHome();
     };
 
     const restoreMobileDrawerHome = () => {
@@ -286,8 +298,11 @@ export default function ScriptHandler() {
 
       if (header) {
         header.style.removeProperty('position');
+        header.style.removeProperty('right');
+        header.style.removeProperty('bottom');
         header.style.removeProperty('left');
         header.style.removeProperty('margin');
+        header.style.removeProperty('z-index');
         if (placeholder?.parentNode === parent) {
           parent.insertBefore(header, placeholder);
         } else if (nextSibling?.parentNode === parent) {
@@ -375,10 +390,22 @@ export default function ScriptHandler() {
       $(document).off('click.mobileDentiaMenu', '#mainmenu a');
       $(document).off('click.mobileDentiaMenuArrow', '#mainmenu li > span');
 
-      const closeMenu = () => {
+      const closeMenu = (immediately = false) => {
         if (window.innerWidth > 1024) return;
         const $header = $('header');
         if (!$header.hasClass('menu-open') || $header.hasClass('menu-closing')) return;
+
+        if (immediately) {
+          if (closeTimer) window.clearTimeout(closeTimer);
+          $header.removeClass('menu-open menu-closing');
+          $('#menu-btn').removeClass('menu-open');
+          document.body.classList.remove('mobile-nav-closing');
+          unlockPageScroll();
+          restoreMobileDrawerHome();
+          resetMobileHeaderState();
+          closeTimer = null;
+          return;
+        }
 
         $header.addClass('menu-closing');
         document.body.classList.add('mobile-nav-closing');
@@ -397,13 +424,15 @@ export default function ScriptHandler() {
       };
 
       const bindMenuButton = () => {
-        // Remove existing handlers to prevent conflicts (fix "3 actions")
+        // Remove legacy direct/delegated handlers before installing the
+        // capture listener that always runs before on3step's menu toggle.
         $('#menu-btn').off('click');
         $(document).off('click', '#menu-btn');
         $(document).off('click.mobileDentiaMenuBtn', '#menu-btn');
 
-        // Attach new handler via delegation (robust to re-renders)
-        $(document).on('click.mobileDentiaMenuBtn', '#menu-btn', function (this: any, e: any) {
+        const handleMenuButtonClick = (e: Event) => {
+          const target = e.target as Element | null;
+          if (!target?.closest('#menu-btn')) return;
           if (window.innerWidth > 1024) return;
           e.preventDefault();
           e.stopPropagation();
@@ -421,10 +450,13 @@ export default function ScriptHandler() {
             lockPageScroll();
             resetMobileHeaderState();
           }
-        });
+        };
+
+        document.addEventListener('click', handleMenuButtonClick, true);
+        return () => document.removeEventListener('click', handleMenuButtonClick, true);
       };
 
-      bindMenuButton();
+      const cleanupMenuButton = bindMenuButton();
 
       $(document).off('click.mobileDentiaBackdrop', '.mobile-nav-backdrop');
       $(document).on('click.mobileDentiaBackdrop', '.mobile-nav-backdrop', function (e: Event) {
@@ -450,7 +482,7 @@ export default function ScriptHandler() {
           return false;
         }
 
-        closeMenu();
+        closeMenu(true);
       });
 
       $(document).on('click.mobileDentiaMenuArrow', '#mainmenu li > span', function (this: any, e: any) {
@@ -470,16 +502,24 @@ export default function ScriptHandler() {
       return () => {
         if (closeTimer) window.clearTimeout(closeTimer);
         document.body.classList.remove('mobile-nav-closing');
-        restoreMobileDrawerHome();
+        if (!document.querySelector('header.menu-open')) {
+          restoreMobileDrawerHome();
+        }
         $(document).off('click.mobileDentiaMenuBtn');
         $(document).off('click.mobileDentiaMenu');
         $(document).off('click.mobileDentiaMenuArrow');
         $(document).off('click.mobileDentiaBackdrop');
+        cleanupMenuButton?.();
       };
     };
 
     let cleanupMobileMenu: (() => void) | undefined;
     let initialized = false;
+
+    // A route transition must always begin with the drawer closed. This also
+    // restores the header before React renders the next page.
+    forceCloseMobileMenu();
+
     const initScripts = () => {
       if (initialized) return;
       if (typeof window === 'undefined') return;
@@ -559,11 +599,37 @@ export default function ScriptHandler() {
       clearTimeout(timerB);
       clearTimeout(timerC);
       window.removeEventListener('resize', resetMobileHeaderState);
-      unlockPageScroll();
-      restoreMobileDrawerHome();
+      forceCloseMobileMenu();
       if (btnExtra) btnExtra.removeEventListener('click', handleMenuClick);
       if (btnClose) btnClose.removeEventListener('click', handleCloseClick);
       if (cleanupMobileMenu) cleanupMobileMenu();
+    };
+  }, [pathname]);
+
+  useEffect(() => {
+    const backToTop = document.getElementById('back-to-top');
+    if (!backToTop) return;
+
+    const updateBackToTop = () => {
+      const shouldShow = window.scrollY > 100;
+      backToTop.classList.toggle('show', shouldShow);
+      backToTop.classList.toggle('hide', !shouldShow);
+      backToTop.setAttribute('aria-hidden', String(!shouldShow));
+      backToTop.tabIndex = shouldShow ? 0 : -1;
+    };
+
+    const handleBackToTop = (event: MouseEvent) => {
+      event.preventDefault();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+
+    updateBackToTop();
+    window.addEventListener('scroll', updateBackToTop, { passive: true });
+    backToTop.addEventListener('click', handleBackToTop);
+
+    return () => {
+      window.removeEventListener('scroll', updateBackToTop);
+      backToTop.removeEventListener('click', handleBackToTop);
     };
   }, [pathname]);
 

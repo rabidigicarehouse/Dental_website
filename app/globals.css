@@ -1335,6 +1335,7 @@ body.ai-widget-open .payment-method-desc {
 }
 
 
+
 /* Hero carousel dots back at theme default (CTA is no longer overlapping them) */
 #section-intro .swiper-pagination,
 #section-intro [class*="swiper"] .abs.z-3 {
@@ -1546,6 +1547,128 @@ body.is-homepage header.smaller:not(.uedi-subpage-header) {
   .tb-social img {
     width: 18px;
     height: 18px;
+  }
+}
+
+/* Keep the top information banner on one responsive line at every viewport. */
+.top-banner-inner {
+  flex-wrap: nowrap;
+  min-width: 0;
+}
+
+.top-banner-inner .tb-item {
+  flex: 0 0 auto;
+  min-width: 0;
+}
+
+.top-banner-inner .tb-address {
+  flex: 1 1 auto;
+  overflow: hidden;
+}
+
+.top-banner-inner .tb-address a {
+  display: block;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@media (min-width: 993px) {
+  .top-banner-inner,
+  body.ai-widget-open .top-banner-inner {
+    display: grid;
+    grid-template-columns: minmax(max-content, 1fr) minmax(max-content, 1fr) auto minmax(0, 1.35fr);
+    align-items: center;
+    justify-content: center;
+    column-gap: clamp(20px, 3vw, 64px);
+    width: 100%;
+  }
+
+  .top-banner-inner .tb-hours {
+    justify-self: start;
+  }
+
+  .top-banner-inner .tb-phone,
+  .top-banner-inner .tb-socials {
+    justify-self: center;
+  }
+
+  .top-banner-inner .tb-address {
+    justify-self: end;
+    width: 100%;
+    justify-content: flex-end;
+  }
+}
+
+@media (min-width: 993px) and (max-width: 1500px) {
+  .top-banner {
+    font-size: clamp(10px, 0.82vw, 12px);
+  }
+
+  .top-banner-inner {
+    gap: clamp(8px, 1.15vw, 18px);
+    padding: 8px clamp(12px, 1.4vw, 20px);
+  }
+
+  .top-banner-inner .tb-item {
+    gap: clamp(5px, 0.65vw, 9px);
+  }
+
+  .top-banner-inner .tb-socials {
+    gap: clamp(6px, 0.7vw, 10px);
+  }
+
+  .top-banner-inner .tb-social img {
+    width: clamp(16px, 1.35vw, 20px);
+    height: clamp(16px, 1.35vw, 20px);
+  }
+
+  .top-banner-inner .tb-icon {
+    font-size: clamp(12px, 1vw, 15px);
+  }
+}
+
+@media (max-width: 992px) {
+  .top-banner-inner {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: center;
+    gap: clamp(24px, 8vw, 64px);
+  }
+
+  .top-banner-inner .tb-phone,
+  .top-banner-inner .tb-socials {
+    flex: 0 0 auto;
+  }
+
+  .top-banner-inner .tb-socials {
+    gap: 8px;
+  }
+}
+
+@media (max-width: 420px) {
+  .top-banner-inner {
+    gap: 8px;
+    padding-right: 8px;
+    padding-left: 8px;
+  }
+
+  .top-banner-inner .tb-phone {
+    font-size: 10px;
+  }
+
+  .top-banner-inner .tb-phone .tb-icon {
+    font-size: 12px;
+  }
+
+  .top-banner-inner .tb-socials {
+    gap: 6px;
+  }
+
+  .top-banner-inner .tb-social img {
+    width: 16px;
+    height: 16px;
   }
 }
 
@@ -4232,6 +4355,14 @@ header.scrollOff {
   bottom: var(--rail-bottom) !important;
   right: var(--rail-right) !important;
   opacity: 1 !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
+}
+
+#back-to-top.hide {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
 }
 
 #back-to-top:before {
@@ -10204,9 +10335,25 @@ body.square-booking-active {
     padding-bottom: 8px !important;
   }
 
+  body.is-homepage #section-intro .hero-bottom-ui > .container {
+    display: flex !important;
+    width: 100% !important;
+    max-width: none !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    margin: 0 auto !important;
+    padding-right: 12px !important;
+    padding-left: 12px !important;
+    transform: translateY(-28px) !important;
+  }
+
   body.is-homepage #section-intro .hero-carousel-dots {
+    width: fit-content !important;
     margin-top: 0 !important;
+    margin-right: auto !important;
     margin-bottom: 16px !important;
+    margin-left: auto !important;
     z-index: 2 !important;
   }
 
@@ -10231,6 +10378,9 @@ body.square-booking-active {
   }
 
   body.is-homepage #section-intro .cta-glass-section {
+    display: flex !important;
+    width: 100% !important;
+    justify-content: center !important;
     margin-top: 0 !important;
     padding-top: 0 !important;
     padding-bottom: 0 !important;
@@ -12681,6 +12831,54 @@ body.ai-widget-open .tech-sticky-card:nth-child(3) {
   }
 }
 
+/* Compact desktop story cards replace one another without exposing strips
+   from the cards underneath. Kept last so it wins over older breakpoint rules. */
+@media (min-width: 993px) and (max-width: 1366px) {
+  body.is-homepage .stacked-slider--sticky .stacked-story-stack,
+  body.is-homepage.ai-widget-open .stacked-slider--sticky .stacked-story-stack {
+    gap: 0 !important;
+    padding-top: 0 !important;
+  }
+
+  body.is-homepage .stacked-slider--sticky .stacked-story-sticky-card,
+  body.is-homepage .stacked-slider--sticky .stacked-story-sticky-card:nth-child(n),
+  body.is-homepage.ai-widget-open .stacked-slider--sticky .stacked-story-sticky-card,
+  body.is-homepage.ai-widget-open .stacked-slider--sticky .stacked-story-sticky-card:nth-child(n) {
+    top: 96px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  body.is-homepage .stacked-slider--sticky .stacked-card-inner,
+  body.is-homepage.ai-widget-open .stacked-slider--sticky .stacked-card-inner {
+    overflow: hidden !important;
+  }
+}
+
+@media (min-width: 993px) and (max-width: 1366px) and (max-height: 700px) {
+  body.is-homepage .stacked-slider--sticky .stacked-story-stack,
+  body.is-homepage.ai-widget-open .stacked-slider--sticky .stacked-story-stack {
+    gap: 0 !important;
+    padding: 0 !important;
+  }
+
+  body.is-homepage .stacked-slider--sticky .stacked-story-sticky-card,
+  body.is-homepage .stacked-slider--sticky .stacked-story-sticky-card:nth-child(n),
+  body.is-homepage.ai-widget-open .stacked-slider--sticky .stacked-story-sticky-card,
+  body.is-homepage.ai-widget-open .stacked-slider--sticky .stacked-story-sticky-card:nth-child(n) {
+    top: 96px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+}
+
+@media (min-width: 1281px) and (max-width: 1366px) and (max-height: 700px) {
+  body.is-homepage .stacked-slider--sticky,
+  body.is-homepage.ai-widget-open .stacked-slider--sticky {
+    margin-bottom: -760px !important;
+  }
+}
+
 /* ========================================== */
 /* Conversion Offer + Lead Capture            */
 /* ========================================== */
@@ -12984,6 +13182,84 @@ body.ai-widget-open .tech-sticky-card:nth-child(3) {
   max-width: 360px;
   margin-bottom: 22px;
   color: #65767f;
+}
+
+/* Desktop navbar with the AI panel closed: use the available header width
+   instead of keeping every link packed into a centered cluster. */
+@media (min-width: 1025px) {
+  body:not(.ai-widget-open) header .container {
+    padding-left: 20px !important;
+    padding-right: 20px !important;
+  }
+
+  body:not(.ai-widget-open) header .container .row > .col-md-12,
+  body:not(.ai-widget-open) header .de-flex {
+    width: 100% !important;
+  }
+
+  body:not(.ai-widget-open) header .de-flex {
+    display: flex !important;
+    justify-content: space-between !important;
+    gap: 20px !important;
+    margin: 0 !important;
+  }
+
+  body:not(.ai-widget-open) header .header-col-mid {
+    flex: 1 1 auto !important;
+    min-width: 0 !important;
+  }
+
+  body:not(.ai-widget-open) header #mainmenu {
+    width: 100% !important;
+    justify-content: flex-end !important;
+    gap: clamp(7px, 1.4vw, 24px) !important;
+  }
+
+  body:not(.ai-widget-open) header #mainmenu > li {
+    margin-right: 0 !important;
+  }
+
+}
+
+@media (min-width: 1025px) and (max-width: 1280px) {
+  body:not(.ai-widget-open) header .mobile-header-logo {
+    margin-left: max(-8px, calc((100vw - 1100px) / 2 - 8px)) !important;
+  }
+}
+
+@media (min-width: 1281px) and (max-width: 1399px) {
+  body:not(.ai-widget-open) header .mobile-header-logo {
+    margin-left: calc((100vw - 1200px) / 2 - 8px) !important;
+  }
+}
+
+@media (min-width: 1400px) {
+  body:not(.ai-widget-open) header .mobile-header-logo {
+    margin-left: calc((100vw - 1304px) / 2 - 8px) !important;
+  }
+}
+
+/* Center the complete closed navbar on 1920x953-class desktop screens and
+   keep the homepage hero copy aligned with the centered logo edge. */
+@media (min-width: 1900px) and (max-width: 1940px) and (min-height: 900px) and (max-height: 1000px) {
+  body:not(.ai-widget-open) header .container .row > .col-md-12 {
+    justify-content: center !important;
+  }
+
+  body:not(.ai-widget-open) header .de-flex {
+    width: 1560px !important;
+    max-width: 1560px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+
+  body:not(.ai-widget-open) header .mobile-header-logo {
+    margin-left: 0 !important;
+  }
+
+  body.is-homepage:not(.ai-widget-open) #section-intro .hero-content-layer .container {
+    max-width: 1560px !important;
+  }
 }
 
 @media (max-width: 1500px) {
@@ -13368,6 +13644,70 @@ body.ai-widget-open .tech-sticky-card:nth-child(3) {
 .mobile-conversion-action:hover {
   transform: translateX(4px);
   box-shadow: 0 14px 32px rgba(29, 44, 54, 0.24);
+}
+
+@keyframes conversion-action-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(22, 83, 105, 0.42), 0 10px 26px rgba(29, 44, 54, 0.2);
+  }
+
+  50% {
+    box-shadow: 0 0 0 10px rgba(22, 83, 105, 0), 0 14px 32px rgba(29, 44, 54, 0.24);
+  }
+}
+
+@media (min-width: 769px) {
+  .mobile-conversion-action,
+  .mobile-conversion-action--book {
+    width: 56px !important;
+    min-width: 56px !important;
+    height: 56px !important;
+    min-height: 56px !important;
+    padding: 9px !important;
+    gap: 12px !important;
+    overflow: hidden !important;
+    justify-content: flex-start !important;
+    color: #ffffff !important;
+    background: #165369 !important;
+    border-color: rgba(255, 255, 255, 0.9) !important;
+    animation: conversion-action-pulse 2s ease-out infinite;
+    transition: width 0.35s ease, transform 0.25s ease, box-shadow 0.25s ease !important;
+  }
+
+  .mobile-conversion-action i,
+  .mobile-conversion-action--book i {
+    width: 36px !important;
+    min-width: 36px !important;
+    height: 36px !important;
+    color: #ffffff !important;
+    background: transparent !important;
+    font-size: 18px !important;
+    box-shadow: none !important;
+  }
+
+  .mobile-conversion-action span {
+    flex: 0 0 auto;
+    opacity: 0;
+    transition: opacity 0.2s ease 0.08s;
+  }
+
+  .mobile-conversion-action:hover,
+  .mobile-conversion-action:focus-visible {
+    width: 154px !important;
+    transform: translateX(4px) !important;
+    animation-play-state: paused;
+  }
+
+  .mobile-conversion-action--book:hover,
+  .mobile-conversion-action--book:focus-visible {
+    width: 236px !important;
+  }
+
+  .mobile-conversion-action:hover span,
+  .mobile-conversion-action:focus-visible span {
+    opacity: 1;
+  }
 }
 
 body.ai-widget-open .mobile-conversion-bar {
@@ -14553,6 +14893,12 @@ body.square-booking-active .mobile-conversion-bar {
     padding: 0 !important;
     justify-content: flex-start !important;
     z-index: 2147483500 !important;
+  }
+
+  body.mobile-nav-open > header.menu-open {
+    translate: none !important;
+    max-height: 100dvh !important;
+    border-top: 0 !important;
   }
 
   body > header.menu-open,
