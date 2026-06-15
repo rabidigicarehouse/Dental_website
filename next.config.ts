@@ -43,9 +43,7 @@ const contentSecurityPolicy = [
 
 const securityHeaders = [
   {
-    // Observe CSP violations before enforcing them so missed sources cannot
-    // interrupt the site's UI, forms, media, or AI-agent integrations.
-    key: 'Content-Security-Policy-Report-Only',
+    key: 'Content-Security-Policy',
     value: contentSecurityPolicy,
   },
   {
