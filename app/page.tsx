@@ -12,6 +12,7 @@ import MapContactSection from '@/components/MapContactSection';
 import Footer from '@/components/Footer';
 import IconMarquee from '@/components/IconMarquee';
 import ConsultationOfferSection from '@/components/ConsultationOfferSection';
+import EventImageCarousel from '@/components/EventImageCarousel';
 import { TEXT_TESTIMONIALS } from '@/lib/testimonials';
 
 export default function Home() {
@@ -141,30 +142,36 @@ export default function Home() {
           </div>
 
           <div className="mh-950-hero relative" style={{ overflow: 'hidden' }}>
-            {bgImages.map((img, index) => (
-              <div
-                key={index}
+            <AnimatePresence initial={false}>
+              <motion.div
+                key={bgImages[currentBg]}
                 className="abs w-100 h-100 swiper-inner"
-                style={{
-                  backgroundImage: `url(${img})`,
-                  backgroundPosition: isMobileViewport ? 'center 32%' : 'center',
-                  backgroundSize: 'cover',
-                  backgroundRepeat: 'no-repeat',
-                  opacity: currentBg === index ? 1 : 0,
-                  transform: currentBg === index
-                    ? (isMobileViewport ? 'scale(1.02)' : 'scale(1.06)')
-                    : 'scale(1)',
-                  transition: currentBg === index
-                    ? 'opacity 1.5s ease-in-out, transform 10s linear'
-                    : 'opacity 1.5s ease-in-out, transform 1.5s ease-in-out',
-                  zIndex: currentBg === index ? 1 : 0,
-                  position: 'absolute',
-                  top: 0,
-                  left: 0,
-                  transformOrigin: 'center center'
+                initial={{ opacity: 0, scale: 1 }}
+                animate={{
+                  opacity: 1,
+                  scale: isMobileViewport ? 1.02 : 1.06,
                 }}
-              />
-            ))}
+                exit={{ opacity: 0 }}
+                transition={{
+                  opacity: { duration: 1.5, ease: 'easeInOut' },
+                  scale: { duration: 10, ease: 'linear' },
+                }}
+                style={{ zIndex: 1, transformOrigin: 'center center' }}
+              >
+                <Image
+                  src={bgImages[currentBg]}
+                  alt=""
+                  fill
+                  priority={currentBg === 0}
+                  fetchPriority={currentBg === 0 ? 'high' : 'auto'}
+                  sizes="100vw"
+                  style={{
+                    objectFit: 'cover',
+                    objectPosition: isMobileViewport ? 'center 32%' : 'center',
+                  }}
+                />
+              </motion.div>
+            </AnimatePresence>
           </div>
 
           {/* Dots and Buttons Container */}
@@ -263,9 +270,9 @@ export default function Home() {
             <div className="row g-5 align-items-center w-100 m-0">
               <div className="col-lg-6">
                 <div className="about-img-container">
-                  <Image src="/about us section main.jpg" className="about-img-main" alt="About Main" width={1200} height={800} />
+                  <Image src="/about us section main.jpg" className="about-img-main" alt="About Main" width={1200} height={800} sizes="(max-width: 991px) 82vw, 46vw" />
                   <div className="about-img-small-wrap">
-                    <Image src="/about us section small.webp" className="about-img-small" alt="About Small" width={1200} height={800} />
+                    <Image src="/about us section small.webp" className="about-img-small" alt="About Small" width={1200} height={800} sizes="(max-width: 991px) 35vw, 20vw" />
                   </div>
                 </div>
               </div>
@@ -305,7 +312,7 @@ export default function Home() {
                   <div className="doctor-photo-decor doctor-photo-decor-1" />
                   <div className="doctor-photo-decor doctor-photo-decor-2" />
                   <div className="doctor-photo-frame">
-                    <Image src="/Dr harvey2.webp" alt="Dr. Sharda Harvey" width={1200} height={800} />
+                    <Image src="/Dr harvey2.webp" alt="Dr. Sharda Harvey" width={1200} height={800} sizes="(max-width: 991px) 75vw, 32vw" />
                     <div className="doctor-photo-glow" />
                   </div>
                 </div>
@@ -347,21 +354,9 @@ export default function Home() {
               </div>
             </div>
 
-            <div className="row g-5 align-items-center w-100 m-0">
+            <div id="royal-versailles-event" className="row g-5 align-items-center w-100 m-0">
               <div className="col-lg-5">
-                <div className="story-event-collage">
-                  <div className="story-event-collage__hero">
-                    <Image src="/images/events/image (4).png" alt="Dr. Sharda Harvey at the Royal Versailles Ball 2026" width={1200} height={800} />
-                  </div>
-                  <div className="story-event-collage__side">
-                    <div className="story-event-collage__tile">
-                      <Image src="/images/events/image (5).png" alt="Dr. Sharda Harvey at the Royal Versailles Ball portrait setting" width={1200} height={800} />
-                    </div>
-                    <div className="story-event-collage__tile">
-                      <Image src="/images/events/image (3).png" alt="Dr. Sharda Harvey at the Royal Versailles Ball event wall" width={1200} height={800} />
-                    </div>
-                  </div>
-                </div>
+                <EventImageCarousel />
               </div>
 
               <div className="col-lg-7">
@@ -394,7 +389,7 @@ export default function Home() {
               <div className="col-lg-5">
                 <div className="doctor-photo-wrap story-event-single" style={{ padding: 0, maxWidth: 420, margin: '0 auto' }}>
                   <div className="doctor-photo-frame">
-                    <Image src="/images/events/white cross ball.png" alt="Dr. Sharda Harvey at the White Cross Ball" width={1200} height={800} />
+                    <Image src="/images/events/white cross ball.png" alt="Dr. Sharda Harvey at the White Cross Ball" width={1200} height={800} sizes="(max-width: 991px) 75vw, 32vw" />
                     <div className="doctor-photo-glow" />
                   </div>
                 </div>
@@ -480,7 +475,7 @@ export default function Home() {
                 <div className="svc-photo-card w-100 wow fadeInUp" data-wow-delay={`${idx * 0.1}s`}>
                   {/* Photo */}
                   <div className="svc-photo-wrap">
-                    <Image src={service.img} alt={service.title} className="svc-photo-img" width={1200} height={800} />
+                    <Image src={service.img} alt={service.title} className="svc-photo-img" width={1200} height={800} sizes="(max-width: 767px) 92vw, (max-width: 1199px) 46vw, 23vw" />
                     <div className="svc-photo-overlay" />
                     {service.badge && (
                       <div className="svc-badge">{service.badge}</div>
@@ -489,7 +484,7 @@ export default function Home() {
                   {/* Body */}
                   <div className="svc-photo-body">
                     <div className="svc-icon-wrap">
-                      <Image src={`/images/icons/${service.icon}`} alt="" width={160} height={160} />
+                      <Image src={`/images/icons/${service.icon}`} alt="" width={160} height={160} sizes="80px" />
                     </div>
                     <h4 className="svc-photo-title">{service.title}</h4>
                     <p className="svc-photo-desc">{service.desc}</p>
@@ -574,15 +569,15 @@ export default function Home() {
               <div className="row g-4 align-items-center">
                 <div className="col-6 text-end">
                   <div className="w-80 rounded-1 overflow-hidden mb-25 wow zoomIn d-inline-block">
-                    <Image src="/whychooseus/image_087.jpg" className="w-100 wow scaleIn" alt="Dental care at Upper East Dental" width={1200} height={800} />
+                    <Image src="/whychooseus/image_087.jpg" className="w-100 wow scaleIn" alt="Dental care at Upper East Dental" width={1200} height={800} sizes="(max-width: 991px) 40vw, 20vw" />
                   </div>
                   <div className="w-100 rounded-1 overflow-hidden mb-25 wow zoomIn d-inline-block">
-                    <Image src="/whychooseus/image_108.jpg" className="w-100 wow scaleIn" alt="Our dental team" width={1200} height={800} />
+                    <Image src="/whychooseus/image_108.jpg" className="w-100 wow scaleIn" alt="Our dental team" width={1200} height={800} sizes="(max-width: 991px) 48vw, 24vw" />
                   </div>
                 </div>
                 <div className="col-6">
                   <div className="w-100 rounded-1 overflow-hidden mb-25 wow zoomIn d-inline-block">
-                    <Image src="/whychooseus/image_013.jpg" className="w-100 wow scaleIn" alt="Happy patient at Upper East Dental" width={1200} height={800} />
+                    <Image src="/whychooseus/image_013.jpg" className="w-100 wow scaleIn" alt="Happy patient at Upper East Dental" width={1200} height={800} sizes="(max-width: 991px) 48vw, 24vw" />
                   </div>
                 </div>
               </div>
@@ -622,6 +617,7 @@ export default function Home() {
                           alt={member.name}
                           width={member.width}
                           height={member.height}
+                          sizes="(max-width: 767px) 92vw, (max-width: 991px) 46vw, 23vw"
                         />
                       </div>
                     </div>
@@ -685,9 +681,14 @@ export default function Home() {
           <h2 className="wow fadeInUp fs-60 mb-5" data-wow-delay=".2s">Hear Why Our Patients Love Us</h2>
 
           <div className="testimonial-single-wrapper relative wow fadeInUp" data-wow-delay=".4s">
-            <div className="testimonial-nav-btn prev" onClick={() => setCurrentTesti((prev) => (prev - 1 + testimonials.length) % testimonials.length)}>
+            <button
+              type="button"
+              className="testimonial-nav-btn prev"
+              aria-label="Previous testimonial"
+              onClick={() => setCurrentTesti((prev) => (prev - 1 + testimonials.length) % testimonials.length)}
+            >
               <i className="arrow_carrot-left"></i>
-            </div>
+            </button>
 
             <div className="testimonial-content-area">
               <div className="d-flex align-items-center justify-content-center mb-4">
@@ -696,7 +697,7 @@ export default function Home() {
                     {testimonials[currentTesti].name.trim().charAt(0).toUpperCase()}
                   </div>
                 ) : (
-                  <Image src={`/images/testimonial/${testimonials[currentTesti].img}`} className="testi-avatar-premium" alt={testimonials[currentTesti].name} width={160} height={160} />
+                  <Image src={`/images/testimonial/${testimonials[currentTesti].img}`} className="testi-avatar-premium" alt={testimonials[currentTesti].name} width={160} height={160} sizes="160px" />
                 )}
                 <div className="text-start ms-3">
                   <h4 className="mb-1">{testimonials[currentTesti].name}</h4>
@@ -723,9 +724,14 @@ export default function Home() {
               </div>
             </div>
 
-            <div className="testimonial-nav-btn next" onClick={() => setCurrentTesti((prev) => (prev + 1) % testimonials.length)}>
+            <button
+              type="button"
+              className="testimonial-nav-btn next"
+              aria-label="Next testimonial"
+              onClick={() => setCurrentTesti((prev) => (prev + 1) % testimonials.length)}
+            >
               <i className="arrow_carrot-right"></i>
-            </div>
+            </button>
           </div>
         </div>
       </section>
@@ -770,6 +776,7 @@ export default function Home() {
                           style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
                           width={480}
                           height={360}
+                          sizes="(max-width: 991px) 82vw, 500px"
                         />
                         <div style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.28)' }} />
                         <div style={{
@@ -849,7 +856,11 @@ export default function Home() {
                       height: 'auto',
                       maxHeight: '78vh',
                       objectFit: 'cover',
-                    }} width={1200} height={800} />
+                    }}
+                    width={1200}
+                    height={800}
+                    sizes="(max-width: 767px) 92vw, 520px"
+                  />
                 </div>
               </div>
 

@@ -8,7 +8,6 @@ export default function Header({
   className?: string;
   useHeaderInner?: boolean;
 }) {
-  const isLightHeader = className.includes('header-light');
   const rowClassName = useHeaderInner ? "de-flex sm-pt10 header-inner" : "de-flex sm-pt10";
 
   return (
@@ -17,19 +16,19 @@ export default function Header({
         <div className="row">
           <div className="col-md-12">
             <div className={rowClassName}>
-              <div className="de-flex-col">
+              <div className="de-flex-col mobile-header-logo">
                 {/* logo begin */}
                 <div id="logo">
                   <Link href="/">
-                    <Image className="logo-main logo" src="/main logo.png" alt="UpperEast Logo" width={420} height={160} />
-                    <Image className="logo-scroll logo-2" src="/main logo dark.png" alt="UpperEast Logo" width={420} height={160} />
-                    <Image className="logo-mobile" src="/main logo.png" alt="UpperEast Logo" width={420} height={160} />
-                    <Image className="logo-mobile-dark" src="/main logo dark.png" alt="UpperEast Logo" width={420} height={160} />
+                    <Image className="logo-main logo" src="/main logo.png" alt="UpperEast Logo" width={420} height={160} sizes="210px" />
+                    <Image className="logo-scroll logo-2" src="/main logo dark.png" alt="UpperEast Logo" width={420} height={160} sizes="210px" />
+                    <Image className="logo-mobile" src="/main logo.png" alt="UpperEast Logo" width={420} height={160} sizes="200px" />
+                    <Image className="logo-mobile-dark" src="/main logo dark.png" alt="UpperEast Logo" width={420} height={160} sizes="200px" />
                   </Link>
                 </div>
                 {/* logo end */}
               </div>
-              <div className="de-flex-col header-col-mid">
+              <div className="de-flex-col header-col-mid mobile-header-drawer">
                 {/* mainemenu begin */}
                 <ul id="mainmenu">
                   <li>
@@ -140,17 +139,17 @@ export default function Header({
                 </ul>
                 {/* mainmenu end */}
               </div>
-              <div className="de-flex-col">
+              <div className="de-flex-col mobile-header-menu-trigger">
                 <div className="menu_side_area">
                   <Link href="#book" className="btn-main fx-slide" data-hover="Book Appointment"><span>Book Appointment</span></Link>
-                  <span id="menu-btn"></span>
+                  <button type="button" id="menu-btn" aria-label="Open navigation menu"></button>
                 </div>
               </div>
-              <div className="de-flex-col">
-                <div id="btn-extra">
+              <div className="de-flex-col mobile-header-sidebar-trigger">
+                <button type="button" id="btn-extra" aria-label="Open information sidebar">
                   <span></span>
                   <span></span>
-                </div>
+                </button>
               </div>
             </div>
           </div>

@@ -18,6 +18,7 @@ export default function YoutubeMarquee() {
             alt="AI Avatar"
             width={26}
             height={26}
+            sizes="26px"
             className="avatar-img"
           />
         </div>

@@ -7,8 +7,6 @@ import { useBookingModal } from '@/components/BookingModalProvider';
 import CountryPhoneInput from '@/components/CountryPhoneInput';
 import { isPhoneValidForCountry, toInternationalPhone } from '@/lib/phone-countries';
 
-const HIDDEN_PATH_PREFIXES = ['/book-appointment', '/booking', '/forms/'];
-
 type SubmitState = 'idle' | 'sending' | 'success' | 'error';
 
 export default function SmileAssessmentPopup() {
@@ -20,7 +18,7 @@ export default function SmileAssessmentPopup() {
   const [phoneCountryCode, setPhoneCountryCode] = useState('US');
   const [phoneValue, setPhoneValue] = useState('');
 
-  const shouldHide = HIDDEN_PATH_PREFIXES.some((prefix) => pathname.startsWith(prefix));
+  const shouldHide = pathname !== '/';
 
   useEffect(() => {
     setIsOpen(false);

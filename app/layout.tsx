@@ -76,7 +76,7 @@ export default function RootLayout({
             </div>
 
             <div id="extra-content">
-              <Image src="/main logo.png" className="w-150px" alt="Upper East Dental Innovations" width={420} height={160} />
+              <Image src="/main logo.png" className="w-150px" alt="Upper East Dental Innovations" width={420} height={160} sizes="150px" />
 
               <div className="spacer-30-line"></div>
 
@@ -125,7 +125,7 @@ export default function RootLayout({
           <SmileAssessmentPopup />
         </BookingModalProvider>
 
-        <Script src="/js/plugins.js" strategy="beforeInteractive" />
+        <Script src="/js/plugins.js" strategy="afterInteractive" />
         <Script src="/js/on3step.js" strategy="lazyOnload" />
         <Script src="/js/swiper.js" strategy="lazyOnload" />
         <Script src="/js/custom-marquee.js" strategy="lazyOnload" />

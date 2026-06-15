@@ -7,7 +7,7 @@ export default function Footer() {
       <div className="container">
         <div className="row gx-5">
           <div className="col-lg-4 col-sm-6">
-            <Image src="/main logo dark.png" className="logo-footer" alt="Upper East Dental Innovations" width={420} height={160} />
+            <Image src="/main logo dark.png" className="logo-footer" alt="Upper East Dental Innovations" width={420} height={160} sizes="210px" />
             <div className="spacer-20"></div>
             <p>At Upper East, we’re dedicated to providing high-quality, personalized dental care for patients of all ages. Our skilled team uses the latest technology to ensure comfortable, efficient treatments and beautiful, healthy smiles for life.</p>
 

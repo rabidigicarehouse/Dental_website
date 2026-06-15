@@ -13,6 +13,7 @@ import React, {
 } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { buildBackendUrl } from '@/lib/api-base-url';
+import { validateAppointmentSlot } from '@/lib/appointment-schedule';
 
 /* ============================================================
    Context for opening/closing the booking modal from any page
@@ -133,6 +134,10 @@ function formatLongDate(d: Date) {
   });
 }
 
+function dateToAppointmentKey(date: Date) {
+  return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+}
+
 /* ============================================================
    The 3-step Booking Modal
    ============================================================ */
@@ -243,6 +248,7 @@ function BookingModal({ onClose }: { onClose: () => void }) {
   const [viewMonth, setViewMonth] = useState<number>(today.getMonth());
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [selectedTime, setSelectedTime] = useState<string | null>(null);
+  const [bookedTimes, setBookedTimes] = useState<string[]>([]);
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
@@ -406,6 +412,35 @@ function BookingModal({ onClose }: { onClose: () => void }) {
     setViewMonth(d.getMonth());
   };
 
+  useEffect(() => {
+    if (!selectedDate) {
+      setBookedTimes([]);
+      return;
+    }
+
+    const controller = new AbortController();
+    const dateKey = dateToAppointmentKey(selectedDate);
+    fetch(buildBackendUrl(`/api/book?date=${encodeURIComponent(dateKey)}`), {
+      signal: controller.signal,
+    })
+      .then((response) => response.json())
+      .then((payload) => setBookedTimes(Array.isArray(payload.bookedTimes) ? payload.bookedTimes : []))
+      .catch(() => setBookedTimes([]));
+
+    return () => controller.abort();
+  }, [selectedDate]);
+
+  useEffect(() => {
+    if (selectedTime && bookedTimes.includes(selectedTime)) {
+      setSelectedTime(null);
+    }
+  }, [bookedTimes, selectedTime]);
+
+  const isTimeUnavailable = (slot: string) => {
+    if (!selectedDate || bookedTimes.includes(slot)) return true;
+    return !validateAppointmentSlot(dateToAppointmentKey(selectedDate), slot).ok;
+  };
+
   const handleBook = async () => {
     setSubmitting(true);
     setSubmitError(null);
@@ -423,7 +458,7 @@ function BookingModal({ onClose }: { onClose: () => void }) {
           email: form.email,
           sex: form.sex,
           reason: form.reason,
-          date: selectedDate ? selectedDate.toISOString() : '',
+          date: selectedDate ? dateToAppointmentKey(selectedDate) : '',
           time: selectedTime,
         }),
       });
@@ -452,12 +487,14 @@ function BookingModal({ onClose }: { onClose: () => void }) {
       }
 
       setSubmitted(true);
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error('Booking submission error:', err);
       const message =
-        err?.name === 'TypeError'
+        err instanceof Error && err.name === 'TypeError'
           ? 'Network error — please check your internet connection and try again.'
-          : err?.message || 'Something went wrong. Please try again.';
+          : err instanceof Error
+            ? err.message
+            : 'Something went wrong. Please try again.';
       setSubmitError(message);
     } finally {
       setSubmitting(false);
@@ -766,22 +803,24 @@ function BookingModal({ onClose }: { onClose: () => void }) {
                       <div className="bmp-cal-days">
                         {monthCells.map(({ date, inMonth }, i) => {
                           const isPast = date < today;
+                          const isWeekend = date.getDay() === 0 || date.getDay() === 6;
+                          const isUnavailable = isPast || isWeekend;
                           const isSelected = selectedDate && isSameDay(date, selectedDate);
                           const isToday = isSameDay(date, today);
                           return (
                             <button
                               key={i}
                               type="button"
-                              disabled={isPast}
+                              disabled={isUnavailable}
                               className={
                                 'bmp-cal-day' +
                                 (inMonth ? '' : ' is-other-month') +
-                                (isPast ? ' is-disabled' : '') +
+                                (isUnavailable ? ' is-disabled' : '') +
                                 (isSelected ? ' is-selected' : '') +
                                 (isToday ? ' is-today' : '')
                               }
                               onClick={() => {
-                                if (isPast) return;
+                                if (isUnavailable) return;
                                 setSelectedDate(date);
                                 setSelectedTime(null);
                               }}
@@ -809,7 +848,7 @@ function BookingModal({ onClose }: { onClose: () => void }) {
                             <button
                               key={slot}
                               type="button"
-                              disabled={!selectedDate}
+                              disabled={isTimeUnavailable(slot)}
                               className={
                                 'bmp-time' + (selectedTime === slot ? ' is-active' : '')
                               }
@@ -828,7 +867,7 @@ function BookingModal({ onClose }: { onClose: () => void }) {
                             <button
                               key={slot}
                               type="button"
-                              disabled={!selectedDate}
+                              disabled={isTimeUnavailable(slot)}
                               className={
                                 'bmp-time' + (selectedTime === slot ? ' is-active' : '')
                               }

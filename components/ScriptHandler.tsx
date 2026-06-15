@@ -204,9 +204,14 @@ export default function ScriptHandler() {
       });
     };
 
-    let savedScrollY = 0;
     let touchMoveBlocker: ((e: TouchEvent) => void) | null = null;
     let wheelBlocker: ((e: WheelEvent) => void) | null = null;
+    let mobileHeaderHome: {
+      parent: Node;
+      nextSibling: ChildNode | null;
+      placeholder: HTMLDivElement | null;
+      backdrop: HTMLButtonElement;
+    } | null = null;
 
     const isMenuScrollTarget = (target: Element | null) =>
       !!target?.closest(
@@ -215,14 +220,8 @@ export default function ScriptHandler() {
 
     const lockPageScroll = () => {
       if (window.innerWidth > 1024) return;
-      savedScrollY = window.scrollY;
-      document.documentElement.classList.add('mobile-nav-open', 'no-scroll');
-      document.body.classList.add('mobile-nav-open', 'no-scroll');
-      document.body.style.position = 'fixed';
-      document.body.style.top = `-${savedScrollY}px`;
-      document.body.style.left = '0';
-      document.body.style.right = '0';
-      document.body.style.width = '100%';
+      document.documentElement.classList.add('mobile-nav-open');
+      document.body.classList.add('mobile-nav-open');
 
       touchMoveBlocker = (e: TouchEvent) => {
         if (!isMenuScrollTarget(e.target as Element | null)) e.preventDefault();
@@ -235,13 +234,8 @@ export default function ScriptHandler() {
     };
 
     const unlockPageScroll = () => {
-      document.documentElement.classList.remove('mobile-nav-open', 'no-scroll');
-      document.body.classList.remove('mobile-nav-open', 'no-scroll');
-      document.body.style.position = '';
-      document.body.style.top = '';
-      document.body.style.left = '';
-      document.body.style.right = '';
-      document.body.style.width = '';
+      document.documentElement.classList.remove('mobile-nav-open');
+      document.body.classList.remove('mobile-nav-open');
       if (touchMoveBlocker) {
         document.removeEventListener('touchmove', touchMoveBlocker);
         touchMoveBlocker = null;
@@ -250,7 +244,62 @@ export default function ScriptHandler() {
         document.removeEventListener('wheel', wheelBlocker);
         wheelBlocker = null;
       }
-      window.scrollTo(0, savedScrollY);
+    };
+
+    const mountMobileDrawerAtBody = () => {
+      if (window.innerWidth > 1024 || mobileHeaderHome) return;
+      const header = document.querySelector<HTMLElement>('header');
+      if (!header?.parentNode) return;
+
+      const computedPosition = window.getComputedStyle(header).position;
+      const participatesInFlow = computedPosition !== 'fixed' && computedPosition !== 'absolute';
+      const placeholder = participatesInFlow ? document.createElement('div') : null;
+      const backdrop = document.createElement('button');
+      backdrop.type = 'button';
+      backdrop.className = 'mobile-nav-backdrop';
+      backdrop.setAttribute('aria-label', 'Close navigation menu');
+
+      if (placeholder) {
+        placeholder.className = 'mobile-header-placeholder';
+        placeholder.style.height = `${header.getBoundingClientRect().height}px`;
+        header.parentNode.insertBefore(placeholder, header);
+      }
+
+      mobileHeaderHome = {
+        parent: header.parentNode,
+        nextSibling: header.nextSibling,
+        placeholder,
+        backdrop,
+      };
+      document.body.appendChild(backdrop);
+      document.body.appendChild(header);
+      header.style.setProperty('position', 'fixed', 'important');
+      header.style.setProperty('top', '0', 'important');
+      header.style.setProperty('left', '0', 'important');
+      header.style.setProperty('margin', '0', 'important');
+    };
+
+    const restoreMobileDrawerHome = () => {
+      if (!mobileHeaderHome) return;
+      const header = document.querySelector<HTMLElement>('body > header');
+      const { parent, nextSibling, placeholder, backdrop } = mobileHeaderHome;
+
+      if (header) {
+        header.style.removeProperty('position');
+        header.style.removeProperty('left');
+        header.style.removeProperty('margin');
+        if (placeholder?.parentNode === parent) {
+          parent.insertBefore(header, placeholder);
+        } else if (nextSibling?.parentNode === parent) {
+          parent.insertBefore(header, nextSibling);
+        } else {
+          parent.appendChild(header);
+        }
+      }
+
+      placeholder?.remove();
+      backdrop.remove();
+      mobileHeaderHome = null;
     };
 
     const resetMobileHeaderState = () => {
@@ -262,7 +311,7 @@ export default function ScriptHandler() {
           .split(' ')
           .map((className) => className.trim())
           .filter(Boolean);
-        const keepMobileClass = window.innerWidth <= 992 ? ['header-mobile'] : [];
+        const keepMobileClass = window.innerWidth <= 992 && !isMenuOpen ? ['header-mobile'] : [];
         const keepOpenClass = isMenuOpen ? ['menu-open'] : [];
         
         let finalClasses = [...baseClasses, ...keepMobileClass, ...keepOpenClass];
@@ -310,6 +359,7 @@ export default function ScriptHandler() {
     const stabilizeMobileMenu = () => {
       const $ = (window as any).jQuery;
       if (!$ || !$.fn) return;
+      let closeTimer: number | null = null;
 
       $('#mainmenu li > span').remove();
       $('#mainmenu li').removeClass('has-child menu-item-has-children');
@@ -327,10 +377,23 @@ export default function ScriptHandler() {
 
       const closeMenu = () => {
         if (window.innerWidth > 1024) return;
-        $('header').removeClass('menu-open');
-        $('#menu-btn').removeClass('menu-open');
-        unlockPageScroll();
-        resetMobileHeaderState();
+        const $header = $('header');
+        if (!$header.hasClass('menu-open') || $header.hasClass('menu-closing')) return;
+
+        $header.addClass('menu-closing');
+        document.body.classList.add('mobile-nav-closing');
+        document.querySelector('.mobile-nav-backdrop')?.classList.add('is-closing');
+
+        if (closeTimer) window.clearTimeout(closeTimer);
+        closeTimer = window.setTimeout(() => {
+          $header.removeClass('menu-open menu-closing');
+          $('#menu-btn').removeClass('menu-open');
+          document.body.classList.remove('mobile-nav-closing');
+          unlockPageScroll();
+          restoreMobileDrawerHome();
+          resetMobileHeaderState();
+          closeTimer = null;
+        }, 300);
       };
 
       const bindMenuButton = () => {
@@ -351,7 +414,9 @@ export default function ScriptHandler() {
             closeMenu();
           } else {
             // Open menu
-            $('header').addClass('menu-open');
+            mountMobileDrawerAtBody();
+            $('header').removeClass('menu-closing').addClass('menu-open');
+            document.body.classList.remove('mobile-nav-closing');
             $('#menu-btn').addClass('menu-open');
             lockPageScroll();
             resetMobileHeaderState();
@@ -360,6 +425,12 @@ export default function ScriptHandler() {
       };
 
       bindMenuButton();
+
+      $(document).off('click.mobileDentiaBackdrop', '.mobile-nav-backdrop');
+      $(document).on('click.mobileDentiaBackdrop', '.mobile-nav-backdrop', function (e: Event) {
+        e.preventDefault();
+        closeMenu();
+      });
 
       $(document).on('click.mobileDentiaMenu', '#mainmenu a', function (this: any, e: any) {
         if (window.innerWidth > 1024) return;
@@ -397,9 +468,13 @@ export default function ScriptHandler() {
       });
 
       return () => {
+        if (closeTimer) window.clearTimeout(closeTimer);
+        document.body.classList.remove('mobile-nav-closing');
+        restoreMobileDrawerHome();
         $(document).off('click.mobileDentiaMenuBtn');
         $(document).off('click.mobileDentiaMenu');
         $(document).off('click.mobileDentiaMenuArrow');
+        $(document).off('click.mobileDentiaBackdrop');
       };
     };
 
@@ -485,6 +560,7 @@ export default function ScriptHandler() {
       clearTimeout(timerC);
       window.removeEventListener('resize', resetMobileHeaderState);
       unlockPageScroll();
+      restoreMobileDrawerHome();
       if (btnExtra) btnExtra.removeEventListener('click', handleMenuClick);
       if (btnClose) btnClose.removeEventListener('click', handleCloseClick);
       if (cleanupMobileMenu) cleanupMobileMenu();

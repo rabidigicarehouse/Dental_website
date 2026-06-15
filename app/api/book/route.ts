@@ -1,10 +1,21 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { formatLongDate, getAdditionalClinicNotificationEmails, getLogoAttachment, getPrimaryClinicEmail, getTransporter } from '@/lib/server/clinic-utils';
+import { normalizeAppointmentDateKey, validateAppointmentSlot } from '@/lib/appointment-schedule';
+import { getBookedTimes, releaseSlot, reserveSlot } from '@/lib/server/booking-slot-store';
 
 export const runtime = 'nodejs';
 
+export async function GET(request: NextRequest) {
+  const dateKey = normalizeAppointmentDateKey(request.nextUrl.searchParams.get('date') || '');
+  if (!dateKey) {
+    return NextResponse.json({ error: 'A valid date is required.' }, { status: 400 });
+  }
+  return NextResponse.json({ date: dateKey, bookedTimes: await getBookedTimes(dateKey) });
+}
+
 export async function POST(request: NextRequest) {
-  let body: any;
+  let reservedSlotKey = '';
+  let body: Record<string, unknown>;
   try {
     body = await request.json();
   } catch {
@@ -15,13 +26,41 @@ export async function POST(request: NextRequest) {
   }
 
   try {
-    const { firstName, lastName, dob, phone, email, sex, reason, date, time } = body || {};
+    const firstName = String(body.firstName || '').trim();
+    const lastName = String(body.lastName || '').trim();
+    const dob = String(body.dob || '').trim();
+    const phone = String(body.phone || '').trim();
+    const email = String(body.email || '').trim();
+    const sex = String(body.sex || '').trim();
+    const reason = String(body.reason || '').trim();
+    const date = String(body.date || '').trim();
+    const time = String(body.time || '').trim();
     if (!firstName || !lastName || !email || !date || !time) {
       return NextResponse.json({ error: 'Required fields are missing.' }, { status: 400 });
     }
 
+    const slotValidation = validateAppointmentSlot(String(date), String(time));
+    if (!slotValidation.ok) {
+      return NextResponse.json({ error: slotValidation.reason }, { status: 400 });
+    }
+
     const patientName = `${firstName} ${lastName}`;
-    const formattedDate = formatLongDate(date);
+    const reserved = await reserveSlot({
+      slotKey: slotValidation.slotKey,
+      date: slotValidation.dateKey,
+      time: slotValidation.time,
+      createdAt: new Date().toISOString(),
+    });
+    if (!reserved) {
+      return NextResponse.json(
+        { error: 'Sorry, that appointment time is already booked. Please select another available time.' },
+        { status: 409 }
+      );
+    }
+    reservedSlotKey = slotValidation.slotKey;
+
+    const formattedDate = formatLongDate(slotValidation.dateKey);
+    const appointmentTime = slotValidation.time;
     const clinicEmail = getPrimaryClinicEmail();
     const additionalNotificationEmails = getAdditionalClinicNotificationEmails();
 
@@ -33,7 +72,7 @@ export async function POST(request: NextRequest) {
       <p class="intro">Dear ${firstName}, your appointment at Upper East Dental Innovations has been successfully scheduled. We look forward to providing you with exceptional dental care.</p>
       <div class="card">
       <div class="card-row"><div class="card-label">Date</div><div class="card-value">${formattedDate}</div></div>
-      <div class="card-row"><div class="card-label">Time Slot</div><div class="card-value">${time}</div></div>
+      <div class="card-row"><div class="card-label">Time Slot</div><div class="card-value">${appointmentTime}</div></div>
       <div class="card-row"><div class="card-label">Provider</div><div class="card-value">Dr. Harvey</div></div>
       <div class="card-row"><div class="card-label">Reason</div><div class="card-value">${reason}</div></div>
       </div>
@@ -54,7 +93,7 @@ export async function POST(request: NextRequest) {
       <tr><td style="font-weight:bold;">Email</td><td><a href="mailto:${email}">${email}</a></td></tr>
       <tr><td style="font-weight:bold;">Reason</td><td>${reason}</td></tr>
       </tbody></table>
-      <table class="grid"><thead><tr><th colspan="2">Schedule Details</th></tr></thead><tbody><tr><td style="width:140px;font-weight:bold;">Requested Slot</td><td style="font-weight:bold;color:#4CB85C;">${formattedDate} at ${time}</td></tr></tbody></table>
+      <table class="grid"><thead><tr><th colspan="2">Schedule Details</th></tr></thead><tbody><tr><td style="width:140px;font-weight:bold;">Requested Slot</td><td style="font-weight:bold;color:#4CB85C;">${formattedDate} at ${appointmentTime}</td></tr></tbody></table>
       </div><div class="footer">Website Booking Engine Notification</div></div></body></html>`;
 
     const transporter = getTransporter();
@@ -65,7 +104,7 @@ export async function POST(request: NextRequest) {
       to: email,
       replyTo: clinicEmail,
       subject: 'Your Appointment is Confirmed! - Upper East Dental Innovations',
-      text: `Dear ${firstName}, your appointment has been scheduled for ${formattedDate} at ${time} for ${reason}. We look forward to seeing you!`,
+      text: `Dear ${firstName}, your appointment has been scheduled for ${formattedDate} at ${appointmentTime} for ${reason}. We look forward to seeing you!`,
       html: patientHtml,
       attachments: logoAttachment,
     });
@@ -74,8 +113,8 @@ export async function POST(request: NextRequest) {
       from: `"UEDI Web Engine" <${process.env.SMTP_USER || 'info@uedi.nyc'}>`,
       to: clinicEmail,
       replyTo: email,
-      subject: `New Appt: ${patientName} - ${formattedDate} @ ${time}`,
-      text: `New appointment request from ${patientName} (${phone}, ${email}) on ${formattedDate} at ${time} for ${reason}.`,
+      subject: `New Appt: ${patientName} - ${formattedDate} @ ${appointmentTime}`,
+      text: `New appointment request from ${patientName} (${phone}, ${email}) on ${formattedDate} at ${appointmentTime} for ${reason}.`,
       html: clinicHtml,
       attachments: logoAttachment,
     });
@@ -85,8 +124,8 @@ export async function POST(request: NextRequest) {
         from: `"UEDI Web Engine" <${process.env.SMTP_USER || 'info@uedi.nyc'}>`,
         to: notifyEmail,
         replyTo: email,
-        subject: `New Appt: ${patientName} - ${formattedDate} @ ${time}`,
-        text: `New appointment request from ${patientName} (${phone}, ${email}) on ${formattedDate} at ${time} for ${reason}.`,
+        subject: `New Appt: ${patientName} - ${formattedDate} @ ${appointmentTime}`,
+        text: `New appointment request from ${patientName} (${phone}, ${email}) on ${formattedDate} at ${appointmentTime} for ${reason}.`,
         html: clinicHtml,
         attachments: logoAttachment,
       });
@@ -94,6 +133,9 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({ success: true, message: 'Emails sent successfully.' });
   } catch (error) {
+    if (reservedSlotKey) {
+      await releaseSlot(reservedSlotKey);
+    }
     console.error('❌ [API] Error processing booking emails:', error);
     return NextResponse.json({ error: 'Failed to process booking emails.' }, { status: 500 });
   }

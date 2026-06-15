@@ -336,8 +336,8 @@ export default function TeethCompareSlider() {
               className="teeth-compare-slide"
             >
               <div ref={containerRef} className="image-compare-viewer-container">
-                <Image src={cases[currentIdx].before} alt="Before Treatment" width={1200} height={800} />
-                <Image src={cases[currentIdx].after}  alt="After Treatment" width={1200} height={800} />
+                <Image src={cases[currentIdx].before} alt="Before Treatment" width={1200} height={800} sizes="(max-width: 991px) 92vw, 55vw" />
+                <Image src={cases[currentIdx].after} alt="After Treatment" width={1200} height={800} sizes="(max-width: 991px) 92vw, 55vw" />
               </div>
             </motion.div>
           </AnimatePresence>

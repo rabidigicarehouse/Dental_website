@@ -2,12 +2,19 @@ import fs from 'fs';
 import path from 'path';
 import nodemailer from 'nodemailer';
 
+type MockMailOptions = {
+  from?: unknown;
+  to?: unknown;
+  subject?: unknown;
+  text?: unknown;
+};
+
 const LOGO_DARK_PATH = path.join(process.cwd(), 'public', 'main logo dark.png');
 const LOGO_LIGHT_PATH = path.join(process.cwd(), 'public', 'main logo.png');
 
 export function formatLongDate(dateStr: string) {
   try {
-    const d = new Date(dateStr);
+    const d = new Date(/^\d{4}-\d{2}-\d{2}$/.test(dateStr) ? `${dateStr}T12:00:00` : dateStr);
     if (Number.isNaN(d.getTime())) return dateStr;
     return d.toLocaleDateString('en-US', {
       weekday: 'long',
@@ -98,7 +105,7 @@ export function getTransporter() {
   if (!user || !pass) {
     console.warn('\x1b[33m%s\x1b[0m', 'WARNING: SMTP_USER or SMTP_PASS not set. Emails will be logged to console in Mock Mode.');
     return {
-      sendMail: async (mailOptions: any) => {
+      sendMail: async (mailOptions: MockMailOptions) => {
         console.log('\n================== MOCK EMAIL SENT ==================');
         console.log(`From: ${mailOptions.from}`);
         console.log(`To: ${mailOptions.to}`);

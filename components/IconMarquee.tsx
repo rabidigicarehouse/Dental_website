@@ -28,7 +28,7 @@ export default function IconMarquee() {
             <Image
               src={`/images/icons/${item.icon}`} 
               alt={item.label} 
-              className="marquee-icon-img" width={160} height={160} />
+              className="marquee-icon-img" width={160} height={160} sizes="100px" />
           </div>
           <span className="icon-label">{item.label}</span>
         </div>

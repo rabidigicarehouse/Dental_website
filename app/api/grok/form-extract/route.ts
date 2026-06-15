@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import fs from 'fs/promises';
 import path from 'path';
+import { CLINIC_TIME_ZONE, getClinicTodayKey } from '@/lib/appointment-schedule';
 
 const GROQ_ENDPOINT = 'https://api.groq.com/openai/v1/chat/completions';
 const GROQ_MODEL = 'llama-3.3-70b-versatile';
@@ -86,9 +87,12 @@ Rules:
 - If nothing useful can be extracted, return {}.
 - Do not invent missing values.
 - Focus especially on the current requested field, but include any other explicit booking fields spoken in the same utterance.
+- Interpret relative dates such as today and tomorrow using the supplied clinic date.
 `.trim();
 
   const userPrompt = JSON.stringify({
+    clinicTimeZone: CLINIC_TIME_ZONE,
+    clinicDate: getClinicTodayKey(),
     currentField,
     knownData,
     utterance,
@@ -130,7 +134,13 @@ Rules:
         typeof content === 'string'
           ? content
           : Array.isArray(content)
-            ? content.map((part: any) => (typeof part === 'string' ? part : part?.text || '')).join('')
+            ? content.map((part: unknown) => {
+                if (typeof part === 'string') return part;
+                if (part && typeof part === 'object' && 'text' in part) {
+                  return String((part as { text?: unknown }).text || '');
+                }
+                return '';
+              }).join('')
             : '';
 
       const fields = extractJsonObject(text) || {};
@@ -138,9 +148,9 @@ Rules:
     }
 
     return NextResponse.json({ error: lastError }, { status: 502 });
-  } catch (error: any) {
+  } catch (error: unknown) {
     return NextResponse.json(
-      { error: error?.message || 'Could not extract booking fields.' },
+      { error: error instanceof Error ? error.message : 'Could not extract booking fields.' },
       { status: 502 }
     );
   }

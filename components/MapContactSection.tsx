@@ -1,6 +1,7 @@
 'use client';
 
 import { useRef, useState } from 'react';
+import Image from 'next/image';
 import { buildBackendUrl } from '@/lib/api-base-url';
 import CountryPhoneInput from '@/components/CountryPhoneInput';
 import { isPhoneValidForCountry, toInternationalPhone } from '@/lib/phone-countries';
@@ -55,9 +56,9 @@ export default function MapContactSection() {
       formRef.current.reset();
       setPhoneValue('');
       setPhoneCountryCode('US');
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error('Map contact form submission error:', err);
-      setErrorMsg(err.message || 'Failed to send message. Please try again later.');
+      setErrorMsg(err instanceof Error ? err.message : 'Failed to send message. Please try again later.');
     } finally {
       setSubmitting(false);
     }
@@ -65,6 +66,13 @@ export default function MapContactSection() {
 
   return (
     <section className="map-contact-section">
+      <Image
+        src="/images/background/4.webp"
+        alt=""
+        fill
+        sizes="100vw"
+        className="map-contact-section-bg"
+      />
       <div className="container">
         <div className="row g-0 map-contact-card">
           {/* Left — Google Map */}

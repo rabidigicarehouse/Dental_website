@@ -18,11 +18,11 @@ export default function MobileConversionBar() {
 
   return (
     <nav className="mobile-conversion-bar" aria-label="Quick contact actions">
-      <a href="tel:+12126971701" className="mobile-conversion-action">
+      <a href="tel:+12126971701" className="mobile-conversion-action" aria-label="Call now">
         <i className="icofont-phone" aria-hidden="true" />
         <span>Call Now</span>
       </a>
-      <button type="button" className="mobile-conversion-action mobile-conversion-action--book" onClick={open}>
+      <button type="button" className="mobile-conversion-action mobile-conversion-action--book" onClick={open} aria-label="Book consultation">
         <i className="icofont-calendar" aria-hidden="true" />
         <span>Book Consultation</span>
       </button>

@@ -2,11 +2,16 @@
 
 import { useState, useEffect, useCallback, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Mic, Send, Volume2, VolumeX } from "lucide-react";
+import { Check, ChevronDown, Mic, Send, Volume2, VolumeX, X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import ChatBox from "./ChatBox";
 import { buildBackendUrl } from "@/lib/api-base-url";
+import {
+  getClinicTodayKey,
+  normalizeAppointmentDateKey,
+  validateAppointmentSlot,
+} from "@/lib/appointment-schedule";
 
 interface Message {
   id: string;
@@ -29,6 +34,52 @@ type BookingFieldKey =
   | "time";
 
 type BookingForm = Partial<Record<BookingFieldKey, string>>;
+
+type SpeechRecognitionResultEventLike = {
+  resultIndex: number;
+  results: ArrayLike<{
+    isFinal: boolean;
+    0: { transcript?: string; confidence?: number };
+  }>;
+};
+
+type SpeechRecognitionLike = {
+  continuous: boolean;
+  interimResults: boolean;
+  lang: string;
+  start: () => void;
+  stop: () => void;
+  abort: () => void;
+  onresult: ((event: SpeechRecognitionResultEventLike) => void) | null;
+  onerror: ((event: { error?: string }) => void) | null;
+  onend: (() => void) | null;
+};
+
+type SpeechRecognitionConstructor = new () => SpeechRecognitionLike;
+
+const FEMALE_VOICE_NAME_PATTERN =
+  /female|woman|girl|zira|aria|jenny|salli|joanna|kendra|samantha|karen|moira|tessa|fiona|victoria|susan|hazel|heather|serena|ava|allison|olivia|amy|emma|nicole|linda|catherine|heera|veena|susan|sarah|michelle|natasha|sonia|libby|molly|maisie|sonia|natasha/i;
+const MALE_VOICE_NAME_PATTERN =
+  /\bmale\b|david|mark|george|daniel|fred|tom|aaron|guy|ryan|brian|christopher|eric|roger|arthur|ralph|albert/i;
+const VOICE_STORAGE_KEY = "uedi-ai-voice";
+const AGENT_VOICE_NAMES = ["Ava", "Mia", "Sophia", "Emma", "Lily", "Olivia", "Ella", "Aria", "Chloe", "Grace", "Zoe", "Nora"];
+
+function getVoiceAgentName(voice: SpeechSynthesisVoice | null) {
+  if (!voice) return "Ava";
+  const identity = `${voice.name}|${voice.lang}`;
+  let hash = 0;
+  for (let index = 0; index < identity.length; index += 1) {
+    hash = (hash * 31 + identity.charCodeAt(index)) >>> 0;
+  }
+  return AGENT_VOICE_NAMES[hash % AGENT_VOICE_NAMES.length];
+}
+
+function getVoiceSpeechSettings(voice: SpeechSynthesisVoice) {
+  const isChromeDefault = /google us english|us english/i.test(voice.name);
+  return isChromeDefault
+    ? { pitch: 1.04, rate: 0.93 }
+    : { pitch: 1.18, rate: 0.96 };
+}
 
 export default function AIWidget() {
   const [mounted, setMounted] = useState(false);
@@ -60,7 +111,7 @@ export default function AIWidget() {
   const welcomeSpokenRef = useRef(false);
   const messagesRef = useRef<Message[]>(messages);
   const inputRef = useRef<HTMLInputElement>(null);
-  const recognitionRef = useRef<any>(null);
+  const recognitionRef = useRef<SpeechRecognitionLike | null>(null);
   const listeningVideoRef = useRef<HTMLVideoElement>(null);
   const talkingVideoRef = useRef<HTMLVideoElement>(null);
   const inflightRef = useRef<AbortController | null>(null);
@@ -69,17 +120,37 @@ export default function AIWidget() {
   const bookingStepRef = useRef<number>(-1);
   const bookingPromptPendingRef = useRef(false);
   const tomorrowOfferPendingRef = useRef(false);
-  const speechSessionRef = useRef<{ transcript: string; silenceTimer: number | null }>({
-    transcript: "",
+  const speechSessionRef = useRef<{
+    finalTranscript: string;
+    interimTranscript: string;
+    confidence: number | null;
+    silenceTimer: number | null;
+  }>({
+    finalTranscript: "",
+    interimTranscript: "",
+    confidence: null,
     silenceTimer: null,
   });
+  const listeningRequestedRef = useRef(false);
   const flushSpeechTranscriptRef = useRef<() => void>(() => {});
+  const speechStartTimerRef = useRef<number | null>(null);
 
   const [femaleVoice, setFemaleVoice] = useState<SpeechSynthesisVoice | null>(null);
+  const [femaleVoices, setFemaleVoices] = useState<SpeechSynthesisVoice[]>([]);
+  const [voiceMenuOpen, setVoiceMenuOpen] = useState(false);
+  const voiceMenuRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     messagesRef.current = messages;
   }, [messages]);
+
+  useEffect(() => {
+    return () => {
+      if (speechStartTimerRef.current !== null) {
+        window.clearTimeout(speechStartTimerRef.current);
+      }
+    };
+  }, []);
 
   useEffect(() => {
     setMounted(true);
@@ -120,7 +191,23 @@ export default function AIWidget() {
         setIsSpeaking(false);
         return;
       }
+      listeningRequestedRef.current = false;
+      if (speechSessionRef.current.silenceTimer !== null) {
+        window.clearTimeout(speechSessionRef.current.silenceTimer);
+        speechSessionRef.current.silenceTimer = null;
+      }
+      setIsListening(false);
+      try {
+        recognitionRef.current?.abort();
+      } catch {
+        // Recognition may already be inactive.
+      }
       window.speechSynthesis.cancel();
+      window.speechSynthesis.resume();
+      if (speechStartTimerRef.current !== null) {
+        window.clearTimeout(speechStartTimerRef.current);
+        speechStartTimerRef.current = null;
+      }
 
       const restoreListeningVideo = () => {
         setIsSpeaking(false);
@@ -134,9 +221,10 @@ export default function AIWidget() {
       const tryNow = (voice: SpeechSynthesisVoice | null) => {
         if (!voice) return false;
         const utterance = new SpeechSynthesisUtterance(text);
+        const settings = getVoiceSpeechSettings(voice);
         utterance.voice = voice;
-        utterance.pitch = 1.6;
-        utterance.rate = 0.98;
+        utterance.pitch = settings.pitch;
+        utterance.rate = settings.rate;
         utterance.onstart = () => {
           setIsSpeaking(true);
           listeningVideoRef.current?.pause();
@@ -148,7 +236,10 @@ export default function AIWidget() {
         };
         utterance.onend = restoreListeningVideo;
         utterance.onerror = restoreListeningVideo;
-        window.speechSynthesis.speak(utterance);
+        speechStartTimerRef.current = window.setTimeout(() => {
+          speechStartTimerRef.current = null;
+          window.speechSynthesis.speak(utterance);
+        }, 80);
         return true;
       };
 
@@ -175,18 +266,18 @@ export default function AIWidget() {
   );
 
   useEffect(() => {
-    if (!mounted || !isOpen) return;
+    if (!mounted || !isOpen || !femaleVoice) return;
     if (welcomeSpokenRef.current) return;
-    welcomeSpokenRef.current = true;
     const t = window.setTimeout(() => {
+      welcomeSpokenRef.current = true;
       try {
         speak(WELCOME_TEXT);
       } catch {
         // Speech synthesis unsupported.
       }
-    }, 400);
+    }, 850);
     return () => window.clearTimeout(t);
-  }, [isOpen, mounted, speak]);
+  }, [femaleVoice, isOpen, mounted, speak]);
 
   useEffect(() => {
     if (!mounted) return;
@@ -223,6 +314,8 @@ export default function AIWidget() {
       if (!voices.length) return;
 
       const preferredNames = [
+        "Google US English",
+        "US English",
         "Microsoft Zira",
         "Samantha",
         "Google UK English Female",
@@ -237,15 +330,31 @@ export default function AIWidget() {
         "Kendra",
       ];
 
+      const explicitlyFemaleVoices = voices
+        .filter((voice) => voice.lang.toLowerCase().startsWith("en") && FEMALE_VOICE_NAME_PATTERN.test(voice.name))
+        .filter((voice, index, list) => list.findIndex((candidate) => candidate.name === voice.name && candidate.lang === voice.lang) === index);
+      const additionalEnglishVoices = voices.filter(
+        (voice) =>
+          voice.lang.toLowerCase().startsWith("en") &&
+          !MALE_VOICE_NAME_PATTERN.test(voice.name) &&
+          !explicitlyFemaleVoices.some((candidate) => candidate.name === voice.name && candidate.lang === voice.lang)
+      );
+      const filteredVoices = [...explicitlyFemaleVoices, ...additionalEnglishVoices]
+        .filter((voice, index, list) => list.findIndex((candidate) => candidate.name === voice.name && candidate.lang === voice.lang) === index)
+        .sort((left, right) => {
+          const leftRank = preferredNames.findIndex((name) => left.name.includes(name));
+          const rightRank = preferredNames.findIndex((name) => right.name.includes(name));
+          return (leftRank === -1 ? 999 : leftRank) - (rightRank === -1 ? 999 : rightRank) || left.name.localeCompare(right.name);
+        });
+      setFemaleVoices(filteredVoices);
+
+      const storedVoiceName = window.localStorage.getItem(VOICE_STORAGE_KEY);
       const voice =
+        filteredVoices.find((candidate) => candidate.name === storedVoiceName) ??
         preferredNames.reduce<SpeechSynthesisVoice | null>((found, name) => {
-          return found ?? (voices.find((v) => v.name.includes(name)) ?? null);
+          return found ?? (filteredVoices.find((v) => v.name.includes(name)) ?? null);
         }, null) ??
-        voices.find(
-          (v) =>
-            v.lang.startsWith("en") &&
-            /female|woman|girl|zira|aria|jenny|salli|joanna|kendra|samantha/i.test(v.name)
-        ) ??
+        filteredVoices[0] ??
         null;
 
       if (voice) setFemaleVoice(voice);
@@ -382,6 +491,7 @@ export default function AIWidget() {
   const stopListeningSession = useCallback(
     (shouldStopRecognition: boolean) => {
       clearSpeechSilenceTimer();
+      listeningRequestedRef.current = false;
       setIsListening(false);
       if (shouldStopRecognition) {
         try {
@@ -428,16 +538,15 @@ export default function AIWidget() {
   const validateAppointmentDateSelection = useCallback((value: string) => {
     const t = value.trim();
     const d = new Date(t);
-    if (Number.isNaN(d.getTime())) {
+    const dateKey = normalizeAppointmentDateKey(t);
+    if (Number.isNaN(d.getTime()) || !dateKey) {
       tomorrowOfferPendingRef.current = false;
       return { ok: false as const, reason: 'I could not read that date. Try a format like "May 22, 2026".' };
     }
 
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    if (d.getTime() < today.getTime()) {
+    if (dateKey < getClinicTodayKey()) {
       tomorrowOfferPendingRef.current = false;
-      return { ok: false as const, reason: "That date is in the past. Could you pick a future date?" };
+      return { ok: false as const, reason: "That date has already passed. Please choose a current or future weekday." };
     }
 
     if (isWeekendDate(d)) {
@@ -465,6 +574,12 @@ export default function AIWidget() {
   }, [isSameCalendarDay, isWeekendDate]);
 
   const validateAppointmentTimeWindow = useCallback((dateValue: string | undefined, timeValue: string) => {
+    if (dateValue) {
+      const result = validateAppointmentSlot(dateValue, timeValue);
+      if (!result.ok) return result;
+      return { ok: true as const, clean: result.time };
+    }
+
     const parsedTime = parseTimeTo24Hour(timeValue);
     if (!parsedTime) {
       return { ok: false as const, reason: 'I could not read that time. Try "10:00 AM" or "2:30 PM".' };
@@ -634,6 +749,14 @@ export default function AIWidget() {
 
   const normalizeSpokenDate = useCallback((value: string, mode: "dob" | "appointment"): string | null => {
     const trimmed = value.trim();
+    if (mode === "appointment" && /\b(today|tomorrow)\b/i.test(trimmed)) {
+      const todayKey = getClinicTodayKey();
+      if (/\btoday\b/i.test(trimmed)) return todayKey;
+      const tomorrow = new Date(`${todayKey}T12:00:00Z`);
+      tomorrow.setUTCDate(tomorrow.getUTCDate() + 1);
+      return tomorrow.toISOString().slice(0, 10);
+    }
+
     const mmddyyyy = trimmed.match(/(\d{1,2})[\/\-.](\d{1,2})[\/\-.](\d{2,4})/);
     if (mmddyyyy) {
       return mmddyyyy[0];
@@ -798,7 +921,7 @@ export default function AIWidget() {
     }
   }, [BOOKING_STEPS, userName, userLastName, userPhone, appendAiMessage, speak]);
 
-  const submitBooking = useCallback(async (data: BookingForm): Promise<string> => {
+  const submitBooking = useCallback(async (data: BookingForm): Promise<{ message: string; success: boolean; slotConflict?: boolean }> => {
     try {
       const res = await fetch(buildBackendUrl("/api/book"), {
         method: "POST",
@@ -822,7 +945,7 @@ export default function AIWidget() {
         // Ignore malformed JSON.
       }
       if (res.ok) {
-        return `All set, ${data.firstName}! I've booked your ${data.reason} appointment for ${
+        return { success: true, message: `All set, ${data.firstName}! I've booked your ${data.reason} appointment for ${
           data.date
             ? new Date(data.date).toLocaleDateString("en-US", {
                 weekday: "long",
@@ -830,18 +953,69 @@ export default function AIWidget() {
                 day: "numeric",
               })
             : "the requested date"
-        } at ${data.time}. You'll receive a confirmation email at ${data.email} shortly.`;
+        } at ${data.time}. You'll receive a confirmation email at ${data.email} shortly.` };
       }
       const looksDown =
         res.status === 502 ||
         (typeof payload.error === "string" && /backend is not reachable/i.test(payload.error));
-      return looksDown
-        ? "I couldn't reach our booking service just now. Please try again in a moment, or call us at 212.697.1701."
-        : `Sorry - I couldn't complete the booking. ${payload.error || `(HTTP ${res.status})`} You can try again or call us at 212.697.1701.`;
+      return {
+        success: false,
+        slotConflict: res.status === 409,
+        message: looksDown
+          ? "I couldn't reach our booking service just now. Please try again in a moment, or call us at 212.697.1701."
+          : `Sorry - I couldn't complete the booking. ${payload.error || `(HTTP ${res.status})`} You can try again or call us at 212.697.1701.`,
+      };
     } catch {
-      return "I couldn't reach our booking service. Please try again, or call us at 212.697.1701.";
+      return {
+        success: false,
+        message: "I couldn't reach our booking service. Please try again, or call us at 212.697.1701.",
+      };
     }
   }, []);
+
+  const previewVoice = useCallback((voice: SpeechSynthesisVoice) => {
+    window.speechSynthesis.cancel();
+    window.speechSynthesis.resume();
+    const utterance = new SpeechSynthesisUtterance("Hello! It is lovely to meet you.");
+    const settings = getVoiceSpeechSettings(voice);
+    utterance.voice = voice;
+    utterance.pitch = settings.pitch;
+    utterance.rate = settings.rate;
+    utterance.onstart = () => {
+      setIsSpeaking(true);
+      listeningVideoRef.current?.pause();
+      talkingVideoRef.current?.play().catch(() => {});
+    };
+    const finishPreview = () => {
+      setIsSpeaking(false);
+      talkingVideoRef.current?.pause();
+      listeningVideoRef.current?.play().catch(() => {});
+    };
+    utterance.onend = finishPreview;
+    utterance.onerror = finishPreview;
+    window.setTimeout(() => window.speechSynthesis.speak(utterance), 80);
+  }, []);
+
+  const selectFemaleVoice = useCallback((voiceName: string) => {
+    const voice = femaleVoices.find((candidate) => candidate.name === voiceName);
+    if (!voice) return;
+    setFemaleVoice(voice);
+    setVoiceMenuOpen(false);
+    setIsVoiceMuted(false);
+    window.localStorage.setItem(VOICE_STORAGE_KEY, voice.name);
+    previewVoice(voice);
+  }, [femaleVoices, previewVoice]);
+
+  useEffect(() => {
+    if (!voiceMenuOpen) return;
+    const closeMenu = (event: MouseEvent) => {
+      if (!voiceMenuRef.current?.contains(event.target as Node)) {
+        setVoiceMenuOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", closeMenu);
+    return () => document.removeEventListener("mousedown", closeMenu);
+  }, [voiceMenuOpen]);
 
   const detectBookingIntent = useCallback((text: string): boolean => {
     const t = text.toLowerCase();
@@ -921,14 +1095,75 @@ export default function AIWidget() {
     return {};
   }, [looksLikeQuestionOrRequest]);
 
+  const normalizeDentalSpeech = useCallback((text: string) => {
+    return text
+      .replace(/\bin\s*visual(?:\s*line)?\b/gi, "Invisalign")
+      .replace(/\bland\s*app\b/gi, "LANAP")
+      .replace(/\bdoctor\s+harvey\b/gi, "Dr. Harvey")
+      .replace(/\bupper\s+east\s+dental\s+innovations?\b/gi, "Upper East Dental Innovations")
+      .replace(/\bdental\s+in\s+plants\b/gi, "dental implants")
+      .replace(/\bperiodontal\b/gi, "periodontal")
+      .trim();
+  }, []);
+
+  const detectNameCorrection = useCallback((text: string) => {
+    const notThisButThat = text.match(
+      /\b(?:sorry[,\s]*)?(?:it'?s|it is)?\s*not\s+([a-z][a-z'-]*)[,\s]+(?:it'?s|it is)\s+([a-z][a-z'-]*)\b/i
+    );
+    if (notThisButThat) return notThisButThat[2];
+
+    const explicit = text.match(
+      /\b(?:correct|change|update)\s+(?:my\s+)?name\s+to\s+([a-z][a-z'-]*)\b|\bmy\s+name\s+is\s+actually\s+([a-z][a-z'-]*)\b/i
+    );
+    return explicit?.[1] || explicit?.[2] || "";
+  }, []);
+
+  const titleCaseName = useCallback((value: string) => {
+    return value
+      .trim()
+      .toLowerCase()
+      .replace(/(^|[-'])\p{L}/gu, (letter) => letter.toUpperCase());
+  }, []);
+
   const handleSendMessage = useCallback(
-    async (text: string) => {
+    async (rawText: string) => {
+      const text = normalizeDentalSpeech(rawText);
       if (!text.trim()) return;
 
       const userMsg: Message = { id: Date.now().toString(), text, sender: "user" };
       setMessages((prev) => [...prev, userMsg]);
 
       const lowered = text.trim().toLowerCase();
+      const correctedName = detectNameCorrection(text);
+      const isPhoneCorrection =
+        /\b(?:correct|change|update|actually|sorry|not)\b.*\b(?:phone|number)\b|\b(?:phone|number)\b.*\b(?:correct|change|update|actually|sorry|not)\b/i.test(text) ||
+        Boolean(userPhone && /\b(?:correct|change|update|actually|sorry|not)\b/i.test(text) && /\d/.test(text));
+
+      if (correctedName || isPhoneCorrection) {
+        const extracted = isPhoneCorrection ? await requestAiBookingAutofill(text, "phone") : {};
+        const correctedPhone =
+          (typeof extracted.phone === "string" ? normalizePhoneNumber(extracted.phone) : null) ||
+          localExtractPhone(text);
+
+        if (correctedName) {
+          const updatedName = titleCaseName(correctedName);
+          setUserName(updatedName);
+          bookingDataRef.current.firstName = updatedName;
+          const reply = `Thank you for correcting me. I'll call you ${updatedName} from now on.`;
+          appendAiMessage(reply);
+          speak(reply);
+          return;
+        }
+
+        if (correctedPhone) {
+          setUserPhone(correctedPhone);
+          bookingDataRef.current.phone = correctedPhone;
+          const reply = `Thank you. I've updated the phone number I have for you.`;
+          appendAiMessage(reply);
+          speak(reply);
+          return;
+        }
+      }
 
       if (isOnboarding) {
         setIsTyping(true);
@@ -1111,13 +1346,18 @@ export default function AIWidget() {
         }
 
         setIsTyping(true);
-        const reply = await submitBooking(bookingDataRef.current);
-        bookingStepRef.current = -1;
-        bookingDataRef.current = {};
-        bookingPromptPendingRef.current = false;
-        appendAiMessage(reply);
+        const bookingResult = await submitBooking(bookingDataRef.current);
+        if (bookingResult.success) {
+          bookingStepRef.current = -1;
+          bookingDataRef.current = {};
+          bookingPromptPendingRef.current = false;
+        } else if (bookingResult.slotConflict) {
+          delete bookingDataRef.current.time;
+          bookingStepRef.current = bookingStepIndexByKey.time;
+        }
+        appendAiMessage(bookingResult.message);
         setIsTyping(false);
-        speak(reply);
+        speak(bookingResult.message);
         return;
       }
 
@@ -1165,6 +1405,11 @@ export default function AIWidget() {
       }));
 
       let responseText = FALLBACK_REPLY;
+      const acknowledgementTimer = window.setTimeout(() => {
+        if (inflightRef.current === controller) {
+          speak("Absolutely. Let me check that for you.");
+        }
+      }, 900);
       try {
         const res = await fetch("/api/grok", {
           method: "POST",
@@ -1183,12 +1428,13 @@ export default function AIWidget() {
         if (res.ok && payload.text) {
           responseText = payload.text;
         }
-      } catch (err: any) {
-        if (err?.name === "AbortError") {
+      } catch (err: unknown) {
+        if (err instanceof Error && err.name === "AbortError") {
           return;
         }
         console.error("[AIWidget] Grok request failed:", err);
       } finally {
+        window.clearTimeout(acknowledgementTimer);
         if (inflightRef.current === controller) inflightRef.current = null;
       }
 
@@ -1230,53 +1476,99 @@ export default function AIWidget() {
       localExtractPhone,
       looksLikeQuestionOrRequest,
       extractOnboardingName,
+      detectNameCorrection,
+      normalizeDentalSpeech,
+      titleCaseName,
     ]
   );
 
   useEffect(() => {
     flushSpeechTranscriptRef.current = () => {
-      const transcript = speechSessionRef.current.transcript.trim();
+      const transcript = `${speechSessionRef.current.finalTranscript} ${speechSessionRef.current.interimTranscript}`.trim();
+      const confidence = speechSessionRef.current.confidence;
       clearSpeechSilenceTimer();
-      speechSessionRef.current.transcript = "";
+      speechSessionRef.current.finalTranscript = "";
+      speechSessionRef.current.interimTranscript = "";
+      speechSessionRef.current.confidence = null;
       if (!transcript) {
         setIsListening(false);
         return;
       }
       stopListeningSession(true);
+      if (confidence !== null && confidence > 0 && confidence < 0.45) {
+        const reply = "I'm sorry, I didn't quite catch that. Could you say it once more?";
+        appendAiMessage(reply);
+        speak(reply);
+        return;
+      }
       handleSendMessage(transcript);
     };
-  }, [clearSpeechSilenceTimer, handleSendMessage, stopListeningSession]);
+  }, [appendAiMessage, clearSpeechSilenceTimer, handleSendMessage, speak, stopListeningSession]);
 
-  const scheduleSpeechAutoStop = useCallback(() => {
+  const scheduleSpeechAutoStop = useCallback((transcript: string) => {
     clearSpeechSilenceTimer();
+    const soundsUnfinished =
+      /\b(?:about|and|because|but|can you|could you|for|i need|i want|of|so|the|to|with)\s*$/i.test(transcript);
+    const delay = soundsUnfinished ? 2400 : 1900;
     speechSessionRef.current.silenceTimer = window.setTimeout(() => {
       flushSpeechTranscriptRef.current();
-    }, 1300);
+    }, delay);
   }, [clearSpeechSilenceTimer]);
 
   useEffect(() => {
-    const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+    const speechWindow = window as typeof window & {
+      SpeechRecognition?: SpeechRecognitionConstructor;
+      webkitSpeechRecognition?: SpeechRecognitionConstructor;
+    };
+    const SpeechRecognition = speechWindow.SpeechRecognition || speechWindow.webkitSpeechRecognition;
     if (SpeechRecognition) {
-      recognitionRef.current = new SpeechRecognition();
-      recognitionRef.current.continuous = true;
-      recognitionRef.current.interimResults = true;
-      recognitionRef.current.lang = "en-US";
+      const recognition = new SpeechRecognition();
+      recognitionRef.current = recognition;
+      recognition.continuous = true;
+      recognition.interimResults = true;
+      recognition.lang = "en-US";
 
-      recognitionRef.current.onresult = (event: any) => {
-        let transcript = "";
+      recognition.onresult = (event: SpeechRecognitionResultEventLike) => {
+        let interimTranscript = "";
         for (let i = event.resultIndex; i < event.results.length; i += 1) {
-          transcript += event.results[i][0]?.transcript || "";
+          const result = event.results[i];
+          const alternative = result[0];
+          const segment = alternative?.transcript?.trim() || "";
+          if (!segment) continue;
+          if (result.isFinal) {
+            speechSessionRef.current.finalTranscript = `${speechSessionRef.current.finalTranscript} ${segment}`.trim();
+            if (typeof alternative.confidence === "number") {
+              speechSessionRef.current.confidence = alternative.confidence;
+            }
+          } else {
+            interimTranscript = `${interimTranscript} ${segment}`.trim();
+          }
         }
-        speechSessionRef.current.transcript = transcript.trim();
-        if (speechSessionRef.current.transcript) {
-          scheduleSpeechAutoStop();
+        speechSessionRef.current.interimTranscript = interimTranscript;
+        const combined = `${speechSessionRef.current.finalTranscript} ${interimTranscript}`.trim();
+        if (combined) {
+          scheduleSpeechAutoStop(combined);
         }
       };
 
-      recognitionRef.current.onerror = () => stopListeningSession(false);
-      recognitionRef.current.onend = () => {
-        if (speechSessionRef.current.transcript.trim()) {
+      recognition.onerror = (event: { error?: string }) => {
+        if (event?.error === "no-speech" && listeningRequestedRef.current) return;
+        stopListeningSession(false);
+      };
+      recognition.onend = () => {
+        const transcript = `${speechSessionRef.current.finalTranscript} ${speechSessionRef.current.interimTranscript}`.trim();
+        if (transcript) {
           flushSpeechTranscriptRef.current();
+          return;
+        }
+        if (listeningRequestedRef.current) {
+          window.setTimeout(() => {
+            try {
+              recognitionRef.current?.start();
+            } catch {
+              stopListeningSession(false);
+            }
+          }, 250);
           return;
         }
         stopListeningSession(false);
@@ -1295,8 +1587,15 @@ export default function AIWidget() {
     if (isListening) {
       stopListeningSession(true);
     } else {
-      speechSessionRef.current.transcript = "";
+      if (window.speechSynthesis?.speaking) {
+        window.speechSynthesis.cancel();
+        setIsSpeaking(false);
+      }
+      speechSessionRef.current.finalTranscript = "";
+      speechSessionRef.current.interimTranscript = "";
+      speechSessionRef.current.confidence = null;
       clearSpeechSilenceTimer();
+      listeningRequestedRef.current = true;
       recognitionRef.current.start();
       setIsListening(true);
     }
@@ -1351,6 +1650,7 @@ export default function AIWidget() {
                 alt="AI Assistant"
                 fill
                 priority
+                sizes="(max-width: 1023px) 32px, 40px"
                 className="object-cover transition-transform duration-300 group-hover:scale-110"
               />
             </motion.button>
@@ -1367,11 +1667,68 @@ export default function AIWidget() {
             transition={{ duration: 0.3 }}
             className="fixed bottom-0 right-0 lg:top-0 z-[9999] w-full lg:w-[300px] 2xl:w-[420px] h-[85vh] lg:h-full bg-white border border-gray-100 lg:border-none lg:border-l rounded-t-[32px] lg:rounded-none flex flex-col overflow-hidden pointer-events-auto shadow-[0_-20px_50px_rgba(0,0,0,0.15)] lg:shadow-none ai-widget-side-panel"
           >
-            <div className="p-3 2xl:p-6 border-b border-gray-100 flex items-center justify-between bg-white">
+            <div className="ai-agent-header p-3 2xl:p-6 border-b border-gray-100 flex items-center justify-between bg-white">
               <div className="flex items-center gap-2 2xl:gap-3">
                 <span className="font-bold text-gray-900 tracking-tight text-sm 2xl:text-lg">UpperEast</span>
-                <div className="w-1 h-1 rounded-full bg-primary" />
-                <span className="text-[8px] 2xl:text-[10px] font-black text-gray-400 uppercase tracking-widest">AI Advisor</span>
+                {femaleVoices.length > 0 ? (
+                  <div ref={voiceMenuRef} className="ai-voice-menu">
+                    <button
+                      type="button"
+                      className="ai-voice-menu-trigger"
+                      onClick={() => setVoiceMenuOpen((open) => !open)}
+                      aria-haspopup="listbox"
+                      aria-expanded={voiceMenuOpen}
+                      aria-label="Choose AI agent voice"
+                    >
+                      <span className={`ai-agent-status${isSpeaking ? " is-speaking" : ""}`} />
+                      <span>{getVoiceAgentName(femaleVoice)}</span>
+                      <ChevronDown size={12} className={voiceMenuOpen ? "is-open" : ""} aria-hidden="true" />
+                    </button>
+                    <AnimatePresence>
+                      {voiceMenuOpen && (
+                        <motion.div
+                          initial={{ opacity: 0, y: -5, scale: 0.98 }}
+                          animate={{ opacity: 1, y: 0, scale: 1 }}
+                          exit={{ opacity: 0, y: -5, scale: 0.98 }}
+                          transition={{ duration: 0.16 }}
+                          className="ai-voice-menu-popover"
+                          role="listbox"
+                          aria-label="Available female voices"
+                        >
+                          <div className="ai-voice-menu-title">
+                            <Volume2 size={13} aria-hidden="true" />
+                            <span>Choose a voice</span>
+                          </div>
+                          <div className="ai-voice-menu-options">
+                            {femaleVoices.map((voice) => {
+                              const selected = femaleVoice?.name === voice.name;
+                              return (
+                                <button
+                                  key={`${voice.name}-${voice.lang}`}
+                                  type="button"
+                                  role="option"
+                                  aria-selected={selected}
+                                  className={`ai-voice-menu-option${selected ? " is-selected" : ""}`}
+                                  onClick={() => selectFemaleVoice(voice.name)}
+                                >
+                                  <span className="ai-voice-menu-avatar">{getVoiceAgentName(voice).charAt(0)}</span>
+                                  <span className="ai-voice-menu-details">
+                                    <strong>{getVoiceAgentName(voice)}</strong>
+                                    <small>Agent voice · Tap to preview</small>
+                                  </span>
+                                  {selected && <Check size={14} aria-hidden="true" />}
+                                </button>
+                              );
+                            })}
+                          </div>
+                          <p>Voices available on this device</p>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
+                ) : (
+                  <span className="ai-voice-fallback"><span className="ai-agent-status" />AI Advisor</span>
+                )}
               </div>
               <button
                 onClick={() => setIsOpen(false)}

@@ -21,9 +21,9 @@ export default function AccessibilityWidget() {
     
     // Applying text size zoom
     if (textSize !== 0) {
-      (html as any).style.zoom = 1 + (textSize * 0.1);
+      html.style.setProperty('zoom', String(1 + (textSize * 0.1)));
     } else {
-      (html as any).style.zoom = '';
+      html.style.removeProperty('zoom');
     }
 
     html.classList.toggle('a11y-grayscale', grayscale);
@@ -129,6 +129,7 @@ export default function AccessibilityWidget() {
       </AnimatePresence>
 
       <motion.div
+        className="a11y-widget-container"
         initial={false}
         animate={{ x: isOpen ? 0 : -sidebarWidth }}
         transition={{ type: 'spring', bounce: 0, duration: 0.4 }}
