@@ -1,12 +1,10 @@
 import type { Metadata } from "next";
-import Script from "next/script";
 import Link from "next/link";
 import "./globals.css";
 import HeaderWrapper from "@/components/HeaderWrapper";
 import Preloader from "@/components/Preloader";
 import Footer from "@/components/Footer";
 import ScriptHandler from "@/components/ScriptHandler";
-import AIWidget from "@/components/ai/AIWidget";
 import TopBanner from "@/components/TopBanner";
 import YoutubeMarquee from "@/components/YoutubeMarquee";
 import Image from "next/image";
@@ -14,7 +12,9 @@ import AccessibilityWidget from "@/components/AccessibilityWidget";
 import CursorGlow from "@/components/CursorGlow";
 import BookingModalProvider from "@/components/BookingModalProvider";
 import MobileConversionBar from "@/components/MobileConversionBar";
-import SmileAssessmentPopup from "@/components/SmileAssessmentPopup";
+import LegacyAssetsLoader from "@/components/LegacyAssetsLoader";
+import LazyAIWidget from "@/components/LazyAIWidget";
+import LazySmileAssessmentPopup from "@/components/LazySmileAssessmentPopup";
 
 export const metadata: Metadata = {
   title: "Upper East Dental — Dentist & Dental Clinic",
@@ -44,8 +44,6 @@ export default function RootLayout({
           rel="stylesheet"
         />
         <link href="/css/bootstrap.min.css" rel="stylesheet" type="text/css" id="bootstrap" />
-        <link href="/css/plugins.css" rel="stylesheet" type="text/css" />
-        <link href="/css/swiper.css" rel="stylesheet" type="text/css" />
         <link href="/css/style.css" rel="stylesheet" type="text/css" />
         <link id="colors" href="/css/colors/scheme-01.css" rel="stylesheet" type="text/css" />
       </head>
@@ -128,14 +126,11 @@ export default function RootLayout({
             </div>
           </div>
           <MobileConversionBar />
-          <SmileAssessmentPopup />
+          <LazySmileAssessmentPopup />
         </BookingModalProvider>
 
-        <Script src="/js/plugins.js" strategy="afterInteractive" />
-        <Script src="/js/on3step.js" strategy="lazyOnload" />
-        <Script src="/js/swiper.js" strategy="lazyOnload" />
-        <Script src="/js/custom-marquee.js" strategy="lazyOnload" />
-        <AIWidget />
+        <LegacyAssetsLoader />
+        <LazyAIWidget />
       </body>
     </html>
   );

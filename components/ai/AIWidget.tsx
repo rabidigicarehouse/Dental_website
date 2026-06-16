@@ -194,6 +194,7 @@ export default function AIWidget() {
         setIsSpeaking(false);
         return;
       }
+      setVideoMediaEnabled(true);
       listeningRequestedRef.current = false;
       if (speechSessionRef.current.silenceTimer !== null) {
         window.clearTimeout(speechSessionRef.current.silenceTimer);
@@ -268,9 +269,18 @@ export default function AIWidget() {
     [femaleVoice, isVoiceMuted]
   );
 
+  const speakAfterNextPaint = useCallback((text: string) => {
+    window.requestAnimationFrame(() => {
+      window.requestAnimationFrame(() => {
+        speak(text);
+      });
+    });
+  }, [speak]);
+
   useEffect(() => {
     if (!mounted || !isOpen || !femaleVoice) return;
     if (welcomeSpokenRef.current) return;
+    setVideoMediaEnabled(true);
     const t = window.setTimeout(() => {
       welcomeSpokenRef.current = true;
       try {
@@ -278,7 +288,7 @@ export default function AIWidget() {
       } catch {
         // Speech synthesis unsupported.
       }
-    }, 850);
+    }, 1050);
     return () => window.clearTimeout(t);
   }, [femaleVoice, isOpen, mounted, speak]);
 
@@ -932,9 +942,9 @@ export default function AIWidget() {
     if (bookingStepRef.current < BOOKING_STEPS.length) {
       const nextAsk = BOOKING_STEPS[bookingStepRef.current].ask;
       appendAiMessage(nextAsk);
-      speak(nextAsk);
+      speakAfterNextPaint(nextAsk);
     }
-  }, [BOOKING_STEPS, userName, userLastName, userPhone, appendAiMessage, speak, isBookingStepComplete]);
+  }, [BOOKING_STEPS, userName, userLastName, userPhone, appendAiMessage, speakAfterNextPaint, isBookingStepComplete]);
 
   const submitBooking = useCallback(async (data: BookingForm): Promise<{ message: string; success: boolean; slotConflict?: boolean }> => {
     try {
@@ -1204,7 +1214,7 @@ export default function AIWidget() {
             ? `Thank you for correcting me. I have your name as ${updatedFullName}. Could you please share your phone number as well?`
             : `Thank you for correcting me. I'll call you ${updatedFullName} from now on.`;
           appendAiMessage(reply);
-          speak(reply);
+          speakAfterNextPaint(reply);
           return;
         }
 
@@ -1220,7 +1230,7 @@ export default function AIWidget() {
               ? `Thank you. I've updated your phone number. May I please have your name as well?`
               : `Thank you. I've updated the phone number I have for you.`;
           appendAiMessage(reply);
-          speak(reply);
+          speakAfterNextPaint(reply);
           return;
         }
       }
@@ -1251,13 +1261,13 @@ export default function AIWidget() {
           const label = fieldLabels[correctedBookingField] || "information";
           const reply = `Thank you for correcting me. I've updated your ${label}.`;
           appendAiMessage(reply);
-          speak(reply);
+          speakAfterNextPaint(reply);
           return;
         }
 
         const reply = `I understand you want to correct that. Could you tell me the correct ${correctedBookingField === "dob" ? "date of birth" : correctedBookingField === "date" ? "appointment date" : correctedBookingField === "time" ? "appointment time" : correctedBookingField}?`;
         appendAiMessage(reply);
-        speak(reply);
+        speakAfterNextPaint(reply);
         return;
       }
 
@@ -1308,31 +1318,31 @@ export default function AIWidget() {
           setIsOnboarding(false);
           const reply = `Nice to meet you, ${newName}! How can I help you today?`;
           appendAiMessage(reply);
-          speak(reply);
+          speakAfterNextPaint(reply);
         } else if (askedAQuestion && !newName && !newPhone) {
           const reply = `Before we continue, please provide your name and phone number so I can assist you properly.`;
           appendAiMessage(reply);
-          speak(reply);
+          speakAfterNextPaint(reply);
         } else if (!hasValidPhone && looksLikePhoneAttempt && newName) {
           const reply = `${newName}, please enter a relevant valid phone number so I can continue.`;
           appendAiMessage(reply);
-          speak(reply);
+          speakAfterNextPaint(reply);
         } else if (!hasValidPhone && looksLikePhoneAttempt && !newName) {
           const reply = `Please enter a relevant valid phone number with your name so I can continue.`;
           appendAiMessage(reply);
-          speak(reply);
+          speakAfterNextPaint(reply);
         } else if (newName && !newPhone) {
           const reply = `Nice to meet you, ${newName}! Could you please share your phone number as well?`;
           appendAiMessage(reply);
-          speak(reply);
+          speakAfterNextPaint(reply);
         } else if (!newName && newPhone) {
           const reply = `Thank you for the phone number. May I please have your name as well?`;
           appendAiMessage(reply);
-          speak(reply);
+          speakAfterNextPaint(reply);
         } else {
           const reply = `To help you get started, could you please provide your name and phone number?`;
           appendAiMessage(reply);
-          speak(reply);
+          speakAfterNextPaint(reply);
         }
         return;
       }
@@ -1344,7 +1354,7 @@ export default function AIWidget() {
         tomorrowOfferPendingRef.current = false;
         const reply = "No problem - I've cancelled the booking. Let me know whenever you're ready, or ask me anything else.";
         appendAiMessage(reply);
-        speak(reply);
+        speakAfterNextPaint(reply);
         return;
       }
 
@@ -1357,7 +1367,7 @@ export default function AIWidget() {
           bookingPromptPendingRef.current = false;
           const reply = "Of course. If you need anything else from Upper East Dental Innovations, I'm here to help.";
           appendAiMessage(reply);
-          speak(reply);
+          speakAfterNextPaint(reply);
           return;
         }
       }
@@ -1374,14 +1384,14 @@ export default function AIWidget() {
             day: "numeric",
           })}. What time would you like? The latest available appointment time is 5:30 PM.`;
           appendAiMessage(reply);
-          speak(reply);
+          speakAfterNextPaint(reply);
           return;
         }
         if (detectNoResponse(text)) {
           tomorrowOfferPendingRef.current = false;
           const reply = "No problem. Please choose another weekday date between Monday and Friday, and I will help you continue.";
           appendAiMessage(reply);
-          speak(reply);
+          speakAfterNextPaint(reply);
           return;
         }
       }
@@ -1398,7 +1408,7 @@ export default function AIWidget() {
           const timeWindowResult = validateAppointmentTimeWindow(candidateDate, candidateTime);
           if (!timeWindowResult.ok) {
             appendAiMessage(timeWindowResult.reason);
-            speak(timeWindowResult.reason);
+            speakAfterNextPaint(timeWindowResult.reason);
             return;
           }
           autofill.time = timeWindowResult.clean;
@@ -1418,7 +1428,7 @@ export default function AIWidget() {
           const result = step.validate(text);
           if (!result.ok) {
             appendAiMessage(result.reason);
-            speak(result.reason);
+            speakAfterNextPaint(result.reason);
             return;
           }
           bookingDataRef.current[step.key] = result.clean;
@@ -1436,7 +1446,7 @@ export default function AIWidget() {
         if (bookingStepRef.current < BOOKING_STEPS.length) {
           const nextAsk = BOOKING_STEPS[bookingStepRef.current].ask;
           appendAiMessage(nextAsk);
-          speak(nextAsk);
+          speakAfterNextPaint(nextAsk);
           return;
         }
 
@@ -1452,14 +1462,14 @@ export default function AIWidget() {
         }
         appendAiMessage(bookingResult.message);
         setIsTyping(false);
-        speak(bookingResult.message);
+        speakAfterNextPaint(bookingResult.message);
         return;
       }
 
       if (detectDirectBookingCommand(text)) {
         const reply = `Yes ${userName || ""}, I can help with that.`;
         appendAiMessage(reply);
-        speak(reply);
+        speakAfterNextPaint(reply);
         window.setTimeout(() => startBookingFlow(), 150);
         return;
       }
@@ -1476,7 +1486,7 @@ export default function AIWidget() {
                   ? `Wa alaikum assalam, ${userName || "there"}. Do you want to book an appointment, or do you have another question for me?`
                   : `Hi ${userName || "there"}. Do you want to book an appointment, or do you have another question for me?`;
         appendAiMessage(greetingReply);
-        speak(greetingReply);
+        speakAfterNextPaint(greetingReply);
         return;
       }
 
@@ -1484,7 +1494,7 @@ export default function AIWidget() {
         bookingPromptPendingRef.current = true;
         const reply = `Yes ${userName || ""}, I can help with that. Do you want me to book an appointment for you?`;
         appendAiMessage(reply);
-        speak(reply);
+        speakAfterNextPaint(reply);
         return;
       }
 
@@ -1500,11 +1510,6 @@ export default function AIWidget() {
       }));
 
       let responseText = FALLBACK_REPLY;
-      const acknowledgementTimer = window.setTimeout(() => {
-        if (inflightRef.current === controller) {
-          speak("Absolutely. Let me check that for you.");
-        }
-      }, 900);
       try {
         const res = await fetch("/api/grok", {
           method: "POST",
@@ -1529,7 +1534,6 @@ export default function AIWidget() {
         }
         console.error("[AIWidget] Grok request failed:", err);
       } finally {
-        window.clearTimeout(acknowledgementTimer);
         if (inflightRef.current === controller) inflightRef.current = null;
       }
 
@@ -1544,7 +1548,7 @@ export default function AIWidget() {
       bookingPromptPendingRef.current = shouldOfferBooking;
       appendAiMessage(finalResponse);
       setIsTyping(false);
-      speak(finalResponse);
+      speakAfterNextPaint(finalResponse);
     },
     [
       BOOKING_STEPS,
@@ -1560,7 +1564,7 @@ export default function AIWidget() {
       detectGreetingOnly,
       detectNoResponse,
       detectYesResponse,
-      speak,
+      speakAfterNextPaint,
       startBookingFlow,
       submitBooking,
       isOnboarding,
@@ -1595,12 +1599,12 @@ export default function AIWidget() {
       if (confidence !== null && confidence > 0 && confidence < 0.45) {
         const reply = "I'm sorry, I didn't quite catch that. Could you say it once more?";
         appendAiMessage(reply);
-        speak(reply);
+        speakAfterNextPaint(reply);
         return;
       }
       handleSendMessage(transcript);
     };
-  }, [appendAiMessage, clearSpeechSilenceTimer, handleSendMessage, speak, stopListeningSession]);
+  }, [appendAiMessage, clearSpeechSilenceTimer, handleSendMessage, speakAfterNextPaint, stopListeningSession]);
 
   const scheduleSpeechAutoStop = useCallback((transcript: string) => {
     clearSpeechSilenceTimer();

@@ -464,7 +464,7 @@ export default function Home() {
               },
               {
                 title: "Advanced & Specialized Treatments",
-                img: "/dental services/Advanced & Specialized Treatments.jpeg",
+                img: "/dental services/Advance treatment.jpeg",
                 icon: "tooth-3.png",
                 desc: "Endodontics, sedation, sleep apnea treatment, and stem cell dentistry.",
                 href: "/services/lanap-laser-treatment",

@@ -581,6 +581,7 @@ export default function ScriptHandler() {
     const timerC = setTimeout(resetMobileHeaderState, 250);
 
     resetMobileHeaderState();
+    window.addEventListener('uedi:legacy-assets-ready', initScripts);
     window.addEventListener('resize', resetMobileHeaderState);
 
     const handleMenuClick = () => {
@@ -602,6 +603,7 @@ export default function ScriptHandler() {
       clearTimeout(timerD);
       clearTimeout(timerE);
       clearTimeout(timerC);
+      window.removeEventListener('uedi:legacy-assets-ready', initScripts);
       window.removeEventListener('resize', resetMobileHeaderState);
       forceCloseMobileMenu();
       if (btnExtra) btnExtra.removeEventListener('click', handleMenuClick);
