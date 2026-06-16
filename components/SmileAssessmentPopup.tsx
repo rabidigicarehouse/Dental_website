@@ -24,8 +24,37 @@ export default function SmileAssessmentPopup() {
     setIsOpen(false);
     if (shouldHide || isBookingOpen) return;
 
-    const timer = window.setTimeout(() => setIsOpen(true), 4500);
-    return () => window.clearTimeout(timer);
+    let delayPassed = false;
+    let visitorEngaged = false;
+
+    const maybeOpen = () => {
+      if (delayPassed && visitorEngaged) {
+        setIsOpen(true);
+        cleanupEngagementListeners();
+      }
+    };
+    const markEngaged = () => {
+      visitorEngaged = true;
+      maybeOpen();
+    };
+    const cleanupEngagementListeners = () => {
+      window.removeEventListener('pointerdown', markEngaged);
+      window.removeEventListener('keydown', markEngaged);
+      window.removeEventListener('scroll', markEngaged);
+    };
+
+    window.addEventListener('pointerdown', markEngaged, { passive: true, once: true });
+    window.addEventListener('keydown', markEngaged, { once: true });
+    window.addEventListener('scroll', markEngaged, { passive: true, once: true });
+
+    const timer = window.setTimeout(() => {
+      delayPassed = true;
+      maybeOpen();
+    }, 4500);
+    return () => {
+      window.clearTimeout(timer);
+      cleanupEngagementListeners();
+    };
   }, [isBookingOpen, pathname, shouldHide]);
 
   useEffect(() => {

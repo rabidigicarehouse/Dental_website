@@ -576,6 +576,8 @@ export default function ScriptHandler() {
 
     const timerA = setTimeout(initScripts, 100);
     const timerB = setTimeout(initScripts, 1000);
+    const timerD = setTimeout(initScripts, 2500);
+    const timerE = setTimeout(initScripts, 5000);
     const timerC = setTimeout(resetMobileHeaderState, 250);
 
     resetMobileHeaderState();
@@ -597,6 +599,8 @@ export default function ScriptHandler() {
     return () => {
       clearTimeout(timerA);
       clearTimeout(timerB);
+      clearTimeout(timerD);
+      clearTimeout(timerE);
       clearTimeout(timerC);
       window.removeEventListener('resize', resetMobileHeaderState);
       forceCloseMobileMenu();

@@ -91,6 +91,7 @@ export default function AIWidget() {
   const [isTyping, setIsTyping] = useState(false);
   const [stickyHidden, setStickyHidden] = useState(false);
   const [isVoiceMuted, setIsVoiceMuted] = useState(false);
+  const [videoMediaEnabled, setVideoMediaEnabled] = useState(false);
   const WELCOME_TEXT = "Hi! Welcome to our practice facility. To help you get started, may I please have your name and phone number?";
   const [messages, setMessages] = useState<Message[]>([
     { id: "1", text: WELCOME_TEXT, sender: "ai" },
@@ -380,6 +381,14 @@ export default function AIWidget() {
       }
     }
   }, [isVoiceMuted, mounted]);
+
+  useEffect(() => {
+    if (!videoMediaEnabled) return;
+    const activeVideo = isSpeaking ? talkingVideoRef.current : listeningVideoRef.current;
+    const inactiveVideo = isSpeaking ? listeningVideoRef.current : talkingVideoRef.current;
+    inactiveVideo?.pause();
+    activeVideo?.play().catch(() => {});
+  }, [isSpeaking, videoMediaEnabled]);
 
   const clearSpeechSilenceTimer = useCallback(() => {
     if (speechSessionRef.current.silenceTimer !== null) {
@@ -746,6 +755,13 @@ export default function AIWidget() {
     return step.validate(value);
   }, [BOOKING_STEPS, bookingStepIndexByKey]);
 
+  const isBookingStepComplete = useCallback((key: BookingFieldKey) => {
+    if (key === "lastName" && bookingDataRef.current.firstName) {
+      return true;
+    }
+    return Boolean(bookingDataRef.current[key]);
+  }, []);
+
   const normalizeSpokenDate = useCallback((value: string, mode: "dob" | "appointment"): string | null => {
     const trimmed = value.trim();
     if (mode === "appointment" && /\b(today|tomorrow)\b/i.test(trimmed)) {
@@ -906,7 +922,7 @@ export default function AIWidget() {
     let nextStepIndex = 0;
     while (
       nextStepIndex < BOOKING_STEPS.length &&
-      bookingDataRef.current[BOOKING_STEPS[nextStepIndex].key]
+      isBookingStepComplete(BOOKING_STEPS[nextStepIndex].key)
     ) {
       nextStepIndex += 1;
     }
@@ -918,7 +934,7 @@ export default function AIWidget() {
       appendAiMessage(nextAsk);
       speak(nextAsk);
     }
-  }, [BOOKING_STEPS, userName, userLastName, userPhone, appendAiMessage, speak]);
+  }, [BOOKING_STEPS, userName, userLastName, userPhone, appendAiMessage, speak, isBookingStepComplete]);
 
   const submitBooking = useCallback(async (data: BookingForm): Promise<{ message: string; success: boolean; slotConflict?: boolean }> => {
     try {
@@ -1080,8 +1096,21 @@ export default function AIWidget() {
       };
     }
 
+    const greetingHereMatch = trimmed.match(
+      /^(?:hi|hello|hey|good\s+(?:morning|afternoon|evening))[,\s]+([a-z][a-z'-]*)(?:\s+([a-z][a-z'-]+))?\s+(?:here|speaking)\b/i
+    );
+    if (greetingHereMatch) {
+      return {
+        firstName: greetingHereMatch[1].trim(),
+        lastName: greetingHereMatch[2]?.trim() || "",
+      };
+    }
+
     const cleaned = trimmed.replace(/[^a-zA-Z\s'-]/g, " ").replace(/\s+/g, " ").trim();
-    const parts = cleaned.split(" ").filter(Boolean);
+    const parts = cleaned
+      .split(" ")
+      .filter(Boolean)
+      .filter((part) => !/^(hi|hello|hey|here|speaking)$/i.test(part));
     if (parts.length >= 1 && parts.length <= 3 && cleaned.length <= 32) {
       if (parts.every((part) => /^[a-zA-Z][a-zA-Z'-]+$/.test(part))) {
         return {
@@ -1107,12 +1136,12 @@ export default function AIWidget() {
 
   const detectNameCorrection = useCallback((text: string) => {
     const notThisButThat = text.match(
-      /\b(?:sorry[,\s]*)?(?:it'?s|it is)?\s*not\s+([a-z][a-z'-]*)[,\s]+(?:it'?s|it is)\s+([a-z][a-z'-]*)\b/i
+      /\b(?:sorry[,\s]*)?(?:it'?s|it is)?\s*not\s+([a-z][a-z'-]*(?:\s+[a-z][a-z'-]*)*)[,\s]+(?:it'?s|it is|its)\s+([a-z][a-z'-]*(?:\s+[a-z][a-z'-]*)*)\b/i
     );
     if (notThisButThat) return notThisButThat[2];
 
     const explicit = text.match(
-      /\b(?:correct|change|update)\s+(?:my\s+)?name\s+to\s+([a-z][a-z'-]*)\b|\bmy\s+name\s+is\s+actually\s+([a-z][a-z'-]*)\b/i
+      /\b(?:correct|change|update)\s+(?:my\s+)?name\s+(?:to|as|is)\s+([a-z][a-z'-]*(?:\s+[a-z][a-z'-]*)*)\b|\bmy\s+(?:correct\s+)?name\s+is\s+(?:actually\s+)?([a-z][a-z'-]*(?:\s+[a-z][a-z'-]*)*)\b/i
     );
     return explicit?.[1] || explicit?.[2] || "";
   }, []);
@@ -1136,7 +1165,7 @@ export default function AIWidget() {
     return value
       .trim()
       .toLowerCase()
-      .replace(/(^|[-'])\p{L}/gu, (letter) => letter.toUpperCase());
+      .replace(/(^|[\s'-])\p{L}/gu, (letter) => letter.toUpperCase());
   }, []);
 
   const handleSendMessage = useCallback(
@@ -1161,10 +1190,19 @@ export default function AIWidget() {
           localExtractPhone(text);
 
         if (correctedName) {
-          const updatedName = titleCaseName(correctedName);
-          setUserName(updatedName);
-          bookingDataRef.current.firstName = updatedName;
-          const reply = `Thank you for correcting me. I'll call you ${updatedName} from now on.`;
+          const updatedFullName = titleCaseName(correctedName);
+          const nameParts = updatedFullName.split(/\s+/).filter(Boolean);
+          const updatedFirstName = nameParts[0] || updatedFullName;
+          const updatedLastName = nameParts.slice(1).join(" ");
+          setUserName(updatedFirstName);
+          setUserLastName(updatedLastName);
+          bookingDataRef.current.firstName = updatedFirstName;
+          if (updatedLastName) {
+            bookingDataRef.current.lastName = updatedLastName;
+          }
+          const reply = isOnboarding && !userPhone
+            ? `Thank you for correcting me. I have your name as ${updatedFullName}. Could you please share your phone number as well?`
+            : `Thank you for correcting me. I'll call you ${updatedFullName} from now on.`;
           appendAiMessage(reply);
           speak(reply);
           return;
@@ -1173,7 +1211,14 @@ export default function AIWidget() {
         if (correctedPhone) {
           setUserPhone(correctedPhone);
           bookingDataRef.current.phone = correctedPhone;
-          const reply = `Thank you. I've updated the phone number I have for you.`;
+          if (isOnboarding && userName) {
+            setIsOnboarding(false);
+          }
+          const reply = isOnboarding && userName
+            ? `Thank you. I've updated your phone number. How can I help you today?`
+            : isOnboarding
+              ? `Thank you. I've updated your phone number. May I please have your name as well?`
+              : `Thank you. I've updated the phone number I have for you.`;
           appendAiMessage(reply);
           speak(reply);
           return;
@@ -1237,21 +1282,20 @@ export default function AIWidget() {
         const askedAQuestion = looksLikeQuestionOrRequest(text);
         const looksLikePhoneAttempt = /\d/.test(text);
 
-        if (extractedName && !userName) {
-          newName = extractedName;
-        }
-        if (extractedLastName && !userLastName) {
-          newLastName = extractedLastName;
-        }
-        if (extractedPhone && !userPhone) {
-          newPhone = extractedPhone;
-        }
-
-        if (!newName && localName.firstName) {
+        if (!userName && localName.firstName) {
           newName = localName.firstName;
           if (localName.lastName) {
             newLastName = localName.lastName;
           }
+        }
+        if (extractedName && !newName) {
+          newName = extractedName;
+        }
+        if (extractedLastName && !newLastName) {
+          newLastName = extractedLastName;
+        }
+        if (extractedPhone && !userPhone) {
+          newPhone = extractedPhone;
         }
 
         if (newName) setUserName(newName);
@@ -1365,7 +1409,7 @@ export default function AIWidget() {
           let nextStepIndex = bookingStepRef.current;
           while (
             nextStepIndex < BOOKING_STEPS.length &&
-            bookingDataRef.current[BOOKING_STEPS[nextStepIndex].key]
+            isBookingStepComplete(BOOKING_STEPS[nextStepIndex].key)
           ) {
             nextStepIndex += 1;
           }
@@ -1382,7 +1426,7 @@ export default function AIWidget() {
           let nextStepIndex = bookingStepRef.current + 1;
           while (
             nextStepIndex < BOOKING_STEPS.length &&
-            bookingDataRef.current[BOOKING_STEPS[nextStepIndex].key]
+            isBookingStepComplete(BOOKING_STEPS[nextStepIndex].key)
           ) {
             nextStepIndex += 1;
           }
@@ -1509,6 +1553,7 @@ export default function AIWidget() {
       detectBookingIntent,
       detectDirectBookingCommand,
       extractBookingAutofill,
+      isBookingStepComplete,
       requestAiBookingAutofill,
       validateAppointmentTimeWindow,
       validateAppointmentDateSelection,
@@ -1698,11 +1743,10 @@ export default function AIWidget() {
               className="relative w-8 h-8 lg:w-10 lg:h-10 rounded-full bg-white shadow-lg flex items-center justify-center overflow-hidden border border-gray-100 group"
             >
               <Image
-                src="/ai avatar.png"
-                alt="AI Assistant"
-                fill
-                priority
-                sizes="(max-width: 1023px) 32px, 40px"
+                 src="/ai avatar.png"
+                 alt="AI Assistant"
+                 fill
+                 sizes="(max-width: 1023px) 32px, 40px"
                 className="object-cover transition-transform duration-300 group-hover:scale-110"
               />
             </motion.button>
@@ -1717,6 +1761,8 @@ export default function AIWidget() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
+            onPointerDownCapture={() => setVideoMediaEnabled(true)}
+            onFocusCapture={() => setVideoMediaEnabled(true)}
             className="fixed bottom-0 right-0 lg:top-0 z-[9999] w-full lg:w-[300px] 2xl:w-[420px] h-[85vh] lg:h-full bg-white border border-gray-100 lg:border-none lg:border-l rounded-t-[32px] lg:rounded-none flex flex-col overflow-hidden pointer-events-auto shadow-[0_-20px_50px_rgba(0,0,0,0.15)] lg:shadow-none ai-widget-side-panel"
           >
             <div className="ai-agent-header p-3 2xl:p-6 border-b border-gray-100 flex items-center justify-between bg-white">
@@ -1792,28 +1838,40 @@ export default function AIWidget() {
 
             <div className="p-3 2xl:p-6 pb-1">
               <div className="relative aspect-[16/10] rounded-xl 2xl:rounded-3xl overflow-hidden shadow-lg group border-[3px] 2xl:border-[6px] border-gray-50/50 bg-black">
-                <video
-                  ref={listeningVideoRef}
-                  src="/listening.mov"
-                  autoPlay
-                  loop
-                  muted
-                  playsInline
-                  preload="auto"
-                  className={`absolute inset-0 w-full h-full object-cover bg-black ${isSpeaking ? "opacity-0" : "opacity-100"}`}
-                  style={{ backgroundColor: "black" }}
-                />
+                {videoMediaEnabled ? (
+                  <>
+                    <video
+                      ref={listeningVideoRef}
+                      src="/listening.mov"
+                      autoPlay
+                      loop
+                      muted
+                      playsInline
+                      preload="metadata"
+                      className={`absolute inset-0 w-full h-full object-cover bg-black ${isSpeaking ? "opacity-0" : "opacity-100"}`}
+                      style={{ backgroundColor: "black" }}
+                    />
 
-                <video
-                  ref={talkingVideoRef}
-                  src="/talking.mov"
-                  loop
-                  muted
-                  playsInline
-                  preload="auto"
-                  className={`absolute inset-0 w-full h-full object-cover bg-black ${isSpeaking ? "opacity-100" : "opacity-0"}`}
-                  style={{ backgroundColor: "black" }}
-                />
+                    <video
+                      ref={talkingVideoRef}
+                      src="/talking.mov"
+                      loop
+                      muted
+                      playsInline
+                      preload="none"
+                      className={`absolute inset-0 w-full h-full object-cover bg-black ${isSpeaking ? "opacity-100" : "opacity-0"}`}
+                      style={{ backgroundColor: "black" }}
+                    />
+                  </>
+                ) : (
+                  <Image
+                    src="/ai avatar.png"
+                    alt="UpperEast AI advisor"
+                    fill
+                    sizes="(max-width: 1023px) 100vw, 420px"
+                    className="object-cover"
+                  />
+                )}
 
                 <button
                   type="button"

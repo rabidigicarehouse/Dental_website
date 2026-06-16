@@ -18,8 +18,8 @@ export default function Preloader() {
       setShow(false);
     };
 
-    // Hide after delay (simulating page transition/loading)
-    const timeout = setTimeout(hidePreloader, 1000);
+    // Keep the transition cue brief so it never delays usable content.
+    const timeout = setTimeout(hidePreloader, 180);
 
     return () => clearTimeout(timeout);
   }, [pathname]);

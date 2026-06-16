@@ -35,7 +35,7 @@ export async function POST(request: NextRequest) {
     const reason = String(body.reason || '').trim();
     const date = String(body.date || '').trim();
     const time = String(body.time || '').trim();
-    if (!firstName || !lastName || !email || !date || !time) {
+    if (!firstName || !email || !date || !time) {
       return NextResponse.json({ error: 'Required fields are missing.' }, { status: 400 });
     }
 
@@ -44,7 +44,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: slotValidation.reason }, { status: 400 });
     }
 
-    const patientName = `${firstName} ${lastName}`;
+    const patientName = [firstName, lastName].filter(Boolean).join(' ');
     const reserved = await reserveSlot({
       slotKey: slotValidation.slotKey,
       date: slotValidation.dateKey,
