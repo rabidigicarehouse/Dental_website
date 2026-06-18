@@ -78,12 +78,6 @@ export function getAdditionalClinicNotificationEmails() {
   );
 }
 
-export function getSquareBaseUrl() {
-  return process.env.SQUARE_ENVIRONMENT === 'production'
-    ? 'https://connect.squareup.com'
-    : 'https://connect.squareupsandbox.com';
-}
-
 export function getLogoAttachment(useLight = false) {
   const filePath = useLight ? LOGO_LIGHT_PATH : LOGO_DARK_PATH;
   if (fs.existsSync(filePath)) {

@@ -39,7 +39,8 @@ export default function Homepage2() {
                     <i className="fs-60 text-white icon_clock"></i>
                     <div className="ms-3">
                       <h4 className="mb-0">Opening Hours</h4>
-                      Mon to Sat 08:00 - 20:00
+                      Mon - Fri 9:00 AM - 6:00 PM<br />
+                      Saturday as per request
                     </div>
                   </div>
                 </div>

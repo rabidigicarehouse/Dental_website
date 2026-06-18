@@ -575,7 +575,7 @@ export default function AIWidget() {
       tomorrowOfferPendingRef.current = false;
       return {
         ok: false as const,
-        reason: "We would not book an appointment for Saturday or Sunday. Please try to book between Monday and Friday, 9:00 AM to 6:00 PM.",
+        reason: "Online appointments are available Monday through Friday, 9:00 AM to 6:00 PM. Saturday visits are available as per request, so please call the clinic for Saturday availability.",
       };
     }
 
@@ -612,7 +612,7 @@ export default function AIWidget() {
     if (totalMinutes < openingMinutes || totalMinutes > latestStartMinutes) {
       return {
         ok: false as const,
-        reason: "We only book appointments Monday through Friday during office hours, and the latest available appointment time is 5:30 PM.",
+        reason: "Online appointments are available Monday through Friday during office hours, with the latest start time at 5:30 PM. Saturday visits are available as per request.",
       };
     }
 
@@ -622,7 +622,7 @@ export default function AIWidget() {
         if (isWeekendDate(appointmentDate)) {
           return {
             ok: false as const,
-            reason: "We would not book an appointment for Saturday or Sunday. Please try to book between Monday and Friday, 9:00 AM to 6:00 PM.",
+            reason: "Online appointments are available Monday through Friday, 9:00 AM to 6:00 PM. Saturday visits are available as per request, so please call the clinic for Saturday availability.",
           };
         }
 
@@ -1084,7 +1084,7 @@ export default function AIWidget() {
     const t = text.trim().toLowerCase();
     return (
       /\?$/.test(t) ||
-      /\b(tell|about|what|who|how|why|when|where|do you|can you|could you|would you|i want|i need|help|book|appointment|doctor|dr\.?|services|team|paola|michelle|harvey|pellegrini)\b/.test(
+      /\b(tell|about|what|who|how|why|when|where|do you|can you|could you|would you|i want|i need|help|book|appointment|doctor|dr\.?|services|team|paola|ivory|lorilla|harvey|pellegrini)\b/.test(
         t
       )
     );
@@ -1389,7 +1389,7 @@ export default function AIWidget() {
         }
         if (detectNoResponse(text)) {
           tomorrowOfferPendingRef.current = false;
-          const reply = "No problem. Please choose another weekday date between Monday and Friday, and I will help you continue.";
+          const reply = "No problem. Please choose another weekday from Monday through Friday. Saturday visits are available as per request by calling the clinic.";
           appendAiMessage(reply);
           speakAfterNextPaint(reply);
           return;

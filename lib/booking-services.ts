@@ -143,7 +143,7 @@ export const BOOKING_STAFF = [
   {
     id: 'dr-harvey',
     title: 'Dr Sharda Harvey',
-    shortDescription: 'General Dentist — DDS, MS, FICOI',
+    shortDescription: 'General Cosmetic Dentist',
     duration: '30 min',
     durationMinutes: 30,
     price: 'Free',

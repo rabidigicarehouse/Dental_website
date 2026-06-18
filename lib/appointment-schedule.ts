@@ -92,7 +92,7 @@ export function validateAppointmentSlot(dateValue: string, timeValue: string, no
   const dateAtNoonUtc = new Date(`${dateKey}T12:00:00Z`);
   const weekday = dateAtNoonUtc.getUTCDay();
   if (weekday === 0 || weekday === 6) {
-    return { ok: false, reason: 'The clinic is open Monday through Friday. Please choose a weekday.' };
+    return { ok: false, reason: 'Online appointments are available Monday through Friday. Saturday visits are available as per request by calling the clinic.' };
   }
 
   const parsedTime = parseAppointmentTime(timeValue);
@@ -106,7 +106,7 @@ export function validateAppointmentSlot(dateValue: string, timeValue: string, no
   ) {
     return {
       ok: false,
-      reason: 'Appointments are available Monday through Friday from 9:00 AM, with the latest start time at 5:30 PM.',
+      reason: 'Online appointments are available Monday through Friday from 9:00 AM, with the latest start time at 5:30 PM. Saturday visits are available as per request.',
     };
   }
 

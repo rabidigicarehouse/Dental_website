@@ -60,6 +60,7 @@ export default function About() {
           <div id="dr-sharde-harvey" className="anchor-scroll-offset">
             <div className="subtitle id-color wow fadeInUp mb-3">Meet the Doctor</div>
             <h2 className="wow fadeInUp" data-wow-delay=".2s">Dr. Sharda Harvey, DDS, MS, FICOI</h2>
+            <p className="doctor-designation-nowrap wow fadeInUp" data-wow-delay=".25s">General Cosmetic Dentist</p>
           </div>
 
           <div className="doctor-float-section">
@@ -70,7 +71,7 @@ export default function About() {
               className="doctor-float-img wow fadeInRight" width={1200} height={800} />
 
             <p className="wow fadeInUp" data-wow-delay=".3s">
-              DR. SHARDE HARVEY, DDS, MS, FICOI is a skilled New York City General Dentist with extensive training in full mouth cosmetic rehabilitation and dental implants.
+              DR. SHARDE HARVEY, DDS, MS, FICOI is a skilled New York City General Cosmetic Dentist with extensive training in full mouth cosmetic rehabilitation and dental implants.
             </p>
 
             <p className="wow fadeInUp" data-wow-delay=".4s">
@@ -191,8 +192,8 @@ export default function About() {
           <div id="paola-cruz" className="anchor-scroll-offset">
             <div className="subtitle id-color wow fadeInUp mb-3">Meet the Team</div>
             <h2 className="wow fadeInUp" data-wow-delay=".2s">Paola Cruz</h2>
-            <p className="wow fadeInUp mb-4" data-wow-delay=".25s">
-              Dental Assistant &amp; Front Office Coordinator
+            <p className="doctor-designation-nowrap wow fadeInUp mb-4" data-wow-delay=".25s">
+              Dental Assistant
             </p>
           </div>
 
@@ -203,15 +204,15 @@ export default function About() {
               className="doctor-float-img wow fadeInRight" width={1200} height={800} />
 
             <p className="wow fadeInUp" data-wow-delay=".3s">
-              Paola Cruz is a dedicated Dental Assistant and Front Office Coordinator with a passion for patient care and healthcare administration. Before moving to the United States in 2019, she completed her first year of Medical Technology studies at Centro Escolar University (CEU) Las Piñas, where she developed a strong foundation in biology, laboratory sciences, and healthcare practices.
+              Paola Cruz is a dedicated Dental Assistant with a passion for patient care and healthcare administration. Before moving to the United States in 2019, she completed her first year of Medical Technology studies at Centro Escolar University (CEU) Las Piñas, where she developed a strong foundation in biology, laboratory sciences, and healthcare practices.
             </p>
 
             <p className="wow fadeInUp" data-wow-delay=".4s">
-              After relocating to the U.S., she continued pursuing her healthcare career by completing the Medical and Dental Assistant Program at The School for Medical and Dental Assistants. Through her education and professional experience, she gained expertise in dental assisting, patient care, scheduling, insurance verification, treatment coordination, and front office management.
+              After relocating to the U.S., she continued pursuing her healthcare career by completing the Medical and Dental Assistant Program at The School for Medical and Dental Assistants. Through her education and professional experience, she gained expertise in dental assisting, chairside support, patient care, and treatment coordination.
             </p>
 
             <p className="wow fadeInUp" data-wow-delay=".5s">
-              Currently working as a Dental Assistant and Front Office Coordinator, Paola is committed to providing compassionate care and creating positive patient experiences. She is also working toward her long-term goal of becoming a Registered Dental Hygienist, with aspirations to further her education and expand her role in preventive oral healthcare and patient education.
+              Currently working as a Dental Assistant, Paola is committed to providing compassionate care and creating positive patient experiences. She is also working toward her long-term goal of becoming a Registered Dental Hygienist, with aspirations to further her education and expand her role in preventive oral healthcare and patient education.
             </p>
           </div>
 
@@ -228,8 +229,8 @@ export default function About() {
               <h5>Professional Expertise</h5>
               <ul className="about-memberships" style={{ listStyle: 'none', padding: 0 }}>
                 <li><i className="fa fa-check-circle id-color me-2"></i>Dental assisting and chairside support</li>
-                <li><i className="fa fa-check-circle id-color me-2"></i>Scheduling and treatment coordination</li>
-                <li><i className="fa fa-check-circle id-color me-2"></i>Insurance verification and front office management</li>
+                <li><i className="fa fa-check-circle id-color me-2"></i>Patient preparation and treatment coordination</li>
+                <li><i className="fa fa-check-circle id-color me-2"></i>Clinical organization and sterilization support</li>
               </ul>
             </div>
             <div className="col-md-4">
@@ -240,6 +241,34 @@ export default function About() {
                 <li><i className="fa fa-globe id-color me-2"></i>Growing her role in patient education</li>
               </ul>
             </div>
+          </div>
+
+          <div className="border-bottom my-5"></div>
+
+          <div id="ivory-lorilla" className="anchor-scroll-offset">
+            <div className="subtitle id-color wow fadeInUp mb-3">Meet the Team</div>
+            <h2 className="wow fadeInUp" data-wow-delay=".2s">Ivory Lorilla</h2>
+            <p className="doctor-designation-nowrap wow fadeInUp mb-4" data-wow-delay=".25s">
+              Executive Assistant
+            </p>
+          </div>
+
+          <div className="doctor-float-section">
+            <Image
+              src="/Ivory.png"
+              alt="Ivory Lorilla"
+              className="doctor-float-img doctor-float-img--left wow fadeInLeft"
+              width={768}
+              height={886}
+            />
+
+            <p className="wow fadeInUp" data-wow-delay=".3s">
+              Ivory Lorilla serves as Executive Assistant at Upper East Dental Innovations, supporting the practice team with organization, communication, and day-to-day coordination.
+            </p>
+
+            <p className="wow fadeInUp" data-wow-delay=".4s">
+              Her thoughtful and dependable support helps the office maintain a welcoming, polished, and patient-focused experience.
+            </p>
           </div>
         </div>
       </section>

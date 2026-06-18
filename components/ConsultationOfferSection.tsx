@@ -10,16 +10,12 @@ export default function ConsultationOfferSection() {
     <section className="consultation-offer-section">
       <div className="consultation-offer-shell">
         <div className="consultation-offer-visual" aria-hidden="true">
-          <div className="consultation-tooth-orbit consultation-tooth-orbit--one" />
-          <div className="consultation-tooth-orbit consultation-tooth-orbit--two" />
-          <div className="consultation-tooth-platform" />
           <Image
-            src="/images/icons/tooth-2.png"
+            src="/smile.jpg"
             alt=""
-            width={640}
-            height={640}
-            sizes="(max-width: 767px) 78vw, 42vw"
-            className="consultation-tooth-image"
+            fill
+            sizes="(max-width: 991px) 100vw, 42vw"
+            className="consultation-smile-image"
           />
         </div>
 
@@ -31,7 +27,7 @@ export default function ConsultationOfferSection() {
             and understand the next steps toward a healthy, confident smile.
           </p>
           <button type="button" className="consultation-offer-button" onClick={open}>
-            Book Your Consultation Today
+            Book Your Complimentary Consultation
           </button>
         </div>
       </div>

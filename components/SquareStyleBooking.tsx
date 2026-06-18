@@ -108,7 +108,7 @@ function ServiceListCard({
     <article className="sq-service-card">
       <div className="sq-service-card__body">
         <h3 className="sq-service-card__title">{service.title}</h3>
-        <p className="sq-service-card__desc">
+        <p className={`sq-service-card__desc${service.id === 'dr-harvey' ? ' doctor-designation-nowrap' : ''}`}>
           {isLong && !expanded
             ? `${service.shortDescription.slice(0, 120)}…`
             : service.shortDescription}
@@ -462,10 +462,9 @@ function BookingSidebar() {
         </p>
         <p className="sq-sidebar__line">
           <i className="fa fa-clock-o sq-sidebar__icon" aria-hidden="true" />
-          Open today until 6:00 PM{' '}
-          <button type="button" className="sq-link sq-sidebar__more-btn">
-            More
-          </button>
+          Mon - Fri, 9:00 AM - 6:00 PM
+          <br />
+          Saturday as per request
         </p>
       </section>
 

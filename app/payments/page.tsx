@@ -4,14 +4,6 @@ import Footer from '@/components/Footer';
 
 const methods = [
   {
-    title: 'Bill Payment',
-    icon: 'fa fa-wallet',
-    desc: 'Pay a custom bill amount securely through a Square-hosted checkout page.',
-    note: 'Sandbox checkout',
-    href: '/payments/bill-payment',
-    color: '#165369',
-  },
-  {
     title: 'Credit Card',
     icon: 'fa fa-credit-card',
     desc: 'Visa, Mastercard, American Express and Discover accepted.',
@@ -52,9 +44,9 @@ const methods = [
     color: '#165369',
   },
   {
-    title: 'Cash & Check',
+    title: 'Cash',
     icon: 'fa fa-money',
-    desc: 'Traditional payment methods welcome at the front desk.',
+    desc: 'Cash payments are welcome at the front desk.',
     note: 'No fee',
     href: '/payment/cash',
     color: '#165369',
@@ -143,7 +135,7 @@ export default function Payments() {
                 </p>
               </div>
               <div className="col-lg-3 text-lg-end">
-                <Link href="tel:+12126971701" className="btn-main btn-line fx-slide">
+                <Link href="tel:+12126971701" className="btn-main btn-line fx-slide" data-hover="Call 212.697.1701">
                   <span>Call 212.697.1701</span>
                 </Link>
               </div>

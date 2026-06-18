@@ -12,9 +12,35 @@ export default function AccessibilityWidget() {
   const [lightBg, setLightBg] = useState(false);
   const [linksUnderline, setLinksUnderline] = useState(false);
   const [readableFont, setReadableFont] = useState(false);
+  const [selectionReadingEnabled, setSelectionReadingEnabled] = useState(true);
+  const [noraVoice, setNoraVoice] = useState<SpeechSynthesisVoice | null>(null);
 
   // Text-to-Speech selection state
   const [selection, setSelection] = useState({ text: '', x: 0, y: 0, show: false });
+
+  useEffect(() => {
+    if (!('speechSynthesis' in window)) return;
+
+    const chooseVoice = () => {
+      const voices = window.speechSynthesis.getVoices();
+      const englishVoices = voices.filter((voice) => voice.lang.toLowerCase().startsWith('en'));
+      const selectedVoice =
+        englishVoices.find((voice) => /\bnora\b/i.test(voice.name)) ||
+        englishVoices.find((voice) =>
+          /female|woman|google us english|zira|aria|jenny|samantha|victoria|karen|moira|tessa|fiona|ava|susan|hazel|serena|olivia|emma|salli|joanna/i.test(voice.name)
+        ) ||
+        englishVoices.find((voice) =>
+          !/male|david|mark|george|daniel|fred|tom|aaron|guy|ryan|brian|christopher|eric|roger|arthur|ralph|albert/i.test(voice.name)
+        ) ||
+        null;
+
+      setNoraVoice(selectedVoice);
+    };
+
+    chooseVoice();
+    window.speechSynthesis.addEventListener('voiceschanged', chooseVoice);
+    return () => window.speechSynthesis.removeEventListener('voiceschanged', chooseVoice);
+  }, []);
 
   useEffect(() => {
     const html = document.documentElement;
@@ -38,6 +64,7 @@ export default function AccessibilityWidget() {
   // Handle Text Selection for Speech
   useEffect(() => {
     const handleMouseUp = (e: MouseEvent) => {
+      if (!selectionReadingEnabled) return;
       const selectedText = window.getSelection()?.toString().trim();
       if (selectedText && selectedText.length > 0) {
         setSelection({
@@ -72,12 +99,20 @@ export default function AccessibilityWidget() {
         window.speechSynthesis.cancel();
       }
     };
-  }, []);
+  }, [selectionReadingEnabled]);
 
   const speakText = () => {
     if ('speechSynthesis' in window && selection.text) {
       window.speechSynthesis.cancel();
       const utterance = new SpeechSynthesisUtterance(selection.text);
+      if (noraVoice) {
+        utterance.voice = noraVoice;
+        utterance.lang = noraVoice.lang;
+      } else {
+        utterance.lang = 'en-US';
+      }
+      utterance.pitch = 1.08;
+      utterance.rate = 0.94;
       window.speechSynthesis.speak(utterance);
       setSelection(s => ({ ...s, show: false }));
     }
@@ -153,6 +188,21 @@ export default function AccessibilityWidget() {
           </div>
           <div className="a11y-sidebar-content">
             <div className="a11y-options">
+              <button
+                className={`a11y-read-selection-option${selectionReadingEnabled ? ' active' : ''}`}
+                onClick={() => {
+                  setSelectionReadingEnabled((enabled) => !enabled);
+                  setSelection((current) => ({ ...current, show: false }));
+                  window.speechSynthesis?.cancel();
+                }}
+                aria-pressed={selectionReadingEnabled}
+              >
+                <i className="fa fa-volume-up"></i>
+                <span className="a11y-read-selection-copy">
+                  <strong>Read Selection</strong>
+                  <small>Nora voice · select any text</small>
+                </span>
+              </button>
               <button onClick={() => setTextSize(p => Math.min(p + 1, 3))}>
                 <i className="fa fa-search-plus"></i> Increase Text
               </button>

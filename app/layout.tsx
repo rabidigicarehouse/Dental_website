@@ -97,7 +97,7 @@ export default function RootLayout({
               <div className="spacer-30-line"></div>
 
               <h5>Contact Us</h5>
-              <div><i className="icofont-clock-time me-2 op-5"></i>Monday - Friday 9:00 AM - 6:00 PM</div>
+              <div><i className="icofont-clock-time me-2 op-5"></i>Monday - Friday 9:00 AM - 6:00 PM · Saturday as per request</div>
               <div><i className="icofont-location-pin me-2 op-5"></i>121 East 60th Street, Suite 1B, New York, NY 10022</div>
               <div><i className="icofont-envelope me-2 op-5"></i>info@uedi.nyc </div>
 

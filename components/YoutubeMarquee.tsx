@@ -22,7 +22,7 @@ export default function YoutubeMarquee() {
             className="avatar-img"
           />
         </div>
-        <span className="marquee-text font-bold">Dr. Sharda Harvey, DDS</span>
+        <span className="marquee-text font-bold">Dr. Sharda Harvey · General Cosmetic Dentist</span>
       </div>
 
       {/* Item 2: Channel Name (Ask a Dentist) — separator only after this, not after doctor photo/name */}

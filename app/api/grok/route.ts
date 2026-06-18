@@ -199,14 +199,14 @@ function pickRelevantContext(sections: Section[], question: string): string {
    ============================================================ */
 const CLINIC_FACTS = `
 PRACTICE NAME : Upper East Dental Innovations (UEDI)
-LEAD DOCTOR   : Dr. Sharda Harvey, DDS
+LEAD DOCTOR   : Dr. Sharda Harvey - General Cosmetic Dentist
 SPECIALIST    : Dr. Pellegrini - Periodontist, LANAP and LAPIP Protocol
-TEAM MEMBER   : Paola Cruz - Front Office Coordinator
-TEAM MEMBER   : Michelle - Patient Care Coordinator
+TEAM MEMBER   : Paola Cruz - Dental Assistant
+TEAM MEMBER   : Ivory Lorilla - Executive Assistant
 ADDRESS       : 121 East 60th Street, Suite 1B, New York, NY 10022
 PHONE         : 212.697.1701  (also written as +1 212-697-1701)
 EMAIL         : info@uedi.nyc
-HOURS         : Monday – Friday, 09:00 AM – 06:00 PM
+HOURS         : Monday – Friday, 09:00 AM – 06:00 PM; Saturday as per request
 WEBSITE       : https://uppereastdentalinnovations.vercel.app/
 
 SOCIAL ACCOUNTS (use these EXACT URLs when the user asks for any social handle):

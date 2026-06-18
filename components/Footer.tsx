@@ -70,7 +70,8 @@ export default function Footer() {
               <div className="spacer-20"></div>
 
               <div className="fw-bold text-white"><i className="icofont-clock-time me-2 id-color"></i>Opening Hours</div>
-              Mon - Fri ( 9:00 AM - 06:00 PM )
+              Mon - Fri (9:00 AM - 6:00 PM)<br />
+              Saturday as per request
             </div>
           </div>
         </div>

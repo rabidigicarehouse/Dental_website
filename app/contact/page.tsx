@@ -43,7 +43,7 @@ export default function Contact() {
                   <div className="contact-info-card wow fadeInRight" data-wow-delay=".1s">
                     <div className="contact-info-icon"><i className="icofont-clock-time"></i></div>
                     <h4 className="contact-info-title">We&apos;re Open</h4>
-                    <p className="contact-info-text">MON - Fri (09 am - 06 pm)</p>
+                    <p className="contact-info-text">Mon - Fri (9:00 AM - 6:00 PM)<br />Saturday as per request</p>
                   </div>
                 </div>
 

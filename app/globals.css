@@ -1128,6 +1128,33 @@ body.ai-widget-open .payment-method-desc {
   cursor: default;
 }
 
+.stacked-card.stacked-card--sticky.is-active,
+.stacked-card.stacked-card--sticky.is-active:active {
+  cursor: default;
+  user-select: text;
+  -webkit-user-select: text;
+}
+
+.stacked-card--sticky .stacked-card-inner,
+.stacked-card--sticky h1,
+.stacked-card--sticky h2,
+.stacked-card--sticky h3,
+.stacked-card--sticky h4,
+.stacked-card--sticky h5,
+.stacked-card--sticky h6,
+.stacked-card--sticky p,
+.stacked-card--sticky li,
+.stacked-card--sticky span {
+  cursor: text;
+  user-select: text;
+  -webkit-user-select: text;
+}
+
+.stacked-card--sticky a,
+.stacked-card--sticky button {
+  cursor: pointer;
+}
+
 @media (min-width: 993px) {
   .stacked-slider--sticky {
     margin-bottom: -180px;
@@ -7027,6 +7054,45 @@ body.ai-widget-open .svc-photo-wrap {
   color: #165369 !important;
 }
 
+.a11y-options .a11y-read-selection-option {
+  margin: 4px 12px 8px !important;
+  padding: 10px 12px !important;
+  border: 1px solid rgba(22, 83, 105, 0.16) !important;
+  border-radius: 10px !important;
+  background: linear-gradient(135deg, #f7fbfc 0%, #edf4f7 100%) !important;
+  box-shadow: 0 5px 14px rgba(22, 83, 105, 0.08) !important;
+}
+
+.a11y-options .a11y-read-selection-option.active {
+  background: linear-gradient(135deg, #165369 0%, #1d2c36 100%) !important;
+  color: #ffffff !important;
+}
+
+.a11y-options .a11y-read-selection-option.active i {
+  color: #ffffff !important;
+}
+
+.a11y-read-selection-copy {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 1px;
+  line-height: 1.2;
+}
+
+.a11y-read-selection-copy strong {
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.a11y-read-selection-copy small {
+  color: inherit;
+  font-size: 10px;
+  font-weight: 500;
+  opacity: 0.78;
+  white-space: nowrap;
+}
+
 .a11y-reset {
   margin-top: 8px !important;
   border-top: 1px solid #eee !important;
@@ -7058,6 +7124,21 @@ body.ai-widget-open .svc-photo-wrap {
 
 .a11y-speech-btn i {
   color: #ffffff !important;
+}
+
+.doctor-designation-nowrap,
+.team-card-role-nowrap {
+  display: block;
+  max-width: 100%;
+  overflow: hidden;
+  font-size: clamp(10px, 0.95vw, 15px);
+  line-height: 1.35;
+  text-overflow: clip;
+  white-space: nowrap;
+}
+
+.team-card-role-nowrap {
+  font-size: clamp(9px, 0.82vw, 13px);
 }
 
 /* Accessibility Filters on HTML */
@@ -15102,5 +15183,114 @@ body.square-booking-active .mobile-conversion-bar {
       backdrop-filter: blur(0);
       -webkit-backdrop-filter: blur(0);
     }
+  }
+}
+
+/* Final consultation CTA and billing call refinements. */
+.consultation-offer-visual {
+  background: #081116 !important;
+}
+
+.consultation-smile-image {
+  top: 10px !important;
+  right: auto !important;
+  bottom: auto !important;
+  left: 10px !important;
+  width: calc(100% - 20px) !important;
+  height: calc(100% - 20px) !important;
+  border-radius: 20px;
+  object-fit: cover;
+  object-position: center 44%;
+  filter: saturate(0.92) contrast(1.04);
+}
+
+.consultation-offer-visual::after {
+  top: 0 !important;
+  bottom: 0 !important;
+  width: 100% !important;
+  background: linear-gradient(90deg, transparent 62%, rgba(8, 17, 22, 0.34) 100%) !important;
+  pointer-events: none;
+}
+
+.consultation-offer-button {
+  width: min(100%, 390px) !important;
+  min-width: 340px !important;
+  padding-right: 34px !important;
+  padding-left: 34px !important;
+  text-align: center;
+}
+
+.payment-info-banner .btn-main.btn-line {
+  border-color: rgba(255, 255, 255, 0.78) !important;
+  color: #ffffff !important;
+  background: rgba(255, 255, 255, 0.08) !important;
+}
+
+.payment-info-banner .btn-main.btn-line span {
+  color: #ffffff !important;
+}
+
+.payment-info-banner .btn-main.btn-line:hover {
+  border-color: #ffffff !important;
+  color: #165369 !important;
+  background: #ffffff !important;
+}
+
+.payment-info-banner .btn-main.btn-line:hover span {
+  color: #165369 !important;
+}
+
+.payment-info-banner .btn-main.btn-line.fx-slide:hover::before {
+  color: #165369 !important;
+}
+
+/* Keep every primary-button label readable, including legacy fx-slide links. */
+a.btn-main,
+button.btn-main,
+input.btn-main {
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease,
+    background-color 0.25s ease,
+    color 0.25s ease !important;
+}
+
+a.btn-main:hover,
+button.btn-main:hover:not(:disabled),
+input.btn-main:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 26px rgba(22, 83, 105, 0.24);
+}
+
+a.btn-main.fx-slide:not([data-hover])::before,
+a.btn-main.fx-slide[data-hover=""]::before {
+  display: none !important;
+}
+
+a.btn-main.fx-slide:not([data-hover]):hover span,
+a.btn-main.fx-slide[data-hover=""]:hover span {
+  opacity: 1 !important;
+  color: inherit !important;
+  transform: none !important;
+}
+
+a.btn-main.fx-slide[data-hover]::before {
+  color: #ffffff;
+  font-weight: inherit;
+  white-space: nowrap;
+}
+
+@media (max-width: 768px) {
+  .consultation-offer-button {
+    width: 100% !important;
+    min-width: 0 !important;
+    padding-right: 14px !important;
+    padding-left: 14px !important;
+    font-size: clamp(8px, 2.5vw, 10px) !important;
+    letter-spacing: 0.45px !important;
+  }
+
+  .consultation-smile-image {
+    object-position: center 42%;
   }
 }

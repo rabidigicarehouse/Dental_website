@@ -239,7 +239,6 @@ export default function Home() {
                       </div>
                     </div>
                     <div className="dropdown-content">
-                      <Link href="/payments/bill-payment">Bill payment</Link>
                       <Link href="https://api.ipospays.com/v1/sl/j4856y154I80n00x2" target="_blank" rel="noopener noreferrer">Credit Card (3% fee applies)</Link>
                       <Link href="/zelle">Pay by Zelle (no fee)</Link>
                       <Link href="https://pay.withcherry.com/upper-east-dental-innovations-?utm_source=practice&utm_medium=website&m=39005" target="_blank" rel="noopener noreferrer">Cherry Financing</Link>
@@ -321,7 +320,7 @@ export default function Home() {
               <div className="col-lg-7">
                 <div className="about-subtitle">About The Doctor</div>
                 <h3 className="doctor-name mb-1">Dr. Sharda Harvey, D.D.S M.S F.I.C.O.I</h3>
-                <p className="doctor-role mb-3"><em>is a skilled New York City General Dentist</em></p>
+                <p className="doctor-role doctor-designation-nowrap mb-3"><em>General Cosmetic Dentist</em></p>
 
                 <div className="doctor-bio">
                   <p>
@@ -349,7 +348,7 @@ export default function Home() {
                 </div>
 
                 <div className="mt-3 text-center">
-                  <Link href="/dentists" className="btn-main fx-slide"><span>Read more</span></Link>
+                  <Link href="/dentists" className="btn-main fx-slide" data-hover="Read More"><span>Read more</span></Link>
                 </div>
               </div>
             </div>
@@ -380,7 +379,7 @@ export default function Home() {
                 </div>
 
                 <div className="mt-3 text-center text-lg-start">
-                  <Link href="/in-the-news#royal-versailles-ball-2026" className="btn-main fx-slide"><span>Learn More</span></Link>
+                  <Link href="/in-the-news#royal-versailles-ball-2026" className="btn-main fx-slide" data-hover="Learn More"><span>Learn More</span></Link>
                 </div>
               </div>
             </div>
@@ -416,7 +415,7 @@ export default function Home() {
                 </div>
 
                 <div className="mt-3 text-center text-lg-start">
-                  <Link href="/in-the-news#white-cross-ball" className="btn-main fx-slide"><span>Learn More</span></Link>
+                  <Link href="/in-the-news#white-cross-ball" className="btn-main fx-slide" data-hover="Learn More"><span>Learn More</span></Link>
                 </div>
               </div>
             </div>
@@ -601,10 +600,10 @@ export default function Home() {
           </div>
           <div className="row g-4">
             {[
-              { name: 'Dr. Sharda Harvey', role: 'DDS, MS, FICOI', photo: '/Dr-harvey-1.jpg', width: 956, height: 1295, href: '/about#dr-sharde-harvey' },
+              { name: 'Dr. Sharda Harvey', role: 'General Cosmetic Dentist', photo: '/Dr-harvey-1.jpg', width: 956, height: 1295, href: '/about#dr-sharde-harvey' },
               { name: 'Dr. Pellegrini', role: 'LANAP and LAPIP Protocol', photo: '/Gretel Pellegrini Photo.jpg', width: 956, height: 1295, href: '/about#dr-pellegrini' },
-              { name: 'Paola Cruz', role: 'Front Office Coordinator', photo: '/Paola-Image.jpg', width: 956, height: 1295, href: '/about#paola-cruz' },
-              { name: 'Michelle', role: 'Patient Care Coordinator', photo: '/Michelle.png', width: 1920, height: 2084, href: '/about#team-directory' },
+              { name: 'Paola Cruz', role: 'Dental Assistant', photo: '/Paola-Image.jpg', width: 956, height: 1295, href: '/about#paola-cruz' },
+              { name: 'Ivory Lorilla', role: 'Executive Assistant', photo: '/Ivory.png', width: 768, height: 886, href: '/about#ivory-lorilla' },
             ].map((member) => (
               <div className="col-lg-3 col-md-6" key={member.name}>
                 <Link href={member.href} scroll={false} className="team-member-link">
@@ -624,7 +623,7 @@ export default function Home() {
                     <div className="abs w-100 start-0 bottom-0 z-3">
                       <div className="p-2 rounded-10 m-3 text-center bg-white wow fadeInDown team-card-info">
                         <h4 className="mb-0 team-card-name">{member.name}</h4>
-                        <p className="mb-2">{member.role}</p>
+                        <p className="mb-2 team-card-role-nowrap">{member.role}</p>
                       </div>
                     </div>
                   </div>
