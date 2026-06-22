@@ -12912,6 +12912,13 @@ body.ai-widget-open .tech-sticky-card:nth-child(3) {
   }
 }
 
+/* Center the hero CTA cards inside the bottom band on short laptop screens. */
+@media (min-width: 1025px) and (max-width: 1366px) and (max-height: 607px) {
+  body.is-homepage #section-intro .cta-glass-section {
+    transform: translateY(24px);
+  }
+}
+
 /* Compact desktop story cards replace one another without exposing strips
    from the cards underneath. Kept last so it wins over older breakpoint rules. */
 @media (min-width: 993px) and (max-width: 1366px) {

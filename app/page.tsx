@@ -359,22 +359,21 @@ export default function Home() {
               </div>
 
               <div className="col-lg-7">
-                <div className="about-subtitle">Cultural Presence</div>
-                <h3 className="doctor-name mb-2">Dr. Sharda Harvey at the Royal Versailles Ball 2026</h3>
-                <p className="doctor-role mb-3"><em>Presenting an elite, globally minded image of modern dental leadership</em></p>
+                <div className="about-subtitle">Charitable Event</div>
+                <h3 className="doctor-name mb-2">Royal Versailles Ball 2026</h3>
+                <p className="doctor-role mb-3"><em>A celebration of elegance, charity, and global impact</em></p>
 
                 <div className="doctor-bio">
                   <p>
-                    Dr. Sharda Harvey’s appearance at the Royal Versailles Ball 2026 reflects a polished, high-profile
-                    expression of the Upper East Dental Innovations brand. It positions her not only as a skilled New
-                    York dentist, but also as a sophisticated public figure whose work connects healthcare, elegance,
-                    philanthropy, and cultural presence.
+                    Dr. Sharda Harvey attended the Royal Versailles Ball 2026. This event is a celebration of elegance,
+                    charity, and global impact, bringing together leaders, innovators, and philanthropists who support
+                    meaningful causes and inspire positive change.
                   </p>
                   <p>
-                    For a clientele that values discretion, refinement, and premium service, this kind of visibility
-                    reinforces trust. It communicates that Dr. Harvey represents more than clinical care alone. She
-                    represents confidence, taste, leadership, and a modern standard of success that resonates with
-                    executive patients, international travelers, and image-conscious professionals.
+                    As founder of Upper East Dental Innovations, Dr. Harvey&apos;s involvement connects healthcare
+                    leadership with social responsibility. Her attendance reflects the practice&apos;s values of
+                    excellence, compassion, sophistication, and service, showing that professional success can go hand
+                    in hand with community engagement and giving back.
                   </p>
                 </div>
 
@@ -395,22 +394,21 @@ export default function Home() {
               </div>
 
               <div className="col-lg-7">
-                <div className="about-subtitle">Philanthropy & Community</div>
-                <h3 className="doctor-name mb-2">Dr. Sharda Harvey at the White Cross Ball</h3>
-                <p className="doctor-role mb-3"><em>Supporting children’s wellbeing, public-health awareness, and meaningful community impact</em></p>
+                <div className="about-subtitle">Charitable Event</div>
+                <h3 className="doctor-name mb-2">White Cross Ball</h3>
+                <p className="doctor-role mb-3"><em>Philanthropy, community wellbeing, and social impact</em></p>
 
                 <div className="doctor-bio">
                   <p>
-                    Dr. Harvey was honored to attend the White Cross Ball, a distinguished event that brings together
-                    professionals, philanthropists, and healthcare advocates committed to making a positive social
-                    impact. Her participation reflects a corporate yet compassionate image that aligns beautifully with
-                    the elevated positioning of her practice.
+                    Dr. Sharda Harvey attended the White Cross Ball, showcasing her dedication to philanthropy,
+                    community wellbeing, and social impact. The event brings together healthcare professionals,
+                    philanthropists, and advocates committed to improving lives through collaboration and generosity.
                   </p>
                   <p>
-                    As a dentist and fundraiser with a strong interest in children’s wellbeing, she continues to use
-                    her platform to promote preventive dental care, family education, and the importance of lifelong
-                    oral-health habits. The event underscores her dedication to combining clinical excellence with
-                    public service and social responsibility.
+                    Representing Upper East Dental Innovations, Dr. Harvey emphasizes that dentistry extends beyond
+                    treatment to include prevention, education, and long-term health empowerment. Her involvement
+                    reinforces the practice&apos;s values of excellence, compassion, leadership, and service while
+                    supporting healthier outcomes for children, families, and underserved communities.
                   </p>
                 </div>
 
@@ -603,7 +601,7 @@ export default function Home() {
               { name: 'Dr. Sharda Harvey', role: 'General Cosmetic Dentist', photo: '/Dr-harvey-1.jpg', width: 956, height: 1295, href: '/about#dr-sharde-harvey' },
               { name: 'Dr. Pellegrini', role: 'LANAP and LAPIP Protocol', photo: '/Gretel Pellegrini Photo.jpg', width: 956, height: 1295, href: '/about#dr-pellegrini' },
               { name: 'Paola Cruz', role: 'Dental Assistant', photo: '/Paola-Image.jpg', width: 956, height: 1295, href: '/about#paola-cruz' },
-              { name: 'Ivory Lorilla', role: 'Executive Assistant', photo: '/Ivory.png', width: 768, height: 886, href: '/about#ivory-lorilla' },
+              { name: 'Ivory Lorilla', role: 'Executive Assistant', photo: '/Ivory-updated.png', width: 1134, height: 1387, href: '/about#ivory-lorilla' },
             ].map((member) => (
               <div className="col-lg-3 col-md-6" key={member.name}>
                 <Link href={member.href} scroll={false} className="team-member-link">

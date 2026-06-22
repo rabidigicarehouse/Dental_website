@@ -255,11 +255,11 @@ export default function About() {
 
           <div className="doctor-float-section">
             <Image
-              src="/Ivory.png"
+              src="/Ivory-updated.png"
               alt="Ivory Lorilla"
               className="doctor-float-img doctor-float-img--left wow fadeInLeft"
-              width={768}
-              height={886}
+              width={1134}
+              height={1387}
             />
 
             <p className="wow fadeInUp" data-wow-delay=".3s">
