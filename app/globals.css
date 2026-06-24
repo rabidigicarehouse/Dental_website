@@ -790,6 +790,12 @@ body.is-homepage header:not(.smaller) #mainmenu>li>ul.mega::before {
   position: relative;
   cursor: pointer;
   overflow: hidden;
+  display: block;
+  width: 100%;
+  border: 0;
+  padding: 0;
+  text-align: left;
+  background: transparent;
 }
 
 .office-tour-img {
@@ -820,6 +826,86 @@ body.is-homepage header:not(.smaller) #mainmenu>li>ul.mega::before {
   font-weight: 700;
   letter-spacing: 1px;
   text-transform: uppercase;
+}
+
+body.office-preview-open {
+  overflow: hidden;
+}
+
+.office-preview-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 10050;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: rgba(8, 20, 27, 0.72);
+  backdrop-filter: blur(12px);
+}
+
+.office-preview-dialog {
+  position: relative;
+  width: min(92vw, 980px);
+  border-radius: 24px;
+  overflow: hidden;
+  background: #fff;
+  box-shadow: 0 28px 90px rgba(0, 0, 0, 0.35);
+}
+
+.office-preview-img {
+  width: 100%;
+  max-height: min(74vh, 720px);
+  object-fit: contain;
+  display: block;
+  background: #07141b;
+}
+
+.office-preview-caption {
+  padding: 16px 22px;
+  color: var(--title-font-color);
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.office-preview-close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  z-index: 2;
+  width: 42px;
+  height: 42px;
+  border: 0;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.92);
+  color: #102734;
+  font-size: 30px;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.22);
+}
+
+@media (max-width: 575px) {
+  .office-preview-modal {
+    padding: 14px;
+  }
+
+  .office-preview-dialog {
+    width: 94vw;
+    border-radius: 18px;
+  }
+
+  .office-preview-img {
+    max-height: 68vh;
+  }
+
+  .office-preview-caption {
+    padding: 13px 16px;
+    font-size: 13px;
+  }
 }
 
 /* ========================================== */

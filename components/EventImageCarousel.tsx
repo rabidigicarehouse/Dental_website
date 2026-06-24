@@ -5,17 +5,17 @@ import Image from 'next/image';
 
 const EVENT_IMAGES = [
   {
-    src: '/images/events/image (4).png',
+    src: '/images/events/image (3).png',
     alt: 'Dr. Sharda Harvey at the Royal Versailles Ball 2026',
     mobilePosition: 'center 68%',
   },
   {
-    src: '/images/events/image (5).png',
+    src: '/images/events/image (4).png',
     alt: 'Dr. Sharda Harvey at the Royal Versailles Ball portrait setting',
     mobilePosition: 'center top',
   },
   {
-    src: '/images/events/image (3).png',
+    src: '/images/events/image (5).png',
     alt: 'Dr. Sharda Harvey at the Royal Versailles Ball event wall',
     mobilePosition: 'center 62%',
   },

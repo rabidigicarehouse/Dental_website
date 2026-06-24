@@ -2,18 +2,14 @@ import Image from 'next/image';
 import Link from 'next/link';
 import MapContactSection from '@/components/MapContactSection';
 import Footer from '@/components/Footer';
+import OfficeTourGallery from '@/components/OfficeTourGallery';
 
 const officeTourImages = [
-  { src: '/office tour/1.png', alt: 'Office Reception Area' },
-  { src: '/office tour/2.png', alt: 'Patient Waiting Lounge' },
-  { src: '/office tour/3.png', alt: 'Treatment Room' },
-  { src: '/office tour/4.png', alt: 'Modern Dental Equipment' },
-  { src: '/office tour/5.png', alt: 'Consultation Room' },
-  { src: '/office tour/5.jpeg', alt: 'Office Hallway' },
-  { src: '/office tour/7.jpeg', alt: 'Sterilization Center' },
-  { src: '/office tour/8.jpeg', alt: 'Digital X-Ray Station' },
-  { src: '/office tour/9.png', alt: 'Patient Care Area' },
-  { src: '/office tour/10.jpeg', alt: 'Office Exterior' },
+  { src: '/office tour/3.png', alt: 'Reception Desk' },
+  { src: '/office tour/4.png', alt: 'Dental Operatory' },
+  { src: '/office tour/5.png', alt: 'CEREC Milling Unit' },
+  { src: '/office tour/7.jpeg', alt: 'Panoramic X-Ray Unit' },
+  { src: '/office tour/8.jpeg', alt: 'Office Exterior' },
 ];
 
 export default function OfficeTour() {
@@ -53,27 +49,7 @@ export default function OfficeTour() {
             </div>
           </div>
 
-          <div className="row g-4">
-            {officeTourImages.map((img, i) => (
-              <div
-                className={`${i < 2 ? 'col-lg-6' : 'col-lg-4'} col-md-6 col-12`}
-                key={i}
-              >
-                <div
-                  className="office-tour-card rounded-1 overflow-hidden wow fadeInUp"
-                  data-wow-delay={`${(i % 4) * 0.1}s`}
-                >
-                  <Image
-                    src={img.src}
-                    alt={img.alt}
-                    className="office-tour-img" width={1200} height={800} />
-                  <div className="office-tour-overlay">
-                    <span className="office-tour-label">{img.alt}</span>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
+          <OfficeTourGallery images={officeTourImages} />
         </div>
       </section>
 
@@ -97,7 +73,7 @@ export default function OfficeTour() {
             </div>
             <div className="col-lg-6">
               <div className="rounded-1 overflow-hidden wow zoomIn">
-                <Image src="/office tour/3.png" className="w-100" alt="Treatment Room" width={1200} height={800} />
+                <Image src="/office tour/4.png" className="w-100" alt="Dental Operatory" width={1200} height={800} />
               </div>
             </div>
           </div>
