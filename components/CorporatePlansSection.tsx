@@ -1,7 +1,4 @@
-'use client';
-
-import { useCallback } from 'react';
-import { useBookingModal } from '@/components/BookingModalProvider';
+import Link from 'next/link';
 
 const PLAN_HIGHLIGHTS = [
   {
@@ -28,17 +25,6 @@ const SERVICE_TAGS = [
 ];
 
 export default function CorporatePlansSection() {
-  const { open } = useBookingModal();
-
-  const handleConnect = useCallback(() => {
-    if (typeof window !== 'undefined' && window.matchMedia('(max-width: 1024px)').matches) {
-      window.location.href = 'tel:+12126971701';
-      return;
-    }
-
-    open();
-  }, [open]);
-
   return (
     <section className="corporate-plans-section">
       <div className="container">
@@ -77,9 +63,9 @@ export default function CorporatePlansSection() {
               <span className="corporate-plans-cta-label">Build a tailored program</span>
               <h3>Let&apos;s shape a dental plan that fits your team and your schedule.</h3>
             </div>
-            <button type="button" className="corporate-plans-button" onClick={handleConnect}>
-              Connect With Us
-            </button>
+            <Link href="/services/corporate-dental-plans" className="corporate-plans-button fx-slide" data-hover="Learn More">
+              <span>Learn More</span>
+            </Link>
           </div>
         </div>
       </div>

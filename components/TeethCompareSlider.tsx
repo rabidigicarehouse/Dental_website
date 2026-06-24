@@ -30,43 +30,33 @@ const cases: BeforeAfterCase[] = [
   },
   {
     title: "Britt Smile Transformation",
-    before: "/before and after/britt before V.png",
-    after: "/before and after/britt after  V.JPG",
+    before: "/before and after/britt before V.jpg",
+    after: "/before and after/britt after  V.jpg",
+  },
+  {
+    title: "Britt Smile Transformation",
+    before: "/before and after/Random-Before.jpg",
+    after: "/before and after/Random-After.jpg",
   },
   {
     title: "Eikerson Smile Transformation",
-    before: "/before and after/Eikerson before 2 V.png",
+    before: "/before and after/Eikerson before 2 V.jpg",
     after: "/before and after/Eikerson after2 V.jpg",
   },
   {
-    title: "Glenys Smile Transformation",
-    before: "/before and after/Glenys before V.JPG",
-    after: "/before and after/Glenys after V.png",
-  },
-  {
-    title: "Janet Smile Transformation",
-    before: "/before and after/Janet Before V.JPG",
-    after: "/before and after/Janet after V.JPG",
-  },
-  {
     title: "Kristina Smile Transformation",
-    before: "/before and after/kristina before2 V.png",
-    after: "/before and after/Kristina after2 V.png",
+    before: "/before and after/kristina before2 V.jpg",
+    after: "/before and after/Kristina after2 V.jpg",
   },
   {
     title: "Natalia Smile Transformation",
-    before: "/before and after/natalia before V.JPG",
-    after: "/before and after/natalia after V.png",
+    before: "/before and after/natalia before V.jpg",
+    after: "/before and after/natalia after V.jpg",
   },
   {
     title: "Souad Amghar Smile Transformation",
-    before: "/before and after/Souad Amghar before V.png",
-    after: "/before and after/Souad Amghar after V.png",
-  },
-  {
-    title: "Velmer Smile Transformation",
-    before: "/before and after/Velmer before V.png",
-    after: "/before and after/Velmer after V.png",
+    before: "/before and after/Souad Amghar before V.jpg",
+    after: "/before and after/Souad Amghar after V.jpg",
   }
 ];
 

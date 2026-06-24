@@ -71,6 +71,7 @@ export default function Membership() {
                 <div className="d-flex align-items-baseline mb-4">
                   <span className="fs-24 fw-600 me-2" style={{ color: '#165369' }}>$</span>
                   <span className="fs-60 fw-900" style={{ color: '#165369' }}>1299</span>
+                  <span className="fs-24 fw-600 me-2" style={{ color: '#165369' }}>/year</span>
                 </div>
                 
                 <ul className="membership-list list-unstyled mb-5">

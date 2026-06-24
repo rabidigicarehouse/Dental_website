@@ -14,11 +14,6 @@ const EVENT_IMAGES = [
     alt: 'Dr. Sharda Harvey at the Royal Versailles Ball portrait setting',
     mobilePosition: 'center top',
   },
-  {
-    src: '/images/events/image (5).png',
-    alt: 'Dr. Sharda Harvey at the Royal Versailles Ball event wall',
-    mobilePosition: 'center 62%',
-  },
 ];
 
 export default function EventImageCarousel() {
@@ -38,12 +33,8 @@ export default function EventImageCarousel() {
         <div className="story-event-collage__hero">
           <Image src={EVENT_IMAGES[0].src} alt={EVENT_IMAGES[0].alt} width={1200} height={800} sizes="26vw" />
         </div>
-        <div className="story-event-collage__side">
-          {EVENT_IMAGES.slice(1).map((image) => (
-            <div className="story-event-collage__tile" key={image.src}>
-              <Image src={image.src} alt={image.alt} width={1200} height={800} sizes="18vw" />
-            </div>
-          ))}
+        <div className="story-event-collage__hero">
+          <Image src={EVENT_IMAGES[1].src} alt={EVENT_IMAGES[1].alt} width={1200} height={800} sizes="26vw" />
         </div>
       </div>
 

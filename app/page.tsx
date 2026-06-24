@@ -18,10 +18,10 @@ import { TEXT_TESTIMONIALS } from '@/lib/testimonials';
 export default function Home() {
   const storyVideoId = "WmNFiHfmM0o";
   const bgImages = [
-    '/hero_carousel/image_094.jpg',
+    '/hero_carousel/new_image.png',
     '/hero_carousel/image_119.jpg',
     '/hero_carousel/image_121.jpg',
-    '/hero_carousel/image_055.jpg',
+    '/whychooseus/image_013.jpg',
     '/hero_carousel/image_126.jpg',
     '/hero_carousel/image_133.jpg'
   ];
@@ -307,11 +307,11 @@ export default function Home() {
             {/* ── Card 2 — About The Doctor ──────────────────────────────── */}
             <div className="row g-5 align-items-center w-100 m-0">
               <div className="col-lg-5">
-                <div className="doctor-photo-wrap" style={{ padding: 0, maxWidth: 380, margin: '0 auto' }}>
+                <div className="doctor-photo-wrap about-doctor-photo-wrap" style={{ padding: 0, maxWidth: 380, margin: '0 auto' }}>
                   <div className="doctor-photo-decor doctor-photo-decor-1" />
                   <div className="doctor-photo-decor doctor-photo-decor-2" />
                   <div className="doctor-photo-frame">
-                    <Image src="/Dr harvey2.webp" alt="Dr. Sharda Harvey" width={1200} height={800} sizes="(max-width: 991px) 75vw, 32vw" />
+                    <Image src="/image (1).png" alt="Dr. Sharda Harvey" width={1200} height={800} sizes="(max-width: 991px) 75vw, 32vw" />
                     <div className="doctor-photo-glow" />
                   </div>
                 </div>
@@ -320,7 +320,7 @@ export default function Home() {
               <div className="col-lg-7">
                 <div className="about-subtitle">About The Doctor</div>
                 <h3 className="doctor-name mb-1">Dr. Sharda Harvey, D.D.S M.S F.I.C.O.I</h3>
-                <p className="doctor-role doctor-designation-nowrap mb-3"><em>General Cosmetic Dentist</em></p>
+                <p className="doctor-role doctor-designation-nowrap mb-3"><em>General Cosmetic and Implant Dentist</em></p>
 
                 <div className="doctor-bio">
                   <p>
@@ -420,6 +420,8 @@ export default function Home() {
           </StackedSectionSlider>
         </div>
       </section>
+
+      <CorporatePlansSection />
 
       {/* Services Section */}
       <section className="services-photo-section">
@@ -583,8 +585,6 @@ export default function Home() {
         </div>
       </section>
 
-      <CorporatePlansSection />
-
       {/* Team Section */}
       <section className="bg-color-op-1">
         <div className="container">
@@ -598,10 +598,10 @@ export default function Home() {
           </div>
           <div className="row g-4">
             {[
-              { name: 'Dr. Sharda Harvey', role: 'General Cosmetic Dentist', photo: '/Dr-harvey-1.jpg', width: 956, height: 1295, href: '/about#dr-sharde-harvey' },
-              { name: 'Dr. Pellegrini', role: 'LANAP and LAPIP Protocol', photo: '/Gretel Pellegrini Photo.jpg', width: 956, height: 1295, href: '/about#dr-pellegrini' },
+              { name: 'Dr. Sharda Harvey', role: 'General Cosmetic and Implant Dentist', photo: '/Dr-harvey-1.jpg', width: 956, height: 1295, href: '/about#dr-sharde-harvey' },
+              { name: 'Dr. Pellegrini', role: 'Periodontist and Implant Specialist', photo: '/Gretel Pellegrini Photo.jpg', width: 956, height: 1295, href: '/about#dr-pellegrini' },
               { name: 'Paola Cruz', role: 'Dental Assistant', photo: '/Paola-Image.jpg', width: 956, height: 1295, href: '/about#paola-cruz' },
-              { name: 'Ivory Lorilla', role: 'Executive Assistant', photo: '/Ivory-updated.png', width: 1134, height: 1387, href: '/about#ivory-lorilla' },
+              { name: 'Ivory Lorilla', role: 'Patient Care Coordinator', photo: '/Ivory-updated.png', width: 1134, height: 1387, href: '/about#ivory-lorilla' },
             ].map((member) => (
               <div className="col-lg-3 col-md-6" key={member.name}>
                 <Link href={member.href} scroll={false} className="team-member-link">

@@ -92,7 +92,7 @@ export default function AIWidget() {
   const [stickyHidden, setStickyHidden] = useState(false);
   const [isVoiceMuted, setIsVoiceMuted] = useState(false);
   const [videoMediaEnabled, setVideoMediaEnabled] = useState(false);
-  const WELCOME_TEXT = "Hi! Welcome to our practice facility. To help you get started, may I please have your name and phone number?";
+  const WELCOME_TEXT = "Hi! Welcome to our practice facility. To help you get started, may I please have your name and phone number or email?";
   const [messages, setMessages] = useState<Message[]>([
     { id: "1", text: WELCOME_TEXT, sender: "ai" },
   ]);
@@ -123,6 +123,8 @@ export default function AIWidget() {
   const bookingStepRef = useRef<number>(-1);
   const bookingPromptPendingRef = useRef(false);
   const tomorrowOfferPendingRef = useRef(false);
+  const contactPhoneDeclinedRef = useRef(false);
+  const contactEmailDeclinedRef = useRef(false);
   const speechSessionRef = useRef<{
     finalTranscript: string;
     interimTranscript: string;
@@ -1151,9 +1153,9 @@ export default function AIWidget() {
     if (notThisButThat) return notThisButThat[2];
 
     const explicit = text.match(
-      /\b(?:correct|change|update)\s+(?:my\s+)?name\s+(?:to|as|is)\s+([a-z][a-z'-]*(?:\s+[a-z][a-z'-]*)*)\b|\bmy\s+(?:correct\s+)?name\s+is\s+(?:actually\s+)?([a-z][a-z'-]*(?:\s+[a-z][a-z'-]*)*)\b/i
+      /\b(?:correct|change|update)\s+(?:my\s+)?name\s+(?:to|as|is)\s+([a-z][a-z'-]*(?:\s+[a-z][a-z'-]*)*)\b|\b(?:sorry|actually|correction)[,\s]+(?:my\s+)?name\s+(?:is|should be)\s+([a-z][a-z'-]*(?:\s+[a-z][a-z'-]*)*)\b|\bmy\s+correct\s+name\s+is\s+([a-z][a-z'-]*(?:\s+[a-z][a-z'-]*)*)\b/i
     );
-    return explicit?.[1] || explicit?.[2] || "";
+    return explicit?.[1] || explicit?.[2] || explicit?.[3] || "";
   }, []);
 
   const detectBookingFieldCorrection = useCallback((text: string): BookingFieldKey | null => {
@@ -1169,6 +1171,27 @@ export default function AIWidget() {
     if (/\b(?:sex|gender)\b/i.test(text)) return "sex";
     if (/\b(?:last name|surname)\b/i.test(text)) return "lastName";
     return null;
+  }, []);
+
+  const detectInfoRefusal = useCallback((text: string) => {
+    return /\b(?:no|nope|nah|not now|not today|skip|skip it|pass|later|maybe later|rather not|prefer not|don'?t want|do not want|don'?t need|do not need|not comfortable|not sharing|won'?t share|cant share|can'?t share|i refuse|is it required|do i have to)\b/i.test(text);
+  }, []);
+
+  const detectContactFieldRefusal = useCallback((text: string, field: "phone" | "email") => {
+    const fieldPattern = field === "phone" ? /\b(?:phone|number|contact number|mobile|cell)\b/i : /\b(?:email|e-mail|mail)\b/i;
+    return detectInfoRefusal(text) && (fieldPattern.test(text) || !/\b(?:name|date|time|dob|reason|appointment)\b/i.test(text));
+  }, [detectInfoRefusal]);
+
+  const localExtractEmail = useCallback((text: string) => {
+    const direct = text.match(/[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/i)?.[0];
+    if (direct) return direct;
+
+    const spoken = text
+      .toLowerCase()
+      .replace(/\s+(?:at|@)\s+/g, "@")
+      .replace(/\s+(?:dot|\.)\s+/g, ".")
+      .replace(/\s+/g, "");
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(spoken) ? spoken : "";
   }, []);
 
   const titleCaseName = useCallback((value: string) => {
@@ -1211,7 +1234,9 @@ export default function AIWidget() {
             bookingDataRef.current.lastName = updatedLastName;
           }
           const reply = isOnboarding && !userPhone
-            ? `Thank you for correcting me. I have your name as ${updatedFullName}. Could you please share your phone number as well?`
+            ? contactPhoneDeclinedRef.current
+              ? `Thank you for correcting me. I have your name as ${updatedFullName}. If you prefer, you can share your email, or we can continue with your questions.`
+              : `Thank you for correcting me. I have your name as ${updatedFullName}. Could you please share your phone number as well?`
             : `Thank you for correcting me. I'll call you ${updatedFullName} from now on.`;
           appendAiMessage(reply);
           speakAfterNextPaint(reply);
@@ -1275,6 +1300,7 @@ export default function AIWidget() {
         setIsTyping(true);
         const extracted = await requestAiBookingAutofill(text, "firstName");
         const localPhone = localExtractPhone(text);
+        const localEmail = localExtractEmail(text);
         const aiPhoneCandidate = typeof extracted.phone === "string" ? normalizePhoneNumber(extracted.phone) : null;
         const localName = extractOnboardingName(text);
         const aiNameAllowed =
@@ -1288,9 +1314,13 @@ export default function AIWidget() {
         let newName = userName;
         let newLastName = userLastName;
         let newPhone = userPhone;
+        let newEmail = bookingDataRef.current.email || "";
         const hasValidPhone = Boolean(extractedPhone);
         const askedAQuestion = looksLikeQuestionOrRequest(text);
         const looksLikePhoneAttempt = /\d/.test(text);
+        const refusesPhone = !newPhone && !contactPhoneDeclinedRef.current && detectContactFieldRefusal(text, "phone");
+        const refusesEmail = contactPhoneDeclinedRef.current && !newEmail && detectContactFieldRefusal(text, "email");
+        const shouldLetQuestionContinue = askedAQuestion && Boolean(newName || newPhone || contactPhoneDeclinedRef.current);
 
         if (!userName && localName.firstName) {
           newName = localName.firstName;
@@ -1307,20 +1337,46 @@ export default function AIWidget() {
         if (extractedPhone && !userPhone) {
           newPhone = extractedPhone;
         }
+        if (localEmail && !newEmail) {
+          newEmail = localEmail;
+        }
 
         if (newName) setUserName(newName);
         if (newLastName) setUserLastName(newLastName);
         if (newPhone) setUserPhone(newPhone);
+        if (newEmail) bookingDataRef.current.email = newEmail;
 
         setIsTyping(false);
 
-        if (newName && newPhone) {
+        if (shouldLetQuestionContinue) {
+          setIsOnboarding(false);
+        } else if (newName && newPhone) {
           setIsOnboarding(false);
           const reply = `Nice to meet you, ${newName}! How can I help you today?`;
           appendAiMessage(reply);
           speakAfterNextPaint(reply);
+        } else if (newName && contactPhoneDeclinedRef.current && newEmail) {
+          setIsOnboarding(false);
+          const reply = `Thanks, ${newName}. I have your email. How can I help you today?`;
+          appendAiMessage(reply);
+          speakAfterNextPaint(reply);
+        } else if (refusesEmail) {
+          contactEmailDeclinedRef.current = true;
+          setIsOnboarding(false);
+          const reply = `Ok, no issue. Let's continue our talk - would you like to know more about us, or would you like help with booking an appointment?`;
+          appendAiMessage(reply);
+          speakAfterNextPaint(reply);
+        } else if (refusesPhone) {
+          contactPhoneDeclinedRef.current = true;
+          const reply = newName
+            ? `Ok, not an issue, ${newName}. If you're comfortable, please share your email instead.`
+            : `Ok, not an issue. May I have your name, and if you're comfortable, your email?`;
+          appendAiMessage(reply);
+          speakAfterNextPaint(reply);
         } else if (askedAQuestion && !newName && !newPhone) {
-          const reply = `Before we continue, please provide your name and phone number so I can assist you properly.`;
+          const reply = contactPhoneDeclinedRef.current
+            ? `Before we continue, may I have your name? Your email is optional.`
+            : `Before we continue, please provide your name and phone number so I can assist you properly.`;
           appendAiMessage(reply);
           speakAfterNextPaint(reply);
         } else if (!hasValidPhone && looksLikePhoneAttempt && newName) {
@@ -1332,7 +1388,10 @@ export default function AIWidget() {
           appendAiMessage(reply);
           speakAfterNextPaint(reply);
         } else if (newName && !newPhone) {
-          const reply = `Nice to meet you, ${newName}! Could you please share your phone number as well?`;
+          setIsOnboarding(false);
+          const reply = contactPhoneDeclinedRef.current
+            ? `Nice to meet you, ${newName}! If you're comfortable, please share your email, or ask me anything about the practice.`
+            : `Nice to meet you, ${newName}! Your phone number is optional - you can share it later, or ask me anything about the practice.`;
           appendAiMessage(reply);
           speakAfterNextPaint(reply);
         } else if (!newName && newPhone) {
@@ -1340,11 +1399,15 @@ export default function AIWidget() {
           appendAiMessage(reply);
           speakAfterNextPaint(reply);
         } else {
-          const reply = `To help you get started, could you please provide your name and phone number?`;
+          const reply = contactPhoneDeclinedRef.current
+            ? `No problem. Please share your name, and then we can continue.`
+            : `To help you get started, could you please provide your name and phone number or email?`;
           appendAiMessage(reply);
           speakAfterNextPaint(reply);
         }
-        return;
+        if (!shouldLetQuestionContinue) {
+          return;
+        }
       }
 
       if (bookingStepRef.current >= 0 && /^(cancel|stop|nevermind|never mind|exit)\b/.test(lowered)) {
@@ -1398,6 +1461,37 @@ export default function AIWidget() {
 
       if (bookingStepRef.current >= 0) {
         const step = BOOKING_STEPS[bookingStepRef.current];
+
+        if (step.key === "phone" && detectContactFieldRefusal(text, "phone")) {
+          bookingDataRef.current.phone = "Not provided";
+          contactPhoneDeclinedRef.current = true;
+          let nextStepIndex = bookingStepRef.current + 1;
+          while (
+            nextStepIndex < BOOKING_STEPS.length &&
+            isBookingStepComplete(BOOKING_STEPS[nextStepIndex].key)
+          ) {
+            nextStepIndex += 1;
+          }
+          bookingStepRef.current = nextStepIndex;
+          const reply = bookingStepRef.current < BOOKING_STEPS.length
+            ? `Ok, not an issue. ${BOOKING_STEPS[bookingStepRef.current].ask}`
+            : "Ok, not an issue. Let me continue with your appointment request.";
+          appendAiMessage(reply);
+          speakAfterNextPaint(reply);
+          return;
+        }
+
+        if (step.key === "email" && detectContactFieldRefusal(text, "email")) {
+          contactEmailDeclinedRef.current = true;
+          bookingStepRef.current = -1;
+          bookingDataRef.current = {};
+          bookingPromptPendingRef.current = false;
+          const reply = "Ok, no issue. I won't push for your email. We can continue our talk - would you like to know more about us, or would you like to call the clinic to book directly?";
+          appendAiMessage(reply);
+          speakAfterNextPaint(reply);
+          return;
+        }
+
         const localAutofill = extractBookingAutofill(text, step.key);
         const aiAutofill = await requestAiBookingAutofill(text, step.key);
         const autofill = { ...localAutofill, ...aiAutofill };
@@ -1574,10 +1668,12 @@ export default function AIWidget() {
       normalizePhoneNumber,
       getNextBusinessDay,
       localExtractPhone,
+      localExtractEmail,
       looksLikeQuestionOrRequest,
       extractOnboardingName,
       detectNameCorrection,
       detectBookingFieldCorrection,
+      detectContactFieldRefusal,
       normalizeDentalSpeech,
       titleCaseName,
     ]

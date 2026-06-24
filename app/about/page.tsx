@@ -60,7 +60,7 @@ export default function About() {
           <div id="dr-sharde-harvey" className="anchor-scroll-offset">
             <div className="subtitle id-color wow fadeInUp mb-3">Meet the Doctor</div>
             <h2 className="wow fadeInUp" data-wow-delay=".2s">Dr. Sharda Harvey, DDS, MS, FICOI</h2>
-            <p className="doctor-designation-nowrap wow fadeInUp" data-wow-delay=".25s">General Cosmetic Dentist</p>
+            <p className="doctor-designation-nowrap wow fadeInUp" data-wow-delay=".25s">General Cosmetic and Implant Dentist</p>
           </div>
 
           <div className="doctor-float-section">
@@ -71,7 +71,7 @@ export default function About() {
               className="doctor-float-img wow fadeInRight" width={1200} height={800} />
 
             <p className="wow fadeInUp" data-wow-delay=".3s">
-              DR. SHARDE HARVEY, DDS, MS, FICOI is a skilled New York City General Cosmetic Dentist with extensive training in full mouth cosmetic rehabilitation and dental implants.
+              DR. SHARDE HARVEY, DDS, MS, FICOI is a skilled New York City General Cosmetic and Implant Dentist with extensive training in full mouth cosmetic rehabilitation and dental implants.
             </p>
 
             <p className="wow fadeInUp" data-wow-delay=".4s">
@@ -123,13 +123,13 @@ export default function About() {
 
           <div id="dr-pellegrini" className="anchor-scroll-offset">
             <div className="subtitle id-color wow fadeInUp mb-3">Meet the Doctor</div>
-            <h2 className="wow fadeInUp" data-wow-delay=".2s">Dr. Pellegrini — Periodontist</h2>
+            <h2 className="wow fadeInUp" data-wow-delay=".2s">Dr. Pellegrini - Periodontist and Implant Specialist</h2>
           </div>
 
           <div className="doctor-float-section">
             <Image
               src="/Gretel Pellegrini Photo.jpg"
-              alt="Dr. Pellegrini, Periodontist"
+              alt="Dr. Pellegrini, Periodontist and Implant Specialist"
               className="doctor-float-img doctor-float-img--left wow fadeInLeft" width={1200} height={800} />
 
             <p className="wow fadeInUp" data-wow-delay=".3s">
@@ -189,19 +189,16 @@ export default function About() {
 
           <div className="border-bottom my-5"></div>
 
-          <div id="paola-cruz" className="anchor-scroll-offset">
+          <div id="paola-cruz" className="anchor-scroll-offset doctor-float-section doctor-float-section--paola">
             <div className="subtitle id-color wow fadeInUp mb-3">Meet the Team</div>
+            <Image
+              src="/Paola-Image.jpg"
+              alt="Paola Cruz"
+              className="doctor-float-img doctor-float-img--paola wow fadeInRight" width={1200} height={800} />
             <h2 className="wow fadeInUp" data-wow-delay=".2s">Paola Cruz</h2>
             <p className="doctor-designation-nowrap wow fadeInUp mb-4" data-wow-delay=".25s">
               Dental Assistant
             </p>
-          </div>
-
-          <div className="doctor-float-section">
-            <Image
-              src="/Paola-Image.jpg"
-              alt="Paola Cruz"
-              className="doctor-float-img wow fadeInRight" width={1200} height={800} />
 
             <p className="wow fadeInUp" data-wow-delay=".3s">
               Paola Cruz is a dedicated Dental Assistant with a passion for patient care and healthcare administration. Before moving to the United States in 2019, she completed her first year of Medical Technology studies at Centro Escolar University (CEU) Las Piñas, where she developed a strong foundation in biology, laboratory sciences, and healthcare practices.
@@ -249,7 +246,7 @@ export default function About() {
             <div className="subtitle id-color wow fadeInUp mb-3">Meet the Team</div>
             <h2 className="wow fadeInUp" data-wow-delay=".2s">Ivory Lorilla</h2>
             <p className="doctor-designation-nowrap wow fadeInUp mb-4" data-wow-delay=".25s">
-              Executive Assistant
+              Patient Care Coordinator
             </p>
           </div>
 
@@ -263,7 +260,7 @@ export default function About() {
             />
 
             <p className="wow fadeInUp" data-wow-delay=".3s">
-              Ivory Lorilla serves as Executive Assistant at Upper East Dental Innovations, supporting the practice team with organization, communication, and day-to-day coordination.
+              Ivory Lorilla serves as Patient Care Coordinator at Upper East Dental Innovations, supporting the practice team with organization, communication, scheduling, and day-to-day patient coordination.
             </p>
 
             <p className="wow fadeInUp" data-wow-delay=".4s">

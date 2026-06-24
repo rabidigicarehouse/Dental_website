@@ -772,6 +772,15 @@ body.is-homepage header:not(.smaller) #mainmenu>li>ul.mega::before {
   margin: 0 32px 24px 0;
 }
 
+.doctor-float-section--paola {
+  margin-bottom: 10px;
+}
+
+.doctor-float-img--paola {
+  margin-top: 0;
+  margin-bottom: 18px;
+}
+
 @media (max-width: 767px) {
   .doctor-float-img,
   .doctor-float-img--left {
@@ -6081,6 +6090,9 @@ body.ai-widget-open .svc-photo-wrap {
 }
 
 .corporate-plans-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   flex-shrink: 0;
   min-width: 180px;
   border: 0;
@@ -6092,6 +6104,8 @@ body.ai-widget-open .svc-photo-wrap {
   font-weight: 800;
   letter-spacing: 1.2px;
   text-transform: uppercase;
+  text-align: center;
+  text-decoration: none !important;
   cursor: pointer;
   transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
   box-shadow: 0 16px 28px rgba(0, 0, 0, 0.16);
@@ -7761,12 +7775,10 @@ footer.section-dark .subfooter a:hover {
 .youtube-marquee-banner {
   width: 100%;
   height: var(--top-banner-h);
-  background: #165369;
-  /* Theme Teal background */
+  background: #ffffff;
   overflow: hidden;
   position: relative;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
-  /* Subtle white border */
+  border-bottom: 1px solid rgba(22, 83, 105, 0.12);
   display: flex;
   align-items: center;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
@@ -7805,8 +7817,7 @@ footer.section-dark .subfooter a:hover {
   display: flex;
   align-items: center;
   gap: 12px;
-  color: #ffffff;
-  /* White text for contrast on teal */
+  color: #165369;
   font-size: 13px;
   white-space: nowrap;
 }
@@ -7815,7 +7826,9 @@ footer.section-dark .subfooter a:hover {
 .marquee-doctor-group {
   gap: 10px;
   flex-shrink: 0;
-  margin-right: 0;
+  margin-right: 22px;
+  position: relative;
+  z-index: 1;
 }
 
 /* Never show a separator immediately after avatar + name block */
@@ -7837,39 +7850,34 @@ footer.section-dark .subfooter a:hover {
   object-fit: contain;
 }
 
-.marquee-item-bubble .avatar-wrapper {
-  width: 26px;
-  height: 26px;
-  border-radius: 50%;
-  overflow: hidden;
-  border: 1.5px solid #ffffff;
-  /* White ring border */
-  display: flex;
+.marquee-yt-dot {
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 0 6px rgba(255, 255, 255, 0.25);
+  flex: 0 0 22px;
+  width: 22px;
+  height: 22px;
 }
 
-.marquee-item-bubble .avatar-img {
-  object-fit: cover;
-  width: 100%;
-  height: 100%;
+.marquee-yt-dot img {
+  display: block;
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
 }
 
 .marquee-text {
   font-size: 13px;
-  color: #ffffff;
-  /* White text */
+  color: #165369;
 }
 
 .marquee-text-channel {
-  color: #FF0000;
-  /* YouTube Red */
+  color: #165369;
   font-weight: 800;
   font-family: 'Outfit', 'Inter', sans-serif;
   text-transform: uppercase;
   letter-spacing: 1px;
-  text-shadow: 0 0 4px rgba(255, 0, 0, 0.15);
+  text-shadow: none;
 }
 
 .marquee-separator {
@@ -7877,8 +7885,10 @@ footer.section-dark .subfooter a:hover {
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  padding: 0 4px;
+  padding: 0 10px;
   opacity: 1;
+  position: relative;
+  z-index: 2;
 }
 
 .marquee-separator img {
@@ -7895,11 +7905,10 @@ footer.section-dark .subfooter a:hover {
 }
 
 .marquee-item-bubble.highlight {
-  background: rgba(255, 255, 255, 0.12);
-  /* White light tint */
+  background: rgba(22, 83, 105, 0.08);
   padding: 3px 12px;
   border-radius: 20px;
-  border: 1px solid rgba(255, 255, 255, 0.25);
+  border: 1px solid rgba(22, 83, 105, 0.18);
 }
 
 .subscribe-badge {
@@ -10712,11 +10721,12 @@ body.square-booking-active {
     overflow: hidden !important;
   }
 
-  body.is-homepage .doctor-photo-frame img {
+  body.is-homepage .about-doctor-photo-wrap .doctor-photo-frame img {
     width: 100% !important;
     max-height: 420px !important;
-    object-fit: cover !important;
-    object-position: center top !important;
+    object-fit: contain !important;
+    object-position: center 58% !important;
+    background: #f4f8fa !important;
   }
 
   body.is-homepage .stacked-dots {
@@ -10990,9 +11000,9 @@ body.square-booking-active {
 
 .story-event-collage {
   display: grid;
-  grid-template-columns: minmax(0, 1.08fr) minmax(0, 0.82fr);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 16px;
-  max-width: 470px;
+  max-width: 620px;
   margin: 0 auto;
   align-items: stretch;
 }
@@ -11121,8 +11131,8 @@ body.square-booking-active {
 
   body.is-homepage .story-event-collage,
   body.is-homepage.ai-widget-open .story-event-collage {
-    max-width: 520px !important;
-    grid-template-columns: minmax(0, 1.12fr) minmax(0, 0.88fr) !important;
+    max-width: 620px !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
     gap: 14px !important;
   }
 
@@ -15292,7 +15302,7 @@ body.square-booking-active .mobile-conversion-bar {
   width: calc(100% - 20px) !important;
   height: calc(100% - 20px) !important;
   border-radius: 20px;
-  object-fit: cover;
+  object-fit: contain;
   object-position: center 44%;
   filter: saturate(0.92) contrast(1.04);
 }

@@ -26,8 +26,8 @@ export default function ConsultationOfferSection() {
             Meet with our team to discuss your goals, explore personalized treatment options,
             and understand the next steps toward a healthy, confident smile.
           </p>
-          <button type="button" className="consultation-offer-button" onClick={open}>
-            Book Your Complimentary Consultation
+          <button type="button" className="consultation-offer-button btn-main fx-slide" data-hover="Book Your Complimentary Consult Today" onClick={open}>
+            <span>Book Your Complimentary Consult Today</span>
           </button>
         </div>
       </div>
